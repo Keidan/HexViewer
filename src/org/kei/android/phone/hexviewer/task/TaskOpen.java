@@ -12,9 +12,7 @@ import org.kei.android.phone.hexviewer.ApplicationCtx;
 import org.kei.android.phone.hexviewer.R;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
 /**
@@ -36,28 +34,24 @@ import android.widget.ArrayAdapter;
  *
  *******************************************************************************
  */
-public class TaskOpen extends AsyncTask<Uri, Void, List<String>> {
-  private Activity             activity = null;
+public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
   private ArrayAdapter<String> adapter  = null;
-  private ProgressDialog       dialog   = null;
 
   public TaskOpen(final Activity activity, final ArrayAdapter<String> adapter) {
-    this.activity = activity;
+    super(activity);
     this.adapter = adapter;
   }
 
   @Override
   protected void onPreExecute() {
     super.onPreExecute();
-    dialog = ProgressDialog.show(activity, "", "Please wait");
     adapter.clear();
-    dialog.show();
   }
 
   @Override
   protected void onPostExecute(final List<String> result) {
+    super.onPostExecute(result);
     adapter.addAll(result);
-    dialog.dismiss();
   }
   
   @Override
@@ -73,7 +67,7 @@ public class TaskOpen extends AsyncTask<Uri, Void, List<String>> {
       buffer.reset();
       int nRead;
       byte[] data = new byte[1024];
-      while ((nRead = is.read(data, 0, data.length)) != -1)
+      while ((nRead = is.read(data, 0, data.length)) != -1 && !isCancelled())
         buffer.write(data, 0, nRead);
       buffer.flush();
       return formatBuffer(buffer.toByteArray());

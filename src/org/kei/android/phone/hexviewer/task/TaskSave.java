@@ -8,8 +8,6 @@ import org.kei.android.phone.hexviewer.ApplicationCtx;
 import org.kei.android.phone.hexviewer.R;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 
 /**
  *******************************************************************************
@@ -30,32 +28,34 @@ import android.os.AsyncTask;
  *
  *******************************************************************************
  */
-public class TaskSave extends AsyncTask<Void, Void, Void> {
-  private Activity       activity = null;
-  private ProgressDialog dialog   = null;
+public class TaskSave extends ProgressTask<Void, Void, Void> {
+  private FileOutputStream fos = null;
   
   public TaskSave(final Activity activity) {
-    this.activity = activity;
-  }
-  
-  @Override
-  protected void onPreExecute() {
-    super.onPreExecute();
-    dialog = ProgressDialog.show(activity, "", "Please wait");
-    dialog.show();
+    super(activity);
   }
   
   @Override
   protected void onPostExecute(final Void empty) {
-    dialog.dismiss();
+    super.onPostExecute(empty);
     Tools.toast(activity, R.drawable.ic_launcher, "Save success.");
+  }
+  
+  protected void onCancelled() {
+    super.onCancelled();
+    if (fos != null) {
+      try {
+        fos.close();
+      } catch (final IOException e) {
+      }
+      fos = null;
+    }
   }
 
   @Override
   protected Void doInBackground(final Void... empty) {
     final ApplicationCtx actx = (ApplicationCtx) activity.getApplication();
     final byte[] bytes = actx.getPayload().toByteArray();
-    FileOutputStream fos = null;
     try {
       fos = new FileOutputStream(actx.getFilename());
       fos.write(bytes);
@@ -70,11 +70,13 @@ public class TaskSave extends AsyncTask<Void, Void, Void> {
         }
       });
     } finally {
-      if (fos != null)
+      if (fos != null) {
         try {
           fos.close();
         } catch (final IOException e) {
         }
+        fos = null;
+      }
     }
     return null;
   }
