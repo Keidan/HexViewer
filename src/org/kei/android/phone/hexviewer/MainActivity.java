@@ -2,16 +2,12 @@ package org.kei.android.phone.hexviewer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.kei.android.atk.utils.Tools;
 import org.kei.android.atk.utils.changelog.ChangeLog;
 import org.kei.android.atk.utils.changelog.ChangeLogIds;
 import org.kei.android.atk.utils.fx.Fx;
 import org.kei.android.atk.view.EffectActivity;
-import org.kei.android.atk.view.chooser.FileChooser;
 import org.kei.android.atk.view.chooser.FileChooserActivity;
 import org.kei.android.atk.view.dialog.DialogHelper;
 import org.kei.android.atk.view.dialog.DialogResult;
@@ -20,10 +16,7 @@ import org.kei.android.phone.hexviewer.task.TaskOpen;
 import org.kei.android.phone.hexviewer.task.TaskSave;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +55,10 @@ public class MainActivity extends EffectActivity implements IDialog {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    String path = null;
+    if (getIntent() != null && getIntent().getData() != null)
+      path = getIntent().getData().getEncodedPath();
+
     setContentView(R.layout.activity_main);
 
     final ListView payloadLV = (ListView) findViewById(R.id.payloadView);
@@ -76,9 +73,10 @@ public class MainActivity extends EffectActivity implements IDialog {
     if (changeLog.firstRun())
       changeLog.getLogDialog().show();
     actx = (ApplicationCtx) getApplication();
-    if (getIntent() != null && getIntent().getData() != null) {
-      actx.setFilename(basename(getIntent().getData().getEncodedPath()));
-      new TaskOpen(this, adapter).execute(getIntent().getData());
+    if (path != null) {
+      actx.setFilename(ActivityHelper.basename(path));
+      TaskOpen to = new TaskOpen(this, adapter);
+      to.execute(getIntent().getData());
     }
   }
 
@@ -114,36 +112,21 @@ public class MainActivity extends EffectActivity implements IDialog {
       changeLog.getFullLogDialog().show();
       return true;
     } else if (id == R.id.action_open) {
-      final Map<String, String> extra = new HashMap<String, String>();
-      extra.put(FileChooser.FILECHOOSER_TYPE_KEY, ""
-          + FileChooser.FILECHOOSER_TYPE_FILE_ONLY);
-      extra.put(FileChooser.FILECHOOSER_TITLE_KEY, "Open");
-      extra.put(FileChooser.FILECHOOSER_MESSAGE_KEY, "Use this file:? ");
-      extra.put(FileChooser.FILECHOOSER_SHOW_KEY, ""
-          + FileChooser.FILECHOOSER_SHOW_FILE_AND_DIRECTORY);
-      Tools.switchToForResult(this, FileChooserActivity.class, extra,
-          FileChooserActivity.FILECHOOSER_SELECTION_TYPE_FILE);
+      ActivityHelper.actionOpen(this);
       return true;
     } else if (id == R.id.action_save) {
       if (actx.getFilename() == null) {
         Tools.toast(this, R.drawable.ic_launcher, "Open a file before!");
         return true;
       }
-      final Map<String, String> extra = new HashMap<String, String>();
-      extra.put(FileChooser.FILECHOOSER_TYPE_KEY, ""
-          + FileChooser.FILECHOOSER_TYPE_DIRECTORY_ONLY);
-      extra.put(FileChooser.FILECHOOSER_TITLE_KEY, "Save");
-      extra.put(FileChooser.FILECHOOSER_MESSAGE_KEY, "Use this folder:? ");
-      extra.put(FileChooser.FILECHOOSER_SHOW_KEY, ""
-          + FileChooser.FILECHOOSER_SHOW_DIRECTORY_ONLY);
-      Tools.switchToForResult(this, FileChooserActivity.class, extra,
-          FileChooserActivity.FILECHOOSER_SELECTION_TYPE_DIRECTORY);
+      ActivityHelper.actionSave(this);
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }
 
   @Override
-  public DialogResult doAction(final View owner, final Object model) {
+  public DialogResult doAction(final View owner, final Object rootdir) {
     final EditText txtFilename = (EditText) owner
         .findViewById(R.id.txtFileName);
     final String file = txtFilename.getText().toString();
@@ -151,7 +134,7 @@ public class MainActivity extends EffectActivity implements IDialog {
       Tools.showAlertDialog(owner.getContext(), "Error", "Invalid file name");
       return DialogResult.ERROR;
     }
-    String path = ""+model;
+    String path = ""+rootdir;
     if (!path.endsWith("/"))
       path += "/";
     path += file;
@@ -177,69 +160,7 @@ public class MainActivity extends EffectActivity implements IDialog {
   public void doLoad(final View owner, final Object model) {
     final EditText txtFilename = (EditText) owner
         .findViewById(R.id.txtFileName);
-    txtFilename.setText(basename(actx.getFilename()));
-  }
-  
-  private String basename(final String path) {
-    String s = path;
-    int i = s.lastIndexOf('/');
-    if(i != -1) s = s.substring(i+1);
-    return s;
-  }
-
-  /*
-   * Thx to nmw01223 from
-   * http://stackoverflow.com/questions/17388756/how-to-access
-   * -gmail-attachment-data-in-my-app
-   */
-  public String getFile() {
-    final Intent intent = getIntent();
-    try {
-      final String action = intent.getAction();
-      if (!Intent.ACTION_VIEW.equals(action)) {
-        return null;
-      }
-      
-      final Uri uri = intent.getData();
-      final String scheme = uri.getScheme();
-      String name = null;
-      
-      if (scheme.equals("file")) {
-        final List<String> pathSegments = uri.getPathSegments();
-        if (pathSegments.size() > 0) {
-          name = pathSegments.get(pathSegments.size() - 1);
-        }
-      } else if (scheme.equals("content")) {
-        final Cursor cursor = getContentResolver().query(uri,
-            new String[] { MediaStore.MediaColumns.DISPLAY_NAME }, null, null,
-            null);
-        cursor.moveToFirst();
-        final int nameIndex = cursor
-            .getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-        if (nameIndex >= 0) {
-          name = cursor.getString(nameIndex);
-        }
-      } else {
-        return null;
-      }
-      
-      if (name == null) {
-        return null;
-      }
-      
-      final int n = name.lastIndexOf(".");
-      String fileName, fileExt;
-      
-      if (n == -1) {
-        return null;
-      } else {
-        fileName = name.substring(0, n);
-        fileExt = name.substring(n);
-      }
-      return fileName + fileExt;
-    } catch (final Exception e) {
-      return null;
-    }
+    txtFilename.setText(ActivityHelper.basename(actx.getFilename()));
   }
   
 }

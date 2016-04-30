@@ -50,8 +50,8 @@ public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
 
   @Override
   protected void onPostExecute(final List<String> result) {
-    super.onPostExecute(result);
     adapter.addAll(result);
+    super.onPostExecute(result);
   }
   
   @Override

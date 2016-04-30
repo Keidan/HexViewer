@@ -32,7 +32,7 @@ public abstract class ProgressTask<Params, Progress, Result> extends
   public ProgressTask(final Activity activity) {
     this.activity = activity;
   }
-
+  
   @Override
   protected void onPreExecute() {
     super.onPreExecute();
