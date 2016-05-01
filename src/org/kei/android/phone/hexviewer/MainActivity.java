@@ -2,6 +2,7 @@ package org.kei.android.phone.hexviewer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.kei.android.atk.utils.Tools;
 import org.kei.android.atk.utils.changelog.ChangeLog;
@@ -20,9 +21,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 /**
  *******************************************************************************
@@ -43,10 +45,10 @@ import android.widget.ListView;
  *
  *******************************************************************************
  */
-public class MainActivity extends EffectActivity implements IDialog {
+public class MainActivity extends EffectActivity implements IDialog, OnItemLongClickListener {
   private ChangeLog      changeLog = null;
   private ApplicationCtx actx      = null;
-  private ArrayAdapter<String> adapter = null;
+  private ListArrayAdapter<String> adapter = null;
   
   static {
     Fx.default_animation = Fx.ANIMATION_FADE;
@@ -62,9 +64,10 @@ public class MainActivity extends EffectActivity implements IDialog {
     setContentView(R.layout.activity_main);
 
     final ListView payloadLV = (ListView) findViewById(R.id.payloadView);
-    adapter = new ArrayAdapter<String>(this,
-        R.layout.listview_simple_row, R.id.label1, new ArrayList<String>());
+    adapter = new ListArrayAdapter<String>(this,
+        R.layout.listview_simple_row, new ArrayList<String>());
     payloadLV.setAdapter(adapter);
+    payloadLV.setOnItemLongClickListener(this);
     
     changeLog = new ChangeLog(new ChangeLogIds(R.raw.changelog,
         R.string.changelog_ok_button, R.string.background_color,
@@ -74,7 +77,7 @@ public class MainActivity extends EffectActivity implements IDialog {
       changeLog.getLogDialog().show();
     actx = (ApplicationCtx) getApplication();
     if (path != null) {
-      actx.setFilename(ActivityHelper.basename(path));
+      actx.setFilename(Helper.basename(path));
       TaskOpen to = new TaskOpen(this, adapter);
       to.execute(getIntent().getData());
     }
@@ -93,7 +96,7 @@ public class MainActivity extends EffectActivity implements IDialog {
     } else if (requestCode == FileChooserActivity.FILECHOOSER_SELECTION_TYPE_DIRECTORY) {
       if (resultCode == RESULT_OK) {
         final String dir = data.getStringExtra(FileChooserActivity.FILECHOOSER_SELECTION_KEY);
-        DialogHelper.showCustomDialog(this, R.layout.dialog_save, "Save", this,
+        DialogHelper.showCustomDialog(this, R.layout.dialog_filename, "Save", this,
             dir, R.id.buttonOk, R.id.buttonCancel);
       }
     }
@@ -112,14 +115,14 @@ public class MainActivity extends EffectActivity implements IDialog {
       changeLog.getFullLogDialog().show();
       return true;
     } else if (id == R.id.action_open) {
-      ActivityHelper.actionOpen(this);
+      Helper.actionOpen(this);
       return true;
     } else if (id == R.id.action_save) {
       if (actx.getFilename() == null) {
         Tools.toast(this, R.drawable.ic_launcher, "Open a file before!");
         return true;
       }
-      ActivityHelper.actionSave(this);
+      Helper.actionSave(this);
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -160,7 +163,41 @@ public class MainActivity extends EffectActivity implements IDialog {
   public void doLoad(final View owner, final Object model) {
     final EditText txtFilename = (EditText) owner
         .findViewById(R.id.txtFileName);
-    txtFilename.setText(ActivityHelper.basename(actx.getFilename()));
+    txtFilename.setText(Helper.basename(actx.getFilename()));
+  }
+
+  @Override
+  public boolean onItemLongClick(AdapterView<?> parent, View view,
+      final int position, long id) {
+    final String hex = 
+        (adapter.getItem(position).substring(0, 24).trim() + " " +
+        adapter.getItem(position).substring(25, 49).trim()).trim();
+    DialogHelper.showCustomDialog(this, R.layout.dialog_data, "Update", new IDialog() {
+      @Override
+      public DialogResult doAction(final View owner, final Object rootdir) {
+        final EditText txtData = (EditText) owner
+            .findViewById(R.id.txtData);
+        String validate = txtData.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+        if(!validate.matches("\\p{XDigit}+") || !(validate.length() % 2 == 0) || validate.length() > Helper.MAX_BY_ROW) {
+          Tools.showAlertDialog(owner.getContext(), "Error", "Invalid entry format");
+          return DialogResult.ERROR;
+        }
+        byte [] buf = Helper.hexStringToByteArray(validate);
+        int pos = (position * Helper.MAX_BY_ROW);
+        ((ApplicationCtx)getApplication()).updatePayload(pos, buf);
+        adapter.setItem(position, Helper.formatBuffer(buf).get(0));
+        return DialogResult.SUCCESS;
+      }
+
+      @Override
+      public void doLoad(final View owner, final Object model) {
+        final EditText txtData = (EditText) owner
+            .findViewById(R.id.txtData);
+        txtData.setText("" + model);
+      }
+    },
+        hex, R.id.buttonOk, R.id.buttonCancel);
+    return false;
   }
   
 }

@@ -55,7 +55,7 @@ public class TaskSave extends ProgressTask<Void, Void, Void> {
   @Override
   protected Void doInBackground(final Void... empty) {
     final ApplicationCtx actx = (ApplicationCtx) activity.getApplication();
-    final byte[] bytes = actx.getPayload().toByteArray();
+    final byte[] bytes = actx.toPayload();
     try {
       fos = new FileOutputStream(actx.getFilename());
       fos.write(bytes);

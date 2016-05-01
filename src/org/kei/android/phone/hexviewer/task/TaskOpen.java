@@ -4,11 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.kei.android.atk.utils.Tools;
 import org.kei.android.phone.hexviewer.ApplicationCtx;
+import org.kei.android.phone.hexviewer.Helper;
 import org.kei.android.phone.hexviewer.R;
 
 import android.app.Activity;
@@ -63,14 +63,15 @@ public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
         is = activity.getContentResolver().openInputStream(uris[0]);
       else
         is = new FileInputStream(actx.getFilename());
-      ByteArrayOutputStream buffer = ((ApplicationCtx)activity.getApplication()).getPayload();
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
       buffer.reset();
       int nRead;
       byte[] data = new byte[1024];
       while ((nRead = is.read(data, 0, data.length)) != -1 && !isCancelled())
         buffer.write(data, 0, nRead);
       buffer.flush();
-      return formatBuffer(buffer.toByteArray());
+      ((ApplicationCtx)activity.getApplication()).setPayload(buffer.toByteArray());
+      return Helper.formatBuffer(((ApplicationCtx)activity.getApplication()).toPayload());
     } catch(final Exception e) {
       activity.runOnUiThread(new Runnable() {
         @Override
@@ -89,42 +90,4 @@ public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
     return null;
   }
   
-  private static List<String> formatBuffer(final byte[] buffer) {
-    final int max = 16;
-    int length = buffer.length;
-    String line = "", eline = "";
-    final List<String> lines = new ArrayList<String>();
-    int i = 0, j = 0;
-    while (length > 0) {
-      final byte c = buffer[j++];
-      line += String.format("%02x ", c);
-      /* only the visibles char */
-      if (c >= 0x20 && c <= 0x7e)
-        eline += (char) c;
-      else
-        eline += (char) 0x2e; /* . */
-      if (i == max - 1) {
-        lines.add(line + " " + eline);
-        line = eline = "";
-        i = 0;
-      } else
-        i++;
-      /* add a space in the midline */
-      if (i == max / 2) {
-        line += " ";
-        eline += " ";
-      }
-      length--;
-    }
-    /* align 'line' */
-    if (i != 0 && (i < max || i <= buffer.length)) {
-      String off = "";
-      while (i++ <= max)
-        off += "   "; /* 3 spaces ex: "00 " */
-      if (line.endsWith(" "))
-        line = line.substring(0, line.length() - 1);
-      lines.add(line + off + eline);
-    }
-    return lines;
-  }
 }

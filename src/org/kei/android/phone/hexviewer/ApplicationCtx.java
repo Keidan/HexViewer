@@ -1,6 +1,7 @@
 package org.kei.android.phone.hexviewer;
 
-import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Application;
 import android.util.Log;
@@ -25,20 +26,39 @@ import android.util.Log;
  *******************************************************************************
  */
 public class ApplicationCtx extends Application {
-  private ByteArrayOutputStream payload  = null;
+  private List<Byte> payload  = null;
   private String                filename = null;
   
   public ApplicationCtx() {
     super();
-    payload = new ByteArrayOutputStream();
+    payload = new ArrayList<Byte>();
   }
   
-  public ByteArrayOutputStream getPayload() {
-    return payload;
+  public Byte[] getPayload() {
+    Byte [] b = new Byte[payload.size()];
+    return payload.toArray(b);
+  }
+  
+  public byte[] toPayload() {
+    byte [] b = new byte[payload.size()];
+    for(int i = 0; i < payload.size(); ++i)
+      b[i] = payload.get(i);
+    return b;
   }
 
-  public void setPayload(final ByteArrayOutputStream payload) {
-    this.payload = payload;
+  public void setPayload(final byte[] payload) {
+    this.payload.clear();
+    for(int i = 0; i < payload.length; ++i)
+      this.payload.add(payload[i]);
+  }
+  
+  public void updatePayload(final int index, final byte[] payload) {
+    int len = this.payload.size();
+    Log.e("TAG", "index: " + index + ", len: " + len);
+    for(int i = index + Helper.MAX_BY_ROW -  1; i >= index; --i)
+      if(i < len) this.payload.remove(i);
+    for(int i = index, j = 0; i < index + payload.length; ++i, ++j)
+      this.payload.add(i, payload[j]);
   }
   
   public String getFilename() {
@@ -46,7 +66,7 @@ public class ApplicationCtx extends Application {
   }
   
   public void setFilename(final String filename) {
-    Log.e("TAG", "Filename:'"+filename+"'");
+    //Log.e("TAG", "Filename:'"+filename+"'");
     this.filename = filename;
   }
   
