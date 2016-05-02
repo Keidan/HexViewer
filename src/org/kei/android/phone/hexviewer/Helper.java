@@ -32,9 +32,10 @@ import android.app.Activity;
  *******************************************************************************
  */
 public class Helper {
-  public static final int MAX_BY_ROW = 16; 
+  public static final int MAX_BY_ROW = 16;
   
-  public static <T extends Activity & IThemeActivity> void actionOpen(final T activity) {
+  public static <T extends Activity & IThemeActivity> void actionOpen(
+      final T activity) {
     final Map<String, String> extra = new HashMap<String, String>();
     extra.put(FileChooser.FILECHOOSER_TYPE_KEY, ""
         + FileChooser.FILECHOOSER_TYPE_FILE_ONLY);
@@ -45,8 +46,9 @@ public class Helper {
     Tools.switchToForResult(activity, FileChooserActivity.class, extra,
         FileChooserActivity.FILECHOOSER_SELECTION_TYPE_FILE);
   }
-  
-  public static <T extends Activity & IThemeActivity> void actionSave(final T activity) {
+
+  public static <T extends Activity & IThemeActivity> void actionSave(
+      final T activity) {
     final Map<String, String> extra = new HashMap<String, String>();
     extra.put(FileChooser.FILECHOOSER_TYPE_KEY, ""
         + FileChooser.FILECHOOSER_TYPE_DIRECTORY_ONLY);
@@ -57,24 +59,25 @@ public class Helper {
     Tools.switchToForResult(activity, FileChooserActivity.class, extra,
         FileChooserActivity.FILECHOOSER_SELECTION_TYPE_DIRECTORY);
   }
-  
+
   public static String basename(final String path) {
     String s = path;
-    int i = s.lastIndexOf('/');
-    if(i != -1) s = s.substring(i+1);
+    final int i = s.lastIndexOf('/');
+    if (i != -1)
+      s = s.substring(i + 1);
     return s;
   }
-  
-  public static byte[] hexStringToByteArray(String s) {
-    int len = s.length();
-    byte[] data = new byte[len / 2];
+
+  public static byte[] hexStringToByteArray(final String s) {
+    final int len = s.length();
+    final byte[] data = new byte[len / 2];
     for (int i = 0; i < len; i += 2) {
-        data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                             + Character.digit(s.charAt(i+1), 16));
+      data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
+          .digit(s.charAt(i + 1), 16));
     }
     return data;
-}
-  
+  }
+
   public static List<String> formatBuffer(final byte[] buffer) {
     final int max = MAX_BY_ROW;
     int length = buffer.length;

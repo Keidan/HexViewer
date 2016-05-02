@@ -24,15 +24,15 @@ import android.os.AsyncTask;
  *******************************************************************************
  */
 public abstract class ProgressTask<Params, Progress, Result> extends
-    AsyncTask<Params, Progress, Result> {
-  
+AsyncTask<Params, Progress, Result> {
+
   protected ProgressDialog dialog   = null;
   protected Activity       activity = null;
-
+  
   public ProgressTask(final Activity activity) {
     this.activity = activity;
   }
-  
+
   @Override
   protected void onPreExecute() {
     super.onPreExecute();
@@ -40,10 +40,10 @@ public abstract class ProgressTask<Params, Progress, Result> extends
     dialog.setCancelable(true);
     dialog.show();
   }
-
+  
   @Override
   protected void onPostExecute(final Result result) {
     dialog.dismiss();
   }
-
+  
 }

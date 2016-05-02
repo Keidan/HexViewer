@@ -30,17 +30,18 @@ import android.app.Activity;
  */
 public class TaskSave extends ProgressTask<Void, Void, Void> {
   private FileOutputStream fos = null;
-  
+
   public TaskSave(final Activity activity) {
     super(activity);
   }
-  
+
   @Override
   protected void onPostExecute(final Void empty) {
     super.onPostExecute(empty);
     Tools.toast(activity, R.drawable.ic_launcher, "Save success.");
   }
-  
+
+  @Override
   protected void onCancelled() {
     super.onCancelled();
     if (fos != null) {
@@ -51,7 +52,7 @@ public class TaskSave extends ProgressTask<Void, Void, Void> {
       fos = null;
     }
   }
-
+  
   @Override
   protected Void doInBackground(final Void... empty) {
     final ApplicationCtx actx = (ApplicationCtx) activity.getApplication();

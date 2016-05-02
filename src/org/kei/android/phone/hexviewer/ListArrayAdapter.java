@@ -30,9 +30,9 @@ import android.widget.TextView;
  */
 public class ListArrayAdapter<T> extends ArrayAdapter<T> {
   private List<T> items = null;
-  private Context            c                = null;
-  private int                id               = 0;
-  
+  private Context c     = null;
+  private int     id    = 0;
+
   public ListArrayAdapter(final Context context, final int textViewResourceId,
       final List<T> objects) {
     super(context, textViewResourceId, objects);
@@ -40,11 +40,11 @@ public class ListArrayAdapter<T> extends ArrayAdapter<T> {
     id = textViewResourceId;
     items = objects;
   }
-
+  
   public List<T> getItems() {
     return items;
   }
-
+  
   public boolean contains(final T p) {
     for (final T sm : items) {
       if (sm.equals(p))
@@ -52,57 +52,58 @@ public class ListArrayAdapter<T> extends ArrayAdapter<T> {
     }
     return false;
   }
-
+  
   @Override
   public T getItem(final int i) {
     return items.get(i);
   }
-
+  
   public void setItem(final int i, final T t) {
     items.set(i, t);
     super.notifyDataSetChanged();
   }
-
+  
   public int getItemCount() {
     return items.size();
   }
-
+  
   public void addItem(final T t) {
     items.add(t);
     super.notifyDataSetChanged();
   }
-
+  
   public void removeItem(final T t) {
     items.remove(t);
     super.notifyDataSetChanged();
   }
-
+  
   public void removeItem(final int i) {
     items.remove(i);
     super.notifyDataSetChanged();
   }
-  
+
   @Override
   public void clear() {
     items.clear();
     super.clear();
   }
-  
+
   @Override
-  public View getView(final int position, final View convertView, final ViewGroup parent) {
+  public View getView(final int position, final View convertView,
+      final ViewGroup parent) {
     View v = convertView;
     if (v == null) {
       final LayoutInflater vi = (LayoutInflater) c
           .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       final LayoutInflater inflater = vi;
       v = inflater.inflate(id, null);
-      TextView label1 = (TextView) v.findViewById(R.id.label1);
+      final TextView label1 = (TextView) v.findViewById(R.id.label1);
       v.setTag(label1);
     }
-    
+
     final TextView holder = (TextView) v.getTag();
     holder.setText("" + items.get(position));
     return v;
   }
-
+  
 }

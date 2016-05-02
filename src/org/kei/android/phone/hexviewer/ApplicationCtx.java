@@ -27,47 +27,48 @@ import android.util.Log;
  */
 public class ApplicationCtx extends Application {
   private List<Byte> payload  = null;
-  private String                filename = null;
-  
+  private String     filename = null;
+
   public ApplicationCtx() {
     super();
     payload = new ArrayList<Byte>();
   }
-  
+
   public Byte[] getPayload() {
-    Byte [] b = new Byte[payload.size()];
+    final Byte[] b = new Byte[payload.size()];
     return payload.toArray(b);
   }
-  
+
   public byte[] toPayload() {
-    byte [] b = new byte[payload.size()];
-    for(int i = 0; i < payload.size(); ++i)
+    final byte[] b = new byte[payload.size()];
+    for (int i = 0; i < payload.size(); ++i)
       b[i] = payload.get(i);
     return b;
   }
-
+  
   public void setPayload(final byte[] payload) {
     this.payload.clear();
-    for(int i = 0; i < payload.length; ++i)
+    for (int i = 0; i < payload.length; ++i)
       this.payload.add(payload[i]);
   }
-  
+
   public void updatePayload(final int index, final byte[] payload) {
-    int len = this.payload.size();
+    final int len = this.payload.size();
     Log.e("TAG", "index: " + index + ", len: " + len);
-    for(int i = index + Helper.MAX_BY_ROW -  1; i >= index; --i)
-      if(i < len) this.payload.remove(i);
-    for(int i = index, j = 0; i < index + payload.length; ++i, ++j)
+    for (int i = index + Helper.MAX_BY_ROW - 1; i >= index; --i)
+      if (i < len)
+        this.payload.remove(i);
+    for (int i = index, j = 0; i < index + payload.length; ++i, ++j)
       this.payload.add(i, payload[j]);
   }
-  
+
   public String getFilename() {
     return filename;
   }
-  
+
   public void setFilename(final String filename) {
-    //Log.e("TAG", "Filename:'"+filename+"'");
+    // Log.e("TAG", "Filename:'"+filename+"'");
     this.filename = filename;
   }
-  
+
 }
