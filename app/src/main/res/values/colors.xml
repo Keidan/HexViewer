@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF212121</color>
+    <color name="colorPrimaryDark">#FF000000</color>
+    <color name="navigationBarColor">#FF000000</color>
+    <color name="colorAccent">#FF0099CC</color>
+    <color name="textColorPrimary">#FFFFFFFF</color>
+    <color name="actionMenuTextColor">#FFFFFFFF</color>
+    <color name="textColor">#FFFFFFFF</color>
+    <color name="windowBackground">#FF303030</color>
+    <color name="colorButtonNormal">#FF424242</color>
+    <color name="colorBackground">#FF424242</color>
+    <color name="colorControlNormal">#FFC5C5C5</color>
+    <color name="listview_item_info">#bcb8b8</color>
+    <color name="file_view_data">#c5c5c5</color>
+</resources>

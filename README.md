@@ -16,10 +16,9 @@ download the software :
 
 	mkdir devel
 	cd devel
-	git clone git://github.com/Keidan/ATK.git
 	git clone git://github.com/Keidan/HexViewer.git
 	cd HexViewer
- 	Use with eclipse 
+ 	Use with android studio 
 
 
 
