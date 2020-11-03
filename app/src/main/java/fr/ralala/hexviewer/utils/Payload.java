@@ -13,7 +13,7 @@ import java.util.List;
  *******************************************************************************
  */
 public class Payload {
-  private List<Byte> mPayload  = null;
+  private List<Byte> mPayload;
 
   public Payload() {
     mPayload = new ArrayList<>();

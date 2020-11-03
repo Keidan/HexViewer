@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.utils.Helper;
 
 /**
  *******************************************************************************
@@ -23,8 +25,8 @@ import fr.ralala.hexviewer.R;
  */
 public class ListArrayAdapter extends ArrayAdapter<String> {
   private static final int ID = R.layout.listview_simple_row;
-  private List<String> mItems = null;
-  private Context mContext     = null;
+  private List<String> mItems;
+  private Context mContext;
 
   public ListArrayAdapter(final Context context, final List<String> objects) {
     super(context, ID, objects);
@@ -77,7 +79,20 @@ public class ListArrayAdapter extends ArrayAdapter<String> {
     }
     if(v != null && v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
-      holder.setText(("" + mItems.get(position)));
+      final String string = mItems.get(position);
+      final ApplicationCtx app = (ApplicationCtx) mContext.getApplicationContext();
+      String s;
+      if(app.isPlainText()) {
+        char array [] = Helper.extractString(string).replaceAll(" ", "").toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < array.length; i+=2) {
+          sb.append((char)Integer.parseInt("" + array[i] + array[i + 1], 16));
+        }
+        s = sb.toString();
+      } else {
+        s = string;
+      }
+      holder.setText(s);
     }
     return v == null ? new View(mContext) : v;
   }

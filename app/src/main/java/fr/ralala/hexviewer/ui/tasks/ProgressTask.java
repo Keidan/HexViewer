@@ -20,8 +20,8 @@ import fr.ralala.hexviewer.R;
  *******************************************************************************
  */
 public abstract class ProgressTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
-  private AlertDialog mDialog   = null;
-  WeakReference<Activity> mActivityRef = null;
+  private AlertDialog mDialog;
+  WeakReference<Activity> mActivityRef;
   volatile boolean mRunning = true;
 
   ProgressTask(final Activity activity) {

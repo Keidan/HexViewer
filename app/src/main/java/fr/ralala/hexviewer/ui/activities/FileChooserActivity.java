@@ -205,10 +205,10 @@ public class FileChooserActivity extends AbstractFileChooserActivity {
 
   private static class IncomingHandler extends Handler {
 
-    private FileChooserActivity adaptee = null;
+    private FileChooserActivity mAdaptee;
 
     private IncomingHandler(FileChooserActivity adaptee) {
-      this.adaptee = adaptee;
+      mAdaptee = adaptee;
     }
 
     @Override
@@ -216,19 +216,19 @@ public class FileChooserActivity extends AbstractFileChooserActivity {
       switch (msg.what) {
         case MSG_ERR:
           final String err = "Activity compute failed !";
-          if (adaptee.mProgress.isShowing())
-            adaptee.mProgress.dismiss();
-          Toast.makeText(adaptee, err, Toast.LENGTH_SHORT).show();
-          adaptee.onErrorHandler();
+          if (mAdaptee.mProgress.isShowing())
+            mAdaptee.mProgress.dismiss();
+          Toast.makeText(mAdaptee, err, Toast.LENGTH_SHORT).show();
+          mAdaptee.onErrorHandler();
           break;
         case MSG_OK:
-          if (adaptee.mProgress.isShowing())
-            adaptee.mProgress.dismiss();
-          adaptee.onSuccessHandler();
+          if (mAdaptee.mProgress.isShowing())
+            mAdaptee.mProgress.dismiss();
+          mAdaptee.onSuccessHandler();
           break;
         case MSG_CANCEL:
-          if (adaptee.mProgress.isShowing()) adaptee.mProgress.dismiss();
-          adaptee.onCancelHandler();
+          if (mAdaptee.mProgress.isShowing()) mAdaptee.mProgress.dismiss();
+          mAdaptee.onCancelHandler();
           break;
         default: // should never happen
           break;

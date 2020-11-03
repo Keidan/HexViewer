@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">HexViewer</string>
     <string name="action_open_title">Open</string>
+    <string name="action_plain_text_title">Plain text</string>
     <string name="action_save_title">Save</string>
     <string name="label_file_name">File name:</string>
     <string name="cancel">Cancel</string>
@@ -13,6 +14,7 @@
     <string name="on_double_back_exit_text">Press once again to exit!</string>
     <string name="update">Update</string>
     <string name="update_hint">Text in hex</string>
+    <string name="error_not_supported_in_plain_text">Operation not supported during plain text display</string>
     <string name="error_entry_format">Invalid entry format!</string>
     <string name="error_filename">Invalid file name!</string>
     <string name="confirm_overwrite">The file exists are you sure you want to overwrite it?</string>

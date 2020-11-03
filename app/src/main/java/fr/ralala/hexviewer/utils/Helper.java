@@ -49,6 +49,15 @@ public class Helper {
   }
 
   /**
+   * Extract the hexadecimal part of a string formatted with the formatBuffer function.
+   * @param string The hex string.
+   * @return String
+   */
+  public static String extractString(final String string) {
+    return (string.substring(0, 24).trim() + " " + string.substring(25, 49).trim()).trim();
+  }
+
+  /**
    * Formats a buffer (wireshark like).
    * @param buffer The input buffer.
    * @return List<String>

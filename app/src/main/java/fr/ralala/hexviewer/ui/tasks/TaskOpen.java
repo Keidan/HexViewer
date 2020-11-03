@@ -25,12 +25,12 @@ import fr.ralala.hexviewer.utils.Payload;
  *******************************************************************************
  */
 public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
-  private ArrayAdapter<String> adapter = null;
+  private ArrayAdapter<String> mAdapter;
   private InputStream mInputStream = null;
 
   public TaskOpen(final Activity activity, final ArrayAdapter<String> adapter) {
     super(activity);
-    this.adapter = adapter;
+    mAdapter = adapter;
   }
 
   /**
@@ -39,7 +39,7 @@ public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
   @Override
   protected void onPreExecute() {
     super.onPreExecute();
-    adapter.clear();
+    mAdapter.clear();
   }
 
   /**
@@ -49,7 +49,7 @@ public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
   @Override
   protected void onPostExecute(final List<String> result) {
     if(result != null)
-      adapter.addAll(result);
+      mAdapter.addAll(result);
     super.onPostExecute(result);
   }
 

@@ -153,6 +153,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       extra.put(AbstractFileChooserActivity.FILECHOOSER_SHOW_KEY, "" + AbstractFileChooserActivity.FILECHOOSER_SHOW_FILE_AND_DIRECTORY);
       Helper.switchToForResult(this, FileChooserActivity.class, extra, FileChooserActivity.FILECHOOSER_SELECTION_TYPE_FILE);
       return true;
+    }if (id == R.id.action_plain_text) {
+      if(item.isChecked()) {
+        /* to hex */
+        mApp.setPlainText(false);
+        mAdapter.notifyDataSetChanged();
+      } else {
+        /* to plain */
+        mApp.setPlainText(true);
+        mAdapter.notifyDataSetChanged();
+      }
+      item.setChecked(!item.isChecked());
+      return true;
     } else if (id == R.id.action_save) {
       if (mApp.getFilename() == null) {
         UIHelper.toast(this, "Open a file before!");
@@ -184,7 +196,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     String string = mAdapter.getItem(position);
     if(string == null)
       return false;
-    final String hex = (string.substring(0, 24).trim() + " " + string.substring(25, 49).trim()).trim();
+
+    if(mApp.isPlainText()) {
+      UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
+      return false;
+    }
+    final String hex = Helper.extractString(string);
 
     createTextDialog(getString(R.string.update), R.layout.content_dialog_update, hex, (dialog, content) -> {
       final String validate = content.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);

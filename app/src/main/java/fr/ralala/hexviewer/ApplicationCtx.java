@@ -14,8 +14,10 @@ import fr.ralala.hexviewer.utils.Payload;
  *******************************************************************************
  */
 public class ApplicationCtx extends Application {
-  private Payload mPayload  = null;
-  private String     filename = null;
+  private Payload mPayload;
+  private String mFilename = null;
+  private boolean mPlainText = false;
+
 
   /**
    * Constructs the application context.
@@ -23,6 +25,23 @@ public class ApplicationCtx extends Application {
   public ApplicationCtx() {
     super();
     mPayload = new Payload();
+  }
+
+  /**
+   * Sets the plain text value.
+   * @param plainText The new value.
+   */
+  public void setPlainText(boolean plainText) {
+    mPlainText = plainText;
+  }
+
+  /**
+   * Returns true if the file should be displayed in plain text and
+   * false if the file should be displayed in hexadecimal.
+   * @return boolean
+   */
+  public boolean isPlainText() {
+    return mPlainText;
   }
 
   /**
@@ -38,7 +57,7 @@ public class ApplicationCtx extends Application {
    * @return String
    */
   public String getFilename() {
-    return filename;
+    return mFilename;
   }
 
   /**
@@ -46,7 +65,7 @@ public class ApplicationCtx extends Application {
    * @param filename The new filename
    */
   public void setFilename(final String filename) {
-    this.filename = filename;
+    mFilename = filename;
   }
 
 }
