@@ -30,7 +30,7 @@ public class FileChooserArrayAdapter extends ArrayAdapter<FileChooserOption> {
   private final int mId;
   private final List<FileChooserOption> mItems;
 
-  private class ViewHolder {
+  private static class ViewHolder {
     ImageView icon;
     TextView name;
     TextView data;

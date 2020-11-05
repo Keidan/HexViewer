@@ -14,7 +14,7 @@ import fr.ralala.hexviewer.utils.Payload;
  *******************************************************************************
  */
 public class ApplicationCtx extends Application {
-  private Payload mPayload;
+  private final Payload mPayload;
   private String mFilename = null;
   private boolean mPlainText = false;
 

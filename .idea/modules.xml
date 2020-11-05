@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HexViewer.iml" filepath="$PROJECT_DIR$/HexViewer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HexViewer.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HexViewer.app.iml" />
     </modules>
   </component>
 </project>

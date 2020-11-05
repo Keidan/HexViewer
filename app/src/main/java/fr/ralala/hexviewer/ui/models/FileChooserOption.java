@@ -16,10 +16,10 @@ import java.util.Locale;
  *******************************************************************************
  */
 public class FileChooserOption implements Comparable<FileChooserOption> {
-  private String mName;
-  private String mData;
-  private String mPath;
-  private Drawable mIcon;
+  private final String mName;
+  private final String mData;
+  private final String mPath;
+  private final Drawable mIcon;
 
   /**
    * Creates a new chooser option.

@@ -25,8 +25,8 @@ import fr.ralala.hexviewer.utils.Helper;
  */
 public class ListArrayAdapter extends ArrayAdapter<String> {
   private static final int ID = R.layout.listview_simple_row;
-  private List<String> mItems;
-  private Context mContext;
+  private final List<String> mItems;
+  private final Context mContext;
 
   public ListArrayAdapter(final Context context, final List<String> objects) {
     super(context, ID, objects);

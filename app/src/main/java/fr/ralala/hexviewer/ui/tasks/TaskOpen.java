@@ -25,7 +25,7 @@ import fr.ralala.hexviewer.utils.Payload;
  *******************************************************************************
  */
 public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
-  private ArrayAdapter<String> mAdapter;
+  private final ArrayAdapter<String> mAdapter;
   private InputStream mInputStream = null;
 
   public TaskOpen(final Activity activity, final ArrayAdapter<String> adapter) {
