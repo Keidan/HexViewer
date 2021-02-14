@@ -10,16 +10,6 @@ This application offers the following features :
 * Display of the file in hexadecimal (or plain text) with the possibility to modify the content (in hexadecimal only).
 * Saving the file on the smartphone/tablet.
 
-## Screeshots
-
-Main Screen
-
-![Main scren](screenshots/1.jpg)
-
-Modification
-
-![Line update](screenshots/2.jpg)
-
 
 ## Instructions
 
