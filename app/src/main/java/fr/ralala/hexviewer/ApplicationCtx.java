@@ -15,7 +15,6 @@ import fr.ralala.hexviewer.utils.Payload;
  */
 public class ApplicationCtx extends Application {
   private final Payload mPayload;
-  private String mFilename = null;
   private boolean mPlainText = false;
 
 
@@ -50,22 +49,6 @@ public class ApplicationCtx extends Application {
    */
   public Payload getPayload() {
     return mPayload;
-  }
-
-  /**
-   * Returns the filename of the file to export.
-   * @return String
-   */
-  public String getFilename() {
-    return mFilename;
-  }
-
-  /**
-   * Sets the filename of the to export.
-   * @param filename The new filename
-   */
-  public void setFilename(final String filename) {
-    mFilename = filename;
   }
 
 }

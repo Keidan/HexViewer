@@ -3,13 +3,6 @@
     <string name="action_open_title">Open</string>
     <string name="action_plain_text_title">Plain text</string>
     <string name="action_save_title">Save</string>
-    <string name="label_file_name">File name:</string>
-    <string name="cancel">Cancel</string>
-    <string name="chooser_save_name">Save</string>
-    <string name="chooser_save_message">Use this folder</string>
-    <string name="chooser_open_name">Open</string>
-    <string name="chooser_open_message">Use this file</string>
-    <string name="chooser_long_press_message">Long press to select the file or the directory.</string>
     <string name="loading">Loading&#8230;</string>
     <string name="on_double_back_exit_text">Press once again to exit!</string>
     <string name="update">Update</string>
@@ -17,6 +10,11 @@
     <string name="error_not_supported_in_plain_text">Operation not supported during plain text display</string>
     <string name="error_entry_format">Invalid entry format!</string>
     <string name="error_filename">Invalid file name!</string>
-    <string name="confirm_overwrite">The file exists are you sure you want to overwrite it?</string>
     <string name="save_success">Save success.</string>
+    <string name="confirm_overwrite">The file exists are you sure you want to overwrite it?</string>
+    <string name="open_a_file_before">Open a file before!</string>
+    <string name="file_manager_keyword">File manager</string>
+    <string name="select_file_to_open">Select a file to open.</string>
+    <string name="error_no_file_manager">Please install a File Manager.</string>
+    <string name="install">INSTALL</string>
 </resources>

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- file_view.xml -->
-    <dimen name="file_view_padding">10dp</dimen>
-    <dimen name="file_view_icon_paddingEnd">10dp</dimen>
-    <dimen name="file_view_icon_paddingStart">0dp</dimen>
     <!-- listview_item.xml -->
     <dimen name="listview_item_rl_padding">10dp</dimen>
     <dimen name="listview_item_info_textSize">12sp</dimen>

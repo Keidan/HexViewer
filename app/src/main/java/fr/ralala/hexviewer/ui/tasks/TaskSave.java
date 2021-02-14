@@ -4,6 +4,7 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,7 +23,7 @@ import fr.ralala.hexviewer.utils.Payload;
  *
  *******************************************************************************
  */
-public class TaskSave extends ProgressTask<Void, Void, Void> {
+public class TaskSave extends ProgressTask<File, Void, Void> {
   private OutputStream mOutputStream = null;
 
   public TaskSave(final Activity activity) {
@@ -65,15 +66,15 @@ public class TaskSave extends ProgressTask<Void, Void, Void> {
 
   /**
    * Called after the execution of the process.
-   * @param empty The result.
+   * @param files The files.
    */
   @Override
-  protected Void doInBackground(final Void... empty) {
+  protected Void doInBackground(final File... files) {
     Activity activity = mActivityRef.get();
     final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
     Payload payload = app.getPayload();
     try {
-      mOutputStream = new FileOutputStream(app.getFilename());
+      mOutputStream = new FileOutputStream(files[0]);
       mOutputStream.write(payload.to());
       mOutputStream.flush();
     } catch (final Exception e) {

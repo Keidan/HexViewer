@@ -37,9 +37,6 @@
                 <data android:mimeType="*/*" android:host="*" />
             </intent-filter>
         </activity>
-        <activity
-            android:configChanges="orientation|screenSize"
-            android:name=".ui.activities.FileChooserActivity" />
 
     </application>
 </manifest>

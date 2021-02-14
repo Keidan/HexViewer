@@ -83,7 +83,7 @@ public class ListArrayAdapter extends ArrayAdapter<String> {
       final ApplicationCtx app = (ApplicationCtx) mContext.getApplicationContext();
       String s;
       if(app.isPlainText()) {
-        char array [] = Helper.extractString(string).replaceAll(" ", "").toCharArray();
+        char[] array = Helper.extractString(string).replaceAll(" ", "").toCharArray();
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < array.length; i+=2) {
           sb.append((char)Integer.parseInt("" + array[i] + array[i + 1], 16));

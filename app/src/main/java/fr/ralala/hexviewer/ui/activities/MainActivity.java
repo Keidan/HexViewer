@@ -1,10 +1,12 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Process;
+import android.provider.DocumentsContract;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,22 +14,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.FilePath;
 import fr.ralala.hexviewer.utils.Helper;
 import fr.ralala.hexviewer.ui.adapters.ListArrayAdapter;
 
@@ -41,21 +43,25 @@ import fr.ralala.hexviewer.ui.adapters.ListArrayAdapter;
  *******************************************************************************
  */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+  private static final int FILE_OPEN_CODE = 101;
+  private static final int FILE_SAVE_CODE = 102;
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
   private ListArrayAdapter mAdapter = null;
-  private final ViewGroup mNullParent = null;
+  private LinearLayout mMainLayout = null;
+  private String mFile = "";
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
-    UIHelper.openTransition(this);
     super.onCreate(savedInstanceState);
-    String path = null;
+    Uri uri = null;
     if (getIntent() != null && getIntent().getData() != null)
-      path = getIntent().getData().getEncodedPath();
+      uri = getIntent().getData();
 
     setContentView(R.layout.activity_main);
+
+    mMainLayout = findViewById(R.id.mainLayout);
 
     final ListView payloadLV = findViewById(R.id.payloadView);
     mAdapter = new ListArrayAdapter(this, new ArrayList<>());
@@ -63,10 +69,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     payloadLV.setOnItemLongClickListener(this);
 
     mApp = (ApplicationCtx) getApplication();
-    if (path != null) {
-      mApp.setFilename(Helper.basename(path));
+    if (uri != null) {
+      File f = new File(Objects.requireNonNull(uri.getPath()));
+      mFile = Helper.basename(f.getName());
       final TaskOpen to = new TaskOpen(this, mAdapter);
-      to.execute(getIntent().getData());
+      to.execute(uri);
     }
 
     /* permissions */
@@ -85,43 +92,47 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   protected void onActivityResult(final int requestCode, final int resultCode,
                                   final Intent data) {
-    // Check which request we're responding to
-    if (requestCode == FileChooserActivity.FILECHOOSER_SELECTION_TYPE_FILE) {
-      if (resultCode == RESULT_OK) {
-        mApp.setFilename(data
-            .getStringExtra(FileChooserActivity.FILECHOOSER_SELECTION_KEY));
-        new TaskOpen(this, mAdapter).execute();
-      }
-    } else if (requestCode == FileChooserActivity.FILECHOOSER_SELECTION_TYPE_DIRECTORY) {
-      if (resultCode == RESULT_OK) {
-        final String rootDir = data.getStringExtra(FileChooserActivity.FILECHOOSER_SELECTION_KEY);
-
-
-        createTextDialog(getString(R.string.chooser_save_name), R.layout.content_dialog_update, Helper.basename(mApp.getFilename()), (dialog, content) -> {
-          final String file = content.getText().toString();
-          if (file.trim().isEmpty()) {
-            UIHelper.shakeError(content, getString(R.string.error_filename));
-            return ;
-          }
-          String path = "" + rootDir;
-          if (!path.endsWith("/")) path += "/";
-          path += file;
-          final String dir = path;
-          if (new File(path).exists()) {
-            UIHelper.showConfirmDialog(this, getString(R.string.chooser_save_name),
-              getString(R.string.confirm_overwrite),
-              (view) -> {
-                mApp.setFilename(dir);
-                new TaskSave(this).execute((Void [])null);
-              });
+    switch (requestCode) {
+      case FILE_OPEN_CODE:
+        if (resultCode == RESULT_OK) {
+          Uri uri = data.getData();
+          if(uri != null && uri.getPath() != null) {
+            File file = new File(uri.getPath());
+            mFile = file.getName();
+            new TaskOpen(this, mAdapter).execute(uri);
           } else {
-            mApp.setFilename(dir);
-            new TaskSave(this).execute((Void [])null);
+            UIHelper.toast(this, getString(R.string.error_filename));
           }
-          dialog.dismiss();
-        });
-      }
+        }
+        break;
+      case FILE_SAVE_CODE:
+        if (resultCode == RESULT_OK) {
+          Uri uri = data.getData();
+          Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+              DocumentsContract.getTreeDocumentId(uri));
+          final String rootDir = FilePath.getPath(this, docUri);
+
+          createTextDialog(getString(R.string.action_save_title), mFile, (dialog, content) -> {
+            final String file = content.getText().toString();
+            if (file.trim().isEmpty()) {
+              UIHelper.shakeError(content, getString(R.string.error_filename));
+              return ;
+            }
+            final File filepath = new File(rootDir, mFile);
+            if (filepath.exists()) {
+              UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
+                  getString(R.string.confirm_overwrite),
+                  (view) -> new TaskSave(this).execute(filepath));
+            } else {
+              new TaskSave(this).execute(filepath);
+            }
+            dialog.dismiss();
+          });
+        }
+
+        break;
     }
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   /**
@@ -144,39 +155,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_open) {
-      Map<String, String> extra = new HashMap<>();
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_TYPE_KEY, "" + AbstractFileChooserActivity.FILECHOOSER_TYPE_FILE_ONLY);
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_TITLE_KEY, getString(R.string.chooser_open_name));
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_MESSAGE_KEY, getString(R.string.chooser_open_message) + ":? ");
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_DEFAULT_DIR, Environment
-          .getExternalStorageDirectory().getAbsolutePath());
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_SHOW_KEY, "" + AbstractFileChooserActivity.FILECHOOSER_SHOW_FILE_AND_DIRECTORY);
-      Helper.switchToForResult(this, FileChooserActivity.class, extra, FileChooserActivity.FILECHOOSER_SELECTION_TYPE_FILE);
-      return true;
-    }if (id == R.id.action_plain_text) {
-      if(item.isChecked()) {
-        /* to hex */
-        mApp.setPlainText(false);
-        mAdapter.notifyDataSetChanged();
-      } else {
-        /* to plain */
-        mApp.setPlainText(true);
-        mAdapter.notifyDataSetChanged();
+      Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+      intent.setType("*/*");
+      intent.addCategory(Intent.CATEGORY_OPENABLE);
+      try {
+        startActivityForResult(
+            Intent.createChooser(intent, getString(R.string.select_file_to_open)), FILE_OPEN_CODE);
+      } catch (android.content.ActivityNotFoundException ex) {
+        Snackbar customSnackBar = Snackbar.make(mMainLayout, getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG );
+        customSnackBar.setAction(getString(R.string.install), (v) -> {
+          final String search = getString(R.string.file_manager_keyword);
+          try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=" + search + "&c=apps")));
+          } catch (android.content.ActivityNotFoundException ignore) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=" + search + "&c=apps")));
+          }
+        });
+        customSnackBar.show();
       }
-      item.setChecked(!item.isChecked());
       return true;
     } else if (id == R.id.action_save) {
-      if (mApp.getFilename() == null) {
-        UIHelper.toast(this, "Open a file before!");
+      if (mFile == null || mFile.isEmpty()) {
+        UIHelper.toast(this, getString(R.string.open_a_file_before));
         return true;
       }
-      Map<String, String> extra = new HashMap<>();
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_TYPE_KEY, "" + AbstractFileChooserActivity.FILECHOOSER_TYPE_DIRECTORY_ONLY);
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_TITLE_KEY, getString(R.string.chooser_save_name));
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_MESSAGE_KEY, getString(R.string.chooser_save_message) + ":? ");
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_DEFAULT_DIR, Environment.getExternalStorageDirectory().getAbsolutePath());
-      extra.put(AbstractFileChooserActivity.FILECHOOSER_SHOW_KEY, "" + AbstractFileChooserActivity.FILECHOOSER_SHOW_DIRECTORY_ONLY);
-      Helper.switchToForResult(this, FileChooserActivity.class, extra, FileChooserActivity.FILECHOOSER_SELECTION_TYPE_DIRECTORY);
+      /* Here the FileManager should already be installed */
+      Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+      intent.addCategory(Intent.CATEGORY_DEFAULT);
+      startActivityForResult(intent, FILE_SAVE_CODE);
+      return true;
+    } else if (id == R.id.action_plain_text) {
+      /* to hex */
+      /* to plain */
+      mApp.setPlainText(!item.isChecked());
+      mAdapter.notifyDataSetChanged();
+      item.setChecked(!item.isChecked());
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -203,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
     final String hex = Helper.extractString(string);
 
-    createTextDialog(getString(R.string.update), R.layout.content_dialog_update, hex, (dialog, content) -> {
+    createTextDialog(getString(R.string.update), hex, (dialog, content) -> {
       final String validate = content.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
       if (!validate.matches("\\p{XDigit}+") || !(validate.length() % 2 == 0) || validate.length() > (Helper.MAX_BY_ROW * 2)) {
         UIHelper.shakeError(content, getString(R.string.error_entry_format));
@@ -224,9 +237,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onBackPressed() {
     if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-      UIHelper.closeTransition(this);
       super.onBackPressed();
-      Process.killProcess(android.os.Process.myPid());
+      finish();
       return;
     } else {
       UIHelper.toast(this, getString(R.string.on_double_back_exit_text));
@@ -239,7 +251,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     void onClick(AlertDialog dialog, EditText editText);
   }
 
-  private void createTextDialog(String title, int contentId, String defaultValue, DialogPositiveClick positiveClick) {
+  @SuppressLint("InflateParams")
+  private void createTextDialog(String title, String defaultValue, DialogPositiveClick positiveClick) {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setCancelable(false)
         .setIcon(R.mipmap.ic_launcher)
@@ -247,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         .setPositiveButton(android.R.string.yes, null)
         .setNegativeButton(android.R.string.no, (dialog, whichButton) -> { });
     LayoutInflater factory = LayoutInflater.from(this);
-    builder.setView(factory.inflate(contentId, mNullParent));
+    builder.setView(factory.inflate(R.layout.content_dialog_update, null));
     final AlertDialog dialog = builder.create();
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);

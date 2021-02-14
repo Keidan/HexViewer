@@ -11,6 +11,4 @@
     <color name="colorButtonNormal">#FF424242</color>
     <color name="colorBackground">#FF424242</color>
     <color name="colorControlNormal">#FFC5C5C5</color>
-    <color name="listview_item_info">#bcb8b8</color>
-    <color name="file_view_data">#c5c5c5</color>
 </resources>

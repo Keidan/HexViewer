@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 
@@ -29,8 +28,7 @@ public abstract class ProgressTask<Params, Progress, Result> extends AsyncTask<P
     Activity a = mActivityRef.get();
     mDialog = new AlertDialog.Builder(a).create();
     mDialog.setCancelable(true);
-    final ViewGroup nullParent = null;
-    View v = a.getLayoutInflater().inflate(R.layout.progress_dialog, nullParent);
+    View v = a.getLayoutInflater().inflate(R.layout.progress_dialog, null);
     mDialog.setView(v);
     mDialog.setOnCancelListener((dialog) -> cancel(true));
   }

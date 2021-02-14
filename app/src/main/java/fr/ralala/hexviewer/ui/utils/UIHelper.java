@@ -1,6 +1,5 @@
 package fr.ralala.hexviewer.ui.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -46,40 +45,6 @@ public class UIHelper {
   }
 
   /**
-   * Starts open transition.
-   * @param a Activity.
-   */
-  public static void openTransition(Activity a) {
-    a.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-  }
-
-  /**
-   * Starts close transition.
-   * @param a Activity.
-   */
-  public static void closeTransition(Activity a) {
-    a.overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-  }
-  /**
-   * Displays a progress dialog.
-   * @param context The Android context.
-   * @param message The progress message.
-   * @return AlertDialog
-   */
-  public static AlertDialog showProgressDialog(Context context, int message) {
-    LayoutInflater layoutInflater = LayoutInflater.from(context);
-    final ViewGroup nullParent = null;
-    View view = layoutInflater.inflate(R.layout.progress_dialog, nullParent);
-    AlertDialog progress = new AlertDialog.Builder(context).create();
-    TextView tv = view.findViewById(R.id.text);
-    tv.setText(message);
-    progress.setCancelable(false);
-    progress.setView(view);
-    return progress;
-  }
-
-
-  /**
    * Displays a confirm dialog.
    * @param c The Android context.
    * @param title The dialog title.
@@ -121,12 +86,4 @@ public class UIHelper {
     toast.show();
   }
 
-  /**
-   * Displays a long toast.
-   * @param c The Android context.
-   * @param message The toast message.
-   */
-  public static void toastLong(final Context c, final int message) {
-    toast(c, c.getString(message));
-  }
 }

@@ -1,12 +1,7 @@
 package fr.ralala.hexviewer.utils;
 
-import android.app.Activity;
-import android.content.Intent;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  *******************************************************************************
@@ -103,20 +98,4 @@ public class Helper {
     return lines;
   }
 
-
-  /**
-   * Starts an activity for result.
-   * @param activity The owner activity.
-   * @param c The class of the activity to starts.
-   * @param extra The extra information.
-   * @param requestCode The request code (used for result).
-   */
-  public static void switchToForResult(final Activity activity, final Class<?> c, final Map<String, String> extra, final int requestCode) {
-    final Intent i = new Intent(activity.getApplicationContext(), c);
-    if (extra != null) {
-      Set<String> keysSet = extra.keySet();
-      keysSet.forEach((key) -> i.putExtra(key, extra.get(key)));
-    }
-    activity.startActivityForResult(i, requestCode);
-  }
 }

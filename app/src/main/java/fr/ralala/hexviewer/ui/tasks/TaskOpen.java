@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -24,7 +23,7 @@ import fr.ralala.hexviewer.utils.Payload;
  *
  *******************************************************************************
  */
-public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
+public class TaskOpen extends ProgressTask<Uri, Long, List<String>> {
   private final ArrayAdapter<String> mAdapter;
   private InputStream mInputStream = null;
 
@@ -78,17 +77,14 @@ public class TaskOpen extends ProgressTask<Uri, Void, List<String>> {
 
   /**
    * Called after the execution of the process.
-   * @param uris The result.
+   * @param values The params.
    */
   @Override
-  protected List<String> doInBackground(final Uri... uris) {
+  protected List<String> doInBackground(Uri... values) {
     final Activity activity = mActivityRef.get();
     try {
       final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
-      if (uris.length != 0 && uris[0] != null)
-        mInputStream = activity.getContentResolver().openInputStream(uris[0]);
-      else
-        mInputStream = new FileInputStream(app.getFilename());
+      mInputStream = activity.getContentResolver().openInputStream(values[0]);
       if(mInputStream != null) {
         Payload payload = app.getPayload();
         payload.clear();
