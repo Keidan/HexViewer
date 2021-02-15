@@ -1,0 +1,3 @@
+Fixed INSTALL_FAILED_TEST_ONLY error when installing via ADB.
+Support for plain text display.
+Code optimization.
