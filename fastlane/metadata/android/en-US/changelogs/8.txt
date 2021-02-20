@@ -1,0 +1,2 @@
+Fixed a regression that allowed editing in plain text mode.
+Description update.
