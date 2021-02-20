@@ -3,5 +3,8 @@ This application offers the following features :
 - Opening all files without a corresponding Android application.
 - Display of the file in hexadecimal (or plain text) with the possibility to modify the content (in hexadecimal only).
 - Saving the file on the smartphone/tablet.
+- Search option in the open file (hexadecimal and plain text modes).
+
+Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices.
 
 This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.

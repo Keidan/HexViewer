@@ -367,6 +367,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     String string = mAdapter.getItem(position);
     if (string == null)
       return false;
+    if(mPayloadPlain.getVisibility() == View.VISIBLE) {
+      UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
+      return false;
+    }
 
     final String hex = Helper.extractString(string);
 
