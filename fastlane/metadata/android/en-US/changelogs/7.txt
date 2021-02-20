@@ -1,0 +1,5 @@
+Redesign of the display in plain text mode.
+Added a text search option.
+Added an option to close the file.
+Modification of the management of the cancellation of loads and saves.
+Code optimization.
