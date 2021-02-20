@@ -2,6 +2,8 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,68 +30,105 @@ import java.util.Objects;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.adapters.ListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FilePath;
 import fr.ralala.hexviewer.utils.Helper;
-import fr.ralala.hexviewer.ui.adapters.ListArrayAdapter;
 
 /**
- *******************************************************************************
+ * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
  * Main activity
  * </p>
- * @author Keidan
  *
- *******************************************************************************
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
  */
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener, TaskOpen.OpenResultListener {
   private static final int FILE_OPEN_CODE = 101;
   private static final int FILE_SAVE_CODE = 102;
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
   private ListArrayAdapter mAdapter = null;
+  private ListArrayAdapter mAdapterPlain = null;
   private LinearLayout mMainLayout = null;
   private String mFile = "";
+  private TextView mPleaseOpenFile = null;
+  private ListView mPayloadView = null;
+  private ListView mPayloadPlain = null;
+  private MenuItem mSearchMenu = null;
+  private MenuItem mPlainMenu = null;
+  private MenuItem mSaveMenu = null;
+  private MenuItem mCloseMenu = null;
+  private SearchView mSearchView = null;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Uri uri = null;
-    if (getIntent() != null && getIntent().getData() != null)
-      uri = getIntent().getData();
 
     setContentView(R.layout.activity_main);
 
     mMainLayout = findViewById(R.id.mainLayout);
+    mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);
+    mPayloadPlain = findViewById(R.id.payloadPlain);
+    mPayloadView = findViewById(R.id.payloadView);
 
-    final ListView payloadLV = findViewById(R.id.payloadView);
+    mPleaseOpenFile.setVisibility(View.VISIBLE);
+    mPayloadView.setVisibility(View.GONE);
+    mPayloadPlain.setVisibility(View.GONE);
+
     mAdapter = new ListArrayAdapter(this, new ArrayList<>());
-    payloadLV.setAdapter(mAdapter);
-    payloadLV.setOnItemLongClickListener(this);
+    mPayloadView.setAdapter(mAdapter);
+    mPayloadView.setOnItemLongClickListener(this);
+
+    mAdapterPlain = new ListArrayAdapter(this, new ArrayList<>());
+    mPayloadPlain.setAdapter(mAdapterPlain);
+    mPayloadPlain.setOnItemLongClickListener(this);
 
     mApp = (ApplicationCtx) getApplication();
-    if (uri != null) {
-      File f = new File(Objects.requireNonNull(uri.getPath()));
-      mFile = Helper.basename(f.getName());
-      final TaskOpen to = new TaskOpen(this, mAdapter);
-      to.execute(uri);
-    }
 
     /* permissions */
-    ActivityCompat.requestPermissions(this,new String[]{
+    ActivityCompat.requestPermissions(this, new String[]{
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
-    },1);
+    }, 1);
+
+    handleIntent(getIntent());
+  }
+
+  /**
+   * Handles activity intents.
+   *
+   * @param intent The intent.
+   */
+  private void handleIntent(Intent intent) {
+    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+      String query = intent.getStringExtra(SearchManager.QUERY);
+      doSearch(query);
+    } else {
+      if (intent.getData() != null) {
+        Uri uri = getIntent().getData();
+
+        if (uri != null) {
+          File f = new File(Objects.requireNonNull(uri.getPath()));
+          mFile = Helper.basename(f.getName());
+          final TaskOpen to = new TaskOpen(this, mAdapter, mAdapterPlain, this);
+          to.execute(uri);
+        }
+      }
+    }
   }
 
   /**
    * Called when the activity getsa result after a call to the startActivityForResult method.
+   *
    * @param requestCode The request code.
-   * @param resultCode The result code.
-   * @param data The result data.
+   * @param resultCode  The result code.
+   * @param data        The result data.
    */
   @Override
   protected void onActivityResult(final int requestCode, final int resultCode,
@@ -96,10 +137,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       case FILE_OPEN_CODE:
         if (resultCode == RESULT_OK) {
           Uri uri = data.getData();
-          if(uri != null && uri.getPath() != null) {
+          if (uri != null && uri.getPath() != null) {
             File file = new File(uri.getPath());
             mFile = file.getName();
-            new TaskOpen(this, mAdapter).execute(uri);
+            new TaskOpen(this, mAdapter, mAdapterPlain, this).execute(uri);
           } else {
             UIHelper.toast(this, getString(R.string.error_filename));
           }
@@ -116,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             final String file = content.getText().toString();
             if (file.trim().isEmpty()) {
               UIHelper.shakeError(content, getString(R.string.error_filename));
-              return ;
+              return;
             }
             final File filepath = new File(rootDir, mFile);
             if (filepath.exists()) {
@@ -137,17 +178,98 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Called to create the option menu.
+   *
    * @param menu The main menu.
    * @return boolean
    */
   @Override
   public boolean onCreateOptionsMenu(final Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
+    mSearchMenu = menu.findItem(R.id.action_search);
+    mPlainMenu = menu.findItem(R.id.action_plain_text);
+    mSaveMenu = menu.findItem(R.id.action_save);
+    mCloseMenu = menu.findItem(R.id.action_close);
+
+    onOpenResult(false);
+
+    // Searchable configuration
+    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    if(searchManager != null) {
+      mSearchView = (SearchView) mSearchMenu.getActionView();
+      mSearchView.setSearchableInfo(searchManager
+          .getSearchableInfo(getComponentName()));
+      mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+          return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+          doSearch(s);
+          return true;
+        }
+      });
+    }
     return true;
   }
 
   /**
+   * This is called for activities that set launchMode to "singleTop" in their package,
+   * or if a client used the Intent#FLAG_ACTIVITY_SINGLE_TOP flag when calling startActivity(Intent).
+   *
+   * @param intent The new intent that was started for the activity.
+   */
+  @Override
+  public void onNewIntent(Intent intent) {
+    setIntent(intent);
+    handleIntent(intent);
+  }
+
+  /**
+   * Performs the research.
+   *
+   * @param queryStr The query string.
+   */
+  private void doSearch(String queryStr) {
+    final ListArrayAdapter laa = ((mPayloadPlain.getVisibility() == View.VISIBLE) ? mAdapterPlain : mAdapter);
+    if(queryStr.isEmpty())
+      laa.clearFilter();
+    else
+      laa.filter(queryStr);
+  }
+
+  /**
+   * Method called when the file is opened.
+   * @param success The result.
+   */
+  @Override
+  public void onOpenResult(boolean success) {
+    boolean checked = false;
+    if(mSearchMenu != null)
+      mSearchMenu.setVisible(success);
+    if(mPlainMenu != null) {
+      checked = mPlainMenu.isChecked();
+      mPlainMenu.setEnabled(success);
+    }
+    if(mSaveMenu != null)
+      mSaveMenu.setEnabled(success);
+    if(mCloseMenu != null)
+      mCloseMenu.setEnabled(success);
+    if(success) {
+      mPleaseOpenFile.setVisibility(View.GONE);
+      mPayloadView.setVisibility(checked ? View.GONE : View.VISIBLE);
+      mPayloadPlain.setVisibility(checked ? View.VISIBLE : View.GONE);
+    } else {
+      mPleaseOpenFile.setVisibility(View.VISIBLE);
+      mPayloadView.setVisibility(View.GONE);
+      mPayloadPlain.setVisibility(View.GONE);
+    }
+  }
+
+  /**
    * Called when the user select an option menu item.
+   *
    * @param item The selected item.
    * @return boolean
    */
@@ -162,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivityForResult(
             Intent.createChooser(intent, getString(R.string.select_file_to_open)), FILE_OPEN_CODE);
       } catch (android.content.ActivityNotFoundException ex) {
-        Snackbar customSnackBar = Snackbar.make(mMainLayout, getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG );
+        Snackbar customSnackBar = Snackbar.make(mMainLayout, getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG);
         customSnackBar.setAction(getString(R.string.install), (v) -> {
           final String search = getString(R.string.file_manager_keyword);
           try {
@@ -187,33 +309,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_plain_text) {
       /* to hex */
       /* to plain */
-      mApp.setPlainText(!item.isChecked());
-      mAdapter.notifyDataSetChanged();
-      item.setChecked(!item.isChecked());
+      boolean checked = !item.isChecked();
+      mPayloadPlain.setVisibility(checked ? View.VISIBLE : View.GONE);
+      mPayloadView.setVisibility(checked ? View.GONE : View.VISIBLE);
+      item.setChecked(checked);
       return true;
+    } else if(id == R.id.action_close) {
+      onOpenResult(false);
+      mAdapterPlain.clear();
+      mAdapter.clear();
+      if(mSearchView != null) {
+        if (!mSearchView.isIconified())
+          mSearchView.setIconified(true);
+      }
     }
     return super.onOptionsItemSelected(item);
   }
 
   /**
    * Called when the used perform a long press on a listview item.
-   * @param parent The adapter view.
-   * @param view The current view
+   *
+   * @param parent   The adapter view.
+   * @param view     The current view
    * @param position The position
-   * @param id The id.
+   * @param id       The id.
    * @return boolean
    */
   @Override
   public boolean onItemLongClick(final AdapterView<?> parent, final View view,
                                  final int position, final long id) {
     String string = mAdapter.getItem(position);
-    if(string == null)
+    if (string == null)
       return false;
 
-    if(mApp.isPlainText()) {
-      UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
-      return false;
-    }
     final String hex = Helper.extractString(string);
 
     createTextDialog(getString(R.string.update), hex, (dialog, content) -> {
@@ -225,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       final byte[] buf = Helper.hexStringToByteArray(validate);
       final int pos = (position * Helper.MAX_BY_ROW);
       mApp.getPayload().update(pos, buf);
-      mAdapter.setItem(position, Helper.formatBuffer(buf).get(0));
+      mAdapter.setItem(position, Helper.formatBuffer(buf, null).get(0));
       dialog.dismiss();
     });
     return false;
@@ -236,14 +364,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onBackPressed() {
-    if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-      super.onBackPressed();
-      finish();
-      return;
+    if (mSearchView != null && !mSearchView.isIconified()) {
+      mSearchView.setIconified(true);
     } else {
-      UIHelper.toast(this, getString(R.string.on_double_back_exit_text));
+      if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
+        super.onBackPressed();
+        finish();
+        return;
+      } else {
+        UIHelper.toast(this, getString(R.string.on_double_back_exit_text));
+      }
+      mLastBackPressed = System.currentTimeMillis();
     }
-    mLastBackPressed = System.currentTimeMillis();
   }
 
 
@@ -258,13 +390,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         .setIcon(R.mipmap.ic_launcher)
         .setTitle(title)
         .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> { });
+        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        });
     LayoutInflater factory = LayoutInflater.from(this);
     builder.setView(factory.inflate(R.layout.content_dialog_update, null));
     final AlertDialog dialog = builder.create();
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);
-    if(et != null)
+    if (et != null)
       et.setText(defaultValue);
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et));
   }

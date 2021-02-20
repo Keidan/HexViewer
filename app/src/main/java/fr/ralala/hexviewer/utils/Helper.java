@@ -1,22 +1,32 @@
 package fr.ralala.hexviewer.utils;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- *******************************************************************************
+ * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
  * Helper functions.
  * </p>
- * @author Keidan
  *
- *******************************************************************************
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
  */
 public class Helper {
+  private static final float SIZE_1KB = 0x400;
+  private static final float SIZE_1MB = 0x100000;
+  private static final float SIZE_1GB = 0x40000000;
   public static final int MAX_BY_ROW = 16;
+  public static final int MAX_BY_LINE = ((MAX_BY_ROW * 2) + MAX_BY_ROW) + 19; /* 19 = nb spaces */
 
   /**
    * Returns the base name of a path.
+   *
    * @param path The path.
    * @return String.
    */
@@ -30,6 +40,7 @@ public class Helper {
 
   /**
    * Converts hex string to byte array.
+   *
    * @param s The hex string.
    * @return byte []
    */
@@ -45,6 +56,7 @@ public class Helper {
 
   /**
    * Extract the hexadecimal part of a string formatted with the formatBuffer function.
+   *
    * @param string The hex string.
    * @return String
    */
@@ -54,17 +66,41 @@ public class Helper {
 
   /**
    * Formats a buffer (wireshark like).
+   *
    * @param buffer The input buffer.
+   * @param cancel Used to cancel this method.
    * @return List<String>
    */
-  public static List<String> formatBuffer(final byte[] buffer) {
+  public static List<String> formatBuffer(final byte[] buffer, AtomicBoolean cancel) {
+    List<String> lines;
+    try {
+      lines = formatBuffer(buffer, buffer.length, cancel);
+    } catch (IllegalArgumentException iae) {
+      lines =  new ArrayList<>();
+    }
+    return lines;
+  }
+
+  /**
+   * Formats a buffer (wireshark like).
+   *
+   * @param buffer The input buffer.
+   * @param length The input buffer length.
+   * @param cancel Used to cancel this method.
+   * @return List<String>
+   */
+  public static List<String> formatBuffer(final byte[] buffer, final int length, AtomicBoolean cancel) throws IllegalArgumentException {
     final int max = MAX_BY_ROW;
-    int length = buffer.length;
+    int len = length;
+    if(len > buffer.length)
+      throw new IllegalArgumentException("length > buffer.length");
     StringBuilder line = new StringBuilder();
     StringBuilder eline = new StringBuilder();
     final List<String> lines = new ArrayList<>();
     int i = 0, j = 0;
-    while (length > 0) {
+    while (len > 0) {
+      if(cancel != null && cancel.get())
+        break;
       final byte c = buffer[j++];
       line.append(String.format("%02x ", c));
       /* only the visibles char */
@@ -84,8 +120,10 @@ public class Helper {
         line.append(" ");
         eline.append(" ");
       }
-      length--;
+      len--;
     }
+    if(cancel != null && cancel.get())
+      return lines;
     /* align 'line' */
     if (i != 0 && (i < max || i <= line.length())) {
       StringBuilder off = new StringBuilder();
@@ -98,4 +136,23 @@ public class Helper {
     return lines;
   }
 
+  /**
+   * Converts a size into a humanly understandable string.
+   * @param f The size.
+   * @return The String.
+   */
+  public static String sizeToHuman(float f) {
+    DecimalFormat df= new DecimalFormat("#.##");
+    df.setRoundingMode(RoundingMode.FLOOR);
+    String sf;
+    if (f < 1000) {
+      sf = String.format(Locale.US, "%d o", (int) f);
+    } else if (f < 1000000)
+      sf = df.format((f / SIZE_1KB))  + " Ko";
+    else if (f < 1000000000)
+      sf = df.format((f / SIZE_1MB))  + " Mo";
+    else
+      sf = df.format((f / SIZE_1GB))  + " Go";
+    return sf;
+  }
 }

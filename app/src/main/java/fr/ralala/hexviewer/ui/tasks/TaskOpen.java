@@ -1,35 +1,59 @@
 package fr.ralala.hexviewer.ui.tasks;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.Helper;
 import fr.ralala.hexviewer.utils.Payload;
 
 /**
- *******************************************************************************
+ * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
  * Task used to open a file.
  * </p>
- * @author Keidan
  *
- *******************************************************************************
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
  */
-public class TaskOpen extends ProgressTask<Uri, Long, List<String>> {
+public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
+  private static final String TAG = TaskOpen.class.getSimpleName();
+  private static final int MAX_LENGTH = Helper.MAX_BY_ROW * 10000;
   private final ArrayAdapter<String> mAdapter;
+  private final ArrayAdapter<String> mAdapterPlain;
+  private final OpenResultListener mListener;
   private InputStream mInputStream = null;
 
-  public TaskOpen(final Activity activity, final ArrayAdapter<String> adapter) {
-    super(activity);
+  public static class Result {
+    List<String> list = null;
+    List<String> listPlain = null;
+    String exception = null;
+  }
+
+  public interface OpenResultListener {
+    void onOpenResult(boolean success);
+  }
+
+  public TaskOpen(final Activity activity,
+                  final ArrayAdapter<String> adapter,
+                  final ArrayAdapter<String> adapterPlain,
+                  final OpenResultListener listener) {
+    super(activity, true);
     mAdapter = adapter;
+    mAdapterPlain = adapterPlain;
+    mListener = listener;
   }
 
   /**
@@ -38,17 +62,30 @@ public class TaskOpen extends ProgressTask<Uri, Long, List<String>> {
   @Override
   protected void onPreExecute() {
     super.onPreExecute();
+    mAdapterPlain.clear();
     mAdapter.clear();
   }
 
   /**
    * Called after the execution of the task.
+   *
    * @param result The result.
    */
   @Override
-  protected void onPostExecute(final List<String> result) {
-    if(result != null)
-      mAdapter.addAll(result);
+  protected void onPostExecute(final Result result) {
+    Activity a = mActivityRef.get();
+    if(mCancel.get())
+      UIHelper.toast(a, a.getString(R.string.operation_canceled));
+    else if(result.exception != null)
+      UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
+    else {
+      if (result.list != null)
+        mAdapter.addAll(result.list);
+      if (result.listPlain != null)
+        mAdapterPlain.addAll(result.listPlain);
+    }
+    if(mListener != null)
+      mListener.onOpenResult(result.exception == null && !mCancel.get());
     super.onPostExecute(result);
   }
 
@@ -60,7 +97,7 @@ public class TaskOpen extends ProgressTask<Uri, Long, List<String>> {
       try {
         mInputStream.close();
       } catch (final IOException e) {
-        Log.e(this.getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
+        Log.e(TAG, "Exception: " + e.getMessage(), e);
       }
       mInputStream = null;
     }
@@ -77,30 +114,79 @@ public class TaskOpen extends ProgressTask<Uri, Long, List<String>> {
 
   /**
    * Called after the execution of the process.
+   *
    * @param values The params.
    */
   @Override
-  protected List<String> doInBackground(Uri... values) {
+  protected Result doInBackground(Uri... values) {
     final Activity activity = mActivityRef.get();
+    Result result = new Result();
+    List<String> list = new ArrayList<>();
     try {
       final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
-      mInputStream = activity.getContentResolver().openInputStream(values[0]);
-      if(mInputStream != null) {
+      Uri uri = values[0];
+      /* Size + stream */
+      ContentResolver cr = activity.getContentResolver();
+      mTotalSize = getFileSize(cr, uri);
+      publishProgress(0L);
+      mInputStream = cr.openInputStream(uri);
+      if (mInputStream != null) {
+        /* cleanup */
         Payload payload = app.getPayload();
         payload.clear();
-        final byte[] data = new byte[1024*1024];
+        /* prepare buffer */
+        final byte[] data = new byte[MAX_LENGTH];
         int reads;
-        while (mRunning && (reads = mInputStream.read(data)) != -1) {
-          payload.add(data, reads);
+        /* read data */
+        while (!mCancel.get() && (reads = mInputStream.read(data)) != -1) {
+          payload.add(data, reads, mCancel);
+          try {
+            list.addAll(Helper.formatBuffer(data, reads, mCancel));
+          } catch (IllegalArgumentException iae) {
+            result.exception = iae.getMessage();
+            break;
+          }
+          publishProgress((long)reads);
         }
-        return Helper.formatBuffer(payload.to());
+        /* prepare result */
+        if(result.exception == null) {
+          result.listPlain = payload.getPlain();
+          result.list = list;
+        }
       }
     } catch (final Exception e) {
-      activity.runOnUiThread(() -> UIHelper.toast(activity, "Exception: " + e.getMessage()));
+      result.exception = e.getMessage();
     } finally {
       close();
     }
-    return null;
+    return result;
   }
 
+  /**
+   * Returns the file size.
+   * @param cr ContentResolver
+   * @param uri Uri
+   * @return long
+   */
+  private static long getFileSize(ContentResolver cr, Uri uri) {
+    ParcelFileDescriptor pfd = null;
+    long size = 0L;
+    try {
+      pfd = cr.openFileDescriptor(uri, "r");
+      if(pfd != null) {
+        size = pfd.getStatSize();
+        pfd.close();
+      }
+    } catch (IOException e) {
+      Log.e(TAG, "Exception: " + e.getMessage(), e);
+    } finally {
+      if(pfd != null)
+        try {
+          pfd.close();
+        } catch (IOException e) {
+          Log.e(TAG, "Exception: " + e.getMessage(), e);
+        }
+    }
+    return size;
+  }
 }

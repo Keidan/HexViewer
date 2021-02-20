@@ -5,17 +5,17 @@ import android.app.Application;
 import fr.ralala.hexviewer.utils.Payload;
 
 /**
- *******************************************************************************
+ * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
  * Main application context
  * </p>
- * @author Keidan
  *
- *******************************************************************************
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
  */
 public class ApplicationCtx extends Application {
   private final Payload mPayload;
-  private boolean mPlainText = false;
 
 
   /**
@@ -27,24 +27,8 @@ public class ApplicationCtx extends Application {
   }
 
   /**
-   * Sets the plain text value.
-   * @param plainText The new value.
-   */
-  public void setPlainText(boolean plainText) {
-    mPlainText = plainText;
-  }
-
-  /**
-   * Returns true if the file should be displayed in plain text and
-   * false if the file should be displayed in hexadecimal.
-   * @return boolean
-   */
-  public boolean isPlainText() {
-    return mPlainText;
-  }
-
-  /**
    * Returns the payload.
+   *
    * @return Payload
    */
   public Payload getPayload() {

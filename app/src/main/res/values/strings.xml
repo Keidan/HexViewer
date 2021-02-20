@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">HexViewer</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search&#8230;</string>
     <string name="action_open_title">Open</string>
     <string name="action_plain_text_title">Plain text</string>
     <string name="action_save_title">Save</string>
+    <string name="action_close_title">Close</string>
     <string name="loading">Loading&#8230;</string>
+    <string name="saving">Saving&#8230;</string>
+    <string name="cancel">Cancel</string>
     <string name="on_double_back_exit_text">Press once again to exit!</string>
     <string name="update">Update</string>
     <string name="update_hint">Text in hex</string>
@@ -11,10 +16,13 @@
     <string name="error_entry_format">Invalid entry format!</string>
     <string name="error_filename">Invalid file name!</string>
     <string name="save_success">Save success.</string>
+    <string name="operation_canceled">Operation cancelled</string>
+    <string name="exception">Exception</string>
     <string name="confirm_overwrite">The file exists are you sure you want to overwrite it?</string>
     <string name="open_a_file_before">Open a file before!</string>
     <string name="file_manager_keyword">File manager</string>
     <string name="select_file_to_open">Select a file to open.</string>
     <string name="error_no_file_manager">Please install a File Manager.</string>
     <string name="install">INSTALL</string>
+    <string name="please_open_file">Please open a file</string>
 </resources>

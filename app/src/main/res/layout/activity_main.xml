@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="1dp" >
+  android:id="@+id/mainLayout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:padding="1dp">
 
-    <ListView
-        android:padding="1dp"
-        android:fastScrollEnabled="true"
-        android:id="@+id/payloadView"
-        android:typeface="monospace"
-        android:textSize="12sp"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+  <TextView
+    android:id="@+id/pleaseOpenFile"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="center"
+    android:gravity="center"
+    android:text="@string/please_open_file" />
+  <ListView
+    android:id="@+id/payloadView"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fastScrollEnabled="true"
+    android:padding="1dp"
+    android:textSize="12sp"
+    android:typeface="monospace" />
+
+  <ListView
+    android:id="@+id/payloadPlain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:fastScrollEnabled="true"
+    android:padding="1dp"
+    android:textSize="12sp"
+    android:typeface="monospace" />
 
 </LinearLayout>
