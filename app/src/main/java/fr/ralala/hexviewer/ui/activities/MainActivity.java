@@ -7,11 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,18 +19,23 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.adapters.ListArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.FilePath;
 import fr.ralala.hexviewer.utils.Helper;
 
 /**
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
-  private ListArrayAdapter mAdapter = null;
-  private ListArrayAdapter mAdapterPlain = null;
+  private SearchableListArrayAdapter mAdapter = null;
+  private SearchableListArrayAdapter mAdapterPlain = null;
   private LinearLayout mMainLayout = null;
   private String mFile = "";
   private TextView mPleaseOpenFile = null;
@@ -81,11 +82,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadView.setVisibility(View.GONE);
     mPayloadPlain.setVisibility(View.GONE);
 
-    mAdapter = new ListArrayAdapter(this, new ArrayList<>());
+    mAdapter = new SearchableListArrayAdapter(this, new ArrayList<>());
     mPayloadView.setAdapter(mAdapter);
     mPayloadView.setOnItemLongClickListener(this);
 
-    mAdapterPlain = new ListArrayAdapter(this, new ArrayList<>());
+    mAdapterPlain = new SearchableListArrayAdapter(this, new ArrayList<>());
     mPayloadPlain.setAdapter(mAdapterPlain);
     mPayloadPlain.setOnItemLongClickListener(this);
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private void handleIntent(Intent intent) {
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       String query = intent.getStringExtra(SearchManager.QUERY);
-      doSearch(query);
+      doSearch(query == null ? "" : query);
     } else {
       if (intent.getData() != null) {
         Uri uri = getIntent().getData();
@@ -148,24 +149,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         break;
       case FILE_SAVE_CODE:
         if (resultCode == RESULT_OK) {
-          Uri uri = data.getData();
-          Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
-              DocumentsContract.getTreeDocumentId(uri));
-          final String rootDir = FilePath.getPath(this, docUri);
+          Uri uriDir = data.getData();
+
+          getContentResolver().takePersistableUriPermission(uriDir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
           createTextDialog(getString(R.string.action_save_title), mFile, (dialog, content) -> {
-            final String file = content.getText().toString();
-            if (file.trim().isEmpty()) {
+            final String sfile = content.getText().toString();
+            if (sfile.trim().isEmpty()) {
               UIHelper.shakeError(content, getString(R.string.error_filename));
               return;
             }
-            final File filepath = new File(rootDir, mFile);
-            if (filepath.exists()) {
+
+            DocumentFile sourceDir = DocumentFile.fromTreeUri(this, uriDir);
+            if(sourceDir == null) {
+              UIHelper.toast(this, getString(R.string.uri_exception));
+              Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uriDir + "'");
+              dialog.dismiss();
+              return;
+            }
+            DocumentFile file = null;
+            for (DocumentFile f : sourceDir.listFiles()) {
+              if(f.getName() != null && f.getName().endsWith(sfile)) {
+                file = f;
+                break;
+              }
+            }
+            final DocumentFile ffile = file;
+
+            if(file != null) {
               UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
                   getString(R.string.confirm_overwrite),
-                  (view) -> new TaskSave(this).execute(filepath));
+                  (view) -> new TaskSave(this).execute(ffile.getUri()));
             } else {
-              new TaskSave(this).execute(filepath);
+              DocumentFile dfile = sourceDir.createFile("application/octet-stream", sfile);
+              if(dfile == null) {
+                UIHelper.toast(this, getString(R.string.uri_exception));
+                Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uriDir + "'");
+              } else
+                new TaskSave(this).execute(dfile.getUri());
             }
             dialog.dismiss();
           });
@@ -222,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
     setIntent(intent);
     handleIntent(intent);
   }
@@ -232,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param queryStr The query string.
    */
   private void doSearch(String queryStr) {
-    final ListArrayAdapter laa = ((mPayloadPlain.getVisibility() == View.VISIBLE) ? mAdapterPlain : mAdapter);
+    final SearchableListArrayAdapter laa = ((mPayloadPlain.getVisibility() == View.VISIBLE) ? mAdapterPlain : mAdapter);
     if(queryStr.isEmpty())
       laa.clearFilter();
     else
@@ -279,6 +301,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (id == R.id.action_open) {
       Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
       intent.setType("*/*");
+      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
       intent.addCategory(Intent.CATEGORY_OPENABLE);
       try {
         startActivityForResult(
@@ -304,6 +328,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       /* Here the FileManager should already be installed */
       Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
       intent.addCategory(Intent.CATEGORY_DEFAULT);
+      intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+      intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
       startActivityForResult(intent, FILE_SAVE_CODE);
       return true;
     } else if (id == R.id.action_plain_text) {

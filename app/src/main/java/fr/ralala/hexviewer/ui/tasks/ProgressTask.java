@@ -2,13 +2,13 @@ package fr.ralala.hexviewer.ui.tasks;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.Helper;
 

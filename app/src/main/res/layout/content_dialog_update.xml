@@ -4,19 +4,19 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <android.support.design.widget.TextInputLayout
+  <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/tilEditText"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="50dp"
     android:padding="10dp">
 
-    <android.support.design.widget.TextInputEditText
+    <com.google.android.material.textfield.TextInputEditText
       android:id="@+id/editText"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:digits=" 0123456789abcdefABCDEF"
       android:hint="@string/update_hint"
       android:inputType="text" />
-  </android.support.design.widget.TextInputLayout>
+  </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

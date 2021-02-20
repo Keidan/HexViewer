@@ -25,4 +25,5 @@
     <string name="error_no_file_manager">Please install a File Manager.</string>
     <string name="install">INSTALL</string>
     <string name="please_open_file">Please open a file</string>
+    <string name="uri_exception">Uri exception</string>
 </resources>
