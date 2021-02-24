@@ -1,0 +1,1 @@
+Changed the icon and added a banner for F-Droid rendering.
