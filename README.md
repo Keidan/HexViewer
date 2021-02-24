@@ -1,11 +1,15 @@
 # HexViewer
-[![Build Status](https://travis-ci.com/Keidan/HexViewer.svg?branch=master)](https://travis-ci.com/Keidan/HexViewer)]
-[![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)]
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][https://github.com/Keidan/HexViewer/blob/master/license.txt]
+[![Build Status](https://travis-ci.com/Keidan/HexViewer.svg?branch=master)][travis]
+[![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
     height="75">](https://f-droid.org/packages/fr.ralala.hexviewer)
+
+[travis]: https://travis-ci.com/Keidan/HexViewer
+[releases]: https://github.com/Keidan/HexViewer/releases
+[license]: https://github.com/Keidan/HexViewer/blob/master/license.txt
 
 
 (GPL) Android Hex Viewer is a FREE software.
