@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * ******************************************************************************
  */
-public class Helper {
+public class SysHelper {
   private static final float SIZE_1KB = 0x400;
   private static final float SIZE_1MB = 0x100000;
   private static final float SIZE_1GB = 0x40000000;
@@ -97,7 +97,8 @@ public class Helper {
     StringBuilder line = new StringBuilder();
     StringBuilder eline = new StringBuilder();
     final List<String> lines = new ArrayList<>();
-    int i = 0, j = 0;
+    int i = 0;
+    int j = 0;
     while (len > 0) {
       if(cancel != null && cancel.get())
         break;

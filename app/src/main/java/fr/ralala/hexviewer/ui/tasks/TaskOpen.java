@@ -15,7 +15,7 @@ import java.util.List;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.Helper;
+import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.Payload;
 
 /**
@@ -30,16 +30,16 @@ import fr.ralala.hexviewer.utils.Payload;
  */
 public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   private static final String TAG = TaskOpen.class.getSimpleName();
-  private static final int MAX_LENGTH = Helper.MAX_BY_ROW * 10000;
+  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
   private final ArrayAdapter<String> mAdapter;
   private final ArrayAdapter<String> mAdapterPlain;
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
 
   public static class Result {
-    List<String> list = null;
-    List<String> listPlain = null;
-    String exception = null;
+    private List<String> list = null;
+    private List<String> listPlain = null;
+    private String exception = null;
   }
 
   public interface OpenResultListener {
@@ -120,19 +120,19 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   @Override
   protected Result doInBackground(Uri... values) {
     final Activity activity = mActivityRef.get();
-    Result result = new Result();
-    List<String> list = new ArrayList<>();
+    final Result result = new Result();
+    final List<String> list = new ArrayList<>();
     try {
       final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
-      Uri uri = values[0];
+      final Uri uri = values[0];
       /* Size + stream */
-      ContentResolver cr = activity.getContentResolver();
+      final ContentResolver cr = activity.getContentResolver();
       mTotalSize = getFileSize(cr, uri);
       publishProgress(0L);
       mInputStream = cr.openInputStream(uri);
       if (mInputStream != null) {
         /* cleanup */
-        Payload payload = app.getPayload();
+        final Payload payload = app.getPayload();
         payload.clear();
         /* prepare buffer */
         final byte[] data = new byte[MAX_LENGTH];
@@ -141,7 +141,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
         while (!mCancel.get() && (reads = mInputStream.read(data)) != -1) {
           payload.add(data, reads, mCancel);
           try {
-            list.addAll(Helper.formatBuffer(data, reads, mCancel));
+            list.addAll(SysHelper.formatBuffer(data, reads, mCancel));
           } catch (IllegalArgumentException iae) {
             result.exception = iae.getMessage();
             break;

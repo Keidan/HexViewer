@@ -36,7 +36,7 @@ import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.Helper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (uri != null) {
           File f = new File(Objects.requireNonNull(uri.getPath()));
-          mFile = Helper.basename(f.getName());
+          mFile = SysHelper.basename(f.getName());
           final TaskOpen to = new TaskOpen(this, mAdapter, mAdapterPlain, this);
           to.execute(uri);
         }
@@ -191,7 +191,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             dialog.dismiss();
           });
         }
-
+        break;
+      default:
         break;
     }
     super.onActivityResult(requestCode, resultCode, data);
@@ -344,9 +345,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       onOpenResult(false);
       mAdapterPlain.clear();
       mAdapter.clear();
-      if(mSearchView != null) {
-        if (!mSearchView.isIconified())
-          mSearchView.setIconified(true);
+      if(mSearchView != null && !mSearchView.isIconified()) {
+        mSearchView.setIconified(true);
       }
     }
     return super.onOptionsItemSelected(item);
@@ -372,18 +372,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return false;
     }
 
-    final String hex = Helper.extractString(string);
+    final String hex = SysHelper.extractString(string);
 
     createTextDialog(getString(R.string.update), hex, (dialog, content) -> {
       final String validate = content.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-      if (!validate.matches("\\p{XDigit}+") || !(validate.length() % 2 == 0) || validate.length() > (Helper.MAX_BY_ROW * 2)) {
+      if (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
         UIHelper.shakeError(content, getString(R.string.error_entry_format));
         return;
       }
-      final byte[] buf = Helper.hexStringToByteArray(validate);
-      final int pos = (position * Helper.MAX_BY_ROW);
+      final byte[] buf = SysHelper.hexStringToByteArray(validate);
+      final int pos = (position * SysHelper.MAX_BY_ROW);
       mApp.getPayload().update(pos, buf);
-      mAdapter.setItem(position, Helper.formatBuffer(buf, null).get(0));
+      mAdapter.setItem(position, SysHelper.formatBuffer(buf, null).get(0));
       dialog.dismiss();
     });
     return false;

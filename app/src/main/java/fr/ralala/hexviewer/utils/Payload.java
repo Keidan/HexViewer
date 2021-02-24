@@ -49,7 +49,7 @@ public class Payload {
     int nbPerLine = 0;
     for (int i = 0; i < length && !cancel.get(); i++) {
       mPayload.add(payload[i]);
-      if (nbPerLine != 0 && (nbPerLine % Helper.MAX_BY_LINE) == 0) {
+      if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
         sb.append((char) payload[i]);
         mPlain.add(sb.toString());
         nbPerLine = 0;
@@ -80,7 +80,7 @@ public class Payload {
    */
   public void update(final int index, final byte[] payload) {
     final int len = mPayload.size();
-    for (int i = index + Helper.MAX_BY_ROW - 1; i >= index; --i) {
+    for (int i = index + SysHelper.MAX_BY_ROW - 1; i >= index; --i) {
       if (i < len) {
         mPayload.remove(i);
       }

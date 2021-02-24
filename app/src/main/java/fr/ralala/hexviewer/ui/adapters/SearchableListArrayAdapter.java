@@ -156,14 +156,14 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * Filters the list of applications to display.
    * @param charText Search word
    */
-  public void filter(String charText) {
-    charText = charText.toLowerCase(Locale.getDefault());
+  public void filter(final String charText) {
+    String text = charText.toLowerCase(Locale.getDefault());
     mItemList.clear();
-    if (charText.length() == 0) {
+    if (text.length() == 0) {
       mItemList.addAll(mArraylist);
     } else {
       for (final String s : mArraylist) {
-        if (s.toLowerCase(Locale.getDefault()).contains(charText)) {
+        if (s.toLowerCase(Locale.getDefault()).contains(text)) {
           mItemList.add(s);
         }
       }

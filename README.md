@@ -1,7 +1,7 @@
 # HexViewer
 [![Build Status](https://travis-ci.com/Keidan/HexViewer.svg?branch=master)][travis]
-[![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5eea72aaa59442b39e64749c5cb76872)][codacy]
+[![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"

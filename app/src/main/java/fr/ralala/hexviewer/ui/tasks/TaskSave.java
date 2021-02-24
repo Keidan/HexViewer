@@ -14,7 +14,7 @@ import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.Helper;
+import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.Payload;
 
 /**
@@ -28,13 +28,13 @@ import fr.ralala.hexviewer.utils.Payload;
  * ******************************************************************************
  */
 public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
-  private static final int MAX_LENGTH = Helper.MAX_BY_ROW * 10000;
+  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
   private OutputStream mOutputStream = null;
   private ParcelFileDescriptor mParcelFileDescriptor = null;
 
   public static class Result {
-    String exception = null;
-    Uri uri = null;
+    private String exception = null;
+    private Uri uri = null;
   }
 
   public TaskSave(final Activity activity) {
@@ -49,14 +49,13 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
   @Override
   protected void onPostExecute(final Result result) {
     super.onPostExecute(result);
-    Activity a = mActivityRef.get();
+    final Activity a = mActivityRef.get();
     if(mCancel.get())
     {
       if(result.uri != null) {
-        DocumentFile dfile = DocumentFile.fromSingleUri(a, result.uri);
-        if (dfile != null && dfile.exists()) {
-          if (!dfile.delete())
-            Log.e(this.getClass().getSimpleName(), "File delete error");
+        final DocumentFile dfile = DocumentFile.fromSingleUri(a, result.uri);
+        if (dfile != null && dfile.exists() && !dfile.delete()) {
+          Log.e(this.getClass().getSimpleName(), "File delete error");
         }
       }
       UIHelper.toast(a, a.getString(R.string.operation_canceled));
@@ -106,11 +105,11 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
    */
   @Override
   protected Result doInBackground(final Uri... uris) {
-    Activity activity = mActivityRef.get();
-    Result result = new Result();
+    final Activity activity = mActivityRef.get();
+    final Result result = new Result();
     result.uri = uris[0];
     final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
-    Payload payload = app.getPayload();
+    final Payload payload = app.getPayload();
     publishProgress(0L);
     try {
       mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "w");
@@ -118,8 +117,8 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
       if(!mCancel.get()) {
         mOutputStream = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());
         mTotalSize = data.length;
-        long count = mTotalSize / MAX_LENGTH;
-        long remain = mTotalSize - (count * MAX_LENGTH);
+        final long count = mTotalSize / MAX_LENGTH;
+        final long remain = mTotalSize - (count * MAX_LENGTH);
 
         long offset = 0;
         for (long i = 0; i < count && !mCancel.get(); i++) {

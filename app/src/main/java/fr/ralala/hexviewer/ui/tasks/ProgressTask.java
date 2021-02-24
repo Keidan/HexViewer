@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.utils.Helper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  *******************************************************************************
@@ -21,21 +21,21 @@ import fr.ralala.hexviewer.utils.Helper;
  *
  *******************************************************************************
  */
-public abstract class ProgressTask<Params, Result> extends AsyncTask<Params, Long, Result> {
+public abstract class ProgressTask<P, T> extends AsyncTask<P, Long, T> {
   private final AlertDialog mDialog;
-  final WeakReference<Activity> mActivityRef;
-  final WeakReference<TextView> mTextRef;
-  final AtomicBoolean mCancel;
-  long mTotalSize = 0L;
-  long mCurrentSize = 0L;
+  protected final WeakReference<Activity> mActivityRef;
+  protected final WeakReference<TextView> mTextRef;
+  protected final AtomicBoolean mCancel;
+  protected long mTotalSize = 0L;
+  protected long mCurrentSize = 0L;
 
   ProgressTask(final Activity activity, boolean loading) {
     mCancel = new AtomicBoolean(false);
     mActivityRef = new WeakReference<>(activity);
-    Activity a = mActivityRef.get();
+    final Activity a = mActivityRef.get();
     mDialog = new AlertDialog.Builder(a).create();
     mDialog.setCancelable(false);
-    View v = a.getLayoutInflater().inflate(R.layout.progress_dialog, null);
+    final View v = a.getLayoutInflater().inflate(R.layout.progress_dialog, null);
     mTextRef = new WeakReference<>(v.findViewById(R.id.text));
     mTextRef.get().setText(loading ? R.string.loading : R.string.saving);
     v.findViewById(R.id.cancel).setOnClickListener((view) -> {
@@ -51,7 +51,7 @@ public abstract class ProgressTask<Params, Result> extends AsyncTask<Params, Lon
   protected void onProgressUpdate(Long ...values) {
     mCurrentSize += values[0];
     String text = mActivityRef.get().getString(R.string.loading) + " ";
-    text += Helper.sizeToHuman(mCurrentSize) + " / " + Helper.sizeToHuman(mTotalSize);
+    text += SysHelper.sizeToHuman(mCurrentSize) + " / " + SysHelper.sizeToHuman(mTotalSize);
     mTextRef.get().setText(text);
   }
 
@@ -71,7 +71,7 @@ public abstract class ProgressTask<Params, Result> extends AsyncTask<Params, Lon
    * @param result The result.
    */
   @Override
-  protected void onPostExecute(final Result result) {
+  protected void onPostExecute(final T result) {
     if(mDialog != null)
       mDialog.dismiss();
   }
