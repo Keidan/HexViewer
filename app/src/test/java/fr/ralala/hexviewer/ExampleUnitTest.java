@@ -6,7 +6,7 @@ import java.util.List;
 
 import fr.ralala.hexviewer.utils.SysHelper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
 
   @Test
-  public void hexformat01_isCorrect() {
+  public void testFormatBuffer1() {
     byte[] bytes = { 0};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -24,7 +24,7 @@ public class ExampleUnitTest {
     assertEquals("00                                                .", list.get(0));
   }
   @Test
-  public void hexformat02_isCorrect() {
+  public void testFormatBuffer2() {
     byte[] bytes = { 0, 1};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -33,7 +33,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat03_isCorrect() {
+  public void testFormatBuffer3() {
     byte[] bytes = { 0, 1, 2};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -42,7 +42,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat04_isCorrect() {
+  public void testFormatBuffer4() {
     byte[] bytes = { 0, 1, 2, 3};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -51,7 +51,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat05_isCorrect() {
+  public void testFormatBuffer5() {
     byte[] bytes = { 0, 1, 2, 3, 4};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -60,7 +60,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat06_isCorrect() {
+  public void testFormatBuffer6() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -69,7 +69,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat07_isCorrect() {
+  public void testFormatBuffer7() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -78,7 +78,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat08_isCorrect() {
+  public void testFormatBuffer8() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -87,7 +87,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat09_isCorrect() {
+  public void testFormatBuffer9() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -96,7 +96,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat10_isCorrect() {
+  public void testFormatBuffer10() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -105,7 +105,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat11_isCorrect() {
+  public void testFormatBuffer11() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -114,7 +114,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat12_isCorrect() {
+  public void testFormatBuffer12() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -123,7 +123,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat13_isCorrect() {
+  public void testFormatBuffer13() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -132,7 +132,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat14_isCorrect() {
+  public void testFormatBuffer14() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -141,7 +141,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat15_isCorrect() {
+  public void testFormatBuffer15() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -150,7 +150,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat16_isCorrect() {
+  public void testFormatBuffer16() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
@@ -159,7 +159,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void hexformat17_isCorrect() {
+  public void testFormatBuffer17() {
     byte[] bytes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     List<String> list = SysHelper.formatBuffer(bytes, null);
 
