@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
 
             DocumentFile sourceDir = DocumentFile.fromTreeUri(this, uriDir);
-            if(sourceDir == null) {
+            if (sourceDir == null) {
               UIHelper.toast(this, getString(R.string.uri_exception));
               Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uriDir + "'");
               dialog.dismiss();
@@ -173,20 +173,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
             DocumentFile file = null;
             for (DocumentFile f : sourceDir.listFiles()) {
-              if(f.getName() != null && f.getName().endsWith(sfile)) {
+              if (f.getName() != null && f.getName().endsWith(sfile)) {
                 file = f;
                 break;
               }
             }
             final DocumentFile ffile = file;
 
-            if(file != null) {
+            if (file != null) {
               UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
                   getString(R.string.confirm_overwrite),
                   (view) -> new TaskSave(this).execute(ffile.getUri()));
             } else {
               DocumentFile dfile = sourceDir.createFile("application/octet-stream", sfile);
-              if(dfile == null) {
+              if (dfile == null) {
                 UIHelper.toast(this, getString(R.string.uri_exception));
                 Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uriDir + "'");
               } else
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // Searchable configuration
     SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-    if(searchManager != null) {
+    if (searchManager != null) {
       mSearchView = (SearchView) mSearchMenu.getActionView();
       mSearchView.setSearchableInfo(searchManager
           .getSearchableInfo(getComponentName()));
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void doSearch(String queryStr) {
     final SearchableListArrayAdapter laa = ((mPayloadPlain.getVisibility() == View.VISIBLE) ? mAdapterPlain : mAdapter);
-    if(queryStr.isEmpty())
+    if (queryStr.isEmpty())
       laa.clearFilter();
     else
       laa.filter(queryStr);
@@ -268,22 +268,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Method called when the file is opened.
+   *
    * @param success The result.
    */
   @Override
   public void onOpenResult(boolean success) {
     boolean checked = false;
-    if(mSearchMenu != null)
+    if (mSearchMenu != null)
       mSearchMenu.setVisible(success);
-    if(mPlainMenu != null) {
+    if (mPlainMenu != null) {
       checked = mPlainMenu.isChecked();
       mPlainMenu.setEnabled(success);
     }
-    if(mSaveMenu != null)
+    if (mSaveMenu != null)
       mSaveMenu.setEnabled(success);
-    if(mCloseMenu != null)
+    if (mCloseMenu != null)
       mCloseMenu.setEnabled(success);
-    if(success) {
+    if (success) {
       String title = getString(R.string.app_name);
       title += " - " + SysHelper.abbreviate(mFile,
           getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
@@ -302,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Called by the system when the device configuration changes while your activity is running.
+   *
    * @param newConfig The new device configuration. This value cannot be null.
    */
   @Override
@@ -310,13 +312,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // Checks the orientation of the screen
     int length = 0;
-    if(mFile != null && !mFile.isEmpty()) {
+    if (mFile != null && !mFile.isEmpty()) {
       if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         length = ABBREVIATE_LANDSCAPE;
       } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
         length = ABBREVIATE_PORTRAIT;
       }
-      if(length != 0) {
+      if (length != 0) {
         String title = getString(R.string.app_name);
         title += " - " + SysHelper.abbreviate(mFile, length);
         setTitle(title);
@@ -375,11 +377,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPayloadView.setVisibility(checked ? View.GONE : View.VISIBLE);
       item.setChecked(checked);
       return true;
-    } else if(id == R.id.action_close) {
+    } else if (id == R.id.action_close) {
       onOpenResult(false);
       mAdapterPlain.clear();
       mAdapter.clear();
-      if(mSearchView != null && !mSearchView.isIconified()) {
+      if (mSearchView != null && !mSearchView.isIconified()) {
         mSearchView.setIconified(true);
       }
     }
@@ -401,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     String string = mAdapter.getItem(position);
     if (string == null)
       return false;
-    if(mPayloadPlain.getVisibility() == View.VISIBLE) {
+    if (mPayloadPlain.getVisibility() == View.VISIBLE) {
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return false;
     }
