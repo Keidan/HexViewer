@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static final int FILE_OPEN_CODE = 101;
   private static final int FILE_SAVE_CODE = 102;
   private static final int BACK_TIME_DELAY = 2000;
+  private static final int ABBREVIATE_LANDSCAPE = 16;
+  private static final int ABBREVIATE_PORTRAIT = 8;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
   private SearchableListArrayAdapter mAdapter = null;
@@ -281,7 +285,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mCloseMenu.setEnabled(success);
     if(success) {
       String title = getString(R.string.app_name);
-      title += " - " + SysHelper.abbreviate(mFile, 8);
+      title += " - " + SysHelper.abbreviate(mFile,
+          getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
+              ABBREVIATE_LANDSCAPE : ABBREVIATE_PORTRAIT);
       setTitle(title);
       mPleaseOpenFile.setVisibility(View.GONE);
       mPayloadView.setVisibility(checked ? View.GONE : View.VISIBLE);
@@ -291,6 +297,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadView.setVisibility(View.GONE);
       mPayloadPlain.setVisibility(View.GONE);
+    }
+  }
+
+  /**
+   * Called by the system when the device configuration changes while your activity is running.
+   * @param newConfig The new device configuration. This value cannot be null.
+   */
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+
+    // Checks the orientation of the screen
+    int length = 0;
+    if(mFile != null && !mFile.isEmpty()) {
+      if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        length = ABBREVIATE_LANDSCAPE;
+      } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        length = ABBREVIATE_PORTRAIT;
+      }
+      if(length != 0) {
+        String title = getString(R.string.app_name);
+        title += " - " + SysHelper.abbreviate(mFile, length);
+        setTitle(title);
+      }
     }
   }
 
