@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mCloseMenu.setEnabled(success);
     if(success) {
       String title = getString(R.string.app_name);
-      title += " - " + mFile;
+      title += " - " + SysHelper.abbreviate(mFile, 8);
       setTitle(title);
       mPleaseOpenFile.setVisibility(View.GONE);
       mPayloadView.setVisibility(checked ? View.GONE : View.VISIBLE);

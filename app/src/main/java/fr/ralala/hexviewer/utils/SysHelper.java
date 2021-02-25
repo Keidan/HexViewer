@@ -25,6 +25,17 @@ public class SysHelper {
   public static final int MAX_BY_LINE = ((MAX_BY_ROW * 2) + MAX_BY_ROW) + 19; /* 19 = nb spaces */
 
   /**
+   * Abbreviate a string.
+   *
+   * @param src Source String.
+   * @param max Max length.
+   * @return New String
+   */
+  public static String abbreviate(String src, int max) {
+    return src.substring(0, Math.min(max, src.length())) + (src.length() > max ? "..." : "");
+  }
+
+  /**
    * Returns the base name of a path.
    *
    * @param path The path.
