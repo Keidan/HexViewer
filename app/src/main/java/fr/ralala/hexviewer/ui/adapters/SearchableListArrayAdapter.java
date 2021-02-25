@@ -30,10 +30,18 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private final List<String> mItemList;
   private final List<String> mArraylist;
   private final Context mContext;
+  private final DisplayCharPolicy mPolicy;
 
-  public SearchableListArrayAdapter(final Context context, final List<String> objects) {
+  public enum DisplayCharPolicy
+  {
+    DISPLAY_ALL,
+    IGNORE_NON_DISPLAYED_CHAR, /* except space and NL */
+  }
+
+  public SearchableListArrayAdapter(final Context context, DisplayCharPolicy policy, final List<String> objects) {
     super(context, ID, objects);
     mContext = context;
+    mPolicy = policy;
     mItemList = objects;
     mArraylist = new ArrayList<>();
     mArraylist.addAll(mItemList);
@@ -144,7 +152,14 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     }
     if (v != null && v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
-      holder.setText(mItemList.get(position));
+      String text = mItemList.get(position);
+      if(mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) {
+        StringBuilder sb = new StringBuilder();
+        for(char c : text.toCharArray())
+          sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
+        text = sb.toString();
+      }
+      holder.setText(text);
     }
     return v == null ? new View(mContext) : v;
   }

@@ -40,6 +40,7 @@ import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
+import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.DisplayCharPolicy;
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -86,11 +87,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadView.setVisibility(View.GONE);
     mPayloadPlain.setVisibility(View.GONE);
 
-    mAdapter = new SearchableListArrayAdapter(this, new ArrayList<>());
+    mAdapter = new SearchableListArrayAdapter(this, DisplayCharPolicy.DISPLAY_ALL, new ArrayList<>());
     mPayloadView.setAdapter(mAdapter);
     mPayloadView.setOnItemLongClickListener(this);
 
-    mAdapterPlain = new SearchableListArrayAdapter(this, new ArrayList<>());
+    mAdapterPlain = new SearchableListArrayAdapter(this, DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR, new ArrayList<>());
     mPayloadPlain.setAdapter(mAdapterPlain);
     mPayloadPlain.setOnItemLongClickListener(this);
 
