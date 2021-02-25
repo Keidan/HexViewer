@@ -76,6 +76,26 @@ public class SysHelper {
   }
 
   /**
+   * Converts a size into a humanly understandable string.
+   * @param f The size.
+   * @return The String.
+   */
+  public static String sizeToHuman(float f) {
+    DecimalFormat df= new DecimalFormat("#.##");
+    df.setRoundingMode(RoundingMode.FLOOR);
+    String sf;
+    if (f < 1000) {
+      sf = String.format(Locale.US, "%d o", (int) f);
+    } else if (f < 1000000)
+      sf = df.format((f / SIZE_1KB))  + " Ko";
+    else if (f < 1000000000)
+      sf = df.format((f / SIZE_1MB))  + " Mo";
+    else
+      sf = df.format((f / SIZE_1GB))  + " Go";
+    return sf;
+  }
+
+  /**
    * Formats a buffer (wireshark like).
    *
    * @param buffer The input buffer.
@@ -101,70 +121,84 @@ public class SysHelper {
    * @return List<String>
    */
   public static List<String> formatBuffer(final byte[] buffer, final int length, AtomicBoolean cancel) throws IllegalArgumentException {
-    final int max = MAX_BY_ROW;
     int len = length;
     if(len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
-    StringBuilder line = new StringBuilder();
-    StringBuilder eline = new StringBuilder();
+    StringBuilder currentLine = new StringBuilder();
+    StringBuilder currentEndLine = new StringBuilder();
     final List<String> lines = new ArrayList<>();
-    int i = 0;
-    int j = 0;
+    int currentIndex = 0;
+    int bufferIndex = 0;
     while (len > 0) {
       if(cancel != null && cancel.get())
         break;
-      final byte c = buffer[j++];
-      line.append(String.format("%02x ", c));
-      /* only the visibles char */
-      if (c >= 0x20 && c <= 0x7e)
-        eline.append((char) c);
-      else
-        eline.append((char) 0x2e); /* . */
-      if (i == max - 1) {
-        lines.add(line + " " + eline);
-        eline.delete(0, eline.length());
-        line.delete(0, line.length());
-        i = 0;
-      } else
-        i++;
-      /* add a space in the midline */
-      if (i == max / 2) {
-        line.append(" ");
-        eline.append(" ");
-      }
+      final byte c = buffer[bufferIndex++];
+      currentLine.append(String.format("%02x ", c));
+      /* only the visible char */
+      currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char)c : (char) 0x2e); /* 0x2e = . */
+      /* Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted. */
+      currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine);
+      /* add a space in the half of the line */
+      formatBufferManageHalfLine(currentIndex, currentLine, currentEndLine);
+      /* next */
       len--;
     }
     if(cancel != null && cancel.get())
       return lines;
-    /* align 'line' */
-    if (i != 0 && (i < max || i <= line.length())) {
-      StringBuilder off = new StringBuilder();
-      while (i++ <= max - 1)
-        off.append("   "); /* 3 spaces ex: "00 " */
-      off.append("  "); /* 2 spaces separator */
-      String s = line.toString().trim();
-      lines.add(s + off.toString() + eline.toString());
-    }
+    formatBufferAlign(lines, currentIndex, currentLine.toString(), currentEndLine.toString());
     return lines;
   }
 
   /**
-   * Converts a size into a humanly understandable string.
-   * @param f The size.
-   * @return The String.
+   * If we get to the half of the line we add an extra space.
+   * @param currentIndex The current index.
+   * @param currentLine The current line.
+   * @param currentEndLine The end of the current line.
    */
-  public static String sizeToHuman(float f) {
-    DecimalFormat df= new DecimalFormat("#.##");
-    df.setRoundingMode(RoundingMode.FLOOR);
-    String sf;
-    if (f < 1000) {
-      sf = String.format(Locale.US, "%d o", (int) f);
-    } else if (f < 1000000)
-      sf = df.format((f / SIZE_1KB))  + " Ko";
-    else if (f < 1000000000)
-      sf = df.format((f / SIZE_1MB))  + " Mo";
-    else
-      sf = df.format((f / SIZE_1GB))  + " Go";
-    return sf;
+  private static void formatBufferManageHalfLine(final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine) {
+    if (currentIndex == MAX_BY_ROW / 2) {
+      currentLine.append(" ");
+      currentEndLine.append(" ");
+    }
+  }
+
+  /**
+   * Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted.
+   * @param lines The lines.
+   * @param currentIndex The current index.
+   * @param currentLine The current line.
+   * @param currentEndLine The end of the current line.
+   * @return The nex index.
+   */
+  private static int formatBufferPrepareLineComplete(final List<String> lines, final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine) {
+    if (currentIndex == MAX_BY_ROW - 1) {
+      lines.add(currentLine + " " + currentEndLine);
+      currentEndLine.delete(0, currentEndLine.length());
+      currentLine.delete(0, currentLine.length());
+      return 0;
+    }
+    return currentIndex + 1;
+  }
+
+
+  /**
+   * Alignment of the end of a line (if the line is not complete).
+   * @param lines The lines.
+   * @param currentIndex The current index.
+   * @param currentLine The current line.
+   * @param currentEndLine The end of the current line.
+   */
+  private static void formatBufferAlign(final List<String> lines, int currentIndex, final String currentLine, final String currentEndLine) {
+    /* align 'line' */
+    int i = currentIndex;
+    if (i != 0 && (i < MAX_BY_ROW || i <= currentLine.length())) {
+      int mid = MAX_BY_ROW / 2;
+      StringBuilder off = new StringBuilder((i == mid) ? " " : "");
+      while (i++ <= MAX_BY_ROW - 1)
+        off.append((i == mid) ? "    " : "   "); /* 4 spaces ex: "00  " or 3 spaces ex: "00 " */
+      off.append("  "); /* 2 spaces separator */
+      String s = currentLine.trim();
+      lines.add(s + off.toString() + currentEndLine.trim());
+    }
   }
 }
