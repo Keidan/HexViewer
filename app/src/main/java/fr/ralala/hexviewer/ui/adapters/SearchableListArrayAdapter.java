@@ -28,8 +28,7 @@ import fr.ralala.hexviewer.R;
 public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private static final int ID = R.layout.listview_simple_row;
   private final List<String> mItemList;
-  private final List<String> mArraylist;
-  private final Context mContext;
+  private final List<String> mArrayList;
   private final DisplayCharPolicy mPolicy;
 
   public enum DisplayCharPolicy
@@ -40,11 +39,10 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   public SearchableListArrayAdapter(final Context context, DisplayCharPolicy policy, final List<String> objects) {
     super(context, ID, objects);
-    mContext = context;
     mPolicy = policy;
     mItemList = objects;
-    mArraylist = new ArrayList<>();
-    mArraylist.addAll(mItemList);
+    mArrayList = new ArrayList<>();
+    mArrayList.addAll(mItemList);
   }
 
   /**
@@ -68,7 +66,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   public void setItem(final int position, final String t) {
     mItemList.set(position, t);
-    mArraylist.set(position, t);
+    mArrayList.set(position, t);
     super.notifyDataSetChanged();
   }
 
@@ -114,7 +112,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   @Override
   public void clear() {
     mItemList.clear();
-    mArraylist.clear();
+    mArrayList.clear();
     notifyDataSetChanged();
   }
 
@@ -125,7 +123,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   public void addAll(@NonNull Collection<? extends String> collection) {
     mItemList.addAll(collection);
-    mArraylist.addAll(collection);
+    mArrayList.addAll(collection);
     notifyDataSetChanged();
   }
 
@@ -143,7 +141,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
                @NonNull final ViewGroup parent) {
     View v = convertView;
     if (v == null) {
-      final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
         v = inflater.inflate(ID, null);
         final TextView label1 = v.findViewById(R.id.label1);
@@ -161,7 +159,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       }
       holder.setText(text);
     }
-    return v == null ? new View(mContext) : v;
+    return v == null ? new View(getContext()) : v;
   }
 
 
@@ -175,9 +173,9 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     String text = charText.toLowerCase(Locale.getDefault());
     mItemList.clear();
     if (text.length() == 0) {
-      mItemList.addAll(mArraylist);
+      mItemList.addAll(mArrayList);
     } else {
-      for (final String s : mArraylist) {
+      for (final String s : mArrayList) {
         if (s.toLowerCase(Locale.getDefault()).contains(text)) {
           mItemList.add(s);
         }
@@ -191,7 +189,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   public void clearFilter() {
     mItemList.clear();
-    mItemList.addAll(mArraylist);
+    mItemList.addAll(mArrayList);
     notifyDataSetChanged();
   }
 }
