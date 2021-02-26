@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="search_title">Rechercher</string>
+  <string name="search_hint">Rechercher&#8230;</string>
+  <string name="action_open_title">Ouvrir</string>
+  <string name="action_plain_text_title">Texte en clair</string>
+  <string name="action_save_title">Sauvegarder</string>
+  <string name="action_close_title">Fermer</string>
+  <string name="loading">Chargement&#8230;</string>
+  <string name="saving">Sauvegarde&#8230;</string>
+  <string name="cancel">Annuler</string>
+  <string name="on_double_back_exit_text">Appuyez une fois de plus pour sortir !</string>
+  <string name="update">Mise \u00E0 jour</string>
+  <string name="update_hint">Texte en hexad\u00E9cimal</string>
+  <string name="error_not_supported_in_plain_text">Fonctionnement non pris en charge lors de l\'affichage en texte clair</string>
+  <string name="error_entry_format">Format d\'entr\u00E9e non valide !</string>
+  <string name="error_filename">Nom de fichier invalide !</string>
+  <string name="save_success">Sauvegarde r\u00E9ussie</string>
+  <string name="operation_canceled">Op\u00E9ration annul\u00E9e</string>
+  <string name="exception">Exception</string>
+  <string name="confirm_overwrite">Le fichier existe, \u00EAtes-vous s\u00FBr de vouloir l\'\u00E9craser ?</string>
+  <string name="open_a_file_before">Ouvrez un fichier avant !</string>
+  <string name="file_manager_keyword">Gestionnaire de fichiers</string>
+  <string name="select_file_to_open">S\u00E9lectionnez un fichier \u00E0 ouvrir.</string>
+  <string name="error_no_file_manager">Veuillez installer un gestionnaire de fichiers.</string>
+  <string name="install">INSTALLER</string>
+  <string name="please_open_file">Veuillez ouvrir un fichier</string>
+  <string name="uri_exception">Exception Uri</string>
+</resources>
