@@ -1,9 +1,10 @@
 language: android
 jdk: oraclejdk8
-sudo: false
 
 os:
   - linux
+dist: xenial
+
 addons:
   apt_packages:
     - pandoc
