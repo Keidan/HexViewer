@@ -413,8 +413,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return;
       }
       final byte[] buf = SysHelper.hexStringToByteArray(validate);
-      final int pos = (position * SysHelper.MAX_BY_ROW);
-      mApp.getPayload().update(pos, buf);
+      mApp.getPayload().update(position, buf);
       mAdapter.setItem(position, SysHelper.formatBuffer(buf, null).get(0));
       dialog.dismiss();
     });
