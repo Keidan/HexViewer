@@ -1,0 +1,8 @@
+Chinese translation added, thanks to sr093906.
+French translation added.
+Fix a display bug with hexa display when a line is not complete.
+Fix a bug that caused an offset between the modified value and the saved value when the filter was used.
+Addition of the file name in the title bar (with screen orientation management).
+In plain text display, many characters that cannot be displayed are replaced by a dot.
+Improvement of the dialog box used for line editing.
+Other bug fixes and improvements.
