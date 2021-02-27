@@ -193,12 +193,13 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   }
 
   private static class FilterData {
+    private String value;
+    private final int origin;
+
     private FilterData(String value, int origin) {
       this.value = value;
       this.origin = origin;
     }
-    private String value;
-    private final int origin;
   }
 
   /**
