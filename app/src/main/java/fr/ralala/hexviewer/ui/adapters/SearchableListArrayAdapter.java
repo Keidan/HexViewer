@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,22 +28,22 @@ import fr.ralala.hexviewer.R;
  */
 public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private static final int ID = R.layout.listview_simple_row;
-  private final List<String> mItemList;
-  private final List<String> mArrayList;
+  private final EntryFilter mEntryFilter;
   private final DisplayCharPolicy mPolicy;
+  private final List<String> mEntryList;
+  private List<FilterData> mFilteredList;
 
-  public enum DisplayCharPolicy
-  {
+  public enum DisplayCharPolicy {
     DISPLAY_ALL,
     IGNORE_NON_DISPLAYED_CHAR, /* except space and NL */
   }
 
   public SearchableListArrayAdapter(final Context context, DisplayCharPolicy policy, final List<String> objects) {
     super(context, ID, objects);
+    mEntryFilter = new EntryFilter();
+    mEntryList = objects;
+    mFilteredList = new ArrayList<>();
     mPolicy = policy;
-    mItemList = objects;
-    mArrayList = new ArrayList<>();
-    mArrayList.addAll(mItemList);
   }
 
   /**
@@ -53,20 +54,33 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   @Override
   public String getItem(final int position) {
-    if (mItemList != null)
-      return mItemList.get(position);
+    if (mFilteredList != null)
+      return mFilteredList.get(position).value;
     return null;
+  }
+
+  /**
+   * Remove an item.
+   *
+   * @param position Position of the item.
+   */
+  public void removeItem(final int position) {
+    FilterData fd = mFilteredList.get(position);
+    mEntryList.remove(fd.origin);
+    mFilteredList.remove(position);
+    super.notifyDataSetChanged();
   }
 
   /**
    * Set the data item with the specified position in the data set.
    *
    * @param position Position of the item.
-   * @param t The data.
+   * @param t        The data.
    */
   public void setItem(final int position, final String t) {
-    mItemList.set(position, t);
-    mArrayList.set(position, t);
+    FilterData fd = mFilteredList.get(position);
+    fd.value = t;
+    mEntryList.set(fd.origin, t);
     super.notifyDataSetChanged();
   }
 
@@ -88,8 +102,8 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   @Override
   public int getCount() {
-    if (mItemList != null)
-      return mItemList.size();
+    if (mFilteredList != null)
+      return mFilteredList.size();
     return 0;
   }
 
@@ -101,8 +115,8 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   @Override
   public long getItemId(int position) {
-    if (mItemList != null)
-      return mItemList.get(position).hashCode();
+    if (mFilteredList != null)
+      return mFilteredList.get(position).value.hashCode();
     return 0;
   }
 
@@ -111,19 +125,23 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   @Override
   public void clear() {
-    mItemList.clear();
-    mArrayList.clear();
+    mFilteredList.clear();
+    mEntryList.clear();
     notifyDataSetChanged();
   }
 
 
   /**
    * Adds a list of new items to the list.
+   *
    * @param collection The items to be added.
    */
   public void addAll(@NonNull Collection<? extends String> collection) {
-    mItemList.addAll(collection);
-    mArrayList.addAll(collection);
+    /* Here the list is already empty */
+    mEntryList.addAll(collection);
+    for(int i = 0; i < mEntryList.size(); i++) {
+      mFilteredList.add(new FilterData(mEntryList.get(i), i));
+    }
     notifyDataSetChanged();
   }
 
@@ -150,10 +168,10 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     }
     if (v != null && v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
-      String text = mItemList.get(position);
-      if(mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) {
+      String text = getItem(position);
+      if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) {
         StringBuilder sb = new StringBuilder();
-        for(char c : text.toCharArray())
+        for (char c : text.toCharArray())
           sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
         text = sb.toString();
       }
@@ -164,33 +182,63 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
 
   // Filter part
-
   /**
-   * Filters the list of applications to display.
-   * @param charText Search word
+   * Get custom filter
+   *
+   * @return filter
    */
-  public void filter(final String charText) {
-    String text = charText.toLowerCase(Locale.getDefault());
-    mItemList.clear();
-    if (text.length() == 0) {
-      mItemList.addAll(mArrayList);
-    } else {
-      for (final String s : mArrayList) {
-        if (s.toLowerCase(Locale.getDefault()).contains(text)) {
-          mItemList.add(s);
-        }
-      }
+  @Override
+  public Filter getFilter() {
+    return mEntryFilter;
+  }
+
+  private static class FilterData {
+    private FilterData(String value, int origin) {
+      this.value = value;
+      this.origin = origin;
     }
-    notifyDataSetChanged();
+    private String value;
+    private final int origin;
   }
 
   /**
-   * Clears the filter.
+   * Custom filter
    */
-  public void clearFilter() {
-    mItemList.clear();
-    mItemList.addAll(mArrayList);
-    notifyDataSetChanged();
+  private class EntryFilter extends Filter {
+
+    @Override
+    protected FilterResults performFiltering(CharSequence constraint) {
+      final FilterResults filterResults = new FilterResults();
+      final ArrayList<FilterData> tempList = new ArrayList<>();
+      boolean clear = (constraint == null || constraint.length() == 0);
+      for(int i = 0; i < mEntryList.size(); i++) {
+        String s = mEntryList.get(i);
+        if(clear)
+          tempList.add(new FilterData(s, i));
+        else if (s.toLowerCase(Locale.getDefault()).contains(constraint))
+          tempList.add(new FilterData(s, i));
+      }
+      filterResults.count = tempList.size();
+      filterResults.values = tempList;
+      return filterResults;
+    }
+
+    /**
+     * Notify about filtered list to ui
+     *
+     * @param constraint text
+     * @param results    filtered result
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void publishResults(CharSequence constraint, FilterResults results) {
+      if (results.count == 0) {
+        notifyDataSetInvalidated();
+      } else {
+        mFilteredList = (ArrayList<FilterData>) results.values;
+        notifyDataSetChanged();
+      }
+    }
   }
 }
 

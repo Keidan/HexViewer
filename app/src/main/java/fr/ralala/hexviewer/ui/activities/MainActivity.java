@@ -258,10 +258,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void doSearch(String queryStr) {
     final SearchableListArrayAdapter laa = ((mPayloadPlain.getVisibility() == View.VISIBLE) ? mAdapterPlain : mAdapter);
-    if (queryStr.isEmpty())
-      laa.clearFilter();
-    else
-      laa.filter(queryStr);
+    laa.getFilter().filter(queryStr);
   }
 
   /**
