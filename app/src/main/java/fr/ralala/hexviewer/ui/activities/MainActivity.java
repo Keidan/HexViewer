@@ -438,54 +438,76 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (input != null) {
       input.setText(hex);
       input.addTextChangedListener(new TextWatcher() {
-        public void afterTextChanged(Editable s) { }
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void afterTextChanged(Editable s) {
+
+        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-          if(s.length() == 0) {
-            result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
-            result.setText(R.string.empty_value);
-            return;
-          }
-
-          final String validate = s.toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-          String string;
-          if(validate.length() % 2 == 0 || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
-            result.setTextColor(ContextCompat.getColor(MainActivity.this,
-                validate.length() > (SysHelper.MAX_BY_ROW * 2) ? R.color.colorResultError : R.color.colorResultSuccess));
-            final byte[] buf = SysHelper.hexStringToByteArray(validate);
-            string = SysHelper.formatBuffer(buf, null).get(0);
-          } else {
-            result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
-            if(validate.length() == 1) {
-              string = "                                                  ?";
-            } else {
-              final byte[] buf = SysHelper.hexStringToByteArray(validate.substring(0, validate.length() - 1));
-              string = SysHelper.formatBuffer(buf, null).get(0) + "?";
-            }
-          }
-          result.setText(SysHelper.extractString(string));
+          validateTextChange(s, result);
         }
       });
     }
 
     /* main action */
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
-      final String validate = input.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-      if (!validate.isEmpty() && (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2))) {
-        UIHelper.shakeError(input, getString(R.string.error_entry_format));
-        return;
-      }
-      final byte[] buf = SysHelper.hexStringToByteArray(validate);
-      mApp.getPayload().update(position, buf);
-      List<String> li = SysHelper.formatBuffer(buf, null);
-      if(li.isEmpty())
-        mAdapter.removeItem(position);
-      else
-        mAdapter.setItem(position, li.get(0));
+      validateDialog(input, position);
       dialog.dismiss();
     });
     return false;
+  }
+
+  /**
+   * Validation of the text change.
+   * @param s New text.
+   * @param result Result textview.
+   */
+  private void validateTextChange(final CharSequence s, final TextView result) {
+    if(s.length() == 0) {
+      result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
+      result.setText(R.string.empty_value);
+      return;
+    }
+
+    final String validate = s.toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+    String string;
+    if(validate.length() % 2 == 0 || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
+      result.setTextColor(ContextCompat.getColor(MainActivity.this,
+          validate.length() > (SysHelper.MAX_BY_ROW * 2) ? R.color.colorResultError : R.color.colorResultSuccess));
+      final byte[] buf = SysHelper.hexStringToByteArray(validate);
+      string = SysHelper.formatBuffer(buf, null).get(0);
+    } else {
+      result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
+      if(validate.length() == 1) {
+        string = "                                                  ?";
+      } else {
+        final byte[] buf = SysHelper.hexStringToByteArray(validate.substring(0, validate.length() - 1));
+        string = SysHelper.formatBuffer(buf, null).get(0) + "?";
+      }
+    }
+    result.setText(SysHelper.extractString(string));
+  }
+
+  /**
+   * Validation of the modification.
+   * @param input Input EditText.
+   * @param position ListView position.
+   */
+  private void validateDialog(final EditText input, final int position) {
+    final String validate = input.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+    if (!validate.isEmpty() && (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2))) {
+      UIHelper.shakeError(input, getString(R.string.error_entry_format));
+      return;
+    }
+    final byte[] buf = SysHelper.hexStringToByteArray(validate);
+    mApp.getPayload().update(position, buf);
+    List<String> li = SysHelper.formatBuffer(buf, null);
+    if(li.isEmpty())
+      mAdapter.removeItem(position);
+    else
+      mAdapter.setItem(position, li.get(0));
   }
 
   /**
