@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +8,10 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -24,11 +21,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.documentfile.provider.DocumentFile;
@@ -158,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
           getContentResolver().takePersistableUriPermission(uriDir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-          createTextDialog(getString(R.string.action_save_title), mFile, (dialog, content) -> {
+          UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFile, (dialog, content) -> {
             final String sfile = content.getText().toString();
             if (sfile.trim().isEmpty()) {
               UIHelper.shakeError(content, getString(R.string.error_filename));
@@ -411,8 +408,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     final String hex = SysHelper.extractString(string);
 
-    createTextDialog(getString(R.string.update), hex, (dialog, content) -> {
+    UIHelper.createTextDialog(this, getString(R.string.update), hex, (dialog, content) -> {
       final String validate = content.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+
       if (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
         UIHelper.shakeError(content, getString(R.string.error_entry_format));
         return;
@@ -445,28 +443,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
   }
 
-
-  private interface DialogPositiveClick {
-    void onClick(AlertDialog dialog, EditText editText);
-  }
-
-  @SuppressLint("InflateParams")
-  private void createTextDialog(String title, String defaultValue, DialogPositiveClick positiveClick) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setCancelable(false)
-        .setIcon(R.mipmap.ic_launcher)
-        .setTitle(title)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
-        });
-    LayoutInflater factory = LayoutInflater.from(this);
-    builder.setView(factory.inflate(R.layout.content_dialog_update, null));
-    final AlertDialog dialog = builder.create();
-    dialog.show();
-    EditText et = dialog.findViewById(R.id.editText);
-    if (et != null)
-      et.setText(defaultValue);
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et));
-  }
 }
 
