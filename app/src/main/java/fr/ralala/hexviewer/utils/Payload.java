@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import fr.ralala.hexviewer.BuildConfig;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -31,7 +33,7 @@ public class Payload {
    */
   public byte[] to(final AtomicBoolean cancel) {
     final byte[] b = new byte[mPayload.size()];
-    for (int i = 0; i < mPayload.size() && !cancel.get(); ++i) {
+    for (int i = 0; i < mPayload.size() && (cancel == null || !cancel.get()); ++i) {
       b[i] = mPayload.get(i);
     }
     return b;
@@ -42,12 +44,12 @@ public class Payload {
    *
    * @param payload The new payload.
    * @param length  The array length.
-   * @param cancel Used to cancel this method.
+   * @param cancel  Used to cancel this method.
    */
   public void add(final byte[] payload, final int length, final AtomicBoolean cancel) {
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;
-    for (int i = 0; i < length && !cancel.get(); i++) {
+    for (int i = 0; i < length && (cancel == null || !cancel.get()); i++) {
       mPayload.add(payload[i]);
       if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
         sb.append((char) payload[i]);
@@ -59,7 +61,7 @@ public class Payload {
         nbPerLine++;
       }
     }
-    if (!cancel.get() && nbPerLine != 0) {
+    if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
       mPlain.add(sb.toString());
     }
   }
@@ -75,19 +77,69 @@ public class Payload {
   /**
    * Updates the payload.
    *
-   * @param index   The current index.
+   * @param line    The current line.
    * @param payload The payload array.
    */
-  public void update(final int index, final byte[] payload) {
+  public void updateLine(final int line, final byte[] payload) {
+    if (BuildConfig.DEBUG && line < 0) {
+      throw new AssertionError("Assertion failed");
+    }
+    update(line * SysHelper.MAX_BY_ROW, payload);
+  }
+
+  /**
+   * Add zeros to the payload.
+   *
+   * @param length Number of zeros to add.
+   */
+  private void appendZero(int length) {
+    for (int i = 0; i < length; i++)
+      mPayload.add((byte) 0);
+  }
+
+  /**
+   * Removes elements from the payload.
+   *
+   * @param index  Starting index.
+   * @param length Number of elements to be deleted.
+   */
+  private void remove(int index, int length) {
     final int len = mPayload.size();
-    for (int i = index + SysHelper.MAX_BY_ROW - 1; i >= index; --i) {
+    for (int i = index + SysHelper.MAX_BY_ROW - 1; i >= (index + length); --i) {
       if (i < len) {
         mPayload.remove(i);
       }
     }
+  }
+
+  /**
+   * Change the elements present in the payload by the new ones.
+   *
+   * @param index   Starting index.
+   * @param payload The payload array.
+   */
+  private void set(final int index, final byte[] payload) {
     for (int i = index, j = 0; i < index + payload.length; ++i, ++j) {
-      mPayload.add(i, payload[j]);
+      mPayload.set(i, payload[j]);
     }
+  }
+
+  /**
+   * Updates the payload.
+   *
+   * @param index   The current index (min 0).
+   * @param payload The payload array.
+   */
+  public void update(final int index, final byte[] payload) {
+    final int len = mPayload.size();
+    if ((index + payload.length) > len) {
+      /* There won't be enough space in the payload. */
+      appendZero((index + payload.length) - len);
+    } else if (payload.length < SysHelper.MAX_BY_ROW) {
+      /* We need to remove the excess entries from the line. */
+      remove(index, payload.length);
+    }
+    set(index, payload);
   }
 
   /**
