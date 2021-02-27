@@ -17,4 +17,5 @@
   <color name="colorResultSuccess">#FF42D348</color>
   <color name="colorResultError">#FFD34248</color>
   <color name="colorResultWarning">#FFFF9800</color>
+  <color name="colorTextUpdated">#FFD34248</color>
 </resources>

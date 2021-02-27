@@ -1,6 +1,9 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
 
 /**
@@ -80,6 +84,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   public void setItem(final int position, final String t) {
     FilterData fd = mFilteredList.get(position);
     fd.value = t;
+    fd.updated = true;
     mEntryList.set(fd.origin, t);
     super.notifyDataSetChanged();
   }
@@ -168,14 +173,21 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     }
     if (v != null && v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
-      String text = getItem(position);
+      FilterData fd = mFilteredList.get(position);
       if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) {
         StringBuilder sb = new StringBuilder();
-        for (char c : text.toCharArray())
+        for (char c : fd.value.toCharArray())
           sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
-        text = sb.toString();
+        fd.value = sb.toString();
       }
-      holder.setText(text);
+      if(fd.updated) {
+        SpannableString spanString = new SpannableString(fd.value);
+        spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+        holder.setText(spanString);
+      } else
+        holder.setText(fd.value);
+      holder.setTextColor(ContextCompat.getColor(getContext(),
+          fd.updated ? R.color.colorTextUpdated : R.color.textColor));
     }
     return v == null ? new View(getContext()) : v;
   }
@@ -195,6 +207,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private static class FilterData {
     private String value;
     private final int origin;
+    private boolean updated = false;
 
     private FilterData(String value, int origin) {
       this.value = value;
