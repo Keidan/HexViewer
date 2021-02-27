@@ -26,4 +26,7 @@
   <string name="install">INSTALLER</string>
   <string name="please_open_file">Veuillez ouvrir un fichier</string>
   <string name="uri_exception">Exception Uri</string>
+  <string name="source">Source:</string>
+  <string name="result">R\u00E9sultat:</string>
+  <string name="empty_value">Vide</string>
 </resources>

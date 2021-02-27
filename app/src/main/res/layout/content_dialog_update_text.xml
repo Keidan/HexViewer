@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <TextView
+    android:id="@+id/tvLabelSource"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:text="@string/source"
+    android:paddingStart="10dp"
+    android:paddingEnd="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"  />
+
+  <TextView
+    android:id="@+id/tvSource"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_toEndOf="@id/tvLabelSource"
+    android:text="@null"
+    android:paddingStart="5dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="10dp"
+    android:textSize="12sp"/>
+
+  <TextView
+    android:id="@+id/tvLabelResult"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_below="@id/tvLabelSource"
+    android:text="@string/result"
+    android:paddingStart="10dp"
+    android:paddingEnd="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"  />
+
+  <TextView
+    android:id="@+id/tvResult"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/tvLabelSource"
+    android:layout_toEndOf="@id/tvLabelResult"
+    android:text="@null"
+    android:paddingStart="5dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="10dp"
+    android:textSize="12sp" />
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilInput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/tvLabelResult"
+    android:layout_marginEnd="50dp"
+    android:padding="10dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/etInput"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:digits=" 0123456789abcdefABCDEF"
+      android:hint="@string/update_hint"
+      android:inputType="text" />
+  </com.google.android.material.textfield.TextInputLayout>
+</RelativeLayout>

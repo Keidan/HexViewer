@@ -26,4 +26,7 @@
   <string name="install">安装</string>
   <string name="please_open_file">请打开一个文件</string>
   <string name="uri_exception">Uri 异常</string>
+  <string name="source">源头:</string>
+  <string name="result">结果:</string>
+  <string name="empty_value">空的</string>
 </resources>

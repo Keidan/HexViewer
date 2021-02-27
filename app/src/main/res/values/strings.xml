@@ -26,4 +26,7 @@
     <string name="install">INSTALL</string>
     <string name="please_open_file">Please open a file</string>
     <string name="uri_exception">Uri exception</string>
+    <string name="source">Source:</string>
+    <string name="result">Result:</string>
+    <string name="empty_value">Empty</string>
 </resources>

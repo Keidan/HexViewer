@@ -113,7 +113,7 @@ public class UIHelper {
         .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
         });
     LayoutInflater factory = LayoutInflater.from(c);
-    builder.setView(factory.inflate(R.layout.content_dialog_update, null));
+    builder.setView(factory.inflate(R.layout.content_dialog_simple_text, null));
     final AlertDialog dialog = builder.create();
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);

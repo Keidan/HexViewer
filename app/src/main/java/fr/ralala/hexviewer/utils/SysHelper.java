@@ -57,10 +57,15 @@ public class SysHelper {
    */
   public static byte[] hexStringToByteArray(final String s) {
     final int len = s.length();
-    final byte[] data = new byte[len / 2];
+    final int arrayLength = len % 2 == 0 ? len : len + 1;
+    final byte[] data = new byte[arrayLength / 2];
     for (int i = 0; i < len; i += 2) {
-      data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
-          .digit(s.charAt(i + 1), 16));
+      if(i + 1 == len) {
+        data[i / 2] = (byte) 0; /* nothing done */
+      } else {
+        data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
+            .digit(s.charAt(i + 1), 16));
+      }
     }
     return data;
   }
@@ -71,8 +76,18 @@ public class SysHelper {
    * @param string The hex string.
    * @return String
    */
-  public static String extractString(final String string) {
+  public static String extractHex(final String string) {
     return (string.substring(0, 24).trim() + " " + string.substring(25, 49).trim()).trim();
+  }
+
+  /**
+   * Extract the string part of a string formatted with the formatBuffer function.
+   *
+   * @param string The hex string.
+   * @return String
+   */
+  public static String extractString(final String string) {
+    return string.substring(50).trim();
   }
 
   /**

@@ -1,17 +1,22 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -21,12 +26,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -391,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param id       The id.
    * @return boolean
    */
+  @SuppressLint("InflateParams")
   @Override
   public boolean onItemLongClick(final AdapterView<?> parent, final View view,
                                  final int position, final long id) {
@@ -402,18 +411,78 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return false;
     }
 
-    final String hex = SysHelper.extractString(string);
+    final String hex = SysHelper.extractHex(string);
+    /* Dialog creation */
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setCancelable(false)
+        .setIcon(R.mipmap.ic_launcher)
+        .setTitle(getString(R.string.update))
+        .setPositiveButton(android.R.string.yes, null)
+        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        });
+    LayoutInflater factory = LayoutInflater.from(this);
+    builder.setView(factory.inflate(R.layout.content_dialog_update_text, null));
+    final AlertDialog dialog = builder.create();
+    dialog.show();
+    /* default values */
+    TextView source = dialog.findViewById(R.id.tvSource);
+    final TextView result = dialog.findViewById(R.id.tvResult);
+    final EditText input = dialog.findViewById(R.id.etInput);
+    if(source != null)
+      source.setText(hex.replaceAll(" ", ""));
+    if(result != null) {
+      result.setTextColor(ContextCompat.getColor(this, R.color.colorResultSuccess));
+      string = SysHelper.formatBuffer(SysHelper.hexStringToByteArray(hex.replaceAll(" ", "")), null).get(0) ;
+      result.setText(SysHelper.extractString(string));
+    }
+    if (input != null) {
+      input.setText(hex);
+      input.addTextChangedListener(new TextWatcher() {
+        public void afterTextChanged(Editable s) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-    UIHelper.createTextDialog(this, getString(R.string.update), hex, (dialog, content) -> {
-      final String validate = content.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+          if(s.length() == 0) {
+            result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
+            result.setText(R.string.empty_value);
+            return;
+          }
 
-      if (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
-        UIHelper.shakeError(content, getString(R.string.error_entry_format));
+          final String validate = s.toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+          String string;
+          if(validate.length() % 2 == 0 || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
+            result.setTextColor(ContextCompat.getColor(MainActivity.this,
+                validate.length() > (SysHelper.MAX_BY_ROW * 2) ? R.color.colorResultError : R.color.colorResultSuccess));
+            final byte[] buf = SysHelper.hexStringToByteArray(validate);
+            string = SysHelper.formatBuffer(buf, null).get(0);
+          } else {
+            result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
+            if(validate.length() == 1) {
+              string = "                                                  ?";
+            } else {
+              final byte[] buf = SysHelper.hexStringToByteArray(validate.substring(0, validate.length() - 1));
+              string = SysHelper.formatBuffer(buf, null).get(0) + "?";
+            }
+          }
+          result.setText(SysHelper.extractString(string));
+        }
+      });
+    }
+
+    /* main action */
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
+      final String validate = input.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+      if (!validate.isEmpty() && (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2))) {
+        UIHelper.shakeError(input, getString(R.string.error_entry_format));
         return;
       }
       final byte[] buf = SysHelper.hexStringToByteArray(validate);
       mApp.getPayload().update(position, buf);
-      mAdapter.setItem(position, SysHelper.formatBuffer(buf, null).get(0));
+      List<String> li = SysHelper.formatBuffer(buf, null);
+      if(li.isEmpty())
+        mAdapter.removeItem(position);
+      else
+        mAdapter.setItem(position, li.get(0));
       dialog.dismiss();
     });
     return false;
