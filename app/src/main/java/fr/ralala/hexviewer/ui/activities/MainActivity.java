@@ -481,10 +481,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else {
       result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
       if(validate.length() == 1) {
-        string = "                                                  ?";
+        string = "                                                   ";
       } else {
         final byte[] buf = SysHelper.hexStringToByteArray(validate.substring(0, validate.length() - 1));
-        string = SysHelper.formatBuffer(buf, null).get(0) + "?";
+        string = SysHelper.formatBuffer(buf, null).get(0);
       }
     }
     result.setText(SysHelper.extractString(string));
