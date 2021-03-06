@@ -6,6 +6,7 @@
   <string name="action_plain_text_title">纯文本</string>
   <string name="action_save_title">保存</string>
   <string name="action_close_title">关闭</string>
+  <string name="action_settings_title">设置</string>
   <string name="loading">正加载&#8230;</string>
   <string name="saving">正保存&#8230;</string>
   <string name="cancel">取消</string>
@@ -29,4 +30,26 @@
   <string name="source">源头:</string>
   <string name="result">结果:</string>
   <string name="empty_value">空的</string>
+  <string name="new_value">新值</string>
+  <string name="error_less_than">该值不能小于</string>
+  <string name="error_greater_than">该值不能大于</string>
+  <string name="settings_category_abbreviate">缩略语</string>
+  <string name="settings_pref_title_abbreviate_portrait">纵向模式</string>
+  <string name="settings_pref_summary_abbreviate_portrait">纵向模式下文件名的显示字符数。</string>
+  <string name="settings_pref_title_abbreviate_landscape">横向模式</string>
+  <string name="settings_pref_summary_abbreviate_landscape">横向模式下文件名的显示字符数。</string>
+  <string name="settings_category_hex">16 进制文本</string>
+  <string name="settings_pref_title_hex_row_height_auto">自动高度</string>
+  <string name="settings_pref_summary_hex_row_height_auto">根据字体大小自动确定高度。</string>
+  <string name="settings_pref_title_hex_row_height">高度</string>
+  <string name="settings_pref_summary_hex_row_height">列表中行的高度。</string>
+  <string name="settings_pref_title_hex_font_size">字体大小</string>
+  <string name="settings_pref_summary_hex_font_size">列表中文本的字体大小。</string>
+  <string name="settings_category_plain">纯文本</string>
+  <string name="settings_pref_title_plain_row_height_auto">自动高度</string>
+  <string name="settings_pref_summary_plain_row_height_auto">根据字体大小自动确定高度。</string>
+  <string name="settings_pref_title_plain_row_height">高度</string>
+  <string name="settings_pref_summary_plain_row_height">列表中行的高度。</string>
+  <string name="settings_pref_title_plain_font_size">字体大小</string>
+  <string name="settings_pref_summary_plain_font_size">列表中文本的字体大小。</string>
 </resources>

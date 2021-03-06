@@ -6,6 +6,7 @@
   <string name="action_plain_text_title">Texte en clair</string>
   <string name="action_save_title">Sauvegarder</string>
   <string name="action_close_title">Fermer</string>
+  <string name="action_settings_title">Param\u00E8tres</string>
   <string name="loading">Chargement&#8230;</string>
   <string name="saving">Sauvegarde&#8230;</string>
   <string name="cancel">Annuler</string>
@@ -29,4 +30,26 @@
   <string name="source">Source:</string>
   <string name="result">R\u00E9sultat:</string>
   <string name="empty_value">Vide</string>
+  <string name="new_value">Nouvelle valeur</string>
+  <string name="error_less_than">La valeur ne peut pas \u00EAtre inf\u00E9rieur \u00E0</string>
+  <string name="error_greater_than">La valeur ne peut pas \u00EAtre sup\u00E9rieur \u00E0</string>
+  <string name="settings_category_abbreviate">Abr\u00E9viation</string>
+  <string name="settings_pref_title_abbreviate_portrait">Mode portrait</string>
+  <string name="settings_pref_summary_abbreviate_portrait">Le nombre de caract\u00E8res \u00E0 afficher pour le nom du fichier en mode portrait.</string>
+  <string name="settings_pref_title_abbreviate_landscape">Mode paysage</string>
+  <string name="settings_pref_summary_abbreviate_landscape">Le nombre de caract\u00E8res \u00E0 afficher pour le nom du fichier en mode paysage.</string>
+  <string name="settings_category_hex">Texte en hexad\u00E9cimal</string>
+  <string name="settings_pref_title_hex_row_height_auto">Hauteur automatique</string>
+  <string name="settings_pref_summary_hex_row_height_auto">D\u00E9termine automatiquement la hauteur en fonction de la taille de la police.</string>
+  <string name="settings_pref_title_hex_row_height">Hauteur</string>
+  <string name="settings_pref_summary_hex_row_height">Hauteur des lignes de la liste.</string>
+  <string name="settings_pref_title_hex_font_size">Taille de la police</string>
+  <string name="settings_pref_summary_hex_font_size">Taille de la police des textes de la liste.</string>
+  <string name="settings_category_plain">Texte en clair</string>
+  <string name="settings_pref_title_plain_row_height_auto">Hauteur automatique</string>
+  <string name="settings_pref_summary_plain_row_height_auto">D\u00E9termine automatiquement la hauteur en fonction de la taille de la police.</string>
+  <string name="settings_pref_title_plain_row_height">Hauteur</string>
+  <string name="settings_pref_summary_plain_row_height">Hauteur des lignes de la liste.</string>
+  <string name="settings_pref_title_plain_font_size">Taille de la police</string>
+  <string name="settings_pref_summary_plain_font_size">Taille de la police des textes de la liste.</string>
 </resources>

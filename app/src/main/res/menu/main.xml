@@ -10,29 +10,29 @@
     app:actionViewClass="android.widget.SearchView"/>
 
   <group android:id="@+id/grp1">
-  <item
-    android:id="@+id/action_open"
-    android:orderInCategory="100"
-    android:title="@string/action_open_title"
-    app:showAsAction="never" />
-  <item
-    android:id="@+id/action_plain_text"
-    android:checkable="true"
-    android:orderInCategory="100"
-    android:title="@string/action_plain_text_title"
-    app:showAsAction="never" />
-  <item
-    android:id="@+id/action_save"
-    android:orderInCategory="100"
-    android:title="@string/action_save_title"
-    app:showAsAction="never" />
+    <item
+      android:id="@+id/action_open"
+      android:title="@string/action_open_title"
+      app:showAsAction="never" />
+    <item
+      android:id="@+id/action_plain_text"
+      android:checkable="true"
+      android:title="@string/action_plain_text_title"
+      app:showAsAction="never" />
+    <item
+      android:id="@+id/action_save"
+      android:title="@string/action_save_title"
+      app:showAsAction="never" />
+    <item
+      android:id="@+id/action_close"
+      android:title="@string/action_close_title"
+      app:showAsAction="never" />
   </group>
 
   <group android:id="@+id/grp2">
     <item
-      android:id="@+id/action_close"
-      android:orderInCategory="100"
-      android:title="@string/action_close_title"
+      android:id="@+id/action_settings"
+      android:title="@string/action_settings_title"
       app:showAsAction="never" />
   </group>
 </menu>

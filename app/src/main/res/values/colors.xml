@@ -5,6 +5,7 @@
   <color name="navigationBarColor">#FF000000</color>
   <color name="colorAccent">#FF0099CC</color>
   <color name="textColorPrimary">#FFFFFFFF</color>
+  <color name="textColorSecondary">#FFC5C5C5</color>
   <color name="actionMenuTextColor">#FFFFFFFF</color>
   <color name="textColor">#FFFFFFFF</color>
   <color name="windowBackground">#FF303030</color>
@@ -13,6 +14,7 @@
   <color name="colorControlNormal">#FFC5C5C5</color>
   <color name="textColorDisabled">#FF9E9E9E</color>
   <color name="textColorPrimaryDisabled">#FF9E9E9E</color>
+  <color name="textColorSecondaryDisabled">#FF919191</color>
   <color name="colorAccentDisabled">#FF76A6B6</color>
   <color name="colorResultSuccess">#FF42D348</color>
   <color name="colorResultError">#FFD34248</color>

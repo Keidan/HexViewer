@@ -39,6 +39,10 @@
             <meta-data android:name="android.app.searchable"
               android:resource="@xml/searchable"/>
         </activity>
-
+        
+        <activity
+          android:name=".ui.activities.SettingsActivity"
+          android:configChanges="orientation|screenSize"
+          android:launchMode="singleTask"/>
     </application>
 </manifest>

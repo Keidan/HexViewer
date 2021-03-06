@@ -35,6 +35,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private final EntryFilter mEntryFilter;
   private final DisplayCharPolicy mPolicy;
   private final List<String> mEntryList;
+  private final UserConfig mUserConfig;
   private List<FilterData> mFilteredList;
 
   public enum DisplayCharPolicy {
@@ -42,12 +43,19 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     IGNORE_NON_DISPLAYED_CHAR, /* except space and NL */
   }
 
-  public SearchableListArrayAdapter(final Context context, DisplayCharPolicy policy, final List<String> objects) {
+  public interface UserConfig {
+    int getFontSize();
+    int getRowHeight();
+    boolean isRowHeightAuto();
+  }
+
+  public SearchableListArrayAdapter(final Context context, DisplayCharPolicy policy, final List<String> objects, UserConfig userConfig) {
     super(context, ID, objects);
     mEntryFilter = new EntryFilter();
     mEntryList = objects;
     mFilteredList = new ArrayList<>();
     mPolicy = policy;
+    mUserConfig = userConfig;
   }
 
   /**
@@ -135,6 +143,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     notifyDataSetChanged();
   }
 
+  /**
+   * Refreshes this adapter.
+   */
+  public void refresh() {
+    notifyDataSetChanged();
+  }
 
   /**
    * Adds a list of new items to the list.
@@ -188,6 +202,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
         holder.setText(fd.value);
       holder.setTextColor(ContextCompat.getColor(getContext(),
           fd.updated ? R.color.colorTextUpdated : R.color.textColor));
+      if(mUserConfig != null) {
+        holder.setTextSize(mUserConfig.getFontSize());
+        ViewGroup.LayoutParams lp = holder.getLayoutParams();
+        lp.height = mUserConfig.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfig.getRowHeight();
+        holder.setLayoutParams(lp);
+      }
     }
     return v == null ? new View(getContext()) : v;
   }

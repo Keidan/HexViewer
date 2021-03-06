@@ -6,6 +6,7 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/accent_color_enabled</item>
+    <item name="android:textColorSecondary">@color/text_color_secondary_enabled</item>
     <item name="android:textColorPrimary">@color/text_color_primary_enabled</item>
     <item name="android:actionMenuTextColor">@color/actionMenuTextColor</item>
     <item name="android:navigationBarColor">@color/navigationBarColor</item>

@@ -1,16 +1,22 @@
 package fr.ralala.hexviewer.ui.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -27,6 +33,51 @@ import fr.ralala.hexviewer.R;
  * ******************************************************************************
  */
 public class UIHelper {
+
+  /**
+   * Opens the file picker in directory selection mode.
+   *
+   * @param a           Activity context.
+   * @param requestCode Request code used with startActivityForResult
+   */
+  public static void openFilePickerInDirectorSelectionMode(Activity a, final int requestCode) {
+    /* Here the FileManager should already be installed */
+    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+    intent.addCategory(Intent.CATEGORY_DEFAULT);
+    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+    a.startActivityForResult(intent, requestCode);
+  }
+
+  /**
+   * Opens the file picker in file selection mode.
+   *
+   * @param a              Activity context.
+   * @param snackBarLayout Layout used to attach the snackbar.
+   * @param requestCode    Request code used with startActivityForResult
+   */
+  public static void openFilePickerInFileSelectionMode(Activity a, final View snackBarLayout, final int requestCode) {
+    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    intent.setType("*/*");
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+    try {
+      a.startActivityForResult(
+          Intent.createChooser(intent, a.getString(R.string.select_file_to_open)), requestCode);
+    } catch (android.content.ActivityNotFoundException ex) {
+      Snackbar customSnackBar = Snackbar.make(snackBarLayout, a.getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG);
+      customSnackBar.setAction(a.getString(R.string.install), (v) -> {
+        final String search = a.getString(R.string.file_manager_keyword);
+        try {
+          a.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=" + search + "&c=apps")));
+        } catch (android.content.ActivityNotFoundException ignore) {
+          a.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=" + search + "&c=apps")));
+        }
+      });
+      customSnackBar.show();
+    }
+  }
 
   /**
    * Shake a view on error.
