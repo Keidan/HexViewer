@@ -32,10 +32,10 @@
     <string name="empty_value">Empty</string>
     <string name="default_abbreviate_portrait" translatable="false">8</string>
     <string name="default_abbreviate_landscape" translatable="false">16</string>
-    <string name="default_hex_row_height_auto" translatable="false">false</string>
+    <string name="default_hex_row_height_auto" translatable="false">true</string>
     <string name="default_hex_row_height" translatable="false">100</string>
     <string name="default_hex_font_size" translatable="false">12</string>
-    <string name="default_plain_row_height_auto" translatable="false">false</string>
+    <string name="default_plain_row_height_auto" translatable="false">true</string>
     <string name="default_plain_row_height" translatable="false">100</string>
     <string name="default_plain_font_size" translatable="false">12</string>
 
