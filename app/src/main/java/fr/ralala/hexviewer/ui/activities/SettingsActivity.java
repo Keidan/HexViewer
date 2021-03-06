@@ -227,11 +227,18 @@ public class SettingsActivity extends AppCompatActivity {
           et.selectAll();
         }
       }
-      InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+      final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
       imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
       dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
-        if (validInput(et, defaultValue, minValue, maxValue, iv))
+        if (et != null && validInput(et, defaultValue, minValue, maxValue, iv)) {
+          imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
           dialog.dismiss();
+        }
+      });
+      dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> {
+        if(et != null)
+          imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        dialog.dismiss();
       });
     }
 
