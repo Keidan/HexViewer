@@ -189,27 +189,56 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       final TextView holder = (TextView) v.getTag();
       FilterData fd = mFilteredList.get(position);
       if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) {
-        StringBuilder sb = new StringBuilder();
-        for (char c : fd.value.toCharArray())
-          sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
-        fd.value = sb.toString();
+        fd.value = ignoreNonDisplayedChar(fd.value);
       }
-      if(fd.updated) {
-        SpannableString spanString = new SpannableString(fd.value);
-        spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
-        holder.setText(spanString);
-      } else
-        holder.setText(fd.value);
+
+      applyUpdated(holder, fd);
+
       holder.setTextColor(ContextCompat.getColor(getContext(),
           fd.updated ? R.color.colorTextUpdated : R.color.textColor));
-      if(mUserConfig != null) {
-        holder.setTextSize(mUserConfig.getFontSize());
-        ViewGroup.LayoutParams lp = holder.getLayoutParams();
-        lp.height = mUserConfig.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfig.getRowHeight();
-        holder.setLayoutParams(lp);
-      }
+
+      applyUserConfig(holder);
     }
     return v == null ? new View(getContext()) : v;
+  }
+
+  /**
+   * Ignore non displayed char
+   * @param ref Ref string.
+   * @return Patched string.
+   */
+  private String ignoreNonDisplayedChar(final String ref) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : ref.toCharArray())
+      sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
+    return sb.toString();
+  }
+
+  /**
+   * Applies the necessary changes if the "updated" field is true.
+   * @param tv TextView
+   * @param fd FilterData
+   */
+  private void applyUpdated(final TextView tv, final FilterData fd) {
+    if(fd.updated) {
+      SpannableString spanString = new SpannableString(fd.value);
+      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+      tv.setText(spanString);
+    } else
+      tv.setText(fd.value);
+  }
+
+  /**
+   * Applies the user config.
+   * @param tv TextView
+   */
+  private void applyUserConfig(final TextView tv) {
+    if(mUserConfig != null) {
+      tv.setTextSize(mUserConfig.getFontSize());
+      ViewGroup.LayoutParams lp = tv.getLayoutParams();
+      lp.height = mUserConfig.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfig.getRowHeight();
+      tv.setLayoutParams(lp);
+    }
   }
 
 

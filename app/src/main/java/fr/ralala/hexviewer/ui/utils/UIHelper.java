@@ -106,7 +106,7 @@ public class UIHelper {
    * @param yes     Listener used when the 'yes' button is clicked.
    */
   public static void showConfirmDialog(final Context c, String title,
-                                       String message, final android.view.View.OnClickListener yes) {
+                                       String message, final View.OnClickListener yes) {
     new AlertDialog.Builder(c)
         .setCancelable(false)
         .setIcon(R.mipmap.ic_launcher)
