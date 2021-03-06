@@ -1,0 +1,4 @@
+Addition of parameters allowing the user to customize certain fields of the graphical interface.
+Code improvements.
+
+Note: The Chinese translation of the new texts is done with deepl.
