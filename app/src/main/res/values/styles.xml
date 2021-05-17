@@ -18,6 +18,7 @@
     <item name="android:itemBackground">@color/windowBackground</item>
     <item name="android:colorBackground">@color/colorBackground</item>
     <item name="alertDialogTheme">@style/AppTheme.DialogTheme</item>
+    <item name="android:textColorHint">@color/text_color_primary_enabled</item>
   </style>
 
   <style name="AppTheme.NoActionBar">
