@@ -1,0 +1,3 @@
+Bugfix: A label in the line edit dialog had the wrong color.
+It's now possible to use a font size smaller than 12 (sp).
+It's now possible to use a font size with a decimal number and not only an integer.
