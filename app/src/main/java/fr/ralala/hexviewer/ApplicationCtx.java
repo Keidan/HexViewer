@@ -149,13 +149,13 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the font size for the hex listview.
-   * @return int
+   * @return float
    */
-  public int getHexFontSize() {
+  public float getHexFontSize() {
     try {
-      return Integer.parseInt(mSharedPreferences.getString(CFG_HEX_FONT_SIZE, mDefaultHexFontSize));
+      return Float.parseFloat(mSharedPreferences.getString(CFG_HEX_FONT_SIZE, mDefaultHexFontSize));
     } catch(Exception ignore) {
-      return Integer.parseInt(mDefaultHexFontSize);
+      return Float.parseFloat(mDefaultHexFontSize);
     }
   }
 
@@ -163,7 +163,7 @@ public class ApplicationCtx extends Application {
    * Change the the font size for the hex listview.
    * @param number The new number.
    */
-  public void setHexFontSize(int number) {
+  public void setHexFontSize(float number) {
     SharedPreferences.Editor e = mSharedPreferences.edit();
     e.putString(CFG_HEX_FONT_SIZE, String.valueOf(number));
     e.apply();
@@ -206,13 +206,13 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the font size for the hex listview.
-   * @return int
+   * @return float
    */
-  public int getPlainFontSize() {
+  public float getPlainFontSize() {
     try {
-      return Integer.parseInt(mSharedPreferences.getString(CFG_PLAIN_FONT_SIZE, mDefaultPlainFontSize));
+      return Float.parseFloat(mSharedPreferences.getString(CFG_PLAIN_FONT_SIZE, mDefaultPlainFontSize));
     } catch(Exception ignore) {
-      return Integer.parseInt(mDefaultPlainFontSize);
+      return Float.parseFloat(mDefaultPlainFontSize);
     }
   }
 
@@ -220,7 +220,7 @@ public class ApplicationCtx extends Application {
    * Change the the font size for the hex listview.
    * @param number The new number.
    */
-  public void setPlainFontSize(int number) {
+  public void setPlainFontSize(float number) {
     SharedPreferences.Editor e = mSharedPreferences.edit();
     e.putString(CFG_PLAIN_FONT_SIZE, String.valueOf(number));
     e.apply();

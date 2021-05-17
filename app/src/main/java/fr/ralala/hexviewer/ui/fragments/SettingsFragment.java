@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -127,7 +129,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
           mApp.getHexFontSize(),
           MIN_HEX_FONT_SIZE,
           MAX_HEX_FONT_SIZE,
-          mApp::setHexFontSize);
+          mApp::setHexFontSize, true);
     } else if (preference.equals(mPlainRowHeightAuto)) {
       mPlainRowHeight.setEnabled(!mPlainRowHeightAuto.isChecked());
     } else if (preference.equals(mPlainRowHeight)) {
@@ -141,14 +143,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
           mApp.getPlainFontSize(),
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
-          mApp::setPlainFontSize);
+          mApp::setPlainFontSize, true);
     }
     return false;
   }
 
   /* ----------------------------- */
-  private interface InputValidated {
-    void onValidated(int n);
+  private interface InputValidated<T> {
+    void onValidated(T n);
   }
 
   /**
@@ -161,7 +163,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
    * @param iv           Callback which will be called if the entry is valid.
    */
   @SuppressLint("InflateParams")
-  private void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated iv) {
+  private void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated<Integer> iv) {
+    displayDialog(title, defaultValue, minValue, maxValue, (v) -> iv.onValidated(v.intValue()), false);
+  }
+  /**
+   * Displays the input dialog box.
+   *
+   * @param title        Dialog title.
+   * @param defaultValue Default value.
+   * @param minValue     Min value.
+   * @param maxValue     Max value.
+   * @param iv           Callback which will be called if the entry is valid.
+   */
+  @SuppressLint("InflateParams")
+  private void displayDialog(CharSequence title, float defaultValue, float minValue, float maxValue, InputValidated<Float> iv, boolean decimal) {
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
     builder.setCancelable(false)
         .setTitle(title)
@@ -174,7 +189,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);
     if (et != null) {
-      et.setText(String.valueOf(defaultValue));
+      int inputType = InputType.TYPE_CLASS_NUMBER;
+      String def;
+      int maxLen;
+      if(decimal) {
+        maxLen = 5;
+        inputType |= InputType.TYPE_NUMBER_FLAG_DECIMAL;
+        def = String.valueOf(defaultValue);
+      } else {
+        maxLen = 3;
+        def = String.valueOf((int)defaultValue);
+      }
+      et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLen)});
+      et.setInputType(inputType);
+      et.setText(def);
       et.requestFocus();
       Editable text = et.getText();
       if (text.length() > 0) {
@@ -185,7 +213,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
-      if (et != null && validInput(et, defaultValue, minValue, maxValue, iv)) {
+      if (et != null && validInput(et, defaultValue, minValue, maxValue, iv, decimal)) {
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         dialog.dismiss();
       }
@@ -197,6 +225,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     });
   }
 
+
   /**
    * Validation of the input.
    *
@@ -207,23 +236,23 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
    * @param iv           Callback
    * @return False on error.
    */
-  private boolean validInput(EditText et, int defaultValue, int minValue, int maxValue, InputValidated iv) {
+  private boolean validInput(EditText et, float defaultValue, float minValue, float maxValue, InputValidated<Float> iv, boolean decimal) {
     try {
       Editable s = et.getText();
-      int nb = Integer.parseInt(s.toString());
+      float nb = Float.parseFloat(s.toString());
       if (s.length() == 0) {
-        et.setText(String.valueOf(minValue));
+        et.setText(String.valueOf(!decimal ? (int)minValue : minValue));
         et.selectAll();
         return false;
       } else {
         if (nb < minValue) {
           UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
-          et.setText(String.valueOf(minValue));
+          et.setText(String.valueOf(!decimal ? (int)minValue : minValue));
           et.selectAll();
           return false;
         } else if (nb > maxValue) {
           UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
-          et.setText(String.valueOf(maxValue));
+          et.setText(String.valueOf(!decimal ? (int)maxValue : maxValue));
           et.selectAll();
           return false;
         } else
@@ -231,8 +260,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         iv.onValidated(nb);
         return true;
       }
-    } catch (Exception ignored) {
-      iv.onValidated(defaultValue);
+    } catch (Exception ex) {
+      UIHelper.shakeError(et, ex.getMessage());
+      et.setText(String.valueOf(!decimal ? (int)defaultValue : defaultValue));
+      et.selectAll();
       return false;
     }
   }

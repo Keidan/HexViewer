@@ -44,7 +44,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   }
 
   public interface UserConfig {
-    int getFontSize();
+    float getFontSize();
     int getRowHeight();
     boolean isRowHeightAuto();
   }

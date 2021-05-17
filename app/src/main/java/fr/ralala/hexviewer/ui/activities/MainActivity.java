@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     mAdapterHex = new SearchableListArrayAdapter(this, DisplayCharPolicy.DISPLAY_ALL, new ArrayList<>(), new UserConfig() {
       @Override
-      public int getFontSize() {
+      public float getFontSize() {
         return mApp.getHexFontSize();
       }
 
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     mAdapterPlain = new SearchableListArrayAdapter(this, DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR, new ArrayList<>(), new UserConfig() {
       @Override
-      public int getFontSize() {
+      public float getFontSize() {
         return mApp.getPlainFontSize();
       }
 
