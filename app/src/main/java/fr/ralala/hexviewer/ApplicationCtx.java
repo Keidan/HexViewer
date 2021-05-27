@@ -25,6 +25,7 @@ public class ApplicationCtx extends Application {
   public static final String CFG_PLAIN_ROW_HEIGHT = "plainRowHeight";
   public static final String CFG_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAuto";
   public static final String CFG_PLAIN_FONT_SIZE = "plainFontSize";
+  public static final String CFG_SMART_INPUT = "smartInput";
   private final Payload mPayload;
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
@@ -35,6 +36,7 @@ public class ApplicationCtx extends Application {
   private String mDefaultPlainRowHeight;
   private boolean mDefaultPlainRowHeightAuto;
   private String mDefaultPlainFontSize;
+  private boolean mDefaultSmartInput;
 
   /**
    * Constructs the application context.
@@ -56,6 +58,7 @@ public class ApplicationCtx extends Application {
     mDefaultPlainRowHeightAuto = Boolean.parseBoolean(getString(R.string.default_plain_row_height_auto));
     mDefaultPlainRowHeight = getString(R.string.default_plain_row_height);
     mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
+    mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
   }
 
   /**
@@ -70,19 +73,45 @@ public class ApplicationCtx extends Application {
   /* ---------- Settings ---------- */
 
   /**
+   * Test if smart input is enabled or not.
+   *
+   * @return bool
+   */
+  public boolean isSmartInput() {
+    try {
+      return mSharedPreferences.getBoolean(CFG_SMART_INPUT, mDefaultSmartInput);
+    } catch (Exception ignore) {
+      return mDefaultSmartInput;
+    }
+  }
+
+  /**
+   * Enable/Disable the smart input.
+   *
+   * @param mode The new mode.
+   */
+  public void setSmartInput(boolean mode) {
+    SharedPreferences.Editor e = mSharedPreferences.edit();
+    e.putBoolean(CFG_SMART_INPUT, mode);
+    e.apply();
+  }
+
+  /**
    * Returns the number of characters to display for the file name in portrait mode.
+   *
    * @return int
    */
   public int getAbbreviatePortrait() {
     try {
       return Integer.parseInt(mSharedPreferences.getString(CFG_ABBREVIATE_PORTRAIT, mDefaultAbbreviatePortrait));
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return Integer.parseInt(mDefaultAbbreviatePortrait);
     }
   }
 
   /**
    * Change the number of characters to display for the file name in portrait mode.
+   *
    * @param number The new number.
    */
   public void setAbbreviatePortrait(int number) {
@@ -93,18 +122,20 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the number of characters to display for the file name in landscape mode.
+   *
    * @return int
    */
   public int getAbbreviateLandscape() {
     try {
       return Integer.parseInt(mSharedPreferences.getString(CFG_ABBREVIATE_LANDSCAPE, mDefaultAbbreviateLandscape));
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return Integer.parseInt(mDefaultAbbreviateLandscape);
     }
   }
 
   /**
    * Change the number of characters to display for the file name in landscape mode.
+   *
    * @param number The new number.
    */
   public void setAbbreviateLandscape(int number) {
@@ -115,30 +146,33 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the row height auto state for the hex listview.
+   *
    * @return boolean
    */
   public boolean isHexRowHeightAuto() {
     try {
       return mSharedPreferences.getBoolean(CFG_HEX_ROW_HEIGHT_AUTO, mDefaultHexRowHeightAuto);
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return mDefaultHexRowHeightAuto;
     }
   }
 
   /**
    * Returns the row height for the hex listview.
+   *
    * @return int
    */
   public int getHexRowHeight() {
     try {
       return Integer.parseInt(mSharedPreferences.getString(CFG_HEX_ROW_HEIGHT, mDefaultHexRowHeight));
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return Integer.parseInt(mDefaultHexRowHeight);
     }
   }
 
   /**
    * Change the the row height for the hex listview.
+   *
    * @param number The new number.
    */
   public void setHexRowHeight(int number) {
@@ -149,18 +183,20 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the font size for the hex listview.
+   *
    * @return float
    */
   public float getHexFontSize() {
     try {
       return Float.parseFloat(mSharedPreferences.getString(CFG_HEX_FONT_SIZE, mDefaultHexFontSize));
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return Float.parseFloat(mDefaultHexFontSize);
     }
   }
 
   /**
    * Change the the font size for the hex listview.
+   *
    * @param number The new number.
    */
   public void setHexFontSize(float number) {
@@ -172,30 +208,33 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the row height auto state for the hex listview.
+   *
    * @return boolean
    */
   public boolean isPlainRowHeightAuto() {
     try {
       return mSharedPreferences.getBoolean(CFG_PLAIN_ROW_HEIGHT_AUTO, mDefaultPlainRowHeightAuto);
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return mDefaultPlainRowHeightAuto;
     }
   }
 
   /**
    * Returns the row height for the hex listview.
+   *
    * @return int
    */
   public int getPlainRowHeight() {
     try {
       return Integer.parseInt(mSharedPreferences.getString(CFG_PLAIN_ROW_HEIGHT, mDefaultPlainRowHeight));
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return Integer.parseInt(mDefaultPlainRowHeight);
     }
   }
 
   /**
    * Change the the row height for the hex listview.
+   *
    * @param number The new number.
    */
   public void setPlainRowHeight(int number) {
@@ -206,18 +245,20 @@ public class ApplicationCtx extends Application {
 
   /**
    * Returns the font size for the hex listview.
+   *
    * @return float
    */
   public float getPlainFontSize() {
     try {
       return Float.parseFloat(mSharedPreferences.getString(CFG_PLAIN_FONT_SIZE, mDefaultPlainFontSize));
-    } catch(Exception ignore) {
+    } catch (Exception ignore) {
       return Float.parseFloat(mDefaultPlainFontSize);
     }
   }
 
   /**
    * Change the the font size for the hex listview.
+   *
    * @param number The new number.
    */
   public void setPlainFontSize(float number) {

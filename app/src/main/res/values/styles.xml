@@ -19,6 +19,7 @@
     <item name="android:colorBackground">@color/colorBackground</item>
     <item name="alertDialogTheme">@style/AppTheme.DialogTheme</item>
     <item name="android:textColorHint">@color/text_color_primary_enabled</item>
+    <item name="android:checkboxStyle">@style/AppTheme.CheckBoxStyle</item>
   </style>
 
   <style name="AppTheme.NoActionBar">
@@ -45,5 +46,9 @@
 
   <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
+  </style>
+  <style name="AppTheme.CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+    <item name="android:textColor">@color/text_color_enabled</item>
+    <item name="buttonTint">@color/accent_color_enabled</item>
   </style>
 </resources>

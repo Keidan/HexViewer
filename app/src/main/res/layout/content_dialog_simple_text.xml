@@ -9,14 +9,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="50dp"
-    android:padding="10dp">
+    android:padding="10dp"
+    app:errorEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
       android:id="@+id/editText"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:digits=" 0123456789abcdefABCDEF"
-      android:hint="@string/update_hint"
+      android:hint="@string/update_hint_hex"
       android:inputType="text" />
   </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

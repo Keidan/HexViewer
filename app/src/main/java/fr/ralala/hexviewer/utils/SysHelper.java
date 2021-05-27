@@ -60,7 +60,7 @@ public class SysHelper {
     final int arrayLength = len % 2 == 0 ? len : len + 1;
     final byte[] data = new byte[arrayLength / 2];
     for (int i = 0; i < len; i += 2) {
-      if(i + 1 == len) {
+      if (i + 1 == len) {
         data[i / 2] = (byte) 0; /* nothing done */
       } else {
         data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
@@ -74,10 +74,24 @@ public class SysHelper {
    * Extract the hexadecimal part of a string formatted with the formatBuffer function.
    *
    * @param string The hex string.
+   * @return Always String[2]
+   */
+  public static String[] extractHexAndSplit(final String string) {
+    return new String[]{
+        string.substring(0, 24).trim(),
+        string.substring(25, 49).trim()
+    };
+  }
+
+  /**
+   * Extract the hexadecimal part of a string formatted with the formatBuffer function.
+   *
+   * @param string The hex string.
    * @return String
    */
   public static String extractHex(final String string) {
-    return (string.substring(0, 24).trim() + " " + string.substring(25, 49).trim()).trim();
+    final String[] split = extractHexAndSplit(string);
+    return (split[0] + " " + split[1]).trim();
   }
 
   /**
@@ -92,21 +106,22 @@ public class SysHelper {
 
   /**
    * Converts a size into a humanly understandable string.
+   *
    * @param f The size.
    * @return The String.
    */
   public static String sizeToHuman(float f) {
-    DecimalFormat df= new DecimalFormat("#.##");
+    DecimalFormat df = new DecimalFormat("#.##");
     df.setRoundingMode(RoundingMode.FLOOR);
     String sf;
     if (f < 1000) {
       sf = String.format(Locale.US, "%d o", (int) f);
     } else if (f < 1000000)
-      sf = df.format((f / SIZE_1KB))  + " Ko";
+      sf = df.format((f / SIZE_1KB)) + " Ko";
     else if (f < 1000000000)
-      sf = df.format((f / SIZE_1MB))  + " Mo";
+      sf = df.format((f / SIZE_1MB)) + " Mo";
     else
-      sf = df.format((f / SIZE_1GB))  + " Go";
+      sf = df.format((f / SIZE_1GB)) + " Go";
     return sf;
   }
 
@@ -122,7 +137,7 @@ public class SysHelper {
     try {
       lines = formatBuffer(buffer, buffer.length, cancel);
     } catch (IllegalArgumentException iae) {
-      lines =  new ArrayList<>();
+      lines = new ArrayList<>();
     }
     return lines;
   }
@@ -137,7 +152,7 @@ public class SysHelper {
    */
   public static List<String> formatBuffer(final byte[] buffer, final int length, AtomicBoolean cancel) throws IllegalArgumentException {
     int len = length;
-    if(len > buffer.length)
+    if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
     StringBuilder currentLine = new StringBuilder();
     StringBuilder currentEndLine = new StringBuilder();
@@ -145,12 +160,12 @@ public class SysHelper {
     int currentIndex = 0;
     int bufferIndex = 0;
     while (len > 0) {
-      if(cancel != null && cancel.get())
+      if (cancel != null && cancel.get())
         break;
       final byte c = buffer[bufferIndex++];
       currentLine.append(String.format("%02x ", c));
       /* only the visible char */
-      currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char)c : (char) 0x2e); /* 0x2e = . */
+      currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char) c : (char) 0x2e); /* 0x2e = . */
       /* Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted. */
       currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine);
       /* add a space in the half of the line */
@@ -158,7 +173,7 @@ public class SysHelper {
       /* next */
       len--;
     }
-    if(cancel != null && cancel.get())
+    if (cancel != null && cancel.get())
       return lines;
     formatBufferAlign(lines, currentIndex, currentLine.toString(), currentEndLine.toString());
     return lines;
@@ -166,8 +181,9 @@ public class SysHelper {
 
   /**
    * If we get to the half of the line we add an extra space.
-   * @param currentIndex The current index.
-   * @param currentLine The current line.
+   *
+   * @param currentIndex   The current index.
+   * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    */
   private static void formatBufferManageHalfLine(final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine) {
@@ -179,9 +195,10 @@ public class SysHelper {
 
   /**
    * Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted.
-   * @param lines The lines.
-   * @param currentIndex The current index.
-   * @param currentLine The current line.
+   *
+   * @param lines          The lines.
+   * @param currentIndex   The current index.
+   * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    * @return The nex index.
    */
@@ -198,9 +215,10 @@ public class SysHelper {
 
   /**
    * Alignment of the end of a line (if the line is not complete).
-   * @param lines The lines.
-   * @param currentIndex The current index.
-   * @param currentLine The current line.
+   *
+   * @param lines          The lines.
+   * @param currentIndex   The current index.
+   * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    */
   private static void formatBufferAlign(final List<String> lines, int currentIndex, final String currentLine, final String currentEndLine) {
@@ -215,5 +233,18 @@ public class SysHelper {
       String s = currentLine.trim();
       lines.add(s + off.toString() + currentEndLine.trim());
     }
+  }
+
+  /**
+   * Tests if the hexadecimal line is valid or not.
+   *
+   * @param line The line to test
+   * @return True if the line is valid
+   */
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+  public static boolean isValidHexLine(final String line) {
+    if(line.isEmpty())
+      return true;
+    return line.matches("\\p{XDigit}+") && line.length() % 2 == 0 && (line.length() <= (SysHelper.MAX_BY_ROW * 2));
   }
 }

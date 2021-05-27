@@ -12,7 +12,8 @@
   <string name="cancel">取消</string>
   <string name="on_double_back_exit_text">再按一次退出！</string>
   <string name="update">更新</string>
-  <string name="update_hint">16 进制文本</string>
+  <string name="update_hint_hex">文本</string>
+  <string name="update_hint_plain">纯文本</string>
   <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
   <string name="error_entry_format">无效的条目格式！</string>
   <string name="error_filename">无效的文件名！</string>
@@ -52,4 +53,5 @@
   <string name="settings_pref_summary_plain_row_height">列表中行的高度。</string>
   <string name="settings_pref_title_plain_font_size">字体大小</string>
   <string name="settings_pref_summary_plain_font_size">列表中文本的字体大小。</string>
+  <string name="smart_input">纯文本输入</string>
 </resources>

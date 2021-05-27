@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,8 +20,12 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -31,6 +33,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
@@ -40,6 +43,7 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
+import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -145,9 +149,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     super.onResume();
     /* refresh */
     onOpenResult(mFile != null && !mFile.isEmpty());
-    if(mPayloadHex.getVisibility() == View.VISIBLE)
+    if (mPayloadHex.getVisibility() == View.VISIBLE)
       mAdapterHex.refresh();
-    else if(mPayloadPlain.getVisibility() == View.VISIBLE)
+    else if (mPayloadPlain.getVisibility() == View.VISIBLE)
       mAdapterPlain.refresh();
   }
 
@@ -384,7 +388,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return false;
     }
 
-    final String hex = SysHelper.extractHex(string);
+    final String[] split = SysHelper.extractHexAndSplit(string);
+    final String hex = split[0] + " " + split[1];
+    string = SysHelper.formatBuffer(SysHelper.hexStringToByteArray(hex.replaceAll(" ", "")), null).get(0);
     /* Dialog creation */
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setCancelable(false)
@@ -400,91 +406,65 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     /* default values */
     TextView source = dialog.findViewById(R.id.tvSource);
     final TextView result = dialog.findViewById(R.id.tvResult);
-    final EditText input = dialog.findViewById(R.id.etInput);
+    final TextInputEditText inputHex = dialog.findViewById(R.id.etInputHex);
+    final TextInputLayout inputHexLayout = dialog.findViewById(R.id.tilInputHex);
+    final AppCompatCheckBox chkSmartInput = dialog.findViewById(R.id.chkSmartInput);
+
+    if (chkSmartInput != null) {
+      chkSmartInput.setChecked(mApp.isSmartInput());
+      chkSmartInput.setOnCheckedChangeListener((comp, isChecked) -> mApp.setSmartInput(isChecked));
+    }
     if (source != null)
-      source.setText(hex.replaceAll(" ", ""));
+      source.setText((split[0] + "\n" + split[1]));
     if (result != null) {
       result.setTextColor(ContextCompat.getColor(this, R.color.colorResultSuccess));
-      string = SysHelper.formatBuffer(SysHelper.hexStringToByteArray(hex.replaceAll(" ", "")), null).get(0);
       result.setText(SysHelper.extractString(string));
     }
-    if (input != null) {
-      input.setText(hex);
-      input.addTextChangedListener(new TextWatcher() {
-        public void afterTextChanged(Editable s) {
-          // nothing to do
-        }
 
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-          // nothing to do
-        }
-
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-          validateTextChange(s, result);
-        }
-      });
+    if (inputHex != null && inputHexLayout != null) {
+      inputHex.setText(hex);
+      inputHex.addTextChangedListener(new LineUpdateTextWatcher(this, result, inputHexLayout, mApp));
     }
 
     /* main action */
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
-      if (input != null)
-        validateDialog(input, position);
-      dialog.dismiss();
+      if (inputHex != null && inputHexLayout != null) {
+        if(validateDialog(hex.replaceAll(" ", ""), inputHex, inputHexLayout, position))
+          dialog.dismiss();
+      } else
+        dialog.dismiss();
     });
     return false;
   }
 
   /**
-   * Validation of the text change.
-   *
-   * @param s      New text.
-   * @param result Result textview.
-   */
-  private void validateTextChange(final CharSequence s, final TextView result) {
-    if (s.length() == 0) {
-      result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
-      result.setText(R.string.empty_value);
-      return;
-    }
-
-    final String validate = s.toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    String string;
-    if (validate.length() % 2 == 0 || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
-      result.setTextColor(ContextCompat.getColor(MainActivity.this,
-          validate.length() > (SysHelper.MAX_BY_ROW * 2) ? R.color.colorResultError : R.color.colorResultSuccess));
-      final byte[] buf = SysHelper.hexStringToByteArray(validate);
-      string = SysHelper.formatBuffer(buf, null).get(0);
-    } else {
-      result.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorResultWarning));
-      if (validate.length() == 1) {
-        string = "                                                   ";
-      } else {
-        final byte[] buf = SysHelper.hexStringToByteArray(validate.substring(0, validate.length() - 1));
-        string = SysHelper.formatBuffer(buf, null).get(0);
-      }
-    }
-    result.setText(SysHelper.extractString(string));
-  }
-
-  /**
    * Validation of the modification.
    *
-   * @param input    Input EditText.
-   * @param position ListView position.
+   * @param reference The reference bytes.
+   * @param input     Input EditText.
+   * @param inputLayout     Input EditText layout.
+   * @param position  ListView position.
+   * @return false on error
    */
-  private void validateDialog(final EditText input, final int position) {
+  private boolean validateDialog(final String reference, final EditText input, final TextInputLayout inputLayout, final int position) {
     final String validate = input.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    if (!validate.isEmpty() && (!validate.matches("\\p{XDigit}+") || (validate.length() % 2 != 0) || validate.length() > (SysHelper.MAX_BY_ROW * 2))) {
-      UIHelper.shakeError(input, getString(R.string.error_entry_format));
-      return;
+    if (!SysHelper.isValidHexLine(validate)) {
+      inputLayout.setError(getString(R.string.error_entry_format));
+      return false;
     }
     final byte[] buf = SysHelper.hexStringToByteArray(validate);
+    final byte[] ref = SysHelper.hexStringToByteArray(reference);
+    if (Arrays.equals(ref, buf)) {
+      /* nothing to do */
+      return true;
+    }
     mApp.getPayload().update(position, buf);
     List<String> li = SysHelper.formatBuffer(buf, null);
     if (li.isEmpty())
       mAdapterHex.removeItem(position);
     else
       mAdapterHex.setItem(position, li.get(0));
+    return true;
   }
 
   /**
@@ -534,10 +514,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     getContentResolver().takePersistableUriPermission(uriDir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-    UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFile, (dialog, content) -> {
+    UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFile, (dialog, content, layout) -> {
       final String sfile = content.getText().toString();
       if (sfile.trim().isEmpty()) {
-        UIHelper.shakeError(content, getString(R.string.error_filename));
+        layout.setError(getString(R.string.error_filename));
         return;
       }
 

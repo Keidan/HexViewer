@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.CycleInterpolator;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -85,7 +88,7 @@ public class UIHelper {
    * @param owner   The owner view.
    * @param errText The error text.
    */
-  public static void shakeError(TextView owner, String errText) {
+  public static void shakeError(EditText owner, String errText) {
     TranslateAnimation shake = new TranslateAnimation(0, 10, 0, 0);
     shake.setDuration(500);
     shake.setInterpolator(new CycleInterpolator(5));
@@ -143,7 +146,7 @@ public class UIHelper {
 
 
   public interface DialogPositiveClick {
-    void onClick(AlertDialog dialog, EditText editText);
+    void onClick(AlertDialog dialog, EditText editText, TextInputLayout editTextLayout);
   }
 
   /**
@@ -168,8 +171,28 @@ public class UIHelper {
     final AlertDialog dialog = builder.create();
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);
-    if (et != null)
+    TextInputLayout layout = dialog.findViewById(R.id.tilEditText);
+    if (et != null && layout != null) {
       et.setText(defaultValue);
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et));
+      et.addTextChangedListener(new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+          // nothing to do
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+          layout.setError(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+          // nothing to do
+        }
+      });
+    }
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et, layout));
   }
+
 }

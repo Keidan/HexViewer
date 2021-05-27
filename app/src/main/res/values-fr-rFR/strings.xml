@@ -12,7 +12,8 @@
   <string name="cancel">Annuler</string>
   <string name="on_double_back_exit_text">Appuyez une fois de plus pour sortir !</string>
   <string name="update">Mise \u00E0 jour</string>
-  <string name="update_hint">Texte en hexad\u00E9cimal</string>
+  <string name="update_hint_hex">Texte</string>
+  <string name="update_hint_plain">Texte en clair</string>
   <string name="error_not_supported_in_plain_text">Fonctionnement non pris en charge lors de l\'affichage en texte clair</string>
   <string name="error_entry_format">Format d\'entr\u00E9e non valide !</string>
   <string name="error_filename">Nom de fichier invalide !</string>
@@ -52,4 +53,5 @@
   <string name="settings_pref_summary_plain_row_height">Hauteur des lignes de la liste.</string>
   <string name="settings_pref_title_plain_font_size">Taille de la police</string>
   <string name="settings_pref_summary_plain_font_size">Taille de la police des textes de la liste.</string>
+  <string name="smart_input">Saisie en texte brut</string>
 </resources>
