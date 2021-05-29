@@ -299,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlain.setVisibility(View.GONE);
+      mFile = null;
     }
   }
 
