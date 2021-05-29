@@ -95,6 +95,8 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
   protected void onCancelled() {
     super.onCancelled();
     close();
+    final Activity a = mActivityRef.get();
+    UIHelper.toast(a, a.getString(R.string.operation_canceled));
   }
 
   /**

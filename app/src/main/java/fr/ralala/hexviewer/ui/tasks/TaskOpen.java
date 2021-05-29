@@ -110,6 +110,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   protected void onCancelled() {
     super.onCancelled();
     close();
+    if(mListener != null)
+      mListener.onOpenResult(false);
   }
 
   /**
