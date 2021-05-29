@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     final String[] split = SysHelper.extractHexAndSplit(string);
     final String hex = split[0] + " " + split[1];
-    string = SysHelper.formatBuffer(SysHelper.hexStringToByteArray(hex.replaceAll(" ", "")), null).get(0);
+    string = hex.replaceAll(" ", "");
     /* Dialog creation */
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setCancelable(false)
@@ -418,11 +418,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       source.setText((split[0] + "\n" + split[1]));
     if (result != null) {
       result.setTextColor(ContextCompat.getColor(this, R.color.colorResultSuccess));
-      result.setText(SysHelper.extractString(string));
+      result.setText(SysHelper.hex2bin(string));
     }
 
     if (inputHex != null && inputHexLayout != null) {
-      inputHex.setText(hex);
+      inputHex.setText(hex.trim());
       inputHex.addTextChangedListener(new LineUpdateTextWatcher(this, result, inputHexLayout, mApp));
     }
 

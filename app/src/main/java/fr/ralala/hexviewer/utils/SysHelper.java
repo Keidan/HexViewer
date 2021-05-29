@@ -57,7 +57,7 @@ public class SysHelper {
    */
   public static byte[] hexStringToByteArray(final String s) {
     final int len = s.length();
-    final int arrayLength = len % 2 == 0 ? len : len + 1;
+    final int arrayLength = isEven(len) ? len : len + 1;
     final byte[] data = new byte[arrayLength / 2];
     for (int i = 0; i < len; i += 2) {
       if (i + 1 == len) {
@@ -180,6 +180,27 @@ public class SysHelper {
   }
 
   /**
+   * Converts hex string to a binary string.
+   *
+   * @param hex The hex string.
+   * @return String
+   */
+  public static String hex2bin(final String hex) {
+    final String h = hex.replaceAll(" ", "");
+    int len = h.length();
+    if(len == 0)
+      return "";
+    int max = isEven(len) ? len : len - 1;
+    StringBuilder sb = new StringBuilder();
+    for(int i = 0; i < max; i += 2) {
+      byte b = (byte) ((Character.digit(h.charAt(i), 16) << 4) + Character
+          .digit(h.charAt(i + 1), 16));
+      sb.append((b >= 0x20 && b <= 0x7e) ? (char) b : (char) 0x2e); /* 0x2e = . */
+    }
+    return sb.toString();
+  }
+
+  /**
    * If we get to the half of the line we add an extra space.
    *
    * @param currentIndex   The current index.
@@ -245,6 +266,16 @@ public class SysHelper {
   public static boolean isValidHexLine(final String line) {
     if(line.isEmpty())
       return true;
-    return line.matches("\\p{XDigit}+") && line.length() % 2 == 0 && (line.length() <= (SysHelper.MAX_BY_ROW * 2));
+    return line.matches("\\p{XDigit}+") && isEven(line.length()) && (line.length() <= (SysHelper.MAX_BY_ROW * 2));
+  }
+
+  /**
+   * Test if the number is even or odd.
+   *
+   * @param num The number to test.
+   * @return Returns true if the number is even
+   */
+  public static boolean isEven(final int num) {
+    return (num % 2) == 0;
   }
 }

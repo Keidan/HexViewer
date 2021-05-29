@@ -10,6 +10,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -28,11 +30,15 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class LineUpdateTextWatcher implements TextWatcher {
+  private static final Pattern PATTERN_4HEX = Pattern.compile("(\\p{XDigit}{4})");
   private final Context mContext;
   private final TextView mResult;
   private final TextInputLayout mLayout;
   private final ApplicationCtx mApp;
   private String mNewString = "";
+  private String mOldString = "";
+  private boolean mBetweenDigits = false;
+  private int mStart = 0;
   private boolean mIgnore = false;// indicates if the change was made by the TextWatcher itself.
 
   public LineUpdateTextWatcher(Context context, TextView result, TextInputLayout layout, ApplicationCtx app) {
@@ -58,37 +64,35 @@ public class LineUpdateTextWatcher implements TextWatcher {
     if (mIgnore)
       return;
     mLayout.setError(null);
-    final String str = mNewString;
-    if (str.isEmpty()) {
+    final String strNew = mNewString;
+    final String strOld = mOldString;
+    if (strNew.isEmpty()) {
       mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
       mResult.setText(R.string.empty_value);
+      if (mApp.isSmartInput()) {
+        mIgnore = true; // prevent infinite loop
+        final EditText et = mLayout.getEditText();
+        et.setText("");
+        mIgnore = false; // release, so the TextWatcher start to listen again.
+      }
       return;
     }
-    if (!s.toString().equals(str) && mLayout.getEditText() != null) {
+    if (mApp.isSmartInput() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
       mIgnore = true; // prevent infinite loop
       final EditText et = mLayout.getEditText();
-      int cursorPosition = et.getSelectionStart();
-      et.setText(str);
-      fixCursorPosition(cursorPosition, et, str.length());
+      et.setText(strNew);
+      fixCursorPosition(et, strOld, strNew);
       mIgnore = false; // release, so the TextWatcher start to listen again.
     }
 
-    final String validate = str.trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    String string;
-    if (validate.length() % 2 == 0 || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
+    final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
+    if (SysHelper.isEven(validate.length()) || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
       mResult.setTextColor(ContextCompat.getColor(mContext,
           validate.length() > (SysHelper.MAX_BY_ROW * 2) ? R.color.colorResultError : R.color.colorResultSuccess));
-      final byte[] buf = SysHelper.hexStringToByteArray(validate);
-      string = SysHelper.formatBuffer(buf, null).get(0);
     } else {
       mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
-      if (validate.length() == 1) {
-        string = "                                                   ";
-      } else {
-        string = formatText(validate.substring(0, validate.length() - 1));
-      }
     }
-    mResult.setText(SysHelper.extractString(string));
+    mResult.setText(SysHelper.hex2bin(validate));
     if (!SysHelper.isValidHexLine(validate)) {
       mLayout.setError(mContext.getString(R.string.error_entry_format));
     }
@@ -104,7 +108,11 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param after int
    */
   public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    // nothing to do
+    if (mIgnore) /* avoid unnecessary treatments */
+      return;
+    int len = s.length();
+    mBetweenDigits = (len > 3 && s.charAt(Math.min(start + 1, len - 1)) != ' ' && s.charAt(Math.max(0, start - 1)) == ' ');
+    mOldString = s.toString();
   }
 
   /**
@@ -117,16 +125,28 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param count  int
    */
   public void onTextChanged(CharSequence s, int start, int before, int count) {
+    if (mIgnore) /* avoid unnecessary treatments */
+      return;
     mNewString = s.toString();
-    //Log.e(getClass().getSimpleName(), "s: " + s.toString() + ", start: " + start + ", count: " + count + ", before: " + before);
     if (mApp.isSmartInput()) {
       if (count == 0) { /* remove */
-        mNewString = mNewString.replaceAll("(^\\p{XDigit} | \\p{XDigit} | \\p{XDigit}$| {2})", " ").trim();
+        mStart = start + before;
+        /* remove one space */
+        Matcher m = PATTERN_4HEX.matcher(mNewString);
+        if (m.find()) {
+          String grp = m.group(1);
+          mNewString = mNewString.replace(grp, grp.substring(2)).replaceAll(" {2}", " ");
+        } else
+          /* remove one char */
+          mNewString = mNewString.replaceAll("(^\\p{XDigit} | \\p{XDigit} | \\p{XDigit}$| {2}|^\\p{XDigit}$)", " ").trim();
+        if (mNewString.length() < 2)
+          mNewString = "";
       } else {  /* add */
-        mNewString = mNewString.trim();
+        mStart = start == 0 ? 0 : start + 1;
+        //mNewString = mNewString.trim();
         final String notChangedStart = mNewString.substring(0, start);
-        final String notChangedEnd = mNewString.substring(start + count);
-        final String newChange = mNewString.substring(start, start + count);
+        final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
+        final String newChange = mNewString.substring(start, Math.min(start + count, mNewString.length()));
         final String newChangeHex = SysHelper.extractHex(SysHelper.formatBuffer(newChange.getBytes(), count, null).get(0));
         mNewString = formatText((notChangedStart + newChangeHex + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
       }
@@ -151,16 +171,19 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   /**
    * Update of the cursor position.
-   *
-   * @param prevPosition  Previous position.
-   * @param et            EditText
-   * @param newTextLength New text length.
    */
-  private void fixCursorPosition(final int prevPosition, final @NonNull EditText et, final int newTextLength) {
-    /* fix the cursor position */
-    if (newTextLength < prevPosition) {
-      et.setSelection(prevPosition - (mApp.isSmartInput() ? 2 : 1));
-    } else
-      et.setSelection(prevPosition + (mApp.isSmartInput() ? 2 : 1));
+  private void fixCursorPosition(final @NonNull EditText et, final String strOld, final String strNew) {
+    final int newLen = strNew.length();
+    final int oldLen = strOld.length();
+    final int delta = Math.abs(newLen - oldLen);
+    int pos;
+    if (newLen > oldLen) {
+      pos = Math.abs(mStart + delta);
+      if(mBetweenDigits) pos--;
+    } else {
+      pos = Math.abs(mStart - delta);
+      if(mBetweenDigits) pos++;
+    }
+    et.setSelection(Math.max(0, Math.min(pos, newLen)));
   }
 }
