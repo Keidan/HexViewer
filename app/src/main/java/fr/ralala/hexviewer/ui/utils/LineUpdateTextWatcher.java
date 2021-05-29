@@ -85,15 +85,21 @@ public class LineUpdateTextWatcher implements TextWatcher {
       mIgnore = false; // release, so the TextWatcher start to listen again.
     }
 
+    boolean isError = false; /* true = error, false = warning */
     final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    if (SysHelper.isEven(validate.length()) || validate.length() > (SysHelper.MAX_BY_ROW * 2)) {
-      mResult.setTextColor(ContextCompat.getColor(mContext,
-          validate.length() > (SysHelper.MAX_BY_ROW * 2) ? R.color.colorResultError : R.color.colorResultSuccess));
-    } else {
+    final boolean validated = SysHelper.isValidHexLine(validate);
+    if(!SysHelper.isEven(validate.length()) && validate.matches("\\p{XDigit}+"))
       mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
+    else if(!validated) {
+      isError = true;
+      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultError));
     }
+    else
+      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultSuccess));
+
     mResult.setText(SysHelper.hex2bin(validate));
-    if (!SysHelper.isValidHexLine(validate)) {
+    if (!validated) {
+      mLayout.setErrorTextAppearance(isError ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
       mLayout.setError(mContext.getString(R.string.error_entry_format));
     }
   }

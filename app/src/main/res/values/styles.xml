@@ -51,4 +51,15 @@
     <item name="android:textColor">@color/text_color_enabled</item>
     <item name="buttonTint">@color/accent_color_enabled</item>
   </style>
+
+  <style name="AppTheme.ErrorTextAppearance" parent="@android:style/TextAppearance">
+    <!-- Customize your theme here. -->
+    <item name="android:textColor">@color/colorResultError</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+  <style name="AppTheme.WarningTextAppearance" parent="@android:style/TextAppearance">
+    <!-- Customize your theme here. -->
+    <item name="android:textColor">@color/colorResultWarning</item>
+    <item name="android:textSize">12sp</item>
+  </style>
 </resources>
