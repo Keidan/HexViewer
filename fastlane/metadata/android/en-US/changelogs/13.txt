@@ -1,0 +1,4 @@
+Bug fixes related to the modification of a line.
+Bug fixes related to the cancellation of the opening or saving of a file.
+It's now possible to edit a hexadecimal line directly by entering a plain text (the ASCII -> Hexadecimal mapping will be done automatically by the application).
+CAUTION: With this new mode, there is no detection of key repetition (e.g. holding down the delete key).
