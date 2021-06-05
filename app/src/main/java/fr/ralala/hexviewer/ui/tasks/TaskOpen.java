@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.net.Uri;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -15,6 +14,7 @@ import java.util.List;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.Payload;
 
@@ -129,7 +129,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
       final Uri uri = values[0];
       /* Size + stream */
       final ContentResolver cr = activity.getContentResolver();
-      mTotalSize = getFileSize(cr, uri);
+      mTotalSize = FileHelper.getFileSize(cr, uri);
       publishProgress(0L);
       mInputStream = cr.openInputStream(uri);
       if (mInputStream != null) {
@@ -154,6 +154,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
         if(result.exception == null) {
           result.listPlain = payload.getPlain();
           result.list = list;
+          app.addRecentlyOpened(uri.toString());
         }
       }
     } catch (final Exception e) {
@@ -164,31 +165,4 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
     return result;
   }
 
-  /**
-   * Returns the file size.
-   * @param cr ContentResolver
-   * @param uri Uri
-   * @return long
-   */
-  private static long getFileSize(ContentResolver cr, Uri uri) {
-    ParcelFileDescriptor pfd = null;
-    long size = 0L;
-    try {
-      pfd = cr.openFileDescriptor(uri, "r");
-      if(pfd != null) {
-        size = pfd.getStatSize();
-        pfd.close();
-      }
-    } catch (IOException e) {
-      Log.e(TAG, "Exception: " + e.getMessage(), e);
-    } finally {
-      if(pfd != null)
-        try {
-          pfd.close();
-        } catch (IOException e) {
-          Log.e(TAG, "Exception: " + e.getMessage(), e);
-        }
-    }
-    return size;
-  }
 }

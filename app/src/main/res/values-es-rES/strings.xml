@@ -7,6 +7,7 @@
   <string name="action_save_title">Sauvegarder</string>
   <string name="action_close_title">Cerrar</string>
   <string name="action_settings_title">Ajustes</string>
+  <string name="action_recently_open_title">Abierta reciente</string>
   <string name="loading">Cargando&#8230;</string>
   <string name="saving">Guardando&#8230;</string>
   <string name="cancel">Cancelar</string>
@@ -54,4 +55,6 @@
   <string name="settings_pref_title_plain_font_size">Tamaño de letra</string>
   <string name="settings_pref_summary_plain_font_size">Tamaño de letra de los textos de la lista.</string>
   <string name="smart_input">Entrada de texto simple</string>
+  <string name="error_file_not_found">No se ha encontrado el archivo %1$s</string>
+  <string name="error_file_permission">No se ha concedido permiso para el archivo %1$s</string>
 </resources>

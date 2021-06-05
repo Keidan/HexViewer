@@ -1,5 +1,13 @@
 package fr.ralala.hexviewer.utils;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
+
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -188,11 +196,11 @@ public class SysHelper {
   public static String hex2bin(final String hex) {
     final String h = hex.replaceAll(" ", "");
     int len = h.length();
-    if(len == 0)
+    if (len == 0)
       return "";
     int max = isEven(len) ? len : len - 1;
     StringBuilder sb = new StringBuilder();
-    for(int i = 0; i < max; i += 2) {
+    for (int i = 0; i < max; i += 2) {
       byte b = (byte) ((Character.digit(h.charAt(i), 16) << 4) + Character
           .digit(h.charAt(i + 1), 16));
       sb.append((b >= 0x20 && b <= 0x7e) ? (char) b : (char) 0x2e); /* 0x2e = . */
@@ -262,9 +270,8 @@ public class SysHelper {
    * @param line The line to test
    * @return True if the line is valid
    */
-  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public static boolean isValidHexLine(final String line) {
-    if(line.isEmpty())
+    if (line.isEmpty())
       return true;
     return line.matches("\\p{XDigit}+") && isEven(line.length()) && (line.length() <= (SysHelper.MAX_BY_ROW * 2));
   }
@@ -278,4 +285,6 @@ public class SysHelper {
   public static boolean isEven(final int num) {
     return (num % 2) == 0;
   }
+
+
 }

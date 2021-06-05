@@ -7,6 +7,7 @@
     <string name="action_save_title">Save</string>
     <string name="action_close_title">Close</string>
     <string name="action_settings_title">Settings</string>
+    <string name="action_recently_open_title">Recently opened</string>
     <string name="loading">Loading&#8230;</string>
     <string name="saving">Saving&#8230;</string>
     <string name="cancel">Cancel</string>
@@ -64,4 +65,6 @@
     <string name="settings_pref_title_plain_font_size">Font size</string>
     <string name="settings_pref_summary_plain_font_size">Font size of the texts in the list.</string>
     <string name="smart_input">Plain text input</string>
+    <string name="error_file_not_found">The file %1$s was not found</string>
+    <string name="error_file_permission">No permission has been granted for file %1$s</string>
 </resources>

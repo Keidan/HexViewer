@@ -3,6 +3,10 @@ package fr.ralala.hexviewer;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import androidx.preference.PreferenceManager;
 import fr.ralala.hexviewer.utils.Payload;
 
@@ -26,6 +30,7 @@ public class ApplicationCtx extends Application {
   public static final String CFG_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAuto";
   public static final String CFG_PLAIN_FONT_SIZE = "plainFontSize";
   public static final String CFG_SMART_INPUT = "smartInput";
+  public static final String CFG_RECENTLY_OPEN = "recentlyOpen";
   private final Payload mPayload;
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
@@ -37,6 +42,7 @@ public class ApplicationCtx extends Application {
   private boolean mDefaultPlainRowHeightAuto;
   private String mDefaultPlainFontSize;
   private boolean mDefaultSmartInput;
+  private List<String> mRecentlyOpened;
 
   /**
    * Constructs the application context.
@@ -59,6 +65,7 @@ public class ApplicationCtx extends Application {
     mDefaultPlainRowHeight = getString(R.string.default_plain_row_height);
     mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
+    mRecentlyOpened = getRecentlyOpened();
   }
 
   /**
@@ -71,6 +78,58 @@ public class ApplicationCtx extends Application {
   }
 
   /* ---------- Settings ---------- */
+
+  /**
+   * Adds a new element to the list.
+   *
+   * @param recent The new element
+   */
+  public void addRecentlyOpened(String recent) {
+    mRecentlyOpened.remove(recent);
+    mRecentlyOpened.add(recent);
+    setRecentlyOpened(mRecentlyOpened);
+  }
+
+  /**
+   * Removes an existing element from the list.
+   *
+   * @param recent The new element
+   */
+  public void removeRecentlyOpened(String recent) {
+    mRecentlyOpened.remove(recent);
+    setRecentlyOpened(mRecentlyOpened);
+  }
+
+  /**
+   * Returns the list of recently opened files.
+   *
+   * @return Set<String>
+   */
+  public List<String> getRecentlyOpened() {
+    final List<String> uris = new ArrayList<>();
+    final String content = mSharedPreferences.getString(CFG_RECENTLY_OPEN, "");
+    final String[] split = content.split("\\|");
+    if(split.length != 0 && !split[0].equals(""))
+      Collections.addAll(uris, split);
+    return uris;
+  }
+
+  /**
+   * Sets the list of recently opened files.
+   *
+   * @param list The list
+   */
+  private void setRecentlyOpened(List<String> list) {
+    StringBuilder sb = new StringBuilder();
+    for(int i = 0; i < list.size(); i++) {
+      sb.append(list.get(i));
+      if(i != list.size() - 1)
+        sb.append("|");
+    }
+    SharedPreferences.Editor e = mSharedPreferences.edit();
+    e.putString(CFG_RECENTLY_OPEN, sb.toString());
+    e.apply();
+  }
 
   /**
    * Test if smart input is enabled or not.

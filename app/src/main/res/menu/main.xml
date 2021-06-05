@@ -15,6 +15,10 @@
       android:title="@string/action_open_title"
       app:showAsAction="never" />
     <item
+      android:id="@+id/action_recently_open"
+      android:title="@string/action_recently_open_title"
+      app:showAsAction="never" />
+    <item
       android:id="@+id/action_plain_text"
       android:checkable="true"
       android:title="@string/action_plain_text_title"

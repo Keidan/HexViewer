@@ -7,6 +7,7 @@
   <string name="action_save_title">保存</string>
   <string name="action_close_title">关闭</string>
   <string name="action_settings_title">设置</string>
+  <string name="action_recently_open_title">最近开业</string>
   <string name="loading">正加载&#8230;</string>
   <string name="saving">正保存&#8230;</string>
   <string name="cancel">取消</string>
@@ -54,4 +55,6 @@
   <string name="settings_pref_title_plain_font_size">字体大小</string>
   <string name="settings_pref_summary_plain_font_size">列表中文本的字体大小。</string>
   <string name="smart_input">纯文本输入</string>
+  <string name="error_file_not_found">未找到文件%1$s</string>
+  <string name="error_file_permission">未对文件%1$s给予许可</string>
 </resources>
