@@ -98,7 +98,7 @@ public class FileHelper {
    * @param readPermission True = read, false = write.
    * @return False if permission is not granted for this Uri.
    */
-  private static boolean hasUriPermission(final Context c, final Uri uri, boolean readPermission) {
+  public static boolean hasUriPermission(final Context c, final Uri uri, boolean readPermission) {
     final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
     boolean found = false;
     for(UriPermission up : list) {

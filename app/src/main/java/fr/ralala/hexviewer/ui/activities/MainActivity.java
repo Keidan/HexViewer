@@ -397,7 +397,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     builder.setAdapter(setArrayAdapter, (dial, which) -> {
       RecentlyOpenListArrayAdapter.UriData item = setArrayAdapter.getItem(which);
       if(FileHelper.isFileExists(getContentResolver(), item.uri)) {
-        processFileOpen(item.uri);
+        if(FileHelper.hasUriPermission(this, item.uri, true))
+          processFileOpen(item.uri);
+        else {
+          UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(item.uri)));
+          setArrayAdapter.removeItem(which);
+          mApp.removeRecentlyOpened(item.uri.toString());
+        }
       } else {
         UIHelper.toast(this, String.format(getString(R.string.error_file_not_found), item.value));
         setArrayAdapter.removeItem(which);
