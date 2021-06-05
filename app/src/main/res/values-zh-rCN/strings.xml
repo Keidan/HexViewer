@@ -13,7 +13,7 @@
   <string name="cancel">取消</string>
   <string name="on_double_back_exit_text">再按一次退出！</string>
   <string name="update">更新</string>
-  <string name="update_hint">文本</string>
+  <string name="update_hint_hex">文本</string>
   <string name="update_hint_plain">纯文本</string>
   <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
   <string name="error_entry_format">无效的条目格式！</string>
