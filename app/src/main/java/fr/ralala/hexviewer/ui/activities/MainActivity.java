@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,42 +10,35 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.RecentlyOpenListArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
-import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -63,8 +57,6 @@ import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserCon
  * ******************************************************************************
  */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener, TaskOpen.OpenResultListener {
-  private static final int FILE_OPEN_CODE = 101;
-  private static final int FILE_SAVE_CODE = 102;
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
@@ -81,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private MenuItem mCloseMenu = null;
   private SearchView mSearchView = null;
   private MenuItem mRecentlyOpen = null;
+  private String mSearchQuery = "";
+  private ActivityResultLauncher<Intent> activityResultLauncherOpen;
+  private ActivityResultLauncher<Intent> activityResultLauncherSave;
+  private ActivityResultLauncher<Intent> activityResultLauncherLineUpdate;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -142,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Manifest.permission.READ_EXTERNAL_STORAGE
     }, 1);
 
+    registerOpen();
+    registerSave();
+    registerLineUpdate();
+
     handleIntent(getIntent());
   }
 
@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void handleIntent(Intent intent) {
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-      String query = intent.getStringExtra(SearchManager.QUERY);
-      doSearch(query == null ? "" : query);
+      mSearchQuery = intent.getStringExtra(SearchManager.QUERY);
+      doSearch(mSearchQuery == null ? "" : mSearchQuery);
     } else {
       if (intent.getData() != null) {
         Uri uri = getIntent().getData();
@@ -179,38 +179,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
       }
     }
-  }
-
-  /**
-   * Called when the activity getsa result after a call to the startActivityForResult method.
-   *
-   * @param requestCode The request code.
-   * @param resultCode  The result code.
-   * @param data        The result data.
-   */
-  @Override
-  protected void onActivityResult(final int requestCode, final int resultCode,
-                                  final Intent data) {
-    switch (requestCode) {
-      case FILE_OPEN_CODE:
-        if (resultCode == RESULT_OK) {
-          if(FileHelper.takeUriPermissions(this, data.getData(), true)) {
-            processFileOpen(data);
-          }
-          else
-            UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
-        }
-        break;
-      case FILE_SAVE_CODE:
-        if (resultCode == RESULT_OK) {
-          FileHelper.takeUriPermissions(this, data.getData(), false);
-          processFileSave(data);
-        }
-        break;
-      default:
-        break;
-    }
-    super.onActivityResult(requestCode, resultCode, data);
   }
 
   /**
@@ -312,7 +280,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Sets the visibility of the menu item.
-   * @param menu MenuItem
+   *
+   * @param menu    MenuItem
    * @param visible If true then the item will be visible; if false it is hidden.
    */
   private void setMenuVisible(final MenuItem menu, final boolean visible) {
@@ -322,7 +291,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Sets whether the menu item is enabled.
-   * @param menu MenuItem
+   *
+   * @param menu    MenuItem
    * @param enabled If true then the item will be invokable; if false it is won't be invokable.
    */
   private void setMenuEnabled(final MenuItem menu, final boolean enabled) {
@@ -365,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_open) {
-      UIHelper.openFilePickerInFileSelectionMode(this, mMainLayout, FILE_OPEN_CODE);
+      UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout);
       return true;
     } else if (id == R.id.action_recently_open) {
       displayRecentlyOpen();
@@ -375,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         UIHelper.toast(this, getString(R.string.open_a_file_before));
         return true;
       }
-      UIHelper.openFilePickerInDirectorSelectionMode(this, FILE_SAVE_CODE);
+      UIHelper.openFilePickerInDirectorSelectionMode(activityResultLauncherSave);
       return true;
     } else if (id == R.id.action_plain_text) {
       /* to hex */
@@ -412,8 +382,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     setArrayAdapter.addAll(mApp.getRecentlyOpened());
     builder.setAdapter(setArrayAdapter, (dial, which) -> {
       RecentlyOpenListArrayAdapter.UriData item = setArrayAdapter.getItem(which);
-      if(FileHelper.isFileExists(getContentResolver(), item.uri)) {
-        if(FileHelper.hasUriPermission(this, item.uri, true))
+      if (FileHelper.isFileExists(getContentResolver(), item.uri)) {
+        if (FileHelper.hasUriPermission(this, item.uri, true))
           processFileOpen(item.uri);
         else {
           UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(item.uri)));
@@ -450,83 +420,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return false;
     }
-
-    final String[] split = SysHelper.extractHexAndSplit(string);
-    final String hex = split[0] + " " + split[1];
-    string = hex.replaceAll(" ", "");
-    /* Dialog creation */
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setCancelable(false)
-        .setIcon(R.mipmap.ic_launcher)
-        .setTitle(getString(R.string.update))
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
-        });
-    LayoutInflater factory = LayoutInflater.from(this);
-    builder.setView(factory.inflate(R.layout.content_dialog_update_text, null));
-    final AlertDialog dialog = builder.create();
-    dialog.show();
-    /* default values */
-    TextView source = dialog.findViewById(R.id.tvSource);
-    final TextView result = dialog.findViewById(R.id.tvResult);
-    final TextInputEditText inputHex = dialog.findViewById(R.id.etInputHex);
-    final TextInputLayout inputHexLayout = dialog.findViewById(R.id.tilInputHex);
-    final AppCompatCheckBox chkSmartInput = dialog.findViewById(R.id.chkSmartInput);
-
-    if (chkSmartInput != null) {
-      chkSmartInput.setChecked(mApp.isSmartInput());
-      chkSmartInput.setOnCheckedChangeListener((comp, isChecked) -> mApp.setSmartInput(isChecked));
-    }
-    if (source != null)
-      source.setText((split[0] + "\n" + split[1]));
-    if (result != null) {
-      result.setTextColor(ContextCompat.getColor(this, R.color.colorResultSuccess));
-      result.setText(SysHelper.hex2bin(string));
-    }
-
-    if (inputHex != null && inputHexLayout != null) {
-      inputHex.setText(hex.trim());
-      inputHex.addTextChangedListener(new LineUpdateTextWatcher(this, result, inputHexLayout, mApp));
-    }
-
-    /* main action */
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
-      if (inputHex != null && inputHexLayout != null) {
-        if(validateDialog(hex.replaceAll(" ", ""), inputHex, inputHexLayout, position))
-          dialog.dismiss();
-      } else
-        dialog.dismiss();
-    });
-    return false;
-  }
-
-  /**
-   * Validation of the modification.
-   *
-   * @param reference The reference bytes.
-   * @param input     Input EditText.
-   * @param inputLayout     Input EditText layout.
-   * @param position  ListView position.
-   * @return false on error
-   */
-  private boolean validateDialog(final String reference, final EditText input, final TextInputLayout inputLayout, final int position) {
-    final String validate = input.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    if (!SysHelper.isValidHexLine(validate)) {
-      inputLayout.setError(getString(R.string.error_entry_format));
-      return false;
-    }
-    final byte[] buf = SysHelper.hexStringToByteArray(validate);
-    final byte[] ref = SysHelper.hexStringToByteArray(reference);
-    if (Arrays.equals(ref, buf)) {
-      /* nothing to do */
-      return true;
-    }
-    mApp.getPayload().update(position, buf);
-    List<String> li = SysHelper.formatBuffer(buf, null);
-    if (li.isEmpty())
-      mAdapterHex.removeItem(position);
-    else
-      mAdapterHex.setItem(position, li.get(0));
+    LineUpdateActivity.startActivity(this, activityResultLauncherLineUpdate, string, mFile, position);
     return true;
   }
 
@@ -547,6 +441,85 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       }
       mLastBackPressed = System.currentTimeMillis();
     }
+  }
+
+
+  /**
+   * Registers result launcher for the activity for opening a file.
+   */
+  private void registerOpen() {
+    activityResultLauncherOpen = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+          if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            if (data != null) {
+              if (FileHelper.takeUriPermissions(this, data.getData(), true)) {
+                processFileOpen(data);
+              } else
+                UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
+            } else
+              Log.e(getClass().getSimpleName(), "Null data!!!");
+          }
+        });
+  }
+
+
+  /**
+   * Registers result launcher for the activity for saving a file.
+   */
+  private void registerSave() {
+    activityResultLauncherSave = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+          if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            if (data != null) {
+              FileHelper.takeUriPermissions(MainActivity.this, data.getData(), false);
+              processFileSave(data);
+            } else
+              Log.e(getClass().getSimpleName(), "Null data!!!");
+          }
+        });
+  }
+
+  /**
+   * Registers result launcher for the activity for line update.
+   */
+  private void registerLineUpdate() {
+    activityResultLauncherLineUpdate = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+          if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            if (data != null) {
+              Bundle bundle = data.getExtras();
+              String refString = bundle.getString(LineUpdateActivity.RESULT_REFERENCE_STRING);
+              String newString = bundle.getString(LineUpdateActivity.RESULT_NEW_STRING);
+              int position = bundle.getInt(LineUpdateActivity.RESULT_POSITION);
+
+              final byte[] buf = SysHelper.hexStringToByteArray(newString);
+              final byte[] ref = SysHelper.hexStringToByteArray(refString);
+              if (Arrays.equals(ref, buf)) {
+                /* nothing to do */
+                return;
+              }
+              mApp.getPayload().update(position, buf);
+              List<String> li = SysHelper.formatBuffer(buf, null);
+              if (li.isEmpty())
+                mAdapterHex.removeItem(position);
+              else {
+                String query = mSearchQuery;
+                if (!query.isEmpty())
+                  doSearch("");
+                mAdapterHex.setItem(position, li);
+                if (!query.isEmpty())
+                  doSearch(mSearchQuery);
+              }
+            } else
+              Log.e(getClass().getSimpleName(), "Null data!!!");
+          }
+        });
   }
 
   /*-------------------------------------------*/

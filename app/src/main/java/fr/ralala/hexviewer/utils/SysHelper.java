@@ -249,13 +249,16 @@ public class SysHelper {
   /**
    * Tests if the hexadecimal line is valid or not.
    *
-   * @param line The line to test
+   * @param line       The line to test
+   * @param testLength Tests the length.
    * @return True if the line is valid
    */
-  public static boolean isValidHexLine(final String line) {
+  public static boolean isValidHexLine(final String line, final boolean testLength) {
     if (line.isEmpty())
       return true;
-    return line.matches("\\p{XDigit}+") && isEven(line.length()) && (line.length() <= (SysHelper.MAX_BY_ROW * 2));
+    final boolean isHexAndEven = line.matches("\\p{XDigit}+") && isEven(line.length());
+    final boolean isValidLength = !testLength || line.length() <= (SysHelper.MAX_BY_ROW * 2);
+    return isHexAndEven && isValidLength;
   }
 
   /**

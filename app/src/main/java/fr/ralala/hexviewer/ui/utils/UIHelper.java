@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
@@ -41,32 +41,31 @@ public class UIHelper {
   /**
    * Opens the file picker in directory selection mode.
    *
-   * @param a           Activity context.
-   * @param requestCode Request code used with startActivityForResult
+   * @param activityResultLauncher Activity Result Launcher.
    */
-  public static void openFilePickerInDirectorSelectionMode(Activity a, final int requestCode) {
-    a.startActivityForResult(FileHelper.prepareForOpenDirectory(), requestCode);
+  public static void openFilePickerInDirectorSelectionMode(final ActivityResultLauncher<Intent> activityResultLauncher) {
+    activityResultLauncher.launch(FileHelper.prepareForOpenDirectory());
   }
 
   /**
    * Opens the file picker in file selection mode.
    *
-   * @param a              Activity context.
-   * @param snackBarLayout Layout used to attach the snackbar.
-   * @param requestCode    Request code used with startActivityForResult
+   * @param c                      Android context.
+   * @param activityResultLauncher Activity Result Launcher.
+   * @param snackBarLayout         Layout used to attach the snackbar.
    */
-  public static void openFilePickerInFileSelectionMode(Activity a, final View snackBarLayout, final int requestCode) {
+  public static void openFilePickerInFileSelectionMode(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final View snackBarLayout) {
     try {
-      a.startActivityForResult(
-          Intent.createChooser(FileHelper.prepareForOpenFile(), a.getString(R.string.select_file_to_open)), requestCode);
+      activityResultLauncher.launch(
+          Intent.createChooser(FileHelper.prepareForOpenFile(), c.getString(R.string.select_file_to_open)));
     } catch (android.content.ActivityNotFoundException ex) {
-      Snackbar customSnackBar = Snackbar.make(snackBarLayout, a.getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG);
-      customSnackBar.setAction(a.getString(R.string.install), (v) -> {
-        final String search = a.getString(R.string.file_manager_keyword);
+      Snackbar customSnackBar = Snackbar.make(snackBarLayout, c.getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG);
+      customSnackBar.setAction(c.getString(R.string.install), (v) -> {
+        final String search = c.getString(R.string.file_manager_keyword);
         try {
-          a.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=" + search + "&c=apps")));
+          c.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=" + search + "&c=apps")));
         } catch (android.content.ActivityNotFoundException ignore) {
-          a.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=" + search + "&c=apps")));
+          c.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=" + search + "&c=apps")));
         }
       });
       customSnackBar.show();
@@ -185,5 +184,4 @@ public class UIHelper {
     }
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et, layout));
   }
-
 }

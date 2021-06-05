@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingStart="10dp"
+  android:paddingEnd="10dp">
+
+
+  <TextView
+    android:id="@+id/tvLabelSource"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:text="@string/source"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"  />
+
+  <TextView
+    android:id="@+id/tvSource"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/tvLabelSource"
+    android:text="@null"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:textSize="16sp"
+    android:typeface="monospace"/>
+
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/chkSmartInput"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/tvSource"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:text="@string/smart_input"/>
+
+  <TextView
+    android:id="@+id/tvLabelResult"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_below="@id/chkSmartInput"
+    android:text="@string/result"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"/>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/tvLabelResult"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+      android:id="@+id/nestedScrollView"
+      android:layout_height="0dp"
+      android:layout_weight="0.3"
+      android:layout_width="match_parent"
+      android:background="@drawable/border">
+
+      <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="12sp"
+        android:typeface="monospace"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"/>
+
+    </androidx.core.widget.NestedScrollView>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilInputHex"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/AppTheme.ErrorTextAppearance">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/etInputHex"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/update_hint_hex"
+          android:textSize="12sp"
+          android:inputType="textMultiLine"
+          android:typeface="monospace"
+          android:gravity="top"
+          android:layout_marginBottom="20dp"/>
+      </com.google.android.material.textfield.TextInputLayout>
+  </LinearLayout>
+
+
+</RelativeLayout>

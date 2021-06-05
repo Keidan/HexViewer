@@ -16,7 +16,6 @@
   <string name="update_hint_hex">Texto</string>
   <string name="update_hint_plain">Texto sin codificar</string>
   <string name="error_not_supported_in_plain_text">La operación en texto sin codificar no está admitida</string>
-  <string name="error_entry_format">¡La entrada de formato no es válido!</string>
   <string name="error_filename">¡Error de nombre de archivo!</string>
   <string name="save_success">Guardado completado</string>
   <string name="operation_canceled">Operación cancelada</string>

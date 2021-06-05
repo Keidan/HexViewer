@@ -72,7 +72,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
       if (mApp.isSmartInput()) {
         mIgnore = true; // prevent infinite loop
         final EditText et = mLayout.getEditText();
-        et.setText("");
+        if(et != null)
+          et.setText("");
         mIgnore = false; // release, so the TextWatcher start to listen again.
       }
       return;
@@ -87,7 +88,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
     boolean isError = false; /* true = error, false = warning */
     final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    final boolean validated = SysHelper.isValidHexLine(validate);
+    final boolean validated = SysHelper.isValidHexLine(validate, false);
     if(!SysHelper.isEven(validate.length()) && validate.matches("\\p{XDigit}+"))
       mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
     else if(!validated) {
@@ -100,7 +101,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     mResult.setText(SysHelper.hex2bin(validate));
     if (!validated) {
       mLayout.setErrorTextAppearance(isError ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
-      mLayout.setError(mContext.getString(R.string.error_entry_format));
+      mLayout.setError(" "); /* only for the color */
     }
   }
 
@@ -141,7 +142,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
         Matcher m = PATTERN_4HEX.matcher(mNewString);
         if (m.find()) {
           String grp = m.group(1);
-          mNewString = mNewString.replace(grp, grp.substring(2)).replaceAll(" {2}", " ");
+          if(grp != null)
+            mNewString = mNewString.replace(grp, grp.substring(2)).replaceAll(" {2}", " ");
         } else
           /* remove one char */
           mNewString = mNewString.replaceAll("(^\\p{XDigit} | \\p{XDigit} | \\p{XDigit}$| {2}|^\\p{XDigit}$)", " ").trim();

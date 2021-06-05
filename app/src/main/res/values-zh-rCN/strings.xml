@@ -16,7 +16,6 @@
   <string name="update_hint_hex">文本</string>
   <string name="update_hint_plain">纯文本</string>
   <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
-  <string name="error_entry_format">无效的条目格式！</string>
   <string name="error_filename">无效的文件名！</string>
   <string name="save_success">保存成功。</string>
   <string name="operation_canceled">已取消操作</string>

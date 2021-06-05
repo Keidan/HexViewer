@@ -89,11 +89,43 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param position Position of the item.
    * @param t        The data.
    */
-  public void setItem(final int position, final String t) {
-    FilterData fd = mFilteredList.get(position);
-    fd.value = t;
-    fd.updated = true;
-    mEntryList.set(fd.origin, t);
+  public void setItem(final int position, final List<String> t) {
+    int size = t.size();
+    if(size == 1) {
+      FilterData fd = mFilteredList.get(position);
+      fd.value = t.get(0);
+      fd.updated = true;
+      mEntryList.set(fd.origin, t.get(0));
+    } else {
+      /* first we move the existing indexes - filtered */
+      for(int i = position + 1; i < mFilteredList.size(); i++)
+        mFilteredList.get(i).origin += size;
+
+      /* Then we modify the existing element */
+      int origin = mFilteredList.get(position).origin + 1;
+      FilterData fd = mFilteredList.get(position);
+      final String newVal = t.get(0);
+      if(!fd.value.equals(newVal)) {
+        fd.value = newVal;
+        fd.updated = true;
+        mEntryList.set(fd.origin, t.get(0));
+      }
+
+      /* finally we add the elements */
+      for(int i = 1; i < size; i++) {
+        String value = t.get(i);
+        fd = new FilterData(value, origin + i);
+        fd.updated = true;
+        if(origin + i < mEntryList.size())
+          mEntryList.add(origin + i, t.get(i));
+        else
+          mEntryList.add(t.get(i));
+        if(position + i < mFilteredList.size())
+          mFilteredList.add(position + i, fd);
+        else
+          mFilteredList.add(fd);
+      }
+    }
     super.notifyDataSetChanged();
   }
 
@@ -255,7 +287,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   private static class FilterData {
     private String value;
-    private final int origin;
+    private int origin;
     private boolean updated = false;
 
     private FilterData(String value, int origin) {

@@ -16,7 +16,6 @@
   <string name="update_hint_hex">Texte</string>
   <string name="update_hint_plain">Texte en clair</string>
   <string name="error_not_supported_in_plain_text">Fonctionnement non pris en charge lors de l\'affichage en texte clair</string>
-  <string name="error_entry_format">Format d\'entrée non valide !</string>
   <string name="error_filename">Nom de fichier invalide !</string>
   <string name="save_success">Sauvegarde réussie</string>
   <string name="operation_canceled">Opération annulée</string>
