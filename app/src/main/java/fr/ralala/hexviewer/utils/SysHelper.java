@@ -1,13 +1,5 @@
 package fr.ralala.hexviewer.utils;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
-
-import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -100,16 +92,6 @@ public class SysHelper {
   public static String extractHex(final String string) {
     final String[] split = extractHexAndSplit(string);
     return (split[0] + " " + split[1]).trim();
-  }
-
-  /**
-   * Extract the string part of a string formatted with the formatBuffer function.
-   *
-   * @param string The hex string.
-   * @return String
-   */
-  public static String extractString(final String string) {
-    return string.substring(50).trim();
   }
 
   /**

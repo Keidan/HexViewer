@@ -102,11 +102,9 @@ public class FileHelper {
     final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
     boolean found = false;
     for(UriPermission up : list) {
-      if(up.getUri().equals(uri)) {
-        if((up.isReadPermission() && readPermission) || (up.isWritePermission() && !readPermission)) {
-          found = true;
-          break;
-        }
+      if(up.getUri().equals(uri) && (up.isReadPermission() && readPermission) || (up.isWritePermission() && !readPermission)) {
+        found = true;
+        break;
       }
     }
     return found;

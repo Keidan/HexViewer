@@ -284,18 +284,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onOpenResult(boolean success) {
     boolean checked = false;
-    if (mSearchMenu != null)
-      mSearchMenu.setVisible(success);
+    setMenuVisible(mSearchMenu, success);
     if (mPlainMenu != null) {
       checked = mPlainMenu.isChecked();
       mPlainMenu.setEnabled(success);
     }
-    if (mSaveMenu != null)
-      mSaveMenu.setEnabled(success);
-    if (mCloseMenu != null)
-      mCloseMenu.setEnabled(success);
-    if(mRecentlyOpen != null)
-      mRecentlyOpen.setEnabled(!mApp.getRecentlyOpened().isEmpty());
+    setMenuEnabled(mSaveMenu, success);
+    setMenuEnabled(mCloseMenu, success);
+    setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
     if (success) {
       String title = getString(R.string.app_name);
       title += " - " + SysHelper.abbreviate(mFile,
@@ -312,6 +308,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPayloadPlain.setVisibility(View.GONE);
       mFile = null;
     }
+  }
+
+  /**
+   * Sets the visibility of the menu item.
+   * @param menu MenuItem
+   * @param visible If true then the item will be visible; if false it is hidden.
+   */
+  private void setMenuVisible(final MenuItem menu, final boolean visible) {
+    if (menu != null)
+      menu.setVisible(visible);
+  }
+
+  /**
+   * Sets whether the menu item is enabled.
+   * @param menu MenuItem
+   * @param enabled If true then the item will be invokable; if false it is won't be invokable.
+   */
+  private void setMenuEnabled(final MenuItem menu, final boolean enabled) {
+    if (menu != null)
+      menu.setEnabled(enabled);
   }
 
   /**
