@@ -1,0 +1,6 @@
+Spanish translation added, thanks to Diego Sanguinetti (sguinetti).
+Chinese translation fixed, thanks to sr093906.
+It's now possible to use the file history to open files faster.
+It's now possible to add a large amount of text by editing a single line (deleting remains line by line, there is no possibility to edit lines in bulk mode either).
+
+Note: As I've made changes since the Spanish translation, two or three additions are made with DeepL.
