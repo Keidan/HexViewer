@@ -49,6 +49,45 @@ public class LineUpdateTextWatcher implements TextWatcher {
   }
 
   /**
+   * Treatment if the line is empty.
+   */
+  private void processNewStringEmpty() {
+    mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
+    mResult.setText(R.string.empty_value);
+    if (mApp.isSmartInput()) {
+      mIgnore = true; // prevent infinite loop
+      final EditText et = mLayout.getEditText();
+      if (et != null)
+        et.setText("");
+      mIgnore = false; // release, so the TextWatcher start to listen again.
+    }
+  }
+
+  /**
+   * Processing of the result field color, the content and also the error (if any) of the layout.
+   *
+   * @param strNew The new string.
+   */
+  private void processResultAndError(String strNew) {
+    boolean isError = false; /* true = error, false = warning */
+    final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
+    final boolean validated = SysHelper.isValidHexLine(validate, false);
+    if (!SysHelper.isEven(validate.length()) && validate.matches("\\p{XDigit}+"))
+      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
+    else if (!validated) {
+      isError = true;
+      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultError));
+    } else
+      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultSuccess));
+
+    mResult.setText(SysHelper.hex2bin(validate));
+    if (!validated) {
+      mLayout.setErrorTextAppearance(isError ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
+      mLayout.setError(" "); /* only for the color */
+    }
+  }
+
+  /**
    * This method is called to notify you that, somewhere within s, the text has been changed.
    * It is legitimate to make further changes to s from this callback, but be careful not to get
    * yourself into an infinite loop, because any changes you make will cause this method to be
@@ -67,15 +106,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     final String strNew = mNewString;
     final String strOld = mOldString;
     if (strNew.isEmpty()) {
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
-      mResult.setText(R.string.empty_value);
-      if (mApp.isSmartInput()) {
-        mIgnore = true; // prevent infinite loop
-        final EditText et = mLayout.getEditText();
-        if(et != null)
-          et.setText("");
-        mIgnore = false; // release, so the TextWatcher start to listen again.
-      }
+      processNewStringEmpty();
       return;
     }
     if (mApp.isSmartInput() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
@@ -85,24 +116,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       fixCursorPosition(et, strOld, strNew);
       mIgnore = false; // release, so the TextWatcher start to listen again.
     }
-
-    boolean isError = false; /* true = error, false = warning */
-    final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    final boolean validated = SysHelper.isValidHexLine(validate, false);
-    if(!SysHelper.isEven(validate.length()) && validate.matches("\\p{XDigit}+"))
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
-    else if(!validated) {
-      isError = true;
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultError));
-    }
-    else
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultSuccess));
-
-    mResult.setText(SysHelper.hex2bin(validate));
-    if (!validated) {
-      mLayout.setErrorTextAppearance(isError ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
-      mLayout.setError(" "); /* only for the color */
-    }
+    processResultAndError(strNew);
   }
 
   /**
@@ -142,7 +156,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
         Matcher m = PATTERN_4HEX.matcher(mNewString);
         if (m.find()) {
           String grp = m.group(1);
-          if(grp != null)
+          if (grp != null)
             mNewString = mNewString.replace(grp, grp.substring(2)).replaceAll(" {2}", " ");
         } else
           /* remove one char */
@@ -187,10 +201,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
     int pos;
     if (newLen > oldLen) {
       pos = Math.abs(mStart + delta);
-      if(mBetweenDigits) pos--;
+      if (mBetweenDigits) pos--;
     } else {
       pos = Math.abs(mStart - delta);
-      if(mBetweenDigits) pos++;
+      if (mBetweenDigits) pos++;
     }
     et.setSelection(Math.max(0, Math.min(pos, newLen)));
   }
