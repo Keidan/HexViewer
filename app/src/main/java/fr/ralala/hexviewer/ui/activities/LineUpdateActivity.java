@@ -92,7 +92,7 @@ public class LineUpdateActivity  extends AppCompatActivity {
     if(text == null || text.equals("null") ) {
       text = "";
     }
-    if(mFile != null && mFile.equals("null")) {
+    if(mFile != null) {
       String title = SysHelper.abbreviate(mFile,
           getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
               mApp.getAbbreviateLandscape() : mApp.getAbbreviatePortrait());
