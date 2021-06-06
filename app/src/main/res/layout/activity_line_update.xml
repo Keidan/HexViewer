@@ -14,8 +14,7 @@
     android:layout_alignParentTop="true"
     android:layout_alignParentStart="true"
     android:text="@string/source"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"  />
+    android:paddingTop="10dp" />
 
   <TextView
     android:id="@+id/tvSource"
@@ -23,8 +22,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/tvLabelSource"
     android:text="@null"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingBottom="5dp"
     android:textSize="16sp"
     android:typeface="monospace"/>
 
@@ -33,7 +31,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/tvSource"
-    android:paddingTop="10dp"
+    android:paddingTop="5dp"
     android:paddingBottom="10dp"
     android:text="@string/smart_input"/>
 
@@ -44,8 +42,8 @@
     android:layout_alignParentStart="true"
     android:layout_below="@id/chkSmartInput"
     android:text="@string/result"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"/>
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"/>
 
   <LinearLayout
     android:layout_width="match_parent"
