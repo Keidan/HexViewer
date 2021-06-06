@@ -183,11 +183,9 @@ public class Payload {
       final byte[] currentLine = new byte[SysHelper.MAX_BY_ROW];
       System.arraycopy(payload, 0, currentLine, 0, currentLine.length);
 
-      if (isInRange(idx)) {
-        if ((idx + currentLine.length) > size) {
-          /* There won't be enough space in the payload. */
-          appendZero((idx + currentLine.length) - size);
-        }
+      if (isInRange(idx) && (idx + currentLine.length) > size) {
+        /* There won't be enough space in the payload. */
+        appendZero((idx + currentLine.length) - size);
       }
       set(idx, currentLine);
       /* replace line */
