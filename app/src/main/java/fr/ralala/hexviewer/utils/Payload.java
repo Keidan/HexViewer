@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fr.ralala.hexviewer.BuildConfig;
-
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -75,16 +73,13 @@ public class Payload {
   }
 
   /**
-   * Updates the payload.
+   * Converts a line to index value.
    *
-   * @param line    The current line.
-   * @param payload The payload array.
+   * @param line The line.
+   * @return The index.
    */
-  public void updateLine(final int line, final byte[] payload) {
-    if (BuildConfig.DEBUG && line < 0) {
-      throw new AssertionError("Assertion failed");
-    }
-    update(line * SysHelper.MAX_BY_ROW, payload);
+  public static int line2index(final int line) {
+    return Math.max(0, line * SysHelper.MAX_BY_ROW);
   }
 
   /**
@@ -125,21 +120,99 @@ public class Payload {
   }
 
   /**
-   * Updates the payload.
+   * Change the elements present in the payload by the new ones.
    *
-   * @param index   The current index (min 0).
+   * @param index   Starting index.
    * @param payload The payload array.
    */
-  public void update(final int index, final byte[] payload) {
-    final int len = mPayload.size();
-    if ((index + payload.length) > len) {
+  private void add(final int index, final byte[] payload) {
+    for (int i = index, j = 0; i < index + payload.length; ++i, ++j) {
+      mPayload.add(i, payload[j]);
+    }
+  }
+
+  /**
+   * Tests if the value is in the range
+   *
+   * @param index Index
+   * @return boolean
+   */
+  private boolean isInRange(int index) {
+    final int size = mPayload.size();
+    return (size > index && size < index + SysHelper.MAX_BY_ROW);
+  }
+
+  /**
+   * Updates the payload.
+   *
+   * @param line    The current line (the line is calculated by step of step SysHelper.MAX_BY_ROW).
+   * @param payload The payload array.
+   */
+  public void update(final int line, final byte[] payload) {
+    final int li = Math.max(0, line);
+    final int size = mPayload.size();
+    int idx = line2index(li);
+    /* the line is removed ? */
+    if (payload.length == 0) {
+      mPayload.subList(idx, Math.min(size, idx + SysHelper.MAX_BY_ROW)).clear();
+    }
+    /* multiple lines ? */
+    else if (payload.length > SysHelper.MAX_BY_ROW) {
+      processMultipleLines(idx, size, payload);
+    }
+    /* single line ? */
+    else {
+      processSingleLine(idx, size, payload);
+    }
+  }
+
+
+  /**
+   * Processing the addition of a multiple lines.
+   *
+   * @param idx     Index.
+   * @param size    Size.
+   * @param payload Payload.
+   */
+  private void processMultipleLines(final int idx, final int size, byte[] payload) {
+    /* append */
+    if (idx >= size) {
+      add(payload, payload.length, null);
+    } else {
+      /* insert */
+      final byte[] currentLine = new byte[SysHelper.MAX_BY_ROW];
+      System.arraycopy(payload, 0, currentLine, 0, currentLine.length);
+
+      if (isInRange(idx)) {
+        if ((idx + currentLine.length) > size) {
+          /* There won't be enough space in the payload. */
+          appendZero((idx + currentLine.length) - size);
+        }
+      }
+      set(idx, currentLine);
+      /* replace line */
+      final byte[] newLines = new byte[payload.length - currentLine.length];
+      System.arraycopy(payload, currentLine.length, newLines, 0, newLines.length);
+      add(idx + currentLine.length, newLines);
+    }
+  }
+
+  /**
+   * Processing the addition of a single line.
+   *
+   * @param idx     Index.
+   * @param size    Size.
+   * @param payload Payload.
+   */
+  private void processSingleLine(final int idx, final int size, byte[] payload) {
+    if ((idx + payload.length) > size) {
       /* There won't be enough space in the payload. */
-      appendZero((index + payload.length) - len);
+      appendZero((idx + payload.length) - size);
     } else if (payload.length < SysHelper.MAX_BY_ROW) {
       /* We need to remove the excess entries from the line. */
-      remove(index, payload.length);
+      remove(idx, payload.length);
     }
-    set(index, payload);
+    set(idx, payload);
   }
 
   /**

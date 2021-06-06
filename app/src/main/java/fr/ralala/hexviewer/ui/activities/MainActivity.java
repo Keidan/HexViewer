@@ -504,6 +504,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 /* nothing to do */
                 return;
               }
+
               mApp.getPayload().update(position, buf);
               List<String> li = SysHelper.formatBuffer(buf, null);
               if (li.isEmpty())
