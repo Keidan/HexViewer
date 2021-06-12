@@ -58,7 +58,6 @@
   <string name="smart_input">纯文本输入</string>
   <string name="error_file_not_found">未找到文件 %1$s</string>
   <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
-  <string name="items_selected">%1$d 选定</string>
   <string name="items_selected">选中了 %1$d 行</string>
   <string name="items_deleted">删除了 %1$d 行</string>
 </resources>
