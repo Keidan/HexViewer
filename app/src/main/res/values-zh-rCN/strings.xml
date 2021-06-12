@@ -59,4 +59,5 @@
   <string name="error_file_not_found">未找到文件 %1$s</string>
   <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
   <string name="items_selected">%1$d 选定</string>
+  <string name="items_deleted">%1$d 行被删除</string>
 </resources>

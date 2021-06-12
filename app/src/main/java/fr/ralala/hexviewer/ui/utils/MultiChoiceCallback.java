@@ -1,11 +1,15 @@
 package fr.ralala.hexviewer.ui.utils;
 
+import android.content.Context;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -16,11 +20,14 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private final ApplicationCtx mApp;
   private final ListView mListView;
   private final SearchableListArrayAdapter mAdapter;
+  private final View mSnackBarLayout;
+  private SparseBooleanArray mBackup;
 
-  public MultiChoiceCallback(final ListView listView, final SearchableListArrayAdapter adapter) {
+  public MultiChoiceCallback(final ListView listView, final SearchableListArrayAdapter adapter, final View snackBarLayout) {
     mApp = (ApplicationCtx) listView.getContext().getApplicationContext();
     mListView = listView;
     mAdapter = adapter;
+    mSnackBarLayout = snackBarLayout;
   }
 
   /**
@@ -59,17 +66,16 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
       final SparseBooleanArray selected = mAdapter.getSelectedIds();
+      mBackup = selected.clone();
       // Captures all selected ids with a loop
       for (int i = (selected.size() - 1); i >= 0; i--) {
         if (selected.valueAt(i)) {
           final int position = selected.keyAt(i);
           // Remove selected items following the ids
           mAdapter.removeItem(position);
-          final byte[] buf = SysHelper.hexStringToByteArray("");
-          mApp.getPayload().update(position, buf);
         }
       }
-
+      showUndoSnackbar();
       // Close CAB
       mode.finish();
       return true;
@@ -85,6 +91,37 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     return false;
   }
 
+  /**
+   * Shows the undo snack bar.
+   */
+  private void showUndoSnackbar() {
+    final Context c = mSnackBarLayout.getContext();
+    Snackbar customSnackBar = Snackbar.make(mSnackBarLayout, c.getString(R.string.items_deleted), Snackbar.LENGTH_LONG);
+    customSnackBar.setAction(c.getString(R.string.cancel), (v) -> mAdapter.undoDelete());
+    customSnackBar.addCallback(new Snackbar.Callback() {
+      @Override
+      public void onDismissed(Snackbar snackbar, int event) {
+        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+          mAdapter.clearRecentlyDeleted();
+          // Captures all selected ids with a loop
+          for (int i = (mBackup.size() - 1); i >= 0; i--) {
+            if (mBackup.valueAt(i)) {
+              // Remove selected items following the ids
+              final int position = mBackup.keyAt(i);
+              final byte[] buf = SysHelper.hexStringToByteArray("");
+              mApp.getPayload().update(position, buf);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onShown(Snackbar snackbar) {
+
+      }
+    });
+    customSnackBar.show();
+  }
 
   /**
    * Called when an action mode is about to be exited and destroyed.

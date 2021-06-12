@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -38,6 +40,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private final List<String> mEntryList;
   private final UserConfig mUserConfig;
   private List<FilterData> mFilteredList;
+  private Map<Integer, FilterData> mRecentDeleteList;
   private SparseBooleanArray mSelectedItemsIds;
 
   public enum DisplayCharPolicy {
@@ -59,6 +62,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     mPolicy = policy;
     mUserConfig = userConfig;
     mSelectedItemsIds = new SparseBooleanArray();
+    mRecentDeleteList = new HashMap<>();
   }
 
   /**
@@ -127,7 +131,6 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       return mFilteredList.get(position).value;
     return null;
   }
-
   /**
    * Remove an item.
    *
@@ -137,7 +140,28 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     FilterData fd = mFilteredList.get(position);
     mEntryList.remove(fd.origin);
     mFilteredList.remove(position);
+    mRecentDeleteList.put(position, fd);
     super.notifyDataSetChanged();
+  }
+
+  /**
+   * Undo the deleted items.
+   */
+  public void undoDelete() {
+    for (Map.Entry<Integer, FilterData> entry : mRecentDeleteList.entrySet()) {
+      FilterData fd = entry.getValue();
+      mFilteredList.add(entry.getKey(), fd);
+      mEntryList.add(fd.origin, fd.value);
+    }
+    clearRecentlyDeleted();
+    super.notifyDataSetChanged();
+  }
+
+  /**
+   * Clears the list of recently deleted items.
+   */
+  public void clearRecentlyDeleted() {
+    mRecentDeleteList.clear();
   }
 
   /**

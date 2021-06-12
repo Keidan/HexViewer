@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(this);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-    mPayloadHex.setMultiChoiceModeListener(new MultiChoiceCallback(mPayloadHex, mAdapterHex));
+    mPayloadHex.setMultiChoiceModeListener(new MultiChoiceCallback(mPayloadHex, mAdapterHex, mMainLayout));
 
     mAdapterPlain = new SearchableListArrayAdapter(this, DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR, new ArrayList<>(), new UserConfig() {
       @Override
