@@ -29,6 +29,13 @@ download the software :
 	git clone git://github.com/Keidan/HexViewer.git
 	cd HexViewer
  	Use with android studio 
+	
+## Screenshots
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="600px" height="270px" alt="Home screen">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="600px" height="270px" alt="Hex display">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="600px" height="270px" alt="Update mode">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.jpg" width="600px" height="270px" alt="Plain display">
+
 
 ## License
 [GPLv3](https://github.com/Keidan/HexViewer/blob/master/license.txt)
