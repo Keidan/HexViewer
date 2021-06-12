@@ -117,7 +117,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
 
       @Override
       public void onShown(Snackbar snackbar) {
-
+        // nothing to do
       }
     });
     customSnackBar.show();
