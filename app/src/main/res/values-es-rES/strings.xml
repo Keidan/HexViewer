@@ -56,4 +56,5 @@
   <string name="smart_input">Entrada de texto simple</string>
   <string name="error_file_not_found">No se ha encontrado el archivo %1$s</string>
   <string name="error_file_permission">No se ha concedido permiso para el archivo %1$s</string>
+  <string name="items_selected">%1$d Seleccionado</string>
 </resources>

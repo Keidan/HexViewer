@@ -39,6 +39,7 @@ import fr.ralala.hexviewer.ui.adapters.RecentlyOpenListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
+import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -56,7 +57,7 @@ import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserCon
  * <p>
  * ******************************************************************************
  */
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener, TaskOpen.OpenResultListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, TaskOpen.OpenResultListener {
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
@@ -111,7 +112,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       }
     });
     mPayloadHex.setAdapter(mAdapterHex);
-    mPayloadHex.setOnItemLongClickListener(this);
+    mPayloadHex.setOnItemClickListener(this);
+    mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+    mPayloadHex.setMultiChoiceModeListener(new MultiChoiceCallback(mPayloadHex, mAdapterHex));
 
     mAdapterPlain = new SearchableListArrayAdapter(this, DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR, new ArrayList<>(), new UserConfig() {
       @Override
@@ -130,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       }
     });
     mPayloadPlain.setAdapter(mAdapterPlain);
-    mPayloadPlain.setOnItemLongClickListener(this);
 
     /* permissions */
     ActivityCompat.requestPermissions(this, new String[]{
@@ -401,27 +403,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Called when the used perform a long press on a listview item.
-   *
-   * @param parent   The adapter view.
-   * @param view     The current view
-   * @param position The position
-   * @param id       The id.
-   * @return boolean
+   * Callback method to be invoked when an item in this AdapterView has been clicked.
+   * @param parent The AdapterView where the click happened.
+   * @param view The view within the AdapterView that was clicked (this will be a view provided by the adapter).
+   * @param position The position of the view in the adapter.
+   * @param id The row id of the item that was clicked.
    */
-  @SuppressLint("InflateParams")
   @Override
-  public boolean onItemLongClick(final AdapterView<?> parent, final View view,
-                                 final int position, final long id) {
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     String string = mAdapterHex.getItem(position);
     if (string == null)
-      return false;
+      return;
     if (mPayloadPlain.getVisibility() == View.VISIBLE) {
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
-      return false;
+      return;
     }
     LineUpdateActivity.startActivity(this, activityResultLauncherLineUpdate, string, mFile, position);
-    return true;
   }
 
   /**
@@ -597,6 +595,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       dialog.dismiss();
     });
   }
-
 }
 

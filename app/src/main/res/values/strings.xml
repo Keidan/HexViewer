@@ -66,4 +66,5 @@
     <string name="smart_input">Plain text input</string>
     <string name="error_file_not_found">The file %1$s was not found</string>
     <string name="error_file_permission">No permission has been granted for file %1$s</string>
+    <string name="items_selected">%1$d Selected</string>
 </resources>

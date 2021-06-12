@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private final List<String> mEntryList;
   private final UserConfig mUserConfig;
   private List<FilterData> mFilteredList;
+  private SparseBooleanArray mSelectedItemsIds;
 
   public enum DisplayCharPolicy {
     DISPLAY_ALL,
@@ -56,6 +58,61 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     mFilteredList = new ArrayList<>();
     mPolicy = policy;
     mUserConfig = userConfig;
+    mSelectedItemsIds = new SparseBooleanArray();
+  }
+
+  /**
+   * Toggles the item selection.
+   * @param position Item position.
+   */
+  public void toggleSelection(int position) {
+    selectView(position, !mSelectedItemsIds.get(position));
+  }
+
+  /**
+   * Removes the item selection.
+   */
+  public void removeSelection() {
+    mSelectedItemsIds = new SparseBooleanArray();
+    notifyDataSetChanged();
+  }
+
+  /**
+   * Select a view.
+   * @param position Position.
+   * @param value Selection value.
+   */
+  private void selectView(int position, boolean value) {
+    if (value)
+      mSelectedItemsIds.put(position, true);
+    else
+      mSelectedItemsIds.delete(position);
+    notifyDataSetChanged();
+  }
+
+  /**
+   * Returns the selection count.
+   * @return int
+   */
+  public int getSelectedCount() {
+    return mSelectedItemsIds.size();
+  }
+
+  /**
+   * Returns the selected ids.
+   * @return SparseBooleanArray
+   */
+  public SparseBooleanArray getSelectedIds() {
+    return mSelectedItemsIds;
+  }
+
+  /**
+   * Returns if the position is checked or not.
+   * @param position The item position.
+   * @return boolean
+   */
+  public boolean isPositionChecked(int position) {
+    return mSelectedItemsIds.get(position);
   }
 
   /**
@@ -230,6 +287,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
           fd.updated ? R.color.colorTextUpdated : R.color.textColor));
 
       applyUserConfig(holder);
+      v.setBackgroundColor(ContextCompat.getColor(getContext(), mSelectedItemsIds.get(position) ? R.color.colorAccent : R.color.windowBackground));
     }
     return v == null ? new View(getContext()) : v;
   }
