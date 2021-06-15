@@ -4,7 +4,8 @@
   <string name="search_hint">Buscar&#8230;</string>
   <string name="action_open_title">Abrir</string>
   <string name="action_plain_text_title">Texto plano</string>
-  <string name="action_save_title">Sauvegarder</string>
+  <string name="action_save_title">Guardar</string>
+  <string name="action_save_as_title">Guardar como &#8230;</string>
   <string name="action_close_title">Cerrar</string>
   <string name="action_settings_title">Ajustes</string>
   <string name="action_recently_open_title">Abierta reciente</string>

@@ -28,6 +28,10 @@
       android:title="@string/action_save_title"
       app:showAsAction="never" />
     <item
+      android:id="@+id/action_save_as"
+      android:title="@string/action_save_as_title"
+      app:showAsAction="never" />
+    <item
       android:id="@+id/action_close"
       android:title="@string/action_close_title"
       app:showAsAction="never" />

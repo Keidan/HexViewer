@@ -4,7 +4,8 @@
   <string name="search_hint">Rechercher&#8230;</string>
   <string name="action_open_title">Ouvrir</string>
   <string name="action_plain_text_title">Texte en clair</string>
-  <string name="action_save_title">Sauvegarder</string>
+  <string name="action_save_title">Enregister</string>
+  <string name="action_save_as_title">Enregister sous&#8230;</string>
   <string name="action_close_title">Fermer</string>
   <string name="action_settings_title">Paramètres</string>
   <string name="action_recently_open_title">Ouvert récemment</string>

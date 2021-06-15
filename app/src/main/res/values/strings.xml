@@ -5,6 +5,7 @@
     <string name="action_open_title">Open</string>
     <string name="action_plain_text_title">Plain text</string>
     <string name="action_save_title">Save</string>
+    <string name="action_save_as_title">Save As &#8230;</string>
     <string name="action_close_title">Close</string>
     <string name="action_settings_title">Settings</string>
     <string name="action_recently_open_title">Recently opened</string>

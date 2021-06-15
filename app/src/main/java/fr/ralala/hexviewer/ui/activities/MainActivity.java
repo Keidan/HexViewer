@@ -19,11 +19,9 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -41,6 +39,7 @@ import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -64,13 +63,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private SearchableListArrayAdapter mAdapterHex = null;
   private SearchableListArrayAdapter mAdapterPlain = null;
   private LinearLayout mMainLayout = null;
-  private String mFile = "";
+  private FileData mFileData = null;
   private TextView mPleaseOpenFile = null;
   private ListView mPayloadHex = null;
   private ListView mPayloadPlain = null;
   private MenuItem mSearchMenu = null;
   private MenuItem mPlainMenu = null;
   private MenuItem mSaveMenu = null;
+  private MenuItem mSaveAsMenu = null;
   private MenuItem mCloseMenu = null;
   private SearchView mSearchView = null;
   private MenuItem mRecentlyOpen = null;
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public void onResume() {
     super.onResume();
     /* refresh */
-    onOpenResult(mFile != null && !mFile.isEmpty());
+    onOpenResult(!FileData.isEmpty(mFileData));
     if (mPayloadHex.getVisibility() == View.VISIBLE)
       mAdapterHex.refresh();
     else if (mPayloadPlain.getVisibility() == View.VISIBLE)
@@ -174,8 +174,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Uri uri = getIntent().getData();
 
         if (uri != null) {
-          File f = new File(Objects.requireNonNull(uri.getPath()));
-          mFile = SysHelper.basename(f.getName());
+          mFileData = new FileData(uri);
           final TaskOpen to = new TaskOpen(this, mAdapterHex, mAdapterPlain, this);
           to.execute(uri);
         }
@@ -195,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     MenuCompat.setGroupDividerEnabled(menu, true);
     mSearchMenu = menu.findItem(R.id.action_search);
     mPlainMenu = menu.findItem(R.id.action_plain_text);
+    mSaveAsMenu = menu.findItem(R.id.action_save_as);
     mSaveMenu = menu.findItem(R.id.action_save);
     mCloseMenu = menu.findItem(R.id.action_close);
     mRecentlyOpen = menu.findItem(R.id.action_recently_open);
@@ -260,11 +260,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPlainMenu.setEnabled(success);
     }
     setMenuEnabled(mSaveMenu, success);
+    setMenuEnabled(mSaveAsMenu, success);
     setMenuEnabled(mCloseMenu, success);
     setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
     if (success) {
       String title = getString(R.string.app_name);
-      title += " - " + SysHelper.abbreviate(mFile,
+      title += " - " + SysHelper.abbreviate(mFileData.getName(),
           getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
               mApp.getAbbreviateLandscape() : mApp.getAbbreviatePortrait());
       setTitle(title);
@@ -276,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlain.setVisibility(View.GONE);
-      mFile = null;
+      mFileData = null;
     }
   }
 
@@ -313,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // Checks the orientation of the screen
     int length = 0;
-    if (mFile != null && !mFile.isEmpty()) {
+    if (!FileData.isEmpty(mFileData)) {
       if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         length = mApp.getAbbreviateLandscape();
       } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -321,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       }
       if (length != 0) {
         String title = getString(R.string.app_name);
-        title += " - " + SysHelper.abbreviate(mFile, length);
+        title += " - " + SysHelper.abbreviate(mFileData.getName(), length);
         setTitle(title);
       }
     }
@@ -343,7 +344,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       displayRecentlyOpen();
       return true;
     } else if (id == R.id.action_save) {
-      if (mFile == null || mFile.isEmpty()) {
+      if (FileData.isEmpty(mFileData)) {
+        UIHelper.toast(this, getString(R.string.open_a_file_before));
+        return true;
+      }
+      final Uri uri = FileHelper.getParentUri(mFileData.getUri());
+      if (uri != null && FileHelper.hasUriPermission(this, uri, false))
+        processFileSave(uri, mFileData.getName(), false);
+      else
+        UIHelper.toast(this, String.format(getString(R.string.error_file_permission), mFileData.getName()));
+      return true;
+    } else if (id == R.id.action_save_as) {
+      if (FileData.isEmpty(mFileData)) {
         UIHelper.toast(this, getString(R.string.open_a_file_before));
         return true;
       }
@@ -396,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         UIHelper.toast(this, String.format(getString(R.string.error_file_not_found), item.value));
         setArrayAdapter.removeItem(which);
         mApp.removeRecentlyOpened(item.uri.toString());
-        FileHelper.releaseUriPermissions(this, item.uri, true);
+        FileHelper.releaseUriPermissions(this, item.uri);
       }
     });
     builder.show();
@@ -419,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
-    LineUpdateActivity.startActivity(this, activityResultLauncherLineUpdate, string, mFile, position);
+    LineUpdateActivity.startActivity(this, activityResultLauncherLineUpdate, string, mFileData.getName(), position);
   }
 
   /**
@@ -452,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
             if (data != null) {
-              if (FileHelper.takeUriPermissions(this, data.getData(), true)) {
+              if (FileHelper.takeUriPermissions(this, data.getData(), false)) {
                 processFileOpen(data);
               } else
                 UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
@@ -473,8 +485,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
             if (data != null) {
-              FileHelper.takeUriPermissions(MainActivity.this, data.getData(), false);
-              processFileSave(data);
+              FileHelper.takeUriPermissions(MainActivity.this, data.getData(), true);
+              processFileSaveWithDialog(data.getData());
             } else
               Log.e(getClass().getSimpleName(), "Null data!!!");
           }
@@ -540,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void processFileOpen(final Uri uri) {
     if (uri != null && uri.getPath() != null) {
-      mFile = FileHelper.getFileName(uri);
+      mFileData = new FileData(uri);
       new TaskOpen(this, mAdapterHex, mAdapterPlain, this).execute(uri);
     } else {
       UIHelper.toast(this, getString(R.string.error_filename));
@@ -550,50 +562,67 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   /**
    * Process the saving of the file
    *
-   * @param data Intent data.
+   * @param uri Uri data.
    */
-  private void processFileSave(final Intent data) {
-    Uri uriDir = data.getData();
+  private void processFileSaveWithDialog(final Uri uri) {
 
-    getContentResolver().takePersistableUriPermission(uriDir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-    UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFile, (dialog, content, layout) -> {
+    UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFileData.getName(), (dialog, content, layout) -> {
       final String sfile = content.getText().toString();
       if (sfile.trim().isEmpty()) {
         layout.setError(getString(R.string.error_filename));
         return;
       }
-
-      DocumentFile sourceDir = DocumentFile.fromTreeUri(this, uriDir);
-      if (sourceDir == null) {
-        UIHelper.toast(this, getString(R.string.uri_exception));
-        Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uriDir + "'");
-        dialog.dismiss();
-        return;
-      }
-      DocumentFile file = null;
-      for (DocumentFile f : sourceDir.listFiles()) {
-        if (f.getName() != null && f.getName().endsWith(sfile)) {
-          file = f;
-          break;
-        }
-      }
-      final DocumentFile ffile = file;
-
-      if (file != null) {
-        UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
-            getString(R.string.confirm_overwrite),
-            (view) -> new TaskSave(this).execute(ffile.getUri()));
-      } else {
-        DocumentFile dfile = sourceDir.createFile("application/octet-stream", sfile);
-        if (dfile == null) {
-          UIHelper.toast(this, getString(R.string.uri_exception));
-          Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uriDir + "'");
-        } else
-          new TaskSave(this).execute(dfile.getUri());
-      }
+      processFileSave(uri, sfile, true);
       dialog.dismiss();
     });
   }
+
+
+  /**
+   * Process the saving of the file
+   *
+   * @param uri         Uri data.
+   * @param filename    The filename
+   * @param showConfirm Shows confirm box.
+   */
+  private void processFileSave(final Uri uri, final String filename, final boolean showConfirm) {
+    Log.e("EXC", "getHost: " + uri.getHost());
+    Log.e("EXC", "getAuthority: " + uri.getAuthority());
+    Log.e("EXC", "getPath: " + uri.getPath());
+    Log.e("EXC", "getEncodedPath: " + uri.getEncodedPath());
+    Log.e("EXC", "getScheme: " + uri.getScheme());
+    Log.e("EXC", "getFragment: " + uri.getFragment());
+    DocumentFile sourceDir = DocumentFile.fromTreeUri(this, uri);
+    if (sourceDir == null) {
+      UIHelper.toast(this, getString(R.string.uri_exception));
+      Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uri + "'");
+      return;
+    }
+    DocumentFile file = null;
+    for (DocumentFile f : sourceDir.listFiles()) {
+      if (f.getName() != null && f.getName().endsWith(filename)) {
+        file = f;
+        break;
+      }
+    }
+    final DocumentFile ffile = file;
+
+    if (file != null) {
+      if(showConfirm) {
+        UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
+            getString(R.string.confirm_overwrite),
+            (view) -> new TaskSave(this).execute(ffile.getUri()));
+      } else
+        new TaskSave(this).execute(ffile.getUri());
+    } else {
+      DocumentFile dfile = sourceDir.createFile("application/octet-stream", filename);
+      if (dfile == null) {
+        UIHelper.toast(this, getString(R.string.uri_exception));
+        Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
+      } else
+        new TaskSave(this).execute(dfile.getUri());
+    }
+  }
+
 }
 

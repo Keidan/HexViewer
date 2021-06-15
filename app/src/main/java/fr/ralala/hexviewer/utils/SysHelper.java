@@ -36,20 +36,6 @@ public class SysHelper {
   }
 
   /**
-   * Returns the base name of a path.
-   *
-   * @param path The path.
-   * @return String.
-   */
-  public static String basename(final String path) {
-    String s = path;
-    final int i = s.lastIndexOf('/');
-    if (i != -1)
-      s = s.substring(i + 1);
-    return s;
-  }
-
-  /**
    * Converts hex string to byte array.
    *
    * @param s The hex string.

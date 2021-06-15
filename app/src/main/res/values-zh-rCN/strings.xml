@@ -5,6 +5,7 @@
   <string name="action_open_title">打开</string>
   <string name="action_plain_text_title">纯文本</string>
   <string name="action_save_title">保存</string>
+  <string name="action_save_as_title">保存为&#8230;</string>
   <string name="action_close_title">关闭</string>
   <string name="action_settings_title">设置</string>
   <string name="action_recently_open_title">最近打开</string>

@@ -11,6 +11,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * ******************************************************************************
@@ -56,16 +57,21 @@ public class FileHelper {
   /**
    * Retrieving the permissions associated with a Uri
    *
-   * @param c   Android content.
-   * @param uri Uri
-   * @param readPermission   True = read, false = write.
+   * @param c       Android content.
+   * @param uri     Uri
+   * @param fromDir From dir ?
    * @return False if permission is not granted for this Uri.
    */
-  public static boolean takeUriPermissions(final Context c, final Uri uri, boolean readPermission) {
+  public static boolean takeUriPermissions(final Context c, final Uri uri, boolean fromDir) {
     boolean success = false;
     try {
-      final int takeFlags = readPermission ? Intent.FLAG_GRANT_READ_URI_PERMISSION : Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+      final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
       c.getContentResolver().takePersistableUriPermission(uri, takeFlags);
+      if(!fromDir) {
+        Uri dir = getParentUri(uri);
+        if(!hasUriPermission(c, dir, false))
+          c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+      }
       success = true;
     } catch (Exception e) {
       Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
@@ -78,13 +84,24 @@ public class FileHelper {
    *
    * @param c              Android content.
    * @param uri            Uri
-   * @param readPermission True = read, false = write.
    */
-  public static void releaseUriPermissions(final Context c, final Uri uri, boolean readPermission) {
-    if(hasUriPermission(c, uri, readPermission))
+  public static void releaseUriPermissions(final Context c, final Uri uri) {
+    if (hasUriPermission(c, uri, true))
       try {
-        final int takeFlags = readPermission ? Intent.FLAG_GRANT_READ_URI_PERMISSION : Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
         c.getContentResolver().releasePersistableUriPermission(uri, takeFlags);
+
+        Uri dir = getParentUri(uri);
+        final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
+        int found = 0;
+        for (UriPermission up : list) {
+          if (up.getUri().equals(dir)) {
+            found++;
+          }
+        }
+        if(found == 1) {
+          c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
       } catch (Exception e) {
         Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
       }
@@ -101,8 +118,8 @@ public class FileHelper {
   public static boolean hasUriPermission(final Context c, final Uri uri, boolean readPermission) {
     final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
     boolean found = false;
-    for(UriPermission up : list) {
-      if(up.getUri().equals(uri) && (up.isReadPermission() && readPermission) || (up.isWritePermission() && !readPermission)) {
+    for (UriPermission up : list) {
+      if (up.getUri().equals(uri) && (up.isReadPermission() && readPermission) || (up.isWritePermission() && !readPermission)) {
         found = true;
         break;
       }
@@ -163,11 +180,33 @@ public class FileHelper {
 
   /**
    * Gets the file name from a Uri.
+   *
    * @param uri Uri
    * @return String
    */
   public static String getFileName(final Uri uri) {
-    File file = new File(uri.getPath());
+    File file = new File(Objects.requireNonNull(uri.getPath()));
     return file.getName();
+  }
+
+  /**
+   * Gets the parent from a Uri.
+   *
+   * @param uri Uri
+   * @return String
+   */
+  public static Uri getParentUri(final Uri uri) {
+    final String filename = getFileName(uri);
+    final String encoded = uri.getEncodedPath();
+    String parent = encoded.substring(0, encoded.length() - filename.length());
+    if(parent.endsWith("%2F"))
+      parent = parent.substring(0, parent.length() - 3);
+    String path;
+    final String documentPrimary = "/document/primary%3A";
+    if(parent.startsWith(documentPrimary))
+      path = "/tree/primary%3A" + parent.substring(documentPrimary.length());
+    else
+      path = parent;
+    return Uri.parse(uri.getScheme() + "://" + uri.getHost() + path);
   }
 }
