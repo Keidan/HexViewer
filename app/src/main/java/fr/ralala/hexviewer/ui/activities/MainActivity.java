@@ -586,12 +586,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param showConfirm Shows confirm box.
    */
   private void processFileSave(final Uri uri, final String filename, final boolean showConfirm) {
-    Log.e("EXC", "getHost: " + uri.getHost());
-    Log.e("EXC", "getAuthority: " + uri.getAuthority());
-    Log.e("EXC", "getPath: " + uri.getPath());
-    Log.e("EXC", "getEncodedPath: " + uri.getEncodedPath());
-    Log.e("EXC", "getScheme: " + uri.getScheme());
-    Log.e("EXC", "getFragment: " + uri.getFragment());
     DocumentFile sourceDir = DocumentFile.fromTreeUri(this, uri);
     if (sourceDir == null) {
       UIHelper.toast(this, getString(R.string.uri_exception));
