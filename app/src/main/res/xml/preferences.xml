@@ -61,4 +61,18 @@
       android:title="@string/settings_pref_title_plain_font_size"
       android:summary="@string/settings_pref_summary_plain_font_size" />
   </androidx.preference.PreferenceCategory>
+
+  <androidx.preference.PreferenceCategory
+    app:iconSpaceReserved="false"
+    android:title="@string/settings_category_about">
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="version"
+      android:title="@string/settings_pref_title_version" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="license"
+      android:title="@string/settings_pref_title_license"
+      android:summary="@string/settings_pref_summary_license"/>
+  </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

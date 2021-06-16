@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="search_title">Buscar</string>
   <string name="search_hint">Buscar&#8230;</string>
@@ -54,6 +53,9 @@
   <string name="settings_pref_summary_plain_row_height">Ancho de las líneas de la lista.</string>
   <string name="settings_pref_title_plain_font_size">Tamaño de letra</string>
   <string name="settings_pref_summary_plain_font_size">Tamaño de letra de los textos de la lista.</string>
+  <string name="settings_category_about">Acerca</string>
+  <string name="settings_pref_title_version">Versión</string>
+  <string name="settings_pref_title_license">Licencia</string>
   <string name="smart_input">Entrada de texto simple</string>
   <string name="error_file_not_found">No se ha encontrado el archivo %1$s</string>
   <string name="error_file_permission">No se ha concedido permiso para el archivo %1$s</string>

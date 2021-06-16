@@ -53,6 +53,9 @@
     <string name="settings_pref_summary_plain_row_height">Высота строки при просмотре.</string>
     <string name="settings_pref_title_plain_font_size">Размер шрифта</string>
     <string name="settings_pref_summary_plain_font_size">Размер шрифта текстов при просмотре.</string>
+    <string name="settings_category_about">О программе</string>
+    <string name="settings_pref_title_version">Версия</string>
+    <string name="settings_pref_title_license">Лицензия</string>
     <string name="smart_input">Ввод обычного текста</string>
     <string name="error_file_not_found">Файл %1$s не найден</string>
     <string name="error_file_permission">Для файла %1$s не предоставлено разрешение</string>

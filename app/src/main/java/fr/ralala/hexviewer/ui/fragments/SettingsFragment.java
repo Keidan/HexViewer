@@ -3,6 +3,8 @@ package fr.ralala.hexviewer.ui.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -17,6 +19,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.BuildConfig;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 
@@ -53,6 +56,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   protected CheckBoxPreference mPlainRowHeightAuto;
   protected Preference mPlainRowHeight;
   protected Preference mPlainFontSize;
+  protected Preference mLicense;
+  protected Preference mVersion;
 
   public SettingsFragment(Activity owner) {
     mActivity = owner;
@@ -81,6 +86,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     mPlainRowHeightAuto = findPreference(ApplicationCtx.CFG_PLAIN_ROW_HEIGHT_AUTO);
     mPlainRowHeight = findPreference(ApplicationCtx.CFG_PLAIN_ROW_HEIGHT);
     mPlainFontSize = findPreference(ApplicationCtx.CFG_PLAIN_FONT_SIZE);
+    mLicense = findPreference(ApplicationCtx.CFG_LICENSE);
+    mVersion = findPreference(ApplicationCtx.CFG_VERSION);
 
     mAbbreviatePortrait.setOnPreferenceClickListener(this);
     mAbbreviateLandscape.setOnPreferenceClickListener(this);
@@ -90,9 +97,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     mPlainRowHeightAuto.setOnPreferenceClickListener(this);
     mPlainRowHeight.setOnPreferenceClickListener(this);
     mPlainFontSize.setOnPreferenceClickListener(this);
+    mLicense.setOnPreferenceClickListener(this);
+    mVersion.setOnPreferenceClickListener(this);
 
     mHexRowHeight.setEnabled(!mApp.isHexRowHeightAuto());
     mPlainRowHeight.setEnabled(!mApp.isPlainRowHeightAuto());
+    mVersion.setSummary(BuildConfig.VERSION_NAME);
   }
 
 
@@ -144,8 +154,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
           mApp::setPlainFontSize, true);
+    } else if (preference.equals(mLicense)) {
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, getProjectUri("license.txt"));
+      startActivity(browserIntent);
+    } else if (preference.equals(mVersion)) {
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, getProjectUri(null));
+      startActivity(browserIntent);
     }
     return false;
+  }
+
+  /**
+   * Returns the project Uri.
+   *
+   * @param file We want the url based on a file?
+   * @return The Uri
+   */
+  private Uri getProjectUri(final String file) {
+    if (file == null)
+      return Uri.parse("https://github.com/Keidan/HexViewer/tree/v" + BuildConfig.VERSION_NAME);
+    return Uri.parse("https://github.com/Keidan/HexViewer/blob/v" + BuildConfig.VERSION_NAME + "/" + file);
   }
 
   /* ----------------------------- */

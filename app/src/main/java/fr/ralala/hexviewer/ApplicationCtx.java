@@ -31,6 +31,8 @@ public class ApplicationCtx extends Application {
   public static final String CFG_PLAIN_FONT_SIZE = "plainFontSize";
   public static final String CFG_SMART_INPUT = "smartInput";
   public static final String CFG_RECENTLY_OPEN = "recentlyOpen";
+  public static final String CFG_VERSION = "version";
+  public static final String CFG_LICENSE = "license";
   private final Payload mPayload;
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
