@@ -109,6 +109,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
               // Remove selected items following the ids
               final int position = mBackup.keyAt(i);
               final byte[] buf = SysHelper.hexStringToByteArray("");
+              mApp.getHexChanged().set(true);
               mApp.getPayload().update(position, buf);
             }
           }

@@ -338,7 +338,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_open) {
-      UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout);
+      if(mApp.getHexChanged().get()) {// a save operation is pending?
+        confirmFileChanged(() -> UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout));
+      } else
+        UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout);
       return true;
     } else if (id == R.id.action_recently_open) {
       displayRecentlyOpen();
@@ -349,8 +352,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
       }
       final Uri uri = FileHelper.getParentUri(mFileData.getUri());
-      if (uri != null && FileHelper.hasUriPermission(this, uri, false))
+      if (uri != null && FileHelper.hasUriPermission(this, uri, false)) {
         processFileSave(uri, mFileData.getName(), false);
+      }
       else
         UIHelper.toast(this, String.format(getString(R.string.error_file_permission), mFileData.getName()));
       return true;
@@ -370,16 +374,54 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       item.setChecked(checked);
       return true;
     } else if (id == R.id.action_close) {
-      onOpenResult(false);
-      mAdapterPlain.clear();
-      mAdapterHex.clear();
-      if (mSearchView != null && !mSearchView.isIconified()) {
-        mSearchView.setIconified(true);
-      }
+      if(mApp.getHexChanged().get()) {// a save operation is pending?
+        confirmFileChanged(this::closeFile);
+      } else
+        closeFile();
     } else if (id == R.id.action_settings) {
       startActivity(new Intent(this, SettingsActivity.class));
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  /**
+   * Display a confirmation message when the file is modified. A backup will automatically be made.
+   *
+   * @param runnable The action to be taken if the user validates or not
+   */
+  private void confirmFileChanged(final Runnable runnable) {
+    new AlertDialog.Builder(this)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(R.string.action_close_title)
+        .setMessage(String.format(getString(R.string.confirm_save), mFileData.getName()))
+        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+          final Uri uri = FileHelper.getParentUri(mFileData.getUri());
+          if (uri != null && FileHelper.hasUriPermission(this, uri, false))
+            processFileSave(uri, mFileData.getName(), false);
+          else
+            UIHelper.toast(this, String.format(getString(R.string.error_file_permission), mFileData.getName()));
+          runnable.run();
+          dialog.dismiss();
+        })
+        .setNegativeButton(android.R.string.no, (dialog, which) -> {
+          runnable.run();
+          dialog.dismiss();
+        })
+        .show();
+  }
+
+  /**
+   * Closes the file context.
+   */
+  private void closeFile() {
+    mApp.getHexChanged().set(false);
+    mApp.getPayload().clear();
+    onOpenResult(false);
+    mAdapterPlain.clear();
+    mAdapterHex.clear();
+    if (mSearchView != null && !mSearchView.isIconified()) {
+      mSearchView.setIconified(true);
+    }
   }
 
   /**
@@ -397,9 +439,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     builder.setAdapter(setArrayAdapter, (dial, which) -> {
       RecentlyOpenListArrayAdapter.UriData item = setArrayAdapter.getItem(which);
       if (FileHelper.isFileExists(getContentResolver(), item.uri)) {
-        if (FileHelper.hasUriPermission(this, item.uri, true))
-          processFileOpen(item.uri);
-        else {
+        if (FileHelper.hasUriPermission(this, item.uri, true)) {
+          if(mApp.getHexChanged().get()) { // a save operation is pending?
+            confirmFileChanged(() -> processFileOpen(item.uri));
+          } else
+            processFileOpen(item.uri);
+        } else {
           UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(item.uri)));
           setArrayAdapter.removeItem(which);
           mApp.removeRecentlyOpened(item.uri.toString());
@@ -443,8 +488,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mSearchView.setIconified(true);
     } else {
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-        super.onBackPressed();
-        finish();
+        if(mApp.getHexChanged().get()) {// a save operation is pending?
+          confirmFileChanged(() -> {
+            super.onBackPressed();
+            finish();
+          });
+        } else {
+          super.onBackPressed();
+          finish();
+        }
         return;
       } else {
         UIHelper.toast(this, getString(R.string.on_double_back_exit_text));
@@ -514,7 +566,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 /* nothing to do */
                 return;
               }
-
+              mApp.getHexChanged().set(true);
               mApp.getPayload().update(position, buf);
               List<String> li = SysHelper.formatBuffer(buf, null);
               if (li.isEmpty())
@@ -565,7 +617,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param uri Uri data.
    */
   private void processFileSaveWithDialog(final Uri uri) {
-
     UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFileData.getName(), (dialog, content, layout) -> {
       final String sfile = content.getText().toString();
       if (sfile.trim().isEmpty()) {
@@ -605,16 +656,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       if(showConfirm) {
         UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
             getString(R.string.confirm_overwrite),
-            (view) -> new TaskSave(this).execute(ffile.getUri()));
-      } else
+            (view) -> {
+              new TaskSave(this).execute(ffile.getUri());
+              mApp.getHexChanged().set(false);
+            });
+      } else {
         new TaskSave(this).execute(ffile.getUri());
+        mApp.getHexChanged().set(false);
+      }
     } else {
       DocumentFile dfile = sourceDir.createFile("application/octet-stream", filename);
       if (dfile == null) {
         UIHelper.toast(this, getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
-      } else
+      } else {
         new TaskSave(this).execute(dfile.getUri());
+        mApp.getHexChanged().set(false);
+      }
     }
   }
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.preference.PreferenceManager;
 import fr.ralala.hexviewer.utils.Payload;
@@ -45,6 +46,7 @@ public class ApplicationCtx extends Application {
   private String mDefaultPlainFontSize;
   private boolean mDefaultSmartInput;
   private List<String> mRecentlyOpened;
+  private final AtomicBoolean mHexChanged;
 
   /**
    * Constructs the application context.
@@ -52,6 +54,7 @@ public class ApplicationCtx extends Application {
   public ApplicationCtx() {
     super();
     mPayload = new Payload();
+    mHexChanged = new AtomicBoolean(false);
   }
 
   @Override
@@ -68,6 +71,15 @@ public class ApplicationCtx extends Application {
     mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = getRecentlyOpened();
+  }
+
+  /**
+   * Returns the object allowing to know if a change has taken place or not.
+   *
+   * @return AtomicBoolean
+   */
+  public AtomicBoolean getHexChanged() {
+    return mHexChanged;
   }
 
   /**

@@ -61,4 +61,5 @@
   <string name="error_file_permission">Aucune permission n\'a été accordée pour le fichier %1$s</string>
   <string name="items_selected">%1$d Sélectionné(s)</string>
   <string name="items_deleted">%1$d lignes ont été supprimées</string>
+  <string name="confirm_save">Enregistrer le fichier "%1$s" ?</string>
 </resources>

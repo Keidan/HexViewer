@@ -40,7 +40,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private final List<String> mEntryList;
   private final UserConfig mUserConfig;
   private List<FilterData> mFilteredList;
-  private Map<Integer, FilterData> mRecentDeleteList;
+  private final Map<Integer, FilterData> mRecentDeleteList;
   private SparseBooleanArray mSelectedItemsIds;
 
   public enum DisplayCharPolicy {
@@ -92,14 +92,6 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     else
       mSelectedItemsIds.delete(position);
     notifyDataSetChanged();
-  }
-
-  /**
-   * Returns the selection count.
-   * @return int
-   */
-  public int getSelectedCount() {
-    return mSelectedItemsIds.size();
   }
 
   /**
@@ -253,6 +245,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   public void clear() {
     mFilteredList.clear();
     mEntryList.clear();
+    mRecentDeleteList.clear();
     notifyDataSetChanged();
   }
 

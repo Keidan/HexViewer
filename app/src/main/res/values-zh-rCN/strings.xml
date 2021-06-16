@@ -61,4 +61,5 @@
   <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
   <string name="items_selected">选中了 %1$d 行</string>
   <string name="items_deleted">删除了 %1$d 行</string>
+  <string name="confirm_save">保存文件 "%1$s"?</string>
 </resources>
