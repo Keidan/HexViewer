@@ -75,6 +75,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
           mAdapter.removeItem(position);
         }
       }
+      mApp.getHexChanged().set(true); /* Prevents any action while the snack is open */
       showUndoSnackbar();
       // Close CAB
       mode.finish();
@@ -115,6 +116,8 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
             }
           }
         }
+        else
+          mApp.getHexChanged().set(false);
       }
 
       @Override

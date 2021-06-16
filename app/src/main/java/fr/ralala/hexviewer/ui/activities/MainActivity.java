@@ -490,6 +490,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
         if(mApp.getHexChanged().get()) {// a save operation is pending?
           confirmFileChanged(() -> {
+            mApp.getHexChanged().set(false);
             super.onBackPressed();
             finish();
           });
