@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">HexViewer</string>
     <string name="search_title">Поиск</string>
     <string name="search_hint">Искать&#8230;</string>
     <string name="action_open_title">Открыть</string>
@@ -32,16 +31,6 @@
     <string name="source">Исходник (hex):</string>
     <string name="result">Результат:</string>
     <string name="empty_value">Пусто (ничего нет)</string>
-    <string name="default_abbreviate_portrait" translatable="false">8</string>
-    <string name="default_abbreviate_landscape" translatable="false">16</string>
-    <string name="default_hex_row_height_auto" translatable="false">true</string>
-    <string name="default_hex_row_height" translatable="false">100</string>
-    <string name="default_hex_font_size" translatable="false">12</string>
-    <string name="default_plain_row_height_auto" translatable="false">true</string>
-    <string name="default_plain_row_height" translatable="false">100</string>
-    <string name="default_plain_font_size" translatable="false">12</string>
-    <string name="default_smart_input" translatable="false">false</string>
-
     <string name="new_value">Новое значение</string>
     <string name="error_less_than">Значение не может быть меньше чем</string>
     <string name="error_greater_than">Значение не может быть больше, чем</string>
