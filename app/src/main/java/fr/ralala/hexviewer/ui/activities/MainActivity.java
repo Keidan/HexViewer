@@ -38,6 +38,7 @@ import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
+import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
@@ -61,12 +62,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
   private SearchableListArrayAdapter mAdapterHex = null;
-  private SearchableListArrayAdapter mAdapterPlain = null;
   private LinearLayout mMainLayout = null;
   private FileData mFileData = null;
   private TextView mPleaseOpenFile = null;
   private ListView mPayloadHex = null;
-  private ListView mPayloadPlain = null;
   private MenuItem mSearchMenu = null;
   private MenuItem mPlainMenu = null;
   private MenuItem mSaveMenu = null;
@@ -78,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private ActivityResultLauncher<Intent> activityResultLauncherOpen;
   private ActivityResultLauncher<Intent> activityResultLauncherSave;
   private ActivityResultLauncher<Intent> activityResultLauncherLineUpdate;
+  private PayloadPlainSwipe mPayloadPlainSwipe;
+  private MultiChoiceCallback mMultiChoiceCallback;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -88,14 +89,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     mMainLayout = findViewById(R.id.mainLayout);
     mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);
-    mPayloadPlain = findViewById(R.id.payloadPlain);
     mPayloadHex = findViewById(R.id.payloadView);
 
     mPleaseOpenFile.setVisibility(View.VISIBLE);
     mPayloadHex.setVisibility(View.GONE);
-    mPayloadPlain.setVisibility(View.GONE);
 
-    mAdapterHex = new SearchableListArrayAdapter(this, DisplayCharPolicy.DISPLAY_ALL, new ArrayList<>(), new UserConfig() {
+    mAdapterHex = new SearchableListArrayAdapter(this,
+        DisplayCharPolicy.DISPLAY_ALL, new ArrayList<>(), new UserConfig() {
       @Override
       public float getFontSize() {
         return mApp.getHexFontSize();
@@ -114,25 +114,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(this);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-    mPayloadHex.setMultiChoiceModeListener(new MultiChoiceCallback(mPayloadHex, mAdapterHex, mMainLayout));
+    mMultiChoiceCallback = new MultiChoiceCallback(mPayloadHex, mAdapterHex, mMainLayout);
+    mPayloadHex.setMultiChoiceModeListener(mMultiChoiceCallback);
 
-    mAdapterPlain = new SearchableListArrayAdapter(this, DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR, new ArrayList<>(), new UserConfig() {
-      @Override
-      public float getFontSize() {
-        return mApp.getPlainFontSize();
-      }
-
-      @Override
-      public int getRowHeight() {
-        return mApp.getPlainRowHeight();
-      }
-
-      @Override
-      public boolean isRowHeightAuto() {
-        return mApp.isPlainRowHeightAuto();
-      }
-    });
-    mPayloadPlain.setAdapter(mAdapterPlain);
+    mPayloadPlainSwipe = new PayloadPlainSwipe();
+    mPayloadPlainSwipe.onCreate(this);
 
     /* permissions */
     ActivityCompat.requestPermissions(this, new String[]{
@@ -156,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     onOpenResult(!FileData.isEmpty(mFileData));
     if (mPayloadHex.getVisibility() == View.VISIBLE)
       mAdapterHex.refresh();
-    else if (mPayloadPlain.getVisibility() == View.VISIBLE)
-      mAdapterPlain.refresh();
+    else if (mPayloadPlainSwipe.isVisible())
+      mPayloadPlainSwipe.refreshAdapter();
   }
 
   /**
@@ -175,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (uri != null) {
           mFileData = new FileData(uri);
-          final TaskOpen to = new TaskOpen(this, mAdapterHex, mAdapterPlain, this);
+          final TaskOpen to = new TaskOpen(this, mAdapterHex, mPayloadPlainSwipe.getAdapterPlain(), this);
           to.execute(uri);
         }
       }
@@ -242,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param queryStr The query string.
    */
   private void doSearch(String queryStr) {
-    final SearchableListArrayAdapter laa = ((mPayloadPlain.getVisibility() == View.VISIBLE) ? mAdapterPlain : mAdapterHex);
+    final SearchableListArrayAdapter laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mAdapterHex);
     laa.getFilter().filter(queryStr);
   }
 
@@ -271,12 +257,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       setTitle(title);
       mPleaseOpenFile.setVisibility(View.GONE);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
-      mPayloadPlain.setVisibility(checked ? View.VISIBLE : View.GONE);
+      mPayloadPlainSwipe.setVisible(checked);
     } else {
       setTitle(R.string.app_name);
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
-      mPayloadPlain.setVisibility(View.GONE);
+      mPayloadPlainSwipe.setVisible(false);
       mFileData = null;
     }
   }
@@ -369,7 +355,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       /* to hex */
       /* to plain */
       boolean checked = !item.isChecked();
-      mPayloadPlain.setVisibility(checked ? View.VISIBLE : View.GONE);
+      if(checked)
+        mMultiChoiceCallback.dismiss();
+      mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
       item.setChecked(checked);
       return true;
@@ -417,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mApp.getHexChanged().set(false);
     mApp.getPayload().clear();
     onOpenResult(false);
-    mAdapterPlain.clear();
+    mPayloadPlainSwipe.getAdapterPlain().clear();
     mAdapterHex.clear();
     if (mSearchView != null && !mSearchView.isIconified()) {
       mSearchView.setIconified(true);
@@ -472,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     String string = mAdapterHex.getItem(position);
     if (string == null)
       return;
-    if (mPayloadPlain.getVisibility() == View.VISIBLE) {
+    if (mPayloadPlainSwipe.isVisible()) {
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
@@ -606,7 +594,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private void processFileOpen(final Uri uri) {
     if (uri != null && uri.getPath() != null) {
       mFileData = new FileData(uri);
-      new TaskOpen(this, mAdapterHex, mAdapterPlain, this).execute(uri);
+      new TaskOpen(this, mAdapterHex, mPayloadPlainSwipe.getAdapterPlain(), this).execute(uri);
     } else {
       UIHelper.toast(this, getString(R.string.error_filename));
     }

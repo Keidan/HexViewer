@@ -24,14 +24,18 @@
     android:textSize="12sp"
     android:typeface="monospace" />
 
-  <ListView
-    android:id="@+id/payloadPlain"
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/payloadPlainSwipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone"
-    android:fastScrollEnabled="true"
-    android:padding="1dp"
-    android:textSize="12sp"
-    android:typeface="monospace" />
-
+    android:layout_height="match_parent">
+    <ListView
+      android:id="@+id/payloadPlain"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"
+      android:fastScrollEnabled="true"
+      android:padding="1dp"
+      android:textSize="12sp"
+      android:typeface="monospace" />
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

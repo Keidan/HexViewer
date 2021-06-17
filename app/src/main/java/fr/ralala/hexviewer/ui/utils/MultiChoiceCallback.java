@@ -16,12 +16,23 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.utils.SysHelper;
 
+/**
+ * ******************************************************************************
+ * <p><b>Project HexViewer</b><br/>
+ * MultiChoiceModeListener implementation
+ * </p>
+ *
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
+ */
 public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
   private final ApplicationCtx mApp;
   private final ListView mListView;
   private final SearchableListArrayAdapter mAdapter;
   private final View mSnackBarLayout;
   private SparseBooleanArray mBackup;
+  private Snackbar mCustomSnackBar;
 
   public MultiChoiceCallback(final ListView listView, final SearchableListArrayAdapter adapter, final View snackBarLayout) {
     mApp = (ApplicationCtx) listView.getContext().getApplicationContext();
@@ -53,6 +64,15 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
     return false;
+  }
+
+  /**
+   * Forces a dismiss of the snackbar.
+   */
+  public void dismiss() {
+    if(mCustomSnackBar != null && mCustomSnackBar.isShown()) {
+      mCustomSnackBar.dismiss();
+    }
   }
 
   /**
@@ -98,12 +118,12 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private void showUndoSnackbar() {
     final Context c = mSnackBarLayout.getContext();
     final int checkedCount = mListView.getCheckedItemCount();
-    Snackbar customSnackBar = Snackbar.make(mSnackBarLayout, String.format(c.getString(R.string.items_deleted), checkedCount), Snackbar.LENGTH_LONG);
-    customSnackBar.setAction(c.getString(R.string.cancel), (v) -> mAdapter.undoDelete());
-    customSnackBar.addCallback(new Snackbar.Callback() {
+    mCustomSnackBar = Snackbar.make(mSnackBarLayout, String.format(c.getString(R.string.items_deleted), checkedCount), Snackbar.LENGTH_LONG);
+    mCustomSnackBar.setAction(c.getString(R.string.cancel), (v) -> mAdapter.undoDelete());
+    mCustomSnackBar.addCallback(new Snackbar.Callback() {
       @Override
       public void onDismissed(Snackbar snackbar, int event) {
-        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
           mAdapter.clearRecentlyDeleted();
           // Captures all selected ids with a loop
           for (int i = (mBackup.size() - 1); i >= 0; i--) {
@@ -118,6 +138,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         }
         else
           mApp.getHexChanged().set(false);
+        mCustomSnackBar = null;
       }
 
       @Override
@@ -125,7 +146,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         // nothing to do
       }
     });
-    customSnackBar.show();
+    mCustomSnackBar.show();
   }
 
   /**

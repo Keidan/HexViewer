@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Payload {
   private final List<Byte> mPayload;
-  private final List<String> mPlain;
+  private List<String> mPlain;
 
   public Payload() {
     mPlain = new ArrayList<>();
@@ -61,6 +61,34 @@ public class Payload {
     }
     if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
       mPlain.add(sb.toString());
+    }
+  }
+
+  /**
+   * Refreshes the plain text list according to the list of payload data.
+   * @param cancel  Used to cancel this method.
+   */
+  public void refreshPlain(final AtomicBoolean cancel) {
+    final List<Byte> payload = mPayload;
+    final StringBuilder sb = new StringBuilder();
+    int nbPerLine = 0;
+    final List<String> list = new ArrayList<>();
+    for (int i = 0; i < payload.size() && (cancel == null || !cancel.get()); i++) {
+      if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
+        sb.append((char) payload.get(i).byteValue());
+        list.add(sb.toString());
+        nbPerLine = 0;
+        sb.setLength(0);
+      } else {
+        sb.append((char) (char) payload.get(i).byteValue());
+        nbPerLine++;
+      }
+    }
+    if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
+      list.add(sb.toString());
+    }
+    if(cancel == null || !cancel.get()) {
+      mPlain = list;
     }
   }
 
