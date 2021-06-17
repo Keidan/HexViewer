@@ -100,6 +100,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     mLicense.setOnPreferenceClickListener(this);
     mVersion.setOnPreferenceClickListener(this);
 
+    mHexRowHeightAuto.setChecked(mApp.isHexRowHeightAuto());
+    mPlainRowHeightAuto.setChecked(mApp.isPlainRowHeightAuto());
     mHexRowHeight.setEnabled(!mApp.isHexRowHeightAuto());
     mPlainRowHeight.setEnabled(!mApp.isPlainRowHeightAuto());
     mVersion.setSummary(BuildConfig.VERSION_NAME);

@@ -26,7 +26,6 @@
     <androidx.preference.CheckBoxPreference
       app:iconSpaceReserved="false"
       android:key="hexRowHeightAuto"
-      app:defaultValue="false"
       android:title="@string/settings_pref_title_hex_row_height_auto"
       android:summary="@string/settings_pref_summary_hex_row_height_auto" />
     <androidx.preference.Preference
@@ -47,7 +46,6 @@
     <androidx.preference.CheckBoxPreference
       app:iconSpaceReserved="false"
       android:key="plainRowHeightAuto"
-      app:defaultValue="false"
       android:title="@string/settings_pref_title_plain_row_height_auto"
       android:summary="@string/settings_pref_summary_plain_row_height_auto" />
     <androidx.preference.Preference
