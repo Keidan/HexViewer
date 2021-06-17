@@ -40,7 +40,6 @@ public class PayloadPlainSwipe {
     mApp = (ApplicationCtx) activity.getApplication();
     mPayloadPlain = activity.findViewById(R.id.payloadPlain);
     mPayloadPlainSwipeRefreshLayout = activity.findViewById(R.id.payloadPlainSwipeRefreshLayout);
-
     // Configure SwipeRefreshLayout
     mPayloadPlainSwipeRefreshLayout.setOnRefreshListener(this::refresh);
     mPayloadPlainSwipeRefreshLayout.setColorSchemeResources(
@@ -110,8 +109,9 @@ public class PayloadPlainSwipe {
    * Functions called to refresh the list.
    */
   private void refresh() {
-    mCancelPayloadPlainSwipeRefresh.set(false);
+    mCancelPayloadPlainSwipeRefresh.set(true);
     new Thread(() -> {
+      mCancelPayloadPlainSwipeRefresh.set(false);
       mApp.getPayload().refreshPlain(mCancelPayloadPlainSwipeRefresh);
       if (!mCancelPayloadPlainSwipeRefresh.get()) {
         mActivity.runOnUiThread(() -> {
