@@ -1,0 +1,20 @@
+* It's now possible to delete lines in batches.
+    * As the deletion is based on a long press, now for the modification it's necessary to perform a short press on a line.
+* It's now possible to save the open file directly (a Save As option has also been added). 
+    * Attention: It's necessary to refresh the permissions of recent files, for that reopen the files directly via the menu "Open" or simply by deleting the data of this application.
+* An "About" menu is now available in the settings.
+    * Version: Click on it to access the main page of the project.
+    * License: Click on it to access the project license page.
+* A save confirmation is now requested if the opened file is modified but the user quits the application, closes the file or opens a new file without having saved the changes first.
+* Since the plain text display cannot be dynamically refreshed based on changes to the hexadecimal view, the user can drag the list down to refresh it.
+* Fix a bug in the settings where the checkbox Auto height (hexadecimal and plain text) was never checked when it was checked in the permanent settings.
+* Fix a bug in the line editing part where when the user inserted a text whith a hexadecimal conversion greater than 16, only the first 16 were taken into account.
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
+
+A special thanks to @OmlineEditor for all her suggestions to improve this application.
