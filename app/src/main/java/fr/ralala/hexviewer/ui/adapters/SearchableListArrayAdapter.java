@@ -130,7 +130,8 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   public void removeItem(final int position) {
     FilterData fd = mFilteredList.get(position);
-    mEntryList.remove(fd.origin);
+    if(fd.origin < mEntryList.size())
+      mEntryList.remove(fd.origin);
     mFilteredList.remove(position);
     mRecentDeleteList.put(position, fd);
     super.notifyDataSetChanged();

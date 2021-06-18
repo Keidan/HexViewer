@@ -63,6 +63,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    */
   @Override
   public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+    dismiss();
     return false;
   }
 
