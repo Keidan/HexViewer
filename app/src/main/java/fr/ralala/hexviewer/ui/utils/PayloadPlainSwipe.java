@@ -1,5 +1,6 @@
 package fr.ralala.hexviewer.ui.utils;
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
@@ -102,6 +103,12 @@ public class PayloadPlainSwipe {
    */
   public void setVisible(boolean b) {
     mPayloadPlain.setVisibility(b ? View.VISIBLE : View.GONE);
+    if(b) {
+      new Handler().postDelayed(() -> {
+        mPayloadPlainSwipeRefreshLayout.setRefreshing(true);
+        refresh();
+      }, 100);
+    }
   }
 
 
@@ -110,7 +117,7 @@ public class PayloadPlainSwipe {
    */
   private void refresh() {
     mCancelPayloadPlainSwipeRefresh.set(true);
-    new Thread(() -> {
+    new Handler().postDelayed(() -> {
       mCancelPayloadPlainSwipeRefresh.set(false);
       mApp.getPayload().refreshPlain(mCancelPayloadPlainSwipeRefresh);
       if (!mCancelPayloadPlainSwipeRefresh.get()) {
@@ -121,6 +128,6 @@ public class PayloadPlainSwipe {
       }
       mPayloadPlainSwipeRefreshLayout.setRefreshing(false);
       mCancelPayloadPlainSwipeRefresh.set(false);
-    }).start();
+    }, 100);
   }
 }
