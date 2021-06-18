@@ -67,6 +67,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Toggles the item selection.
+   *
    * @param position Item position.
    */
   public void toggleSelection(int position) {
@@ -83,8 +84,9 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Select a view.
+   *
    * @param position Position.
-   * @param value Selection value.
+   * @param value    Selection value.
    */
   private void selectView(int position, boolean value) {
     if (value)
@@ -95,7 +97,17 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   }
 
   /**
+   * Returns the selection count.
+   *
+   * @return int
+   */
+  public int getSelectedCount() {
+    return mSelectedItemsIds.size();
+  }
+
+  /**
    * Returns the selected ids.
+   *
    * @return SparseBooleanArray
    */
   public SparseBooleanArray getSelectedIds() {
@@ -104,6 +116,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Returns if the position is checked or not.
+   *
    * @param position The item position.
    * @return boolean
    */

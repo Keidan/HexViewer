@@ -118,7 +118,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    */
   private void showUndoSnackbar() {
     final Context c = mSnackBarLayout.getContext();
-    final int checkedCount = mListView.getCheckedItemCount();
+    final int checkedCount = mAdapter.getSelectedCount();
     mCustomSnackBar = Snackbar.make(mSnackBarLayout, String.format(c.getString(R.string.items_deleted), checkedCount), Snackbar.LENGTH_LONG);
     mCustomSnackBar.setAction(c.getString(R.string.cancel), (v) -> mAdapter.undoDelete());
     mCustomSnackBar.addCallback(new Snackbar.Callback() {
