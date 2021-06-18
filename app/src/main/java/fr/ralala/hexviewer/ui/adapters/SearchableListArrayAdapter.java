@@ -403,12 +403,8 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-      if (results.count == 0) {
-        notifyDataSetInvalidated();
-      } else {
-        mFilteredList = (ArrayList<FilterData>) results.values;
-        notifyDataSetChanged();
-      }
+      mFilteredList = (ArrayList<FilterData>) results.values;
+      notifyDataSetChanged();
     }
   }
 }
