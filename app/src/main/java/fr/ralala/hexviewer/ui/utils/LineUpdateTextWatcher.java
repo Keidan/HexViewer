@@ -169,8 +169,11 @@ public class LineUpdateTextWatcher implements TextWatcher {
         final String notChangedStart = mNewString.substring(0, start);
         final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
         final String newChange = mNewString.substring(start, Math.min(start + count, mNewString.length()));
-        final String newChangeHex = SysHelper.extractHex(SysHelper.formatBuffer(newChange.getBytes(), count, null).get(0));
-        mNewString = formatText((notChangedStart + newChangeHex + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
+        StringBuilder newChangeHex = new StringBuilder();
+        List<String> list = SysHelper.formatBuffer(newChange.getBytes(), count, null);
+        for(String str : list)
+          newChangeHex.append(SysHelper.extractHex(str));
+        mNewString = formatText((notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
       }
     }
   }
