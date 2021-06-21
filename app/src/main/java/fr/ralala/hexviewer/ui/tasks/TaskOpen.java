@@ -35,6 +35,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   private final ArrayAdapter<String> mAdapterPlain;
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
+  private final boolean mAddRecent;
 
   public static class Result {
     private List<String> list = null;
@@ -49,11 +50,12 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   public TaskOpen(final Activity activity,
                   final ArrayAdapter<String> adapter,
                   final ArrayAdapter<String> adapterPlain,
-                  final OpenResultListener listener) {
+                  final OpenResultListener listener, final boolean addRecent) {
     super(activity, true);
     mAdapter = adapter;
     mAdapterPlain = adapterPlain;
     mListener = listener;
+    mAddRecent = addRecent;
   }
 
   /**
@@ -154,7 +156,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
         if(result.exception == null) {
           result.listPlain = payload.getPlain();
           result.list = list;
-          app.addRecentlyOpened(uri.toString());
+          if(mAddRecent)
+            app.addRecentlyOpened(uri.toString());
         }
       }
     } catch (final Exception e) {

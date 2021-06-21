@@ -158,11 +158,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else {
       if (intent.getData() != null) {
         Uri uri = getIntent().getData();
-
         if (uri != null) {
           mFileData = new FileData(uri);
-          final TaskOpen to = new TaskOpen(this, mAdapterHex, mPayloadPlainSwipe.getAdapterPlain(), this);
-          to.execute(uri);
+          processFileOpen(uri, FileHelper.takeUriPermissions(this, uri, false));
         }
       }
     }
@@ -429,9 +427,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       if (FileHelper.isFileExists(getContentResolver(), item.uri)) {
         if (FileHelper.hasUriPermission(this, item.uri, true)) {
           if(mApp.getHexChanged().get()) { // a save operation is pending?
-            confirmFileChanged(() -> processFileOpen(item.uri));
+            confirmFileChanged(() -> processFileOpen(item.uri, true));
           } else
-            processFileOpen(item.uri);
+            processFileOpen(item.uri, true);
         } else {
           UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(item.uri)));
           setArrayAdapter.removeItem(which);
@@ -583,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void processFileOpen(final Intent data) {
     Uri uri = data.getData();
-    processFileOpen(uri);
+    processFileOpen(uri, true);
   }
 
   /**
@@ -591,10 +589,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    *
    * @param uri Uri data.
    */
-  private void processFileOpen(final Uri uri) {
+  private void processFileOpen(final Uri uri, final boolean addRecent) {
     if (uri != null && uri.getPath() != null) {
       mFileData = new FileData(uri);
-      new TaskOpen(this, mAdapterHex, mPayloadPlainSwipe.getAdapterPlain(), this).execute(uri);
+      new TaskOpen(this, mAdapterHex, mPayloadPlainSwipe.getAdapterPlain(), this, addRecent).execute(uri);
     } else {
       UIHelper.toast(this, getString(R.string.error_filename));
     }
