@@ -159,8 +159,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       if (intent.getData() != null) {
         Uri uri = getIntent().getData();
         if (uri != null) {
-          mFileData = new FileData(uri);
-          processFileOpen(uri, FileHelper.takeUriPermissions(this, uri, false));
+          final Runnable r = () -> {
+            mFileData = new FileData(uri);
+            processFileOpen(uri, FileHelper.takeUriPermissions(this, uri, false));
+          };
+          if(mApp.getHexChanged().get()) {// a save operation is pending?
+            confirmFileChanged(r);
+          } else {
+            r.run();
+          }
         }
       }
     }
@@ -322,10 +329,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_open) {
+      final Runnable r = () -> UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout);
       if(mApp.getHexChanged().get()) {// a save operation is pending?
-        confirmFileChanged(() -> UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout));
+        confirmFileChanged(r);
       } else
-        UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout);
+        r.run();
       return true;
     } else if (id == R.id.action_recently_open) {
       displayRecentlyOpen();
@@ -360,10 +368,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       item.setChecked(checked);
       return true;
     } else if (id == R.id.action_close) {
+      final Runnable r = this::closeFile;
       if(mApp.getHexChanged().get()) {// a save operation is pending?
-        confirmFileChanged(this::closeFile);
+        confirmFileChanged(r);
       } else
-        closeFile();
+        r.run();
     } else if (id == R.id.action_settings) {
       startActivity(new Intent(this, SettingsActivity.class));
     }
@@ -426,10 +435,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       RecentlyOpenListArrayAdapter.UriData item = setArrayAdapter.getItem(which);
       if (FileHelper.isFileExists(getContentResolver(), item.uri)) {
         if (FileHelper.hasUriPermission(this, item.uri, true)) {
-          if(mApp.getHexChanged().get()) { // a save operation is pending?
-            confirmFileChanged(() -> processFileOpen(item.uri, true));
+          final Runnable r = () -> processFileOpen(item.uri, true);
+          if(mApp.getHexChanged().get()) {// a save operation is pending?
+            confirmFileChanged(r);
           } else
-            processFileOpen(item.uri, true);
+            r.run();
         } else {
           UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(item.uri)));
           setArrayAdapter.removeItem(which);
