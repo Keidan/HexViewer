@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_main);
-    mApp = (ApplicationCtx) getApplication();
+    mApp = ApplicationCtx.getInstance();
 
     mMainLayout = findViewById(R.id.mainLayout);
     mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);

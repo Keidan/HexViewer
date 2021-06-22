@@ -66,7 +66,7 @@ public class LineUpdateActivity  extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_line_update);
-    mApp = (ApplicationCtx) getApplication();
+    mApp = ApplicationCtx.getInstance();
 
     TextView tvSource = findViewById(R.id.tvSource);
     TextView tvResult = findViewById(R.id.tvResult);

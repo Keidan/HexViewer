@@ -127,7 +127,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
     final Result result = new Result();
     final List<String> list = new ArrayList<>();
     try {
-      final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
+      final ApplicationCtx app = ApplicationCtx.getInstance();
       final Uri uri = values[0];
       /* Size + stream */
       final ContentResolver cr = activity.getContentResolver();

@@ -61,7 +61,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
   public SettingsFragment(Activity owner) {
     mActivity = owner;
-    mApp = (ApplicationCtx) mActivity.getApplicationContext();
+    mApp = ApplicationCtx.getInstance();
   }
 
   /**

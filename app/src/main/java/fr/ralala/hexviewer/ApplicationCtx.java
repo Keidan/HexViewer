@@ -47,6 +47,7 @@ public class ApplicationCtx extends Application {
   private boolean mDefaultSmartInput;
   private List<String> mRecentlyOpened;
   private final AtomicBoolean mHexChanged;
+  private static ApplicationCtx instance;
 
   /**
    * Constructs the application context.
@@ -57,9 +58,14 @@ public class ApplicationCtx extends Application {
     mHexChanged = new AtomicBoolean(false);
   }
 
+  public static ApplicationCtx getInstance() {
+    return instance;
+  }
+
   @Override
   public void onCreate() {
     super.onCreate();
+    instance = this;
     mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     mDefaultAbbreviatePortrait = getString(R.string.default_abbreviate_portrait);
     mDefaultAbbreviateLandscape = getString(R.string.default_abbreviate_landscape);

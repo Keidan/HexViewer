@@ -35,7 +35,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private Snackbar mCustomSnackBar;
 
   public MultiChoiceCallback(final ListView listView, final SearchableListArrayAdapter adapter, final View snackBarLayout) {
-    mApp = (ApplicationCtx) listView.getContext().getApplicationContext();
+    mApp = ApplicationCtx.getInstance();
     mListView = listView;
     mAdapter = adapter;
     mSnackBarLayout = snackBarLayout;

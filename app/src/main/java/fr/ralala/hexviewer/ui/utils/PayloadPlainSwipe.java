@@ -38,7 +38,7 @@ public class PayloadPlainSwipe {
    */
   public void onCreate(final AppCompatActivity activity) {
     mActivity = activity;
-    mApp = (ApplicationCtx) activity.getApplication();
+    mApp = ApplicationCtx.getInstance();
     mPayloadPlain = activity.findViewById(R.id.payloadPlain);
     mPayloadPlainSwipeRefreshLayout = activity.findViewById(R.id.payloadPlainSwipeRefreshLayout);
     // Configure SwipeRefreshLayout

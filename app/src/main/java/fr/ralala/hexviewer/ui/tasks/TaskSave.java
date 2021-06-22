@@ -110,7 +110,7 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
     final Activity activity = mActivityRef.get();
     final Result result = new Result();
     result.uri = uris[0];
-    final ApplicationCtx app = (ApplicationCtx) activity.getApplication();
+    final ApplicationCtx app = ApplicationCtx.getInstance();
     final Payload payload = app.getPayload();
     publishProgress(0L);
     try {
