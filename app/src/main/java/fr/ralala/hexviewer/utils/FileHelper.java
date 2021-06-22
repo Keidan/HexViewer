@@ -4,14 +4,16 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.UriPermission;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
 import android.util.Log;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
+
+import fr.ralala.hexviewer.ApplicationCtx;
 
 /**
  * ******************************************************************************
@@ -185,8 +187,22 @@ public class FileHelper {
    * @return String
    */
   public static String getFileName(final Uri uri) {
-    File file = new File(Objects.requireNonNull(uri.getPath()));
-    return file.getName();
+    String result = null;
+    if (uri.getScheme().equals("content")) {
+      try (Cursor cursor = ApplicationCtx.getInstance().getContentResolver().query(uri, null, null, null, null)) {
+        if (cursor != null && cursor.moveToFirst()) {
+          result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+        }
+      }
+    }
+    if (result == null) {
+      result = uri.getPath();
+      int cut = result.lastIndexOf('/');
+      if (cut != -1) {
+        result = result.substring(cut + 1);
+      }
+    }
+    return result;
   }
 
   /**
