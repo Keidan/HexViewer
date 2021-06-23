@@ -31,6 +31,13 @@ download the software :
 	git clone git://github.com/Keidan/HexViewer.git
 	cd HexViewer
  	Use with android studio 
+  
+## Translations
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
 	
 ## Screenshots
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="600px" height="270px" alt="Home screen">
