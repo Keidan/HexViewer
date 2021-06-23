@@ -24,7 +24,7 @@ Caution: Opening files that are too large seriously degrades application perform
 
 ## Instructions
 
-download the software :
+Download the software :
 
 	mkdir devel
 	cd devel
@@ -33,11 +33,11 @@ download the software :
  	Use with android studio 
   
 ## Translations
-* Chinese: @sr093906 
-* English: @Keidan
-* French: @Keidan
-* Russian: @OmlineEditor
-* Spanish: @sguinetti
+*   Chinese: [@sr093906](https://github.com/sr093906) 
+*   English: [@Keidan](https://github.com/Keidan)
+*   French: [@Keidan](https://github.com/Keidan)
+*   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
+*   Spanish: [@sguinetti](https://github.com/sguinetti)
 	
 ## Screenshots
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="600px" height="270px" alt="Home screen">
