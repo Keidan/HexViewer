@@ -31,14 +31,20 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
   private OutputStream mOutputStream = null;
   private ParcelFileDescriptor mParcelFileDescriptor = null;
+  private final SaveResultListener mListener;
 
   public static class Result {
     private String exception = null;
     private Uri uri = null;
   }
 
-  public TaskSave(final Activity activity) {
+  public interface SaveResultListener {
+    void onSaveResult(Uri uri, boolean success);
+  }
+
+  public TaskSave(final Activity activity, final SaveResultListener listener) {
     super(activity, false);
+    mListener = listener;
   }
 
   /**
@@ -63,6 +69,8 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
       UIHelper.toast(a, a.getString(R.string.save_success));
     else
       UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
+    if(mListener != null)
+      mListener.onSaveResult(result.uri, result.exception == null && !mCancel.get());
   }
 
   /**

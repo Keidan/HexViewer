@@ -146,9 +146,10 @@ public class UIHelper {
    * @param title         Title of the dialog box.
    * @param defaultValue  Default value.
    * @param positiveClick Listener called when clicking on the validation button.
+   * @return AlertDialog
    */
   @SuppressLint("InflateParams")
-  public static void createTextDialog(final Context c, String title, String defaultValue, DialogPositiveClick positiveClick) {
+  public static AlertDialog createTextDialog(final Context c, String title, String defaultValue, DialogPositiveClick positiveClick) {
     AlertDialog.Builder builder = new AlertDialog.Builder(c);
     builder.setCancelable(false)
         .setIcon(R.mipmap.ic_launcher)
@@ -183,5 +184,6 @@ public class UIHelper {
       });
     }
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et, layout));
+    return dialog;
   }
 }

@@ -15,12 +15,29 @@ import android.net.Uri;
 public class FileData {
   private final String mName;
   private final Uri mUri;
+  private boolean mOpenFromAppIntent;
 
-  public FileData(final Uri uri) {
+  public FileData(final Uri uri, boolean openFromAppIntent) {
     mName = FileHelper.getFileName(uri);
     mUri = uri;
+    mOpenFromAppIntent = openFromAppIntent;
   }
 
+  /**
+   * Tests if the file is opened from the application's intent.
+   *
+   * @return boolean
+   */
+  public boolean isOpenFromAppIntent() {
+    return mOpenFromAppIntent;
+  }
+
+  /**
+   * Clears the open from app intent flag.
+   */
+  public void clearOpenFromAppIntent() {
+    mOpenFromAppIntent = false;
+  }
 
   /**
    * Tests if the name is empty.

@@ -193,6 +193,8 @@ public class FileHelper {
         if (cursor != null && cursor.moveToFirst()) {
           result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
         }
+      } catch (Exception e) {
+        Log.e(FileHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
       }
     }
     if (result == null) {
