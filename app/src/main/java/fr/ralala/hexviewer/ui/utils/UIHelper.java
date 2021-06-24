@@ -3,9 +3,6 @@ package fr.ralala.hexviewer.ui.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +11,6 @@ import android.view.View;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -22,7 +18,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.FileHelper;
 
@@ -121,16 +116,6 @@ public class UIHelper {
   public static void toast(final Context c, final String message) {
     /* Create a toast with the launcher icon */
     Toast toast = Toast.makeText(c, message, Toast.LENGTH_LONG);
-    TextView tv = toast.getView().findViewById(android.R.id.message);
-    if (null != tv) {
-      Drawable drawable = ContextCompat.getDrawable(c, R.mipmap.ic_launcher);
-      if (drawable != null) {
-        final Bitmap b = ((BitmapDrawable) drawable).getBitmap();
-        final Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 32, 32, false);
-        tv.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(c.getResources(), bitmapResized), null, null, null);
-        tv.setCompoundDrawablePadding(5);
-      }
-    }
     toast.show();
   }
 
