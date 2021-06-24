@@ -129,7 +129,16 @@ public class RecentlyOpenListArrayAdapter extends ArrayAdapter<RecentlyOpenListA
   public @NonNull
   View getView(final int position, final View convertView,
                @NonNull final ViewGroup parent) {
-    View v = convertView;
+    View v = getView(convertView);
+    if (v != null && v.getTag() != null) {
+      final TextView holder = (TextView) v.getTag();
+      UriData ud = mEntryList.get(position);
+      holder.setText((ud.index + " - " + ud.value));
+    }
+    return v == null ? new View(getContext()) : v;
+  }
+
+  private View getView(View v) {
     if (v == null) {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
@@ -138,12 +147,7 @@ public class RecentlyOpenListArrayAdapter extends ArrayAdapter<RecentlyOpenListA
         v.setTag(label1);
       }
     }
-    if (v != null && v.getTag() != null) {
-      final TextView holder = (TextView) v.getTag();
-      UriData ud = mEntryList.get(position);
-      holder.setText((ud.index + " - " + ud.value));
-    }
-    return v == null ? new View(getContext()) : v;
+    return v;
   }
 
 
