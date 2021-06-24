@@ -157,25 +157,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
           MAX_PLAIN_FONT_SIZE,
           mApp::setPlainFontSize, true);
     } else if (preference.equals(mLicense)) {
-      Intent browserIntent = new Intent(Intent.ACTION_VIEW, getProjectUri("license.txt"));
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer/blob/master/license.txt"));
       startActivity(browserIntent);
     } else if (preference.equals(mVersion)) {
-      Intent browserIntent = new Intent(Intent.ACTION_VIEW, getProjectUri(null));
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer"));
       startActivity(browserIntent);
     }
     return false;
-  }
-
-  /**
-   * Returns the project Uri.
-   *
-   * @param file We want the url based on a file?
-   * @return The Uri
-   */
-  private Uri getProjectUri(final String file) {
-    if (file == null)
-      return Uri.parse("https://github.com/Keidan/HexViewer/tree/v" + BuildConfig.VERSION_NAME);
-    return Uri.parse("https://github.com/Keidan/HexViewer/blob/v" + BuildConfig.VERSION_NAME + "/" + file);
   }
 
   /* ----------------------------- */
