@@ -252,11 +252,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onSaveResult(Uri uri, boolean success) {
-    if (success && mFileData.isOpenFromAppIntent()) {
-      mFileData = new FileData(uri, false);
-      if(mFileData.isOpenFromAppIntent())
-        mFileData.clearOpenFromAppIntent();
-      setMenuEnabled(mSaveMenu, true);
+    if(success) {
+      if (mFileData.isOpenFromAppIntent()) {
+        mFileData = new FileData(uri, false);
+        if(mFileData.isOpenFromAppIntent())
+          mFileData.clearOpenFromAppIntent();
+        setMenuEnabled(mSaveMenu, true);
+      } else {
+        mFileData = new FileData(uri, false);
+      }
     }
   }
 
