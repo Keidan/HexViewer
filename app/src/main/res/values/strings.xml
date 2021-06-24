@@ -11,6 +11,8 @@
     <string name="action_recently_open_title">Recently opened</string>
     <string name="loading">Loading&#8230;</string>
     <string name="saving">Saving&#8230;</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="on_double_back_exit_text">Press once again to exit!</string>
     <string name="update">Update</string>

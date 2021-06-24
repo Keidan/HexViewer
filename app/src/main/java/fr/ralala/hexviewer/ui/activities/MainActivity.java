@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(R.string.action_close_title)
         .setMessage(String.format(getString(R.string.confirm_save), mFileData.getName()))
-        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+        .setPositiveButton(R.string.yes, (dialog, which) -> {
           final Uri uri = FileHelper.getParentUri(mFileData.getUri());
           if (uri != null && FileHelper.hasUriPermission(this, uri, false))
             processFileSave(uri, mFileData.getName(), false);
@@ -424,10 +424,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           runnable.run();
           dialog.dismiss();
         })
-        .setNegativeButton(android.R.string.no, (dialog, which) -> {
+        .setNegativeButton(R.string.no, (dialog, which) -> {
           runnable.run();
           dialog.dismiss();
         })
+        .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
         .show();
   }
 

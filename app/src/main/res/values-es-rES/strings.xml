@@ -10,6 +10,8 @@
   <string name="action_recently_open_title">Abierta reciente</string>
   <string name="loading">Cargando&#8230;</string>
   <string name="saving">Guardando&#8230;</string>
+  <string name="yes">Sí</string>
+  <string name="no">No</string>
   <string name="cancel">Cancelar</string>
   <string name="on_double_back_exit_text">¡Pulsa de nuevo para salir!</string>
   <string name="update">Actualizar</string>

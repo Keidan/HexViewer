@@ -10,6 +10,8 @@
   <string name="action_recently_open_title">最近打开</string>
   <string name="loading">正加载&#8230;</string>
   <string name="saving">正保存&#8230;</string>
+  <string name="yes">是</string>
+  <string name="no">不</string>
   <string name="cancel">取消</string>
   <string name="on_double_back_exit_text">再按一次退出！</string>
   <string name="update">更新</string>
