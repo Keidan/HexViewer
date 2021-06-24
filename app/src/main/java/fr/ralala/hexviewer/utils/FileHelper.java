@@ -72,7 +72,11 @@ public class FileHelper {
       if(!fromDir) {
         Uri dir = getParentUri(uri);
         if(!hasUriPermission(c, dir, false))
-          c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+          try {
+            c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+          } catch (Exception e) {
+            Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+          }
       }
       success = true;
     } catch (Exception e) {
@@ -121,7 +125,7 @@ public class FileHelper {
     final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
     boolean found = false;
     for (UriPermission up : list) {
-      if (up.getUri().equals(uri) && (up.isReadPermission() && readPermission) || (up.isWritePermission() && !readPermission)) {
+      if (up.getUri().equals(uri) && ((up.isReadPermission() && readPermission) || (up.isWritePermission() && !readPermission))) {
         found = true;
         break;
       }

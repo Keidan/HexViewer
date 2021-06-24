@@ -369,12 +369,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         UIHelper.toast(this, getString(R.string.open_a_file_before));
         return true;
       }
-      final Uri uri = FileHelper.getParentUri(mFileData.getUri());
-      if (uri != null && FileHelper.hasUriPermission(this, uri, false)) {
-        processFileSave(uri, mFileData.getName(), false);
-      }
-      else
-        UIHelper.toast(this, String.format(getString(R.string.error_file_permission), mFileData.getName()));
+      new TaskSave(this, this).execute(mFileData.getUri());
+      mApp.getHexChanged().set(false);
       return true;
     } else if (id == R.id.action_save_as) {
       if (FileData.isEmpty(mFileData)) {
