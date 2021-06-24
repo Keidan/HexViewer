@@ -138,7 +138,8 @@ public class RecentlyOpenListArrayAdapter extends ArrayAdapter<RecentlyOpenListA
     return v == null ? new View(getContext()) : v;
   }
 
-  private View getView(View v) {
+  private View getView(final View convertView) {
+    View v = convertView;
     if (v == null) {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
