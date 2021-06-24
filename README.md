@@ -24,7 +24,6 @@ This application offers the following features:
 Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices.
 
 ## Instructions
-
 Download the software :
 
 	mkdir devel
@@ -45,7 +44,6 @@ Download the software :
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="600px" height="270px" alt="Hex display">
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="600px" height="270px" alt="Update mode">
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.jpg" width="600px" height="270px" alt="Plain display">
-
 
 ## License
 [GPLv3](https://github.com/Keidan/HexViewer/blob/master/license.txt)
