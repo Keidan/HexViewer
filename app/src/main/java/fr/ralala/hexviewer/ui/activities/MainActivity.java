@@ -81,6 +81,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private MultiChoiceCallback mMultiChoiceCallback;
   private AlertDialog mOrphanDialog = null;
 
+  /**
+   * Set the base context for this ContextWrapper.
+   * All calls will then be delegated to the base context.
+   * Throws IllegalStateException if a base context has already been set.
+   *
+   * @param base The new base context for this wrapper.
+   */
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+  }
+
+  /**
+   * Called when the activity is created.
+   *
+   * @param savedInstanceState Bundle
+   */
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -115,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(this);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-    mMultiChoiceCallback = new MultiChoiceCallback(mPayloadHex, mAdapterHex, mMainLayout);
+    mMultiChoiceCallback = new MultiChoiceCallback(this, mPayloadHex, mAdapterHex, mMainLayout);
     mPayloadHex.setMultiChoiceModeListener(mMultiChoiceCallback);
 
     mPayloadPlainSwipe = new PayloadPlainSwipe();
@@ -139,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onResume() {
     super.onResume();
+    mApp.applyApplicationLanguage(this);
     /* refresh */
     onOpenResult(!FileData.isEmpty(mFileData));
     if (mPayloadHex.getVisibility() == View.VISIBLE)
@@ -285,21 +303,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     setMenuEnabled(mCloseMenu, success);
     setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
     if (success) {
-      String title = getString(R.string.app_name);
-      title += " - " + SysHelper.abbreviate(mFileData.getName(),
-          getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
-              mApp.getAbbreviateLandscape() : mApp.getAbbreviatePortrait());
-      setTitle(title);
       mPleaseOpenFile.setVisibility(View.GONE);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
       mPayloadPlainSwipe.setVisible(checked);
     } else {
-      setTitle(R.string.app_name);
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
       mFileData = null;
     }
+    setTitle(getResources().getConfiguration());
+  }
+
+  /**
+   * Sets the activity title.
+   *
+   * @param cfg Screen configuration.
+   */
+  public void setTitle(Configuration cfg) {
+    UIHelper.setTitle(this, cfg.orientation, true, mFileData == null ? null : mFileData.getName());
   }
 
   /**
@@ -334,18 +356,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     super.onConfigurationChanged(newConfig);
 
     // Checks the orientation of the screen
-    int length = 0;
     if (!FileData.isEmpty(mFileData)) {
-      if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        length = mApp.getAbbreviateLandscape();
-      } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        length = mApp.getAbbreviatePortrait();
-      }
-      if (length != 0) {
-        String title = getString(R.string.app_name);
-        title += " - " + SysHelper.abbreviate(mFileData.getName(), length);
-        setTitle(title);
-      }
+      setTitle(newConfig);
     }
   }
 
@@ -375,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       }
       new TaskSave(this, this).execute(mFileData.getUri());
       mApp.getHexChanged().set(false);
+      setTitle(getResources().getConfiguration());
       return true;
     } else if (id == R.id.action_save_as) {
       if (FileData.isEmpty(mFileData)) {
@@ -550,7 +563,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
   }
 
-
   /**
    * Registers result launcher for the activity for saving a file.
    */
@@ -603,6 +615,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 mAdapterHex.setItem(position, li);
                 if (!query.isEmpty())
                   doSearch(mSearchQuery);
+                setTitle(getResources().getConfiguration());
               }
             } else
               Log.e(getClass().getSimpleName(), "Null data!!!");
@@ -682,6 +695,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       final Runnable r = () -> {
         new TaskSave(this, this).execute(f_file.getUri());
         mApp.getHexChanged().set(false);
+        setTitle(getResources().getConfiguration());
       };
       if(showConfirm) {
         UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
@@ -698,6 +712,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       } else {
         new TaskSave(this, this).execute(d_file.getUri());
         mApp.getHexChanged().set(false);
+        setTitle(getResources().getConfiguration());
       }
     }
   }

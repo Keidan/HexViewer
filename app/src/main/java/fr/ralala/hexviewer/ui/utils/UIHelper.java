@@ -1,8 +1,10 @@
 package fr.ralala.hexviewer.ui.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,8 +20,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -32,6 +36,41 @@ import fr.ralala.hexviewer.utils.FileHelper;
  * ******************************************************************************
  */
 public class UIHelper {
+
+  /**
+   * Sets the activity title.
+   * @param activity Activity.
+   * @param orientation Screen orientation.
+   * @param addAppName Adds the application name?
+   * @param filename The file name.
+   */
+  public static void setTitle(final Activity activity, int orientation, boolean addAppName, final String filename) {
+    ApplicationCtx app = ApplicationCtx.getInstance();
+    int length = 0;
+    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      length = app.getAbbreviateLandscape();
+    } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+      length = app.getAbbreviatePortrait();
+    }
+    final String name = activity.getString(R.string.app_name);
+    if (length != 0) {
+      String title = "";
+      if(addAppName) {
+        title += name;
+        if(filename != null)
+          title += " - ";
+      } else
+        length += name.length();
+      if(app.getHexChanged().get())
+        title += "*";
+      if(filename != null) {
+        title += SysHelper.abbreviate(filename, length);
+      }
+      activity.setTitle(title);
+    }
+    else
+      activity.setTitle(name);
+  }
 
   /**
    * Opens the file picker in directory selection mode.

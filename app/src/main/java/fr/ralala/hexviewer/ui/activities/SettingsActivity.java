@@ -1,10 +1,12 @@
 package fr.ralala.hexviewer.ui.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
 
@@ -19,6 +21,18 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
  * ******************************************************************************
  */
 public class SettingsActivity extends AppCompatActivity {
+
+  /**
+   * Set the base context for this ContextWrapper.
+   * All calls will then be delegated to the base context.
+   * Throws IllegalStateException if a base context has already been set.
+   *
+   * @param base The new base context for this wrapper.
+   */
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+  }
 
   /**
    * Called when the activity is created.

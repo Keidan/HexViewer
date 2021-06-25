@@ -70,10 +70,14 @@
     <string name="settings_pref_title_version">Version</string>
     <string name="settings_pref_title_license">License</string>
     <string name="settings_pref_summary_license" translatable="false">GPLv3</string>
+    <string name="settings_category_general">General</string>
+    <string name="settings_pref_title_language">Language</string>
+    <string name="settings_pref_summary_language">Change the language of the application.</string>
     <string name="smart_input">Plain text input</string>
     <string name="error_file_not_found">The file %1$s was not found</string>
     <string name="error_file_permission">No permission has been granted for file %1$s</string>
     <string name="items_selected">%1$d Selected</string>
     <string name="items_deleted">%1$d lines were deleted</string>
     <string name="confirm_save">Save file "%1$s"?</string>
+    <string name="control_language_change">Please save your work first.</string>
 </resources>

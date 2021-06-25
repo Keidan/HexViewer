@@ -58,10 +58,14 @@
   <string name="settings_category_about">Acerca</string>
   <string name="settings_pref_title_version">Versión</string>
   <string name="settings_pref_title_license">Licencia</string>
+  <string name="settings_category_general">General</string>
+  <string name="settings_pref_title_language">Idioma</string>
+  <string name="settings_pref_summary_language">Cambiar el idioma de la aplicación</string>
   <string name="smart_input">Entrada de texto simple</string>
   <string name="error_file_not_found">No se ha encontrado el archivo %1$s</string>
   <string name="error_file_permission">No se ha concedido permiso para el archivo %1$s</string>
   <string name="items_selected">%1$d Seleccionado</string>
   <string name="items_deleted">Se han eliminado %1$d líneas</string>
   <string name="confirm_save">¿Guardar el archivo "%1$s"?</string>
+  <string name="control_language_change">Por favor, guarde primero su trabajo.</string>
 </resources>

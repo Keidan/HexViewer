@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languages_values" translatable="false">
+        <item>en-US</item>
+        <item>es-ES</item>
+        <item>fr-FR</item>
+        <item>ru-RU</item>
+        <item>zh-CN</item>
+    </string-array>
+
+    <string-array name="languages_entries">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Russian</item>
+        <item>Chinese</item>
+    </string-array>
+</resources>

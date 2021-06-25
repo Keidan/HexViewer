@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -31,11 +32,13 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private final ListView mListView;
   private final SearchableListArrayAdapter mAdapter;
   private final View mSnackBarLayout;
+  private final MainActivity mMainActivity;
   private SparseBooleanArray mBackup;
   private Snackbar mCustomSnackBar;
 
-  public MultiChoiceCallback(final ListView listView, final SearchableListArrayAdapter adapter, final View snackBarLayout) {
+  public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter, final View snackBarLayout) {
     mApp = ApplicationCtx.getInstance();
+    mMainActivity = mainActivity;
     mListView = listView;
     mAdapter = adapter;
     mSnackBarLayout = snackBarLayout;
@@ -139,6 +142,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         }
         else
           mApp.getHexChanged().set(false);
+        mMainActivity.setTitle(mMainActivity.getResources().getConfiguration());
         mCustomSnackBar = null;
       }
 
@@ -171,7 +175,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
     final int checkedCount = mListView.getCheckedItemCount();
-    mode.setTitle(String.format(mApp.getString(R.string.items_selected), checkedCount));
+    mode.setTitle(String.format(mMainActivity.getString(R.string.items_selected), checkedCount));
     mAdapter.toggleSelection(position);
   }
 }

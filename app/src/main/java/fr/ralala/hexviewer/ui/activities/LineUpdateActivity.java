@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 public class LineUpdateActivity  extends AppCompatActivity {
@@ -54,6 +55,18 @@ public class LineUpdateActivity  extends AppCompatActivity {
     intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
     intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
     activityResultLauncher.launch(intent);
+  }
+
+  /**
+   * Set the base context for this ContextWrapper.
+   * All calls will then be delegated to the base context.
+   * Throws IllegalStateException if a base context has already been set.
+   *
+   * @param base The new base context for this wrapper.
+   */
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
   }
 
   /**
@@ -93,10 +106,7 @@ public class LineUpdateActivity  extends AppCompatActivity {
       text = "";
     }
     if(mFile != null) {
-      String title = SysHelper.abbreviate(mFile,
-          getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
-              mApp.getAbbreviateLandscape() : mApp.getAbbreviatePortrait());
-      setTitle(title);
+      UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile);
     }
     if(mPosition == -1) {
       mPosition = 0;
@@ -115,8 +125,8 @@ public class LineUpdateActivity  extends AppCompatActivity {
 
     mEtInputHex.setText(mHex.trim());
     mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(this, tvResult, mTilInputHex, mApp));
-
   }
+
   /**
    * Called by the system when the device configuration changes while your activity is running.
    *
@@ -127,17 +137,8 @@ public class LineUpdateActivity  extends AppCompatActivity {
     super.onConfigurationChanged(newConfig);
 
     // Checks the orientation of the screen
-    int length = 0;
     if (mFile != null && !mFile.isEmpty()) {
-      if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        length = mApp.getAbbreviateLandscape();
-      } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-        length = mApp.getAbbreviatePortrait();
-      }
-      if (length != 0 && (mFile != null && mFile.equals("null"))) {
-        String title = SysHelper.abbreviate(mFile,length);
-        setTitle(title);
-      }
+      UIHelper.setTitle(this, newConfig.orientation, false, mFile);
     }
   }
 

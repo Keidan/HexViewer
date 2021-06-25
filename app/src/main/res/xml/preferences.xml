@@ -7,6 +7,18 @@
 
   <androidx.preference.PreferenceCategory
     app:iconSpaceReserved="false"
+    android:title="@string/settings_category_general">
+    <androidx.preference.ListPreference
+      app:iconSpaceReserved="false"
+      android:entries="@array/languages_entries"
+      android:entryValues="@array/languages_values"
+      android:key="language"
+      android:title="@string/settings_pref_title_language"
+      android:summary="@string/settings_pref_summary_language" />
+  </androidx.preference.PreferenceCategory>
+
+  <androidx.preference.PreferenceCategory
+    app:iconSpaceReserved="false"
     android:title="@string/settings_category_abbreviate">
     <androidx.preference.Preference
       app:iconSpaceReserved="false"

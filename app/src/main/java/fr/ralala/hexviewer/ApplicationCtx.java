@@ -1,11 +1,15 @@
 package fr.ralala.hexviewer;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.preference.PreferenceManager;
@@ -34,6 +38,7 @@ public class ApplicationCtx extends Application {
   public static final String CFG_RECENTLY_OPEN = "recentlyOpen";
   public static final String CFG_VERSION = "version";
   public static final String CFG_LICENSE = "license";
+  public static final String CFG_LANGUAGE = "language";
   private final Payload mPayload;
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
@@ -77,6 +82,12 @@ public class ApplicationCtx extends Application {
     mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = getRecentlyOpened();
+  }
+
+  private SharedPreferences getPref(final Context context) {
+    if(mSharedPreferences == null)
+      mSharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context);
+    return mSharedPreferences;
   }
 
   /**
@@ -127,7 +138,7 @@ public class ApplicationCtx extends Application {
    */
   public List<String> getRecentlyOpened() {
     final List<String> uris = new ArrayList<>();
-    final String content = mSharedPreferences.getString(CFG_RECENTLY_OPEN, "");
+    final String content = getPref(this).getString(CFG_RECENTLY_OPEN, "");
     final String[] split = content.split("\\|");
     if(split.length != 0 && !split[0].equals(""))
       Collections.addAll(uris, split);
@@ -146,7 +157,7 @@ public class ApplicationCtx extends Application {
       if(i != list.size() - 1)
         sb.append("|");
     }
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_RECENTLY_OPEN, sb.toString());
     e.apply();
   }
@@ -158,7 +169,7 @@ public class ApplicationCtx extends Application {
    */
   public boolean isSmartInput() {
     try {
-      return mSharedPreferences.getBoolean(CFG_SMART_INPUT, mDefaultSmartInput);
+      return getPref(this).getBoolean(CFG_SMART_INPUT, mDefaultSmartInput);
     } catch (Exception ignore) {
       return mDefaultSmartInput;
     }
@@ -170,7 +181,7 @@ public class ApplicationCtx extends Application {
    * @param mode The new mode.
    */
   public void setSmartInput(boolean mode) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putBoolean(CFG_SMART_INPUT, mode);
     e.apply();
   }
@@ -182,7 +193,7 @@ public class ApplicationCtx extends Application {
    */
   public int getAbbreviatePortrait() {
     try {
-      return Integer.parseInt(mSharedPreferences.getString(CFG_ABBREVIATE_PORTRAIT, mDefaultAbbreviatePortrait));
+      return Integer.parseInt(getPref(this).getString(CFG_ABBREVIATE_PORTRAIT, mDefaultAbbreviatePortrait));
     } catch (Exception ignore) {
       return Integer.parseInt(mDefaultAbbreviatePortrait);
     }
@@ -194,7 +205,7 @@ public class ApplicationCtx extends Application {
    * @param number The new number.
    */
   public void setAbbreviatePortrait(int number) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_ABBREVIATE_PORTRAIT, String.valueOf(number));
     e.apply();
   }
@@ -206,7 +217,7 @@ public class ApplicationCtx extends Application {
    */
   public int getAbbreviateLandscape() {
     try {
-      return Integer.parseInt(mSharedPreferences.getString(CFG_ABBREVIATE_LANDSCAPE, mDefaultAbbreviateLandscape));
+      return Integer.parseInt(getPref(this).getString(CFG_ABBREVIATE_LANDSCAPE, mDefaultAbbreviateLandscape));
     } catch (Exception ignore) {
       return Integer.parseInt(mDefaultAbbreviateLandscape);
     }
@@ -218,131 +229,203 @@ public class ApplicationCtx extends Application {
    * @param number The new number.
    */
   public void setAbbreviateLandscape(int number) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_ABBREVIATE_LANDSCAPE, String.valueOf(number));
     e.apply();
   }
 
   /**
-   * Returns the row height auto state for the hex listview.
+   * Returns the row height auto state for the hex list view.
    *
    * @return boolean
    */
   public boolean isHexRowHeightAuto() {
     try {
-      return mSharedPreferences.getBoolean(CFG_HEX_ROW_HEIGHT_AUTO, mDefaultHexRowHeightAuto);
+      return getPref(this).getBoolean(CFG_HEX_ROW_HEIGHT_AUTO, mDefaultHexRowHeightAuto);
     } catch (Exception ignore) {
       return mDefaultHexRowHeightAuto;
     }
   }
 
   /**
-   * Returns the row height for the hex listview.
+   * Returns the row height for the hex list view.
    *
    * @return int
    */
   public int getHexRowHeight() {
     try {
-      return Integer.parseInt(mSharedPreferences.getString(CFG_HEX_ROW_HEIGHT, mDefaultHexRowHeight));
+      return Integer.parseInt(getPref(this).getString(CFG_HEX_ROW_HEIGHT, mDefaultHexRowHeight));
     } catch (Exception ignore) {
       return Integer.parseInt(mDefaultHexRowHeight);
     }
   }
 
   /**
-   * Change the the row height for the hex listview.
+   * Change the row height for the hex list view.
    *
    * @param number The new number.
    */
   public void setHexRowHeight(int number) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_HEX_ROW_HEIGHT, String.valueOf(number));
     e.apply();
   }
 
   /**
-   * Returns the font size for the hex listview.
+   * Returns the font size for the hex list view.
    *
    * @return float
    */
   public float getHexFontSize() {
     try {
-      return Float.parseFloat(mSharedPreferences.getString(CFG_HEX_FONT_SIZE, mDefaultHexFontSize));
+      return Float.parseFloat(getPref(this).getString(CFG_HEX_FONT_SIZE, mDefaultHexFontSize));
     } catch (Exception ignore) {
       return Float.parseFloat(mDefaultHexFontSize);
     }
   }
 
   /**
-   * Change the the font size for the hex listview.
+   * Change the font size for the hex list view.
    *
    * @param number The new number.
    */
   public void setHexFontSize(float number) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_HEX_FONT_SIZE, String.valueOf(number));
     e.apply();
   }
 
 
   /**
-   * Returns the row height auto state for the hex listview.
+   * Returns the row height auto state for the hex list view.
    *
    * @return boolean
    */
   public boolean isPlainRowHeightAuto() {
     try {
-      return mSharedPreferences.getBoolean(CFG_PLAIN_ROW_HEIGHT_AUTO, mDefaultPlainRowHeightAuto);
+      return getPref(this).getBoolean(CFG_PLAIN_ROW_HEIGHT_AUTO, mDefaultPlainRowHeightAuto);
     } catch (Exception ignore) {
       return mDefaultPlainRowHeightAuto;
     }
   }
 
   /**
-   * Returns the row height for the hex listview.
+   * Returns the row height for the hex list view.
    *
    * @return int
    */
   public int getPlainRowHeight() {
     try {
-      return Integer.parseInt(mSharedPreferences.getString(CFG_PLAIN_ROW_HEIGHT, mDefaultPlainRowHeight));
+      return Integer.parseInt(getPref(this).getString(CFG_PLAIN_ROW_HEIGHT, mDefaultPlainRowHeight));
     } catch (Exception ignore) {
       return Integer.parseInt(mDefaultPlainRowHeight);
     }
   }
 
   /**
-   * Change the the row height for the hex listview.
+   * Change the row height for the hex list view.
    *
    * @param number The new number.
    */
   public void setPlainRowHeight(int number) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_PLAIN_ROW_HEIGHT, String.valueOf(number));
     e.apply();
   }
 
   /**
-   * Returns the font size for the hex listview.
+   * Returns the font size for the hex list view.
    *
    * @return float
    */
   public float getPlainFontSize() {
     try {
-      return Float.parseFloat(mSharedPreferences.getString(CFG_PLAIN_FONT_SIZE, mDefaultPlainFontSize));
+      return Float.parseFloat(getPref(this).getString(CFG_PLAIN_FONT_SIZE, mDefaultPlainFontSize));
     } catch (Exception ignore) {
       return Float.parseFloat(mDefaultPlainFontSize);
     }
   }
 
   /**
-   * Change the the font size for the hex listview.
+   * Change the font size for the hex list view.
    *
    * @param number The new number.
    */
   public void setPlainFontSize(float number) {
-    SharedPreferences.Editor e = mSharedPreferences.edit();
+    SharedPreferences.Editor e = getPref(this).edit();
     e.putString(CFG_PLAIN_FONT_SIZE, String.valueOf(number));
     e.apply();
+  }
+
+  /*-------------------- LOCALE --------------------*/
+
+  /**
+   * Change the application language.
+   *
+   * @param activity The activity to restart.
+   */
+  public void applyApplicationLanguage(Activity activity) {
+    String cfg = getApplicationLanguage(this);
+    String cfgLang = cfg.replace('-', '_');
+    Locale locale = Locale.getDefault();
+    if(!locale.toString().equals(cfgLang))
+      activity.recreate();
+  }
+
+  /**
+   * Sets the application language (config only).
+   *
+   * @param lang     The new language.
+   */
+  public void setApplicationLanguage(final String lang) {
+      SharedPreferences sp = getPref(this);
+      SharedPreferences.Editor e = sp.edit();
+      e.putString(ApplicationCtx.CFG_LANGUAGE, lang);
+      e.apply();
+  }
+
+  /**
+   * Returns the application language.
+   *
+   * @param context Context.
+   * @return String.
+   */
+  public String getApplicationLanguage(final Context context) {
+    return getPref(context).getString(CFG_LANGUAGE, Locale.getDefault().getLanguage());
+  }
+  
+  /**
+   * Set the base context for this ContextWrapper.
+   * All calls will then be delegated to the base context.
+   * Throws IllegalStateException if a base context has already been set.
+   *
+   * @param base The new base context for this wrapper.
+   */
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(onAttach(base));
+  }
+
+  /**
+   * This method must be called in attachBaseContext.
+   *
+   * @param context Context
+   * @return The new cfg context.
+   */
+  public Context onAttach(Context context) {
+    String lang = getApplicationLanguage(context);
+    String[] split = lang.split("-");
+    Locale locale;
+    if(split.length == 2)
+      locale = new Locale(split[0], split[1]);
+    else
+      locale = new Locale(split[1]);
+    Locale.setDefault(locale);
+
+    Configuration configuration = context.getResources().getConfiguration();
+    configuration.setLocale(locale);
+    configuration.setLayoutDirection(locale);
+
+    return context.createConfigurationContext(configuration);
   }
 }

@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -33,7 +34,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * <p>
  * ******************************************************************************
  */
-public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
   private static final int MIN_ABBREVIATE_PORTRAIT = 1;
   private static final int MAX_ABBREVIATE_PORTRAIT = 25;
   private static final int MIN_ABBREVIATE_LANDSCAPE = 4;
@@ -58,6 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   protected Preference mPlainFontSize;
   protected Preference mLicense;
   protected Preference mVersion;
+  private ListPreference mLanguage;
 
   public SettingsFragment(Activity owner) {
     mActivity = owner;
@@ -88,6 +90,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     mPlainFontSize = findPreference(ApplicationCtx.CFG_PLAIN_FONT_SIZE);
     mLicense = findPreference(ApplicationCtx.CFG_LICENSE);
     mVersion = findPreference(ApplicationCtx.CFG_VERSION);
+    mLanguage = findPreference(ApplicationCtx.CFG_LANGUAGE);
 
     mAbbreviatePortrait.setOnPreferenceClickListener(this);
     mAbbreviateLandscape.setOnPreferenceClickListener(this);
@@ -99,12 +102,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     mPlainFontSize.setOnPreferenceClickListener(this);
     mLicense.setOnPreferenceClickListener(this);
     mVersion.setOnPreferenceClickListener(this);
+    mLanguage.setOnPreferenceChangeListener(this);
 
     mHexRowHeightAuto.setChecked(mApp.isHexRowHeightAuto());
     mPlainRowHeightAuto.setChecked(mApp.isPlainRowHeightAuto());
     mHexRowHeight.setEnabled(!mApp.isHexRowHeightAuto());
     mPlainRowHeight.setEnabled(!mApp.isPlainRowHeightAuto());
     mVersion.setSummary(BuildConfig.VERSION_NAME);
+
+    mLanguage.setDefaultValue(mApp.getApplicationLanguage(getContext()));
   }
 
 
@@ -162,6 +168,33 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     } else if (preference.equals(mVersion)) {
       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer"));
       startActivity(browserIntent);
+    }
+    return false;
+  }
+
+  /**
+   * Called when a preference has been changed.
+   *
+   * @param preference The preference that was clicked
+   * @param newValue The new value.
+   * @return {@code true} if the click was handled
+   */
+  @Override
+  public boolean onPreferenceChange(Preference preference, Object newValue) {
+    if(preference.equals(mLanguage)) {
+      if(!mApp.getHexChanged().get()) {
+        mApp.setApplicationLanguage("" + newValue);
+        getActivity().finish();
+        return true;
+      }
+      else {
+        new AlertDialog.Builder(getContext())
+            .setCancelable(false)
+            .setIcon(R.mipmap.ic_launcher)
+            .setTitle(preference.getTitle())
+            .setMessage(R.string.control_language_change)
+            .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+      }
     }
     return false;
   }
