@@ -308,9 +308,6 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     if (v != null && v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
       FilterData fd = mFilteredList.get(position);
-      if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) {
-        fd.value = ignoreNonDisplayedChar(fd.value);
-      }
 
       applyUpdated(holder, fd);
 
@@ -345,8 +342,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       SpannableString spanString = new SpannableString(fd.value);
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
       tv.setText(spanString);
-    } else
-      tv.setText(fd.value);
+    } else {
+      if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR)
+        tv.setText(ignoreNonDisplayedChar(fd.value));
+      else
+        tv.setText(fd.value);
+    }
   }
 
   /**
@@ -395,16 +396,41 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       final FilterResults filterResults = new FilterResults();
       final ArrayList<FilterData> tempList = new ArrayList<>();
       boolean clear = (constraint == null || constraint.length() == 0);
+      String query = "";
+      final Locale loc = Locale.getDefault();
+      if(!clear)
+        query = constraint.toString().toLowerCase(loc);
       for(int i = 0; i < mEntryList.size(); i++) {
         String s = mEntryList.get(i);
         if(clear)
           tempList.add(new FilterData(s, i));
-        else if (s.toLowerCase(Locale.getDefault()).contains(constraint))
+        else if (s.toLowerCase(loc).contains(query))
           tempList.add(new FilterData(s, i));
+        else {
+          if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) 
+            searchHexForPlain(s, i, query, tempList, loc);
+        }
       }
       filterResults.count = tempList.size();
       filterResults.values = tempList;
       return filterResults;
+    }
+
+    /**
+     * Performs a hexadecimal search in a plain text string.
+     * @param line The current line.
+     * @param index The line index.
+     * @param query The query.
+     * @param tempList The output list.
+     * @param loc The locale.
+     */
+    private void searchHexForPlain(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc) {
+      StringBuilder sb = new StringBuilder();
+      for (char c : line.toCharArray())
+        sb.append(String.format("%02X", (byte)c));
+      if(sb.toString().toLowerCase(loc).contains(query)) {
+        tempList.add(new FilterData(line, index));
+      }
     }
 
     /**
