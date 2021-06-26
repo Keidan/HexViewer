@@ -65,7 +65,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    */
   @Override
   protected void extraFilter(final String line, int index, String query, final ArrayList<SearchableListArrayAdapter.FilterData> tempList, Locale loc) {
-
+    /* nothing */
   }
 
   /**
