@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +25,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.adapters.RecentlyOpenListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
+import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherSave;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private LauncherLineUpdate mLauncherLineUpdate;
   private LauncherSave mLauncherSave;
   private LauncherOpen mLauncherOpen;
+  private LauncherRecentlyOpen mLauncherRecentlyOpen;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mLauncherOpen = new LauncherOpen(this, mainLayout);
     mLauncherSave = new LauncherSave(this);
     mLauncherLineUpdate = new LauncherLineUpdate(this);
+    mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
 
     handleIntent(getIntent());
   }
@@ -372,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         r.run();
       return true;
     } else if (id == R.id.action_recently_open) {
-      displayRecentlyOpen();
+      mLauncherRecentlyOpen.startActivity();
       return true;
     } else if (id == R.id.action_save) {
       if (FileData.isEmpty(mFileData)) {
@@ -417,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    *
    * @param runnable The action to be taken if the user validates or not
    */
-  private void confirmFileChanged(final Runnable runnable) {
+  public void confirmFileChanged(final Runnable runnable) {
     new AlertDialog.Builder(this)
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(R.string.action_close_title)
@@ -451,43 +452,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (mSearchView != null && !mSearchView.isIconified()) {
       mSearchView.setIconified(true);
     }
-  }
-
-  /**
-   * Displays the dialog box used to display the list of recently opened files.
-   */
-  @SuppressLint("InflateParams")
-  private void displayRecentlyOpen() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setCancelable(true)
-        .setTitle(getString(R.string.action_recently_open_title))
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> dialog.dismiss());
-
-    RecentlyOpenListArrayAdapter setArrayAdapter = new RecentlyOpenListArrayAdapter(this, new ArrayList<>());
-    setArrayAdapter.addAll(mApp.getRecentlyOpened());
-    builder.setAdapter(setArrayAdapter, (dial, which) -> {
-      mOrphanDialog = null;
-      RecentlyOpenListArrayAdapter.UriData item = setArrayAdapter.getItem(which);
-      if (FileHelper.isFileExists(getContentResolver(), item.uri)) {
-        if (FileHelper.hasUriPermission(this, item.uri, true)) {
-          final Runnable r = () -> mLauncherOpen.processFileOpen(item.uri, false, true);
-          if(mApp.getHexChanged().get()) {// a save operation is pending?
-            confirmFileChanged(r);
-          } else
-            r.run();
-        } else {
-          UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(item.uri)));
-          setArrayAdapter.removeItem(which);
-          mApp.removeRecentlyOpened(item.uri.toString());
-        }
-      } else {
-        UIHelper.toast(this, String.format(getString(R.string.error_file_not_found), item.value));
-        setArrayAdapter.removeItem(which);
-        mApp.removeRecentlyOpened(item.uri.toString());
-        FileHelper.releaseUriPermissions(this, item.uri);
-      }
-    });
-    mOrphanDialog = builder.show();
   }
 
   /**
@@ -534,6 +498,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       }
       mLastBackPressed = System.currentTimeMillis();
     }
+  }
+
+  /**
+   * Returns the menu RecentlyOpen
+   * @return MenuItem
+   */
+  public MenuItem getMenuRecentlyOpen() {
+    return mRecentlyOpen;
   }
 
   /**
@@ -586,6 +558,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public PayloadPlainSwipe getPayloadPlainSwipe() {
     return mPayloadPlainSwipe;
+  }
+
+  /**
+   * Returns the LauncherOpen
+   *
+   * @return LauncherOpen
+   */
+  public LauncherOpen getLauncherOpen() {
+    return mLauncherOpen;
   }
 
 }

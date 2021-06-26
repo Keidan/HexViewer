@@ -46,6 +46,11 @@
           android:launchMode="singleTask"/>
 
         <activity
+          android:name=".ui.activities.RecentlyOpenActivity"
+          android:configChanges="locale|orientation|screenSize"
+          android:launchMode="singleTask"/>
+
+        <activity
           android:name=".ui.activities.SettingsActivity"
           android:configChanges="locale|orientation|screenSize"
           android:launchMode="singleTask"/>
