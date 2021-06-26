@@ -2,14 +2,12 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,21 +18,19 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuCompat;
-import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.adapters.RecentlyOpenListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
+import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
+import fr.ralala.hexviewer.ui.launchers.LauncherSave;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
@@ -42,7 +38,6 @@ import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.DisplayCharPolicy;
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
@@ -62,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
   private SearchableListArrayAdapter mAdapterHex = null;
-  private LinearLayout mMainLayout = null;
   private FileData mFileData = null;
   private TextView mPleaseOpenFile = null;
   private ListView mPayloadHex = null;
@@ -74,12 +68,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private SearchView mSearchView = null;
   private MenuItem mRecentlyOpen = null;
   private String mSearchQuery = "";
-  private ActivityResultLauncher<Intent> activityResultLauncherOpen;
-  private ActivityResultLauncher<Intent> activityResultLauncherSave;
-  private ActivityResultLauncher<Intent> activityResultLauncherLineUpdate;
   private PayloadPlainSwipe mPayloadPlainSwipe;
   private MultiChoiceCallback mMultiChoiceCallback;
   private AlertDialog mOrphanDialog = null;
+  private LauncherLineUpdate mLauncherLineUpdate;
+  private LauncherSave mLauncherSave;
+  private LauncherOpen mLauncherOpen;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -105,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     setContentView(R.layout.activity_main);
     mApp = ApplicationCtx.getInstance();
 
-    mMainLayout = findViewById(R.id.mainLayout);
+    LinearLayout mainLayout = findViewById(R.id.mainLayout);
     mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);
     mPayloadHex = findViewById(R.id.payloadView);
 
@@ -132,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(this);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-    mMultiChoiceCallback = new MultiChoiceCallback(this, mPayloadHex, mAdapterHex, mMainLayout);
+    mMultiChoiceCallback = new MultiChoiceCallback(this, mPayloadHex, mAdapterHex, mainLayout);
     mPayloadHex.setMultiChoiceModeListener(mMultiChoiceCallback);
 
     mPayloadPlainSwipe = new PayloadPlainSwipe();
@@ -144,9 +138,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Manifest.permission.READ_EXTERNAL_STORAGE
     }, 1);
 
-    registerOpen();
-    registerSave();
-    registerLineUpdate();
+    mLauncherOpen = new LauncherOpen(this, mainLayout);
+    mLauncherSave = new LauncherSave(this);
+    mLauncherLineUpdate = new LauncherLineUpdate(this);
 
     handleIntent(getIntent());
   }
@@ -179,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         closeOrphanDialog();
         Uri uri = getIntent().getData();
         if (uri != null) {
-          final Runnable r = () -> processFileOpen(uri, true, FileHelper.takeUriPermissions(this, uri, false));
+          final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, FileHelper.takeUriPermissions(this, uri, false));
           if(mApp.getHexChanged().get()) {// a save operation is pending?
             confirmFileChanged(r);
           } else {
@@ -257,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    *
    * @param queryStr The query string.
    */
-  private void doSearch(String queryStr) {
+  public void doSearch(String queryStr) {
     final SearchableListArrayAdapter laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mAdapterHex);
     laa.getFilter().filter(queryStr);
   }
@@ -371,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_open) {
-      final Runnable r = () -> UIHelper.openFilePickerInFileSelectionMode(this, activityResultLauncherOpen, mMainLayout);
+      final Runnable r = () -> mLauncherOpen.startActivity();
       if(mApp.getHexChanged().get()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
@@ -394,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         UIHelper.toast(this, getString(R.string.open_a_file_before));
         return true;
       }
-      UIHelper.openFilePickerInDirectorSelectionMode(activityResultLauncherSave);
+      mLauncherSave.startActivity();
       return true;
     } else if (id == R.id.action_plain_text) {
       /* to hex */
@@ -431,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         .setPositiveButton(R.string.yes, (dialog, which) -> {
           final Uri uri = FileHelper.getParentUri(mFileData.getUri());
           if (uri != null && FileHelper.hasUriPermission(this, uri, false))
-            processFileSave(uri, mFileData.getName(), false);
+            mLauncherSave.processFileSave(uri, mFileData.getName(), false);
           else
             UIHelper.toast(this, String.format(getString(R.string.error_file_permission), mFileData.getName()));
           runnable.run();
@@ -476,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       RecentlyOpenListArrayAdapter.UriData item = setArrayAdapter.getItem(which);
       if (FileHelper.isFileExists(getContentResolver(), item.uri)) {
         if (FileHelper.hasUriPermission(this, item.uri, true)) {
-          final Runnable r = () -> processFileOpen(item.uri, false, true);
+          final Runnable r = () -> mLauncherOpen.processFileOpen(item.uri, false, true);
           if(mApp.getHexChanged().get()) {// a save operation is pending?
             confirmFileChanged(r);
           } else
@@ -512,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
-    LineUpdateActivity.startActivity(this, activityResultLauncherLineUpdate, string, mFileData.getName(), position);
+    mLauncherLineUpdate.startActivity(string, position);
   }
 
   /**
@@ -542,179 +536,56 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
   }
 
-
   /**
-   * Registers result launcher for the activity for opening a file.
+   * Sets the orphan dialog.
+   * @param orphan The dialog.
    */
-  private void registerOpen() {
-    activityResultLauncherOpen = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            if (data != null) {
-              if (FileHelper.takeUriPermissions(this, data.getData(), false)) {
-                processFileOpen(data);
-              } else
-                UIHelper.toast(this, String.format(getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
-            } else
-              Log.e(getClass().getSimpleName(), "Null data!!!");
-          }
-        });
+  public void setOrphanDialog(AlertDialog orphan) {
+    mOrphanDialog = orphan;
   }
 
   /**
-   * Registers result launcher for the activity for saving a file.
-   */
-  private void registerSave() {
-    activityResultLauncherSave = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            if (data != null) {
-              if(!mFileData.isOpenFromAppIntent())
-                FileHelper.takeUriPermissions(MainActivity.this, data.getData(), true);
-              processFileSaveWithDialog(data.getData());
-            } else
-              Log.e(getClass().getSimpleName(), "Null data!!!");
-          }
-        });
-  }
-
-  /**
-   * Registers result launcher for the activity for line update.
-   */
-  private void registerLineUpdate() {
-    activityResultLauncherLineUpdate = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            if (data != null) {
-              Bundle bundle = data.getExtras();
-              String refString = bundle.getString(LineUpdateActivity.RESULT_REFERENCE_STRING);
-              String newString = bundle.getString(LineUpdateActivity.RESULT_NEW_STRING);
-              int position = bundle.getInt(LineUpdateActivity.RESULT_POSITION);
-
-              final byte[] buf = SysHelper.hexStringToByteArray(newString);
-              final byte[] ref = SysHelper.hexStringToByteArray(refString);
-              if (Arrays.equals(ref, buf)) {
-                /* nothing to do */
-                return;
-              }
-              mApp.getHexChanged().set(true);
-              mApp.getPayload().update(position, buf);
-              List<String> li = SysHelper.formatBuffer(buf, null);
-              if (li.isEmpty())
-                mAdapterHex.removeItem(position);
-              else {
-                String query = mSearchQuery;
-                if (!query.isEmpty())
-                  doSearch("");
-                mAdapterHex.setItem(position, li);
-                if (!query.isEmpty())
-                  doSearch(mSearchQuery);
-                setTitle(getResources().getConfiguration());
-              }
-            } else
-              Log.e(getClass().getSimpleName(), "Null data!!!");
-          }
-        });
-  }
-
-  /*-------------------------------------------*/
-
-  /**
-   * Process the opening of the file
+   * Returns the file data.
    *
-   * @param data Intent data.
+   * @return FileData
    */
-  private void processFileOpen(final Intent data) {
-    Uri uri = data.getData();
-    processFileOpen(uri, false, true);
+  public FileData getFileData() {
+    return mFileData;
   }
 
   /**
-   * Process the opening of the file
+   * Sets the file data.
    *
-   * @param uri Uri data.
+   * @param fd FileData
    */
-  private void processFileOpen(final Uri uri, final boolean openFromAppIntent, final boolean addRecent) {
-    if (uri != null && uri.getPath() != null) {
-      mFileData = new FileData(uri, openFromAppIntent);
-      new TaskOpen(this, mAdapterHex, mPayloadPlainSwipe.getAdapterPlain(), this, addRecent).execute(uri);
-    } else {
-      UIHelper.toast(this, getString(R.string.error_filename));
-    }
+  public void setFileData(FileData fd) {
+    mFileData = fd;
   }
 
   /**
-   * Process the saving of the file
+   * Returns the search query.
    *
-   * @param uri Uri data.
+   * @return String
    */
-  private void processFileSaveWithDialog(final Uri uri) {
-    mOrphanDialog = UIHelper.createTextDialog(this, getString(R.string.action_save_title), mFileData.getName(), (dialog, content, layout) -> {
-      mOrphanDialog = null;
-      final String s_file = content.getText().toString();
-      if (s_file.trim().isEmpty()) {
-        layout.setError(getString(R.string.error_filename));
-        return;
-      }
-      processFileSave(uri, s_file, true);
-      dialog.dismiss();
-    });
+  public String getSearchQuery() {
+    return mSearchQuery;
   }
 
+  /**
+   * Returns the hex adapter.
+   *
+   * @return SearchableListArrayAdapter
+   */
+  public SearchableListArrayAdapter getAdapterHex() {
+    return mAdapterHex;
+  }
 
   /**
-   * Process the saving of the file
-   *
-   * @param uri         Uri data.
-   * @param filename    The filename
-   * @param showConfirm Shows confirm box.
+   * Returns the PayloadPlainSwipe
+   * @return PayloadPlainSwipe
    */
-  private void processFileSave(final Uri uri, final String filename, final boolean showConfirm) {
-    DocumentFile sourceDir = DocumentFile.fromTreeUri(this, uri);
-    if (sourceDir == null) {
-      UIHelper.toast(this, getString(R.string.uri_exception));
-      Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uri + "'");
-      return;
-    }
-    DocumentFile file = null;
-    for (DocumentFile f : sourceDir.listFiles()) {
-      if (f.getName() != null && f.getName().endsWith(filename)) {
-        file = f;
-        break;
-      }
-    }
-    final DocumentFile f_file = file;
-
-    if (file != null) {
-      final Runnable r = () -> {
-        new TaskSave(this, this).execute(f_file.getUri());
-        mApp.getHexChanged().set(false);
-        setTitle(getResources().getConfiguration());
-      };
-      if(showConfirm) {
-        UIHelper.showConfirmDialog(this, getString(R.string.action_save_title),
-            getString(R.string.confirm_overwrite),
-            (view) -> r.run());
-      } else {
-        r.run();
-      }
-    } else {
-      DocumentFile d_file = sourceDir.createFile("application/octet-stream", filename);
-      if (d_file == null) {
-        UIHelper.toast(this, getString(R.string.uri_exception));
-        Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
-      } else {
-        new TaskSave(this, this).execute(d_file.getUri());
-        mApp.getHexChanged().set(false);
-        setTitle(getResources().getConfiguration());
-      }
-    }
+  public PayloadPlainSwipe getPayloadPlainSwipe() {
+    return mPayloadPlainSwipe;
   }
 
 }
