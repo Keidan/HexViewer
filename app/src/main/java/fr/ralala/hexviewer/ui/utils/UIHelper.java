@@ -39,10 +39,11 @@ public class UIHelper {
 
   /**
    * Sets the activity title.
-   * @param activity Activity.
+   *
+   * @param activity    Activity.
    * @param orientation Screen orientation.
-   * @param addAppName Adds the application name?
-   * @param filename The file name.
+   * @param addAppName  Adds the application name?
+   * @param filename    The file name.
    */
   public static void setTitle(final Activity activity, int orientation, boolean addAppName, final String filename) {
     ApplicationCtx app = ApplicationCtx.getInstance();
@@ -55,20 +56,19 @@ public class UIHelper {
     final String name = activity.getString(R.string.app_name);
     if (length != 0) {
       String title = "";
-      if(addAppName) {
+      if (addAppName) {
         title += name;
-        if(filename != null)
+        if (filename != null)
           title += " - ";
       } else
         length += name.length();
-      if(app.getHexChanged().get())
+      if (app.getHexChanged().get())
         title += "*";
-      if(filename != null) {
+      if (filename != null) {
         title += SysHelper.abbreviate(filename, length);
       }
       activity.setTitle(title);
-    }
-    else
+    } else
       activity.setTitle(name);
   }
 

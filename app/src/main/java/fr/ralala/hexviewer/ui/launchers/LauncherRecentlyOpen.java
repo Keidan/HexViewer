@@ -69,8 +69,7 @@ public class LauncherRecentlyOpen {
                 mApp.removeRecentlyOpened(uri.toString());
                 FileHelper.releaseUriPermissions(mActivity, uri);
               }
-            }
-            else if(mApp.getRecentlyOpened().isEmpty())
+            } else if (mApp.getRecentlyOpened().isEmpty())
               mActivity.getMenuRecentlyOpen().setEnabled(false);
           }
         });

@@ -15,8 +15,8 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.Payload;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -76,9 +76,9 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   @Override
   protected void onPostExecute(final Result result) {
     Activity a = mActivityRef.get();
-    if(mCancel.get())
+    if (mCancel.get())
       UIHelper.toast(a, a.getString(R.string.operation_canceled));
-    else if(result.exception != null)
+    else if (result.exception != null)
       UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
     else {
       if (result.list != null)
@@ -86,7 +86,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
       if (result.listPlain != null)
         mAdapterPlain.addAll(result.listPlain);
     }
-    if(mListener != null)
+    if (mListener != null)
       mListener.onOpenResult(result.exception == null && !mCancel.get());
     super.onPostExecute(result);
   }
@@ -112,7 +112,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   protected void onCancelled() {
     super.onCancelled();
     close();
-    if(mListener != null)
+    if (mListener != null)
       mListener.onOpenResult(false);
   }
 
@@ -150,13 +150,13 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
             result.exception = iae.getMessage();
             break;
           }
-          publishProgress((long)reads);
+          publishProgress((long) reads);
         }
         /* prepare result */
-        if(result.exception == null) {
+        if (result.exception == null) {
           result.listPlain = payload.getPlain();
           result.list = list;
-          if(mAddRecent)
+          if (mAddRecent)
             app.addRecentlyOpened(uri.toString());
         }
       }

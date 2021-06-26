@@ -14,8 +14,8 @@ import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.Payload;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -56,20 +56,19 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
   protected void onPostExecute(final Result result) {
     super.onPostExecute(result);
     final Activity a = mActivityRef.get();
-    if(mCancel.get())
-    {
-      if(result.uri != null) {
+    if (mCancel.get()) {
+      if (result.uri != null) {
         final DocumentFile dfile = DocumentFile.fromSingleUri(a, result.uri);
         if (dfile != null && dfile.exists() && !dfile.delete()) {
           Log.e(this.getClass().getSimpleName(), "File delete error");
         }
       }
       UIHelper.toast(a, a.getString(R.string.operation_canceled));
-    } else if(result.exception == null)
+    } else if (result.exception == null)
       UIHelper.toast(a, a.getString(R.string.save_success));
     else
       UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
-    if(mListener != null)
+    if (mListener != null)
       mListener.onSaveResult(result.uri, result.exception == null && !mCancel.get());
   }
 
@@ -124,7 +123,7 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
     try {
       mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "w");
       final byte[] data = payload.to(mCancel);
-      if(!mCancel.get()) {
+      if (!mCancel.get()) {
         mOutputStream = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());
         mTotalSize = data.length;
         final long count = mTotalSize / MAX_LENGTH;

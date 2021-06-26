@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
+import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
 import fr.ralala.hexviewer.utils.Payload;
 
@@ -91,8 +91,8 @@ public class ApplicationCtx extends Application {
   }
 
   private SharedPreferences getPref(final Context context) {
-    if(mSharedPreferences == null)
-      mSharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context);
+    if (mSharedPreferences == null)
+      mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     return mSharedPreferences;
   }
 
@@ -146,7 +146,7 @@ public class ApplicationCtx extends Application {
     final List<String> uris = new ArrayList<>();
     final String content = getPref(this).getString(CFG_RECENTLY_OPEN, "");
     final String[] split = content.split("\\|");
-    if(split.length != 0 && !split[0].equals(""))
+    if (split.length != 0 && !split[0].equals(""))
       Collections.addAll(uris, split);
     return uris;
   }
@@ -158,9 +158,9 @@ public class ApplicationCtx extends Application {
    */
   private void setRecentlyOpened(List<String> list) {
     StringBuilder sb = new StringBuilder();
-    for(int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < list.size(); i++) {
       sb.append(list.get(i));
-      if(i != list.size() - 1)
+      if (i != list.size() - 1)
         sb.append("|");
     }
     SharedPreferences.Editor e = getPref(this).edit();
@@ -374,20 +374,20 @@ public class ApplicationCtx extends Application {
     String cfg = getApplicationLanguage(this);
     String cfgLang = cfg.replace('-', '_');
     Locale locale = Locale.getDefault();
-    if(!locale.toString().equals(cfgLang))
+    if (!locale.toString().equals(cfgLang))
       activity.recreate();
   }
 
   /**
    * Sets the application language (config only).
    *
-   * @param lang     The new language.
+   * @param lang The new language.
    */
   public void setApplicationLanguage(final String lang) {
-      SharedPreferences sp = getPref(this);
-      SharedPreferences.Editor e = sp.edit();
-      e.putString(ApplicationCtx.CFG_LANGUAGE, lang);
-      e.apply();
+    SharedPreferences sp = getPref(this);
+    SharedPreferences.Editor e = sp.edit();
+    e.putString(ApplicationCtx.CFG_LANGUAGE, lang);
+    e.apply();
   }
 
   /**
@@ -399,7 +399,7 @@ public class ApplicationCtx extends Application {
   public String getApplicationLanguage(final Context context) {
     return getPref(context).getString(CFG_LANGUAGE, Locale.getDefault().getLanguage());
   }
-  
+
   /**
    * Set the base context for this ContextWrapper.
    * All calls will then be delegated to the base context.
@@ -422,7 +422,7 @@ public class ApplicationCtx extends Application {
     String lang = getApplicationLanguage(context);
     String[] split = lang.split("-");
     Locale locale;
-    if(split.length == 2)
+    if (split.length == 2)
       locale = new Locale(split[0], split[1]);
     else
       locale = new Locale(split[1]);

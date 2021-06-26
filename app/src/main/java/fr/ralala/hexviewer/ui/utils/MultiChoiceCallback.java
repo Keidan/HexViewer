@@ -74,7 +74,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    * Forces a dismiss of the snackbar.
    */
   public void dismiss() {
-    if(mCustomSnackBar != null && mCustomSnackBar.isShown()) {
+    if (mCustomSnackBar != null && mCustomSnackBar.isShown()) {
       mCustomSnackBar.dismiss();
     }
   }
@@ -106,8 +106,8 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {
       final int count = mAdapter.getCount();
-      for(int i = 0; i < count; i++) {
-        if(!mAdapter.isPositionChecked(i)) {
+      for (int i = 0; i < count; i++) {
+        if (!mAdapter.isPositionChecked(i)) {
           onItemCheckedStateChanged(mode, i, -1, true);
         }
       }
@@ -139,8 +139,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
               mApp.getPayload().update(position, buf);
             }
           }
-        }
-        else
+        } else
           mApp.getHexChanged().set(false);
         mMainActivity.setTitle(mMainActivity.getResources().getConfiguration());
         mCustomSnackBar = null;

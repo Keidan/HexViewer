@@ -13,13 +13,14 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
- *******************************************************************************
+ * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
  * Generic task with progress.
  * </p>
- * @author Keidan
  *
- *******************************************************************************
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
  */
 public abstract class ProgressTask<P, T> extends AsyncTask<P, Long, T> {
   private final AlertDialog mDialog;
@@ -48,7 +49,7 @@ public abstract class ProgressTask<P, T> extends AsyncTask<P, Long, T> {
 
 
   @Override
-  protected void onProgressUpdate(Long ...values) {
+  protected void onProgressUpdate(Long... values) {
     mCurrentSize += values[0];
     String text = mActivityRef.get().getString(R.string.loading) + " ";
     text += SysHelper.sizeToHuman(mCurrentSize) + " / " + SysHelper.sizeToHuman(mTotalSize);
@@ -62,17 +63,18 @@ public abstract class ProgressTask<P, T> extends AsyncTask<P, Long, T> {
   protected void onPreExecute() {
     super.onPreExecute();
     mCurrentSize = 0L;
-    if(mDialog != null)
+    if (mDialog != null)
       mDialog.show();
   }
 
   /**
    * Called after the execution of the task.
+   *
    * @param result The result.
    */
   @Override
   protected void onPostExecute(final T result) {
-    if(mDialog != null)
+    if (mDialog != null)
       mDialog.dismiss();
   }
 

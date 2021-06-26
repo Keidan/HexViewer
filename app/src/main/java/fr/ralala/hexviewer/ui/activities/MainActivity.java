@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Uri uri = getIntent().getData();
         if (uri != null) {
           final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, FileHelper.takeUriPermissions(this, uri, false));
-          if(mApp.getHexChanged().get()) {// a save operation is pending?
+          if (mApp.getHexChanged().get()) {// a save operation is pending?
             confirmFileChanged(r);
           } else {
             r.run();
@@ -186,8 +186,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   private void closeOrphanDialog() {
-    if(mOrphanDialog != null ) {
-      if(mOrphanDialog.isShowing())
+    if (mOrphanDialog != null) {
+      if (mOrphanDialog.isShowing())
         mOrphanDialog.dismiss();
       mOrphanDialog = null;
     }
@@ -265,10 +265,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onSaveResult(Uri uri, boolean success) {
-    if(success) {
+    if (success) {
       if (mFileData.isOpenFromAppIntent()) {
         mFileData = new FileData(uri, false);
-        if(mFileData.isOpenFromAppIntent())
+        if (mFileData.isOpenFromAppIntent())
           mFileData.clearOpenFromAppIntent();
         setMenuEnabled(mSaveMenu, true);
       } else {
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       checked = mPlainMenu.isChecked();
       mPlainMenu.setEnabled(success);
     }
-    if(mFileData != null && mFileData.isOpenFromAppIntent())
+    if (mFileData != null && mFileData.isOpenFromAppIntent())
       setMenuEnabled(mSaveMenu, false);
     else
       setMenuEnabled(mSaveMenu, success);
@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     final int id = item.getItemId();
     if (id == R.id.action_open) {
       final Runnable r = () -> mLauncherOpen.startActivity();
-      if(mApp.getHexChanged().get()) {// a save operation is pending?
+      if (mApp.getHexChanged().get()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       /* to hex */
       /* to plain */
       boolean checked = !item.isChecked();
-      if(checked)
+      if (checked)
         mMultiChoiceCallback.dismiss();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return true;
     } else if (id == R.id.action_close) {
       final Runnable r = this::closeFile;
-      if(mApp.getHexChanged().get()) {// a save operation is pending?
+      if (mApp.getHexChanged().get()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
@@ -456,10 +456,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Callback method to be invoked when an item in this AdapterView has been clicked.
-   * @param parent The AdapterView where the click happened.
-   * @param view The view within the AdapterView that was clicked (this will be a view provided by the adapter).
+   *
+   * @param parent   The AdapterView where the click happened.
+   * @param view     The view within the AdapterView that was clicked (this will be a view provided by the adapter).
    * @param position The position of the view in the adapter.
-   * @param id The row id of the item that was clicked.
+   * @param id       The row id of the item that was clicked.
    */
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -482,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mSearchView.setIconified(true);
     } else {
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-        if(mApp.getHexChanged().get()) {// a save operation is pending?
+        if (mApp.getHexChanged().get()) {// a save operation is pending?
           confirmFileChanged(() -> {
             mApp.getHexChanged().set(false);
             super.onBackPressed();
@@ -502,6 +503,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Returns the menu RecentlyOpen
+   *
    * @return MenuItem
    */
   public MenuItem getMenuRecentlyOpen() {
@@ -510,6 +512,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Sets the orphan dialog.
+   *
    * @param orphan The dialog.
    */
   public void setOrphanDialog(AlertDialog orphan) {
@@ -554,6 +557,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Returns the PayloadPlainSwipe
+   *
    * @return PayloadPlainSwipe
    */
   public PayloadPlainSwipe getPayloadPlainSwipe() {

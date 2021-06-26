@@ -103,7 +103,7 @@ public class PayloadPlainSwipe {
    */
   public void setVisible(boolean b) {
     mPayloadPlain.setVisibility(b ? View.VISIBLE : View.GONE);
-    if(b) {
+    if (b) {
       new Handler().postDelayed(() -> {
         mPayloadPlainSwipeRefreshLayout.setRefreshing(true);
         refresh();

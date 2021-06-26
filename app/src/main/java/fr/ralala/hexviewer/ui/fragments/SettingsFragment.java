@@ -176,18 +176,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
    * Called when a preference has been changed.
    *
    * @param preference The preference that was clicked
-   * @param newValue The new value.
+   * @param newValue   The new value.
    * @return {@code true} if the click was handled
    */
   @Override
   public boolean onPreferenceChange(Preference preference, Object newValue) {
-    if(preference.equals(mLanguage)) {
-      if(!mApp.getHexChanged().get()) {
+    if (preference.equals(mLanguage)) {
+      if (!mApp.getHexChanged().get()) {
         mApp.setApplicationLanguage("" + newValue);
         getActivity().finish();
         return true;
-      }
-      else {
+      } else {
         new AlertDialog.Builder(getContext())
             .setCancelable(false)
             .setIcon(R.mipmap.ic_launcher)
@@ -217,6 +216,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   private void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated<Integer> iv) {
     displayDialog(title, defaultValue, minValue, maxValue, (v) -> iv.onValidated(v.intValue()), false);
   }
+
   /**
    * Displays the input dialog box.
    *
@@ -243,15 +243,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
       int inputType = InputType.TYPE_CLASS_NUMBER;
       String def;
       int maxLen;
-      if(decimal) {
+      if (decimal) {
         maxLen = 5;
         inputType |= InputType.TYPE_NUMBER_FLAG_DECIMAL;
         def = String.valueOf(defaultValue);
       } else {
         maxLen = 3;
-        def = String.valueOf((int)defaultValue);
+        def = String.valueOf((int) defaultValue);
       }
-      et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLen)});
+      et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLen)});
       et.setInputType(inputType);
       et.setText(def);
       et.requestFocus();
@@ -270,7 +270,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
       }
     });
     dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> {
-      if(et != null)
+      if (et != null)
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
       dialog.dismiss();
     });
@@ -292,18 +292,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
       Editable s = et.getText();
       float nb = Float.parseFloat(s.toString());
       if (s.length() == 0) {
-        et.setText(String.valueOf(!decimal ? (int)minValue : minValue));
+        et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
         et.selectAll();
         return false;
       } else {
         if (nb < minValue) {
           UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
-          et.setText(String.valueOf(!decimal ? (int)minValue : minValue));
+          et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
           et.selectAll();
           return false;
         } else if (nb > maxValue) {
           UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
-          et.setText(String.valueOf(!decimal ? (int)maxValue : maxValue));
+          et.setText(String.valueOf(!decimal ? (int) maxValue : maxValue));
           et.selectAll();
           return false;
         } else
@@ -313,7 +313,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
       }
     } catch (Exception ex) {
       UIHelper.shakeError(et, ex.getMessage());
-      et.setText(String.valueOf(!decimal ? (int)defaultValue : defaultValue));
+      et.setText(String.valueOf(!decimal ? (int) defaultValue : defaultValue));
       et.selectAll();
       return false;
     }

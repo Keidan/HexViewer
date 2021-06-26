@@ -66,7 +66,8 @@ public class Payload {
 
   /**
    * Refreshes the plain text list according to the list of payload data.
-   * @param cancel  Used to cancel this method.
+   *
+   * @param cancel Used to cancel this method.
    */
   public void refreshPlain(final AtomicBoolean cancel) {
     final List<Byte> payload = mPayload;
@@ -87,7 +88,7 @@ public class Payload {
     if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
       list.add(sb.toString());
     }
-    if(cancel == null || !cancel.get()) {
+    if (cancel == null || !cancel.get()) {
       mPlain = list;
     }
   }

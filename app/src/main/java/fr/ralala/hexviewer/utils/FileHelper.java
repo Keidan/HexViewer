@@ -69,9 +69,9 @@ public class FileHelper {
     try {
       final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
       c.getContentResolver().takePersistableUriPermission(uri, takeFlags);
-      if(!fromDir) {
+      if (!fromDir) {
         Uri dir = getParentUri(uri);
-        if(!hasUriPermission(c, dir, false))
+        if (!hasUriPermission(c, dir, false))
           try {
             c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
           } catch (Exception e) {
@@ -88,8 +88,8 @@ public class FileHelper {
   /**
    * Releases the permissions associated to a Uri.
    *
-   * @param c              Android content.
-   * @param uri            Uri
+   * @param c   Android content.
+   * @param uri Uri
    */
   public static void releaseUriPermissions(final Context c, final Uri uri) {
     if (hasUriPermission(c, uri, true))
@@ -105,7 +105,7 @@ public class FileHelper {
             found++;
           }
         }
-        if(found == 1) {
+        if (found == 1) {
           c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
       } catch (Exception e) {
@@ -221,11 +221,11 @@ public class FileHelper {
     final String filename = getFileName(uri);
     final String encoded = uri.getEncodedPath();
     String parent = encoded.substring(0, encoded.length() - filename.length());
-    if(parent.endsWith("%2F"))
+    if (parent.endsWith("%2F"))
       parent = parent.substring(0, parent.length() - 3);
     String path;
     final String documentPrimary = "/document/primary%3A";
-    if(parent.startsWith(documentPrimary))
+    if (parent.startsWith(documentPrimary))
       path = "/tree/primary%3A" + parent.substring(documentPrimary.length());
     else
       path = parent;

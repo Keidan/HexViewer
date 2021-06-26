@@ -23,6 +23,7 @@ import static fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter.UriDat
 
 public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyOpenRecyclerAdapter.OnEventListener {
   private ApplicationCtx mApp = null;
+
   /**
    * Starts an activity.
    *
@@ -69,9 +70,9 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     List<UriData> list = new ArrayList<>();
     final List<String> li = mApp.getRecentlyOpened();
     int index = 0;
-    for(int i = li.size() - 1; i >= 0; i--) {
+    for (int i = li.size() - 1; i >= 0; i--) {
       list.add(new UriData(++index, li.get(i)));
-     }
+    }
     RecentlyOpenRecyclerAdapter adapter = new RecentlyOpenRecyclerAdapter(this, list, this);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -99,6 +100,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
 
   /**
    * Called when a click is captured.
+   *
    * @param ud The associated item.
    */
   @Override
@@ -111,12 +113,13 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
 
   /**
    * Called when a click is captured.
+   *
    * @param ud The associated item.
    */
   @Override
   public void onDelete(@NonNull UriData ud) {
     mApp.removeRecentlyOpened(ud.uri.toString());
-    if(mApp.getRecentlyOpened().isEmpty()) {
+    if (mApp.getRecentlyOpened().isEmpty()) {
       Intent i = new Intent();
       i.setData(null);
       setResult(RESULT_OK, i);

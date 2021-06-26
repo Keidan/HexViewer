@@ -50,7 +50,9 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   public interface UserConfig {
     float getFontSize();
+
     int getRowHeight();
+
     boolean isRowHeightAuto();
   }
 
@@ -136,6 +138,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       return mFilteredList.get(position).value;
     return null;
   }
+
   /**
    * Remove an item.
    *
@@ -143,7 +146,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   public void removeItem(final int position) {
     FilterData fd = mFilteredList.get(position);
-    if(fd.origin < mEntryList.size())
+    if (fd.origin < mEntryList.size())
       mEntryList.remove(fd.origin);
     mFilteredList.remove(position);
     mRecentDeleteList.put(position, fd);
@@ -178,36 +181,36 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
    */
   public void setItem(final int position, final List<String> t) {
     int size = t.size();
-    if(size == 1) {
+    if (size == 1) {
       FilterData fd = mFilteredList.get(position);
       fd.value = t.get(0);
       fd.updated = true;
       mEntryList.set(fd.origin, t.get(0));
     } else {
       /* first we move the existing indexes - filtered */
-      for(int i = position + 1; i < mFilteredList.size(); i++)
+      for (int i = position + 1; i < mFilteredList.size(); i++)
         mFilteredList.get(i).origin += size;
 
       /* Then we modify the existing element */
       int origin = mFilteredList.get(position).origin + 1;
       FilterData fd = mFilteredList.get(position);
       final String newVal = t.get(0);
-      if(!fd.value.equals(newVal)) {
+      if (!fd.value.equals(newVal)) {
         fd.value = newVal;
         fd.updated = true;
         mEntryList.set(fd.origin, t.get(0));
       }
 
       /* finally we add the elements */
-      for(int i = 1; i < size; i++) {
+      for (int i = 1; i < size; i++) {
         String value = t.get(i);
         fd = new FilterData(value, origin + i);
         fd.updated = true;
-        if(origin + i < mEntryList.size())
+        if (origin + i < mEntryList.size())
           mEntryList.add(origin + i, t.get(i));
         else
           mEntryList.add(t.get(i));
-        if(position + i < mFilteredList.size())
+        if (position + i < mFilteredList.size())
           mFilteredList.add(position + i, fd);
         else
           mFilteredList.add(fd);
@@ -278,7 +281,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   public void addAll(@NonNull Collection<? extends String> collection) {
     /* Here the list is already empty */
     mEntryList.addAll(collection);
-    for(int i = 0; i < mEntryList.size(); i++) {
+    for (int i = 0; i < mEntryList.size(); i++) {
       mFilteredList.add(new FilterData(mEntryList.get(i), i));
     }
     notifyDataSetChanged();
@@ -322,6 +325,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Ignore non displayed char
+   *
    * @param ref Ref string.
    * @return Patched string.
    */
@@ -334,11 +338,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Applies the necessary changes if the "updated" field is true.
+   *
    * @param tv TextView
    * @param fd FilterData
    */
   private void applyUpdated(final TextView tv, final FilterData fd) {
-    if(fd.updated) {
+    if (fd.updated) {
       SpannableString spanString = new SpannableString(fd.value);
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
       tv.setText(spanString);
@@ -352,10 +357,11 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Applies the user config.
+   *
    * @param tv TextView
    */
   private void applyUserConfig(final TextView tv) {
-    if(mUserConfig != null) {
+    if (mUserConfig != null) {
       tv.setTextSize(mUserConfig.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfig.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfig.getRowHeight();
@@ -365,6 +371,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
 
   // Filter part
+
   /**
    * Get custom filter
    *
@@ -398,16 +405,16 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       boolean clear = (constraint == null || constraint.length() == 0);
       String query = "";
       final Locale loc = Locale.getDefault();
-      if(!clear)
+      if (!clear)
         query = constraint.toString().toLowerCase(loc);
-      for(int i = 0; i < mEntryList.size(); i++) {
+      for (int i = 0; i < mEntryList.size(); i++) {
         String s = mEntryList.get(i);
-        if(clear)
+        if (clear)
           tempList.add(new FilterData(s, i));
         else if (s.toLowerCase(loc).contains(query))
           tempList.add(new FilterData(s, i));
         else {
-          if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR) 
+          if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR)
             searchHexForPlain(s, i, query, tempList, loc);
         }
       }
@@ -418,17 +425,18 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
     /**
      * Performs a hexadecimal search in a plain text string.
-     * @param line The current line.
-     * @param index The line index.
-     * @param query The query.
+     *
+     * @param line     The current line.
+     * @param index    The line index.
+     * @param query    The query.
      * @param tempList The output list.
-     * @param loc The locale.
+     * @param loc      The locale.
      */
     private void searchHexForPlain(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc) {
       StringBuilder sb = new StringBuilder();
       for (char c : line.toCharArray())
-        sb.append(String.format("%02X", (byte)c));
-      if(sb.toString().toLowerCase(loc).contains(query)) {
+        sb.append(String.format("%02X", (byte) c));
+      if (sb.toString().toLowerCase(loc).contains(query)) {
         tempList.add(new FilterData(line, index));
       }
     }
