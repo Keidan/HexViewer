@@ -85,9 +85,10 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
   @Override
   public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
     if (mItems.isEmpty()) return;
-    if (i > mItems.size())
-      i = 0;
-    final UriData ud = mItems.get(i);
+    int idx = i;
+    if (idx > mItems.size())
+      idx = 0;
+    final UriData ud = mItems.get(idx);
     if (ud != null) {
       // Set item views based on the views and data model
       TextView textView = viewHolder.text1;
