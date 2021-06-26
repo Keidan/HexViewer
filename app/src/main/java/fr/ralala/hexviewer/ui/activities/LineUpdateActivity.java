@@ -26,7 +26,17 @@ import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
-public class LineUpdateActivity  extends AppCompatActivity {
+/**
+ * ******************************************************************************
+ * <p><b>Project HexViewer</b><br/>
+ * LineUpdate activity
+ * </p>
+ *
+ * @author Keidan
+ * <p>
+ * ******************************************************************************
+ */
+public class LineUpdateActivity extends AppCompatActivity {
   private static final String ACTIVITY_EXTRA_TEXT = "ACTIVITY_EXTRA_TEXT";
   private static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
   private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
@@ -43,11 +53,12 @@ public class LineUpdateActivity  extends AppCompatActivity {
 
   /**
    * Starts an activity.
+   *
    * @param c                      Android context.
    * @param activityResultLauncher Activity Result Launcher.
-   * @param text The text.
-   * @param file The file name.
-   * @param position The item position.
+   * @param text                   The text.
+   * @param file                   The file name.
+   * @param position               The item position.
    */
   public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final String text, final String file, final int position) {
     Intent intent = new Intent(c, LineUpdateActivity.class);
@@ -96,19 +107,19 @@ public class LineUpdateActivity  extends AppCompatActivity {
 
     /* init */
     String text = null;
-    if(getIntent().getExtras() != null) {
+    if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
       text = extras.getString(ACTIVITY_EXTRA_TEXT);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
     }
-    if(text == null || text.equals("null") ) {
+    if (text == null || text.equals("null")) {
       text = "";
     }
-    if(mFile != null) {
+    if (mFile != null) {
       UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile);
     }
-    if(mPosition == -1) {
+    if (mPosition == -1) {
       mPosition = 0;
     }
     final String[] split = SysHelper.extractHexAndSplit(text);
@@ -144,6 +155,7 @@ public class LineUpdateActivity  extends AppCompatActivity {
 
   /**
    * Called when the options menu is clicked.
+   *
    * @param menu The selected menu.
    * @return boolean
    */

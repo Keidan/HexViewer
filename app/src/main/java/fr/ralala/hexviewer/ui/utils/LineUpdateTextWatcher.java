@@ -172,9 +172,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
         final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
         CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
         StringBuilder newChangeHex = new StringBuilder();
-        byte [] newChangeBytes = newChange.toString().getBytes();
+        byte[] newChangeBytes = newChange.toString().getBytes();
         List<String> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
-        for(String str : list)
+        for (String str : list)
           newChangeHex.append(SysHelper.extractHex(str));
         mNewString = formatText((notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
       }
@@ -183,7 +183,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   @NonNull
   public static String normalizeForEmoji(CharSequence charSequence) {
-    CharSequence processed = EmojiCompat.get().process(charSequence, 0, charSequence.length() -1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
+    CharSequence processed = EmojiCompat.get().process(charSequence, 0, charSequence.length() - 1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
     if (processed instanceof Spannable) {
       Spannable spannable = (Spannable) processed;
       EmojiSpan[] emojiSpans = spannable.getSpans(0, spannable.length() - 1, EmojiSpan.class);
@@ -195,7 +195,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
         oldStart = spanEnd;
       }
       int len = charSequence.length();
-      if(oldStart != len - emojiSpans.length)
+      if (oldStart != len - emojiSpans.length)
         sb.append(spannable.subSequence(oldStart, len));
       return sb.toString();
     }
