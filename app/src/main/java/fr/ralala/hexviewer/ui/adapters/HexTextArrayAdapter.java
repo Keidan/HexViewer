@@ -38,7 +38,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * @param view The text view.
    * @param text The text.
    */
-  void setEntryText(final TextView view, final String text) {
+  @Override
+  protected void setEntryText(final TextView view, final String text) {
     view.setText(text);
   }
 
@@ -48,7 +49,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * @param position The position
    * @return boolean
    */
-  boolean isSelected(int position) {
+  @Override
+  protected boolean isSelected(int position) {
     return mSelectedItemsIds.get(position);
   }
 
@@ -61,7 +63,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * @param tempList The output list.
    * @param loc      The locale.
    */
-  void extraFilter(final String line, int index, String query, final ArrayList<SearchableListArrayAdapter.FilterData> tempList, Locale loc) {
+  @Override
+  protected void extraFilter(final String line, int index, String query, final ArrayList<SearchableListArrayAdapter.FilterData> tempList, Locale loc) {
 
   }
 

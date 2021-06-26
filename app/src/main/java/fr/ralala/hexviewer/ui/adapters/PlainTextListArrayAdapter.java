@@ -29,7 +29,8 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
    * @param view The text view.
    * @param text The text.
    */
-  void setEntryText(final TextView view, final String text) {
+  @Override
+  protected void setEntryText(final TextView view, final String text) {
     view.setText(ignoreNonDisplayedChar(text));
   }
 
@@ -39,7 +40,8 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
    * @param position The position
    * @return boolean
    */
-  boolean isSelected(int position) {
+  @Override
+  protected boolean isSelected(int position) {
     return false;
   }
 
@@ -52,7 +54,8 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
    * @param tempList The output list.
    * @param loc      The locale.
    */
-  void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc) {
+  @Override
+  protected void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc) {
     StringBuilder sb = new StringBuilder();
     for (char c : line.toCharArray())
       sb.append(String.format("%02X", (byte) c));

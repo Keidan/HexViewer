@@ -121,7 +121,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
 
   static class ViewHolder extends RecyclerView.ViewHolder {
-    TextView text1;
+    public TextView text1;
 
     ViewHolder(View view) {
       super(view);

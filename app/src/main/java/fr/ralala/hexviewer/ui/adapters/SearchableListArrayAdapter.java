@@ -265,7 +265,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param view The text view.
    * @param text The text.
    */
-  abstract void setEntryText(final TextView view, final String text);
+  protected abstract void setEntryText(final TextView view, final String text);
 
   /**
    * Returns true if the item is selected.
@@ -273,7 +273,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param position The position
    * @return boolean
    */
-  abstract boolean isSelected(int position);
+  protected abstract boolean isSelected(int position);
 
   /**
    * Performs a hexadecimal search in a plain text string.
@@ -284,7 +284,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param tempList The output list.
    * @param loc      The locale.
    */
-  abstract void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc);
+  protected abstract void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc);
 
   // Filter part
 
