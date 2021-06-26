@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.utils;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.Spannable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.emoji.text.EmojiCompat;
+import androidx.emoji.text.EmojiSpan;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -165,17 +168,38 @@ public class LineUpdateTextWatcher implements TextWatcher {
           mNewString = "";
       } else {  /* add */
         mStart = start == 0 ? 0 : start + 1;
-        //mNewString = mNewString.trim();
         final String notChangedStart = mNewString.substring(0, start);
         final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
-        final String newChange = mNewString.substring(start, Math.min(start + count, mNewString.length()));
+        CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
         StringBuilder newChangeHex = new StringBuilder();
-        List<String> list = SysHelper.formatBuffer(newChange.getBytes(), count, null);
+        byte [] newChangeBytes = newChange.toString().getBytes();
+        List<String> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
         for(String str : list)
           newChangeHex.append(SysHelper.extractHex(str));
         mNewString = formatText((notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
       }
     }
+  }
+
+  @NonNull
+  public static String normalizeForEmoji(CharSequence charSequence) {
+    CharSequence processed = EmojiCompat.get().process(charSequence, 0, charSequence.length() -1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
+    if (processed instanceof Spannable) {
+      Spannable spannable = (Spannable) processed;
+      EmojiSpan[] emojiSpans = spannable.getSpans(0, spannable.length() - 1, EmojiSpan.class);
+      StringBuilder sb = new StringBuilder();
+      int oldStart = 0;
+      for (EmojiSpan emojiSpan : emojiSpans) {
+        int spanEnd = spannable.getSpanEnd(emojiSpan);
+        sb.append(spannable.subSequence(oldStart, spanEnd));
+        oldStart = spanEnd;
+      }
+      int len = charSequence.length();
+      if(oldStart != len - emojiSpans.length)
+        sb.append(spannable.subSequence(oldStart, len));
+      return sb.toString();
+    }
+    return charSequence.toString();
   }
 
   /**

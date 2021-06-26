@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.emoji.text.EmojiCompat;
+import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.preference.PreferenceManager;
 import fr.ralala.hexviewer.utils.Payload;
 
@@ -82,6 +84,10 @@ public class ApplicationCtx extends Application {
     mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = getRecentlyOpened();
+
+    /* EmojiCompat */
+    EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
+    EmojiCompat.init(config);
   }
 
   private SharedPreferences getPref(final Context context) {
