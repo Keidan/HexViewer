@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-
-
-
-
-
-
-
+<resources>
     <string-array name="languages_entries">
         <item>英语</item>
         <item>西班牙语</item>
