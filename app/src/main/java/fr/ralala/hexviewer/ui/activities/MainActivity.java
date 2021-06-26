@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
@@ -38,7 +39,6 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
 
-import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.DisplayCharPolicy;
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
 
 /**
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
-  private SearchableListArrayAdapter mAdapterHex = null;
+  private HexTextArrayAdapter mAdapterHex = null;
   private FileData mFileData = null;
   private TextView mPleaseOpenFile = null;
   private ListView mPayloadHex = null;
@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPleaseOpenFile.setVisibility(View.VISIBLE);
     mPayloadHex.setVisibility(View.GONE);
 
-    mAdapterHex = new SearchableListArrayAdapter(this,
-        DisplayCharPolicy.DISPLAY_ALL, new ArrayList<>(), new UserConfig() {
+    mAdapterHex = new HexTextArrayAdapter(this,
+        new ArrayList<>(), new UserConfig() {
       @Override
       public float getFontSize() {
         return mApp.getHexFontSize();
@@ -549,9 +549,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   /**
    * Returns the hex adapter.
    *
-   * @return SearchableListArrayAdapter
+   * @return HexTextArrayAdapter
    */
-  public SearchableListArrayAdapter getAdapterHex() {
+  public HexTextArrayAdapter getAdapterHex() {
     return mAdapterHex;
   }
 

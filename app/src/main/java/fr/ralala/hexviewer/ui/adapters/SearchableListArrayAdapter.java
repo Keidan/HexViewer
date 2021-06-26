@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -26,27 +23,19 @@ import fr.ralala.hexviewer.R;
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
- * Adapter used with the listview.
+ * Adapter used by HexTextArrayAdapter and PlainTextArrayAdapter
  * </p>
  *
  * @author Keidan
  * <p>
  * ******************************************************************************
  */
-public class SearchableListArrayAdapter extends ArrayAdapter<String> {
+public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
   private static final int ID = R.layout.listview_simple_row;
   private final EntryFilter mEntryFilter;
-  private final DisplayCharPolicy mPolicy;
-  private final List<String> mEntryList;
+  protected final List<String> mEntryList;
   private final UserConfig mUserConfig;
-  private List<FilterData> mFilteredList;
-  private final Map<Integer, FilterData> mRecentDeleteList;
-  private SparseBooleanArray mSelectedItemsIds;
-
-  public enum DisplayCharPolicy {
-    DISPLAY_ALL,
-    IGNORE_NON_DISPLAYED_CHAR, /* except space and NL */
-  }
+  protected List<FilterData> mFilteredList;
 
   public interface UserConfig {
     float getFontSize();
@@ -56,74 +45,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     boolean isRowHeightAuto();
   }
 
-  public SearchableListArrayAdapter(final Context context, DisplayCharPolicy policy, final List<String> objects, UserConfig userConfig) {
+  public SearchableListArrayAdapter(final Context context, final List<String> objects, UserConfig userConfig) {
     super(context, ID, objects);
     mEntryFilter = new EntryFilter();
     mEntryList = objects;
     mFilteredList = new ArrayList<>();
-    mPolicy = policy;
     mUserConfig = userConfig;
-    mSelectedItemsIds = new SparseBooleanArray();
-    mRecentDeleteList = new HashMap<>();
-  }
-
-  /**
-   * Toggles the item selection.
-   *
-   * @param position Item position.
-   */
-  public void toggleSelection(int position) {
-    selectView(position, !mSelectedItemsIds.get(position));
-  }
-
-  /**
-   * Removes the item selection.
-   */
-  public void removeSelection() {
-    mSelectedItemsIds = new SparseBooleanArray();
-    notifyDataSetChanged();
-  }
-
-  /**
-   * Select a view.
-   *
-   * @param position Position.
-   * @param value    Selection value.
-   */
-  private void selectView(int position, boolean value) {
-    if (value)
-      mSelectedItemsIds.put(position, true);
-    else
-      mSelectedItemsIds.delete(position);
-    notifyDataSetChanged();
-  }
-
-  /**
-   * Returns the selection count.
-   *
-   * @return int
-   */
-  public int getSelectedCount() {
-    return mSelectedItemsIds.size();
-  }
-
-  /**
-   * Returns the selected ids.
-   *
-   * @return SparseBooleanArray
-   */
-  public SparseBooleanArray getSelectedIds() {
-    return mSelectedItemsIds;
-  }
-
-  /**
-   * Returns if the position is checked or not.
-   *
-   * @param position The item position.
-   * @return boolean
-   */
-  public boolean isPositionChecked(int position) {
-    return mSelectedItemsIds.get(position);
   }
 
   /**
@@ -149,28 +76,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     if (fd.origin < mEntryList.size())
       mEntryList.remove(fd.origin);
     mFilteredList.remove(position);
-    mRecentDeleteList.put(position, fd);
     super.notifyDataSetChanged();
-  }
-
-  /**
-   * Undo the deleted items.
-   */
-  public void undoDelete() {
-    for (Map.Entry<Integer, FilterData> entry : mRecentDeleteList.entrySet()) {
-      FilterData fd = entry.getValue();
-      mFilteredList.add(entry.getKey(), fd);
-      mEntryList.add(fd.origin, fd.value);
-    }
-    clearRecentlyDeleted();
-    super.notifyDataSetChanged();
-  }
-
-  /**
-   * Clears the list of recently deleted items.
-   */
-  public void clearRecentlyDeleted() {
-    mRecentDeleteList.clear();
   }
 
   /**
@@ -262,7 +168,6 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   public void clear() {
     mFilteredList.clear();
     mEntryList.clear();
-    mRecentDeleteList.clear();
     notifyDataSetChanged();
   }
 
@@ -318,22 +223,9 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
           fd.updated ? R.color.colorTextUpdated : R.color.textColor));
 
       applyUserConfig(holder);
-      v.setBackgroundColor(ContextCompat.getColor(getContext(), mSelectedItemsIds.get(position) ? R.color.colorAccent : R.color.windowBackground));
+      v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
     }
     return v == null ? new View(getContext()) : v;
-  }
-
-  /**
-   * Ignore non displayed char
-   *
-   * @param ref Ref string.
-   * @return Patched string.
-   */
-  private String ignoreNonDisplayedChar(final String ref) {
-    StringBuilder sb = new StringBuilder();
-    for (char c : ref.toCharArray())
-      sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
-    return sb.toString();
   }
 
   /**
@@ -348,10 +240,7 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
       tv.setText(spanString);
     } else {
-      if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR)
-        tv.setText(ignoreNonDisplayedChar(fd.value));
-      else
-        tv.setText(fd.value);
+      setEntryText(tv, fd.value);
     }
   }
 
@@ -370,6 +259,33 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
   }
 
 
+  /**
+   * Sets the entry text (if updated = false)
+   *
+   * @param view The text view.
+   * @param text The text.
+   */
+  abstract void setEntryText(final TextView view, final String text);
+
+  /**
+   * Returns true if the item is selected.
+   *
+   * @param position The position
+   * @return boolean
+   */
+  abstract boolean isSelected(int position);
+
+  /**
+   * Performs a hexadecimal search in a plain text string.
+   *
+   * @param line     The current line.
+   * @param index    The line index.
+   * @param query    The query.
+   * @param tempList The output list.
+   * @param loc      The locale.
+   */
+  abstract void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc);
+
   // Filter part
 
   /**
@@ -382,12 +298,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
     return mEntryFilter;
   }
 
-  private static class FilterData {
-    private String value;
-    private int origin;
-    private boolean updated = false;
+  protected static class FilterData {
+    protected String value;
+    protected int origin;
+    protected boolean updated = false;
 
-    private FilterData(String value, int origin) {
+    protected FilterData(String value, int origin) {
       this.value = value;
       this.origin = origin;
     }
@@ -413,32 +329,12 @@ public class SearchableListArrayAdapter extends ArrayAdapter<String> {
           tempList.add(new FilterData(s, i));
         else if (s.toLowerCase(loc).contains(query))
           tempList.add(new FilterData(s, i));
-        else {
-          if (mPolicy == DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR)
-            searchHexForPlain(s, i, query, tempList, loc);
-        }
+        else
+          extraFilter(s, i, query, tempList, loc);
       }
       filterResults.count = tempList.size();
       filterResults.values = tempList;
       return filterResults;
-    }
-
-    /**
-     * Performs a hexadecimal search in a plain text string.
-     *
-     * @param line     The current line.
-     * @param index    The line index.
-     * @param query    The query.
-     * @param tempList The output list.
-     * @param loc      The locale.
-     */
-    private void searchHexForPlain(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc) {
-      StringBuilder sb = new StringBuilder();
-      for (char c : line.toCharArray())
-        sb.append(String.format("%02X", (byte) c));
-      if (sb.toString().toLowerCase(loc).contains(query)) {
-        tempList.add(new FilterData(line, index));
-      }
     }
 
     /**

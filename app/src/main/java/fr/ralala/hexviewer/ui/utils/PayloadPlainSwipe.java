@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 
 /**
@@ -27,7 +28,7 @@ public class PayloadPlainSwipe {
   private AppCompatActivity mActivity;
   private ApplicationCtx mApp;
   private ListView mPayloadPlain = null;
-  private SearchableListArrayAdapter mAdapterPlain = null;
+  private PlainTextListArrayAdapter mAdapterPlain = null;
   private SwipeRefreshLayout mPayloadPlainSwipeRefreshLayout;
   private final AtomicBoolean mCancelPayloadPlainSwipeRefresh = new AtomicBoolean(false);
 
@@ -50,8 +51,7 @@ public class PayloadPlainSwipe {
         android.R.color.holo_red_light);
     mPayloadPlain.setVisibility(View.GONE);
 
-    mAdapterPlain = new SearchableListArrayAdapter(activity,
-        SearchableListArrayAdapter.DisplayCharPolicy.IGNORE_NON_DISPLAYED_CHAR,
+    mAdapterPlain = new PlainTextListArrayAdapter(activity,
         new ArrayList<>(), new SearchableListArrayAdapter.UserConfig() {
       @Override
       public float getFontSize() {
@@ -83,7 +83,7 @@ public class PayloadPlainSwipe {
    *
    * @return SearchableListArrayAdapter
    */
-  public SearchableListArrayAdapter getAdapterPlain() {
+  public PlainTextListArrayAdapter getAdapterPlain() {
     return mAdapterPlain;
   }
 

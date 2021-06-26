@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
-import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -30,13 +30,13 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
   private final ApplicationCtx mApp;
   private final ListView mListView;
-  private final SearchableListArrayAdapter mAdapter;
+  private final HexTextArrayAdapter mAdapter;
   private final View mSnackBarLayout;
   private final MainActivity mMainActivity;
   private SparseBooleanArray mBackup;
   private Snackbar mCustomSnackBar;
 
-  public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter, final View snackBarLayout) {
+  public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter, final View snackBarLayout) {
     mApp = ApplicationCtx.getInstance();
     mMainActivity = mainActivity;
     mListView = listView;
