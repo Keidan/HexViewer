@@ -1,72 +1,83 @@
 <resources>
-  <string name="search_title">搜索</string>
-  <string name="search_hint">搜索&#8230;</string>
-  <string name="action_open_title">打开</string>
-  <string name="action_plain_text_title">纯文本</string>
-  <string name="action_save_title">保存</string>
-  <string name="action_save_as_title">保存为&#8230;</string>
-  <string name="action_close_title">关闭</string>
-  <string name="action_settings_title">设置</string>
-  <string name="action_recently_open_title">最近打开</string>
-  <string name="loading">正加载&#8230;</string>
-  <string name="saving">正保存&#8230;</string>
-  <string name="yes">是</string>
-  <string name="no">不</string>
-  <string name="cancel">取消</string>
-  <string name="on_double_back_exit_text">再按一次退出！</string>
-  <string name="update">更新</string>
-  <string name="update_hint_hex">文本</string>
-  <string name="update_hint_plain">纯文本</string>
-  <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
-  <string name="error_filename">无效的文件名！</string>
-  <string name="save_success">保存成功。</string>
-  <string name="operation_canceled">已取消操作</string>
-  <string name="exception">异常</string>
-  <string name="confirm_overwrite">文件存在，你确定想覆盖它吗？</string>
-  <string name="open_a_file_before">打开先前的一个文件！</string>
-  <string name="file_manager_keyword">文件管理器</string>
-  <string name="select_file_to_open">选择要打开的一个文件</string>
-  <string name="error_no_file_manager">请安装一款文件管理器。</string>
-  <string name="install">安装</string>
-  <string name="please_open_file">请打开一个文件</string>
-  <string name="uri_exception">Uri 异常</string>
-  <string name="source">来源：</string>
-  <string name="result">结果：</string>
-  <string name="empty_value">空</string>
-  <string name="new_value">新值</string>
-  <string name="error_less_than">该值不能小于</string>
-  <string name="error_greater_than">该值不能大于</string>
-  <string name="settings_category_abbreviate">缩略语</string>
-  <string name="settings_pref_title_abbreviate_portrait">纵向模式</string>
-  <string name="settings_pref_summary_abbreviate_portrait">纵向模式下文件名的显示字符数。</string>
-  <string name="settings_pref_title_abbreviate_landscape">横向模式</string>
-  <string name="settings_pref_summary_abbreviate_landscape">横向模式下文件名的显示字符数。</string>
-  <string name="settings_category_hex">16 进制文本</string>
-  <string name="settings_pref_title_hex_row_height_auto">自动高度</string>
-  <string name="settings_pref_summary_hex_row_height_auto">根据字体大小自动确定高度。</string>
-  <string name="settings_pref_title_hex_row_height">高度</string>
-  <string name="settings_pref_summary_hex_row_height">列表中行的高度。</string>
-  <string name="settings_pref_title_hex_font_size">字体大小</string>
-  <string name="settings_pref_summary_hex_font_size">列表中文本的字体大小。</string>
-  <string name="settings_category_plain">纯文本</string>
-  <string name="settings_pref_title_plain_row_height_auto">自动高度</string>
-  <string name="settings_pref_summary_plain_row_height_auto">根据字体大小自动确定高度。</string>
-  <string name="settings_pref_title_plain_row_height">高度</string>
-  <string name="settings_pref_summary_plain_row_height">列表中行的高度。</string>
-  <string name="settings_pref_title_plain_font_size">字体大小</string>
-  <string name="settings_pref_summary_plain_font_size">列表中文本的字体大小。</string>
-  <string name="settings_category_about">关于</string>
-  <string name="settings_pref_title_version">版本</string>
-  <string name="settings_pref_title_license">许可证</string>
-  <string name="settings_category_general">普通类</string>
-  <string name="settings_pref_title_language">语言</string>
-  <string name="settings_pref_summary_language">改变应用程序的语言</string>
-  <string name="smart_input">纯文本输入</string>
-  <string name="error_file_not_found">未找到文件 %1$s</string>
-  <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
-  <string name="items_selected">选中了 %1$d 行</string>
-  <string name="items_deleted">删除了 %1$d 行</string>
-  <string name="confirm_save">保存文件 "%1$s"?</string>
-  <string name="control_language_change">请先保存你的工作。</string>
-
+    
+    <string name="search_title">搜索</string>
+    <string name="search_hint">搜索&#8230;</string>
+    <string name="action_open_title">打开</string>
+    <string name="action_plain_text_title">纯文本</string>
+    <string name="action_save_title">保存</string>
+	  <string name="action_save_as_title">另存为 &#8230;</string>
+    <string name="action_close_title">关闭</string>
+    <string name="action_settings_title">设置</string>
+	  <string name="action_recently_open_title">最近打开</string>
+    <string name="loading">正加载&#8230;</string>
+    <string name="saving">正保存&#8230;</string>
+	  <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="cancel">取消</string>
+    <string name="on_double_back_exit_text">再按一次退出！</string>
+    <string name="update">更新</string>
+    <string name="update_hint_hex">文本</string>
+	  <string name="update_hint_plain">纯文本</string>
+    <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
+    <string name="error_filename">无效的文件名！</string>
+    <string name="save_success">保存成功。</string>
+    <string name="operation_canceled">已取消操作</string>
+    <string name="exception">异常</string>
+    <string name="confirm_overwrite">文件存在，你确定想覆盖它吗？</string>
+    <string name="open_a_file_before">打开先前的一个文件！</string>
+    <string name="file_manager_keyword">文件管理器</string>
+    <string name="select_file_to_open">选择要打开的一个文件</string>
+    <string name="error_no_file_manager">请安装一款文件管理器。</string>
+    <string name="install">安装</string>
+    <string name="please_open_file">请打开一个文件</string>
+    <string name="uri_exception">Uri 异常</string>
+	  <string name="source">来源：</string>
+    <string name="result">结果：</string>
+    <string name="empty_value">空</string>
+    
+    
+  
+  
+  
+  
+  
+  
+  
+	
+    <string name="new_value">新值</string>
+    <string name="error_less_than">该值不能小于</string>
+    <string name="error_greater_than">该值不能大于</string>
+    <string name="settings_category_abbreviate">缩略语</string>
+    <string name="settings_pref_title_abbreviate_portrait">纵向模式</string>
+    <string name="settings_pref_summary_abbreviate_portrait">纵向模式下文件名的显示字符数。</string>
+    <string name="settings_pref_title_abbreviate_landscape">横向模式</string>
+    <string name="settings_pref_summary_abbreviate_landscape">横向模式下文件名的显示字符数。</string>
+    <string name="settings_category_hex">16 进制文本</string>
+    <string name="settings_pref_title_hex_row_height_auto">自动高度</string>
+    <string name="settings_pref_summary_hex_row_height_auto">根据字体大小自动确定高度。</string>
+    <string name="settings_pref_title_hex_row_height">高度</string>
+    <string name="settings_pref_summary_hex_row_height">列表中行的高度。</string>
+    <string name="settings_pref_title_hex_font_size">字体大小</string>
+    <string name="settings_pref_summary_hex_font_size">列表中文本的字体大小。</string>
+    <string name="settings_category_plain">纯文本</string>
+    <string name="settings_pref_title_plain_row_height_auto">自动高度</string>
+    <string name="settings_pref_summary_plain_row_height_auto">根据字体大小自动确定高度。</string>
+    <string name="settings_pref_title_plain_row_height">高度</string>
+    <string name="settings_pref_summary_plain_row_height">列表中行的高度。</string>
+    <string name="settings_pref_title_plain_font_size">字体大小</string>
+    <string name="settings_pref_summary_plain_font_size">列表中文本的字体大小。</string>
+	  <string name="settings_category_about">关于</string>
+    <string name="settings_pref_title_version">版本号</string>
+    <string name="settings_pref_title_license">授权许可</string>
+    
+	  <string name="settings_category_general">常规</string>
+    <string name="settings_pref_title_language">语言</string>
+    <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
+	  <string name="smart_input">纯文本输入</string>
+	  <string name="error_file_not_found">未找到文件 %1$s</string>
+    <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
+	  <string name="items_selected">选中了 %1$d 行</string>
+	  <string name="items_deleted">删除了 %1$d 行</string>
+	  <string name="confirm_save">保存文件 "%1$s"？</string>
+	  <string name="control_language_change">请先保存你的工作。</string>
 </resources>
