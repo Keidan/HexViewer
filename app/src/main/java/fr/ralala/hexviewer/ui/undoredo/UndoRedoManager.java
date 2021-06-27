@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import java.util.Map;
 import java.util.Stack;
 
-import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -14,6 +13,7 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.utils.LineEntry;
 
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterData;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -43,9 +43,9 @@ public class UndoRedoManager {
    * Sets the controls.
    *
    * @param containerUndo FrameLayout
-   * @param viewUndo ImageView
+   * @param viewUndo      ImageView
    * @param containerRedo FrameLayout
-   * @param viewRedo ImageView
+   * @param viewRedo      ImageView
    */
   public void setControls(final FrameLayout containerUndo, final ImageView viewUndo, final FrameLayout containerRedo, final ImageView viewRedo) {
     mControls[CONTROL_UNDO] = new Control();
@@ -62,6 +62,7 @@ public class UndoRedoManager {
 
   /**
    * Tests if a change is detected.
+   *
    * @return boolean
    */
   public boolean isChanged() {
@@ -69,9 +70,7 @@ public class UndoRedoManager {
   }
 
   /**
-   * Inserts update command.
-   *
-   * @param le Line entry.
+   * Inserts update command..
    */
   public void insertInUnDoRedoForUpdate() {
     /*ICommand cmd = new UpdateCommand(le);
@@ -141,7 +140,7 @@ public class UndoRedoManager {
    */
   private void manageControl(final Control control, final boolean enabled) {
     if (control != null && control.img != null) {
-      if(control.container != null)
+      if (control.container != null)
         control.container.setEnabled(enabled);
       control.img.setImageDrawable(ContextCompat.getDrawable(mActivity, enabled ? control.enable : control.disable));
       control.img.setEnabled(enabled);
@@ -149,11 +148,9 @@ public class UndoRedoManager {
   }
 
   private static class Control {
-    FrameLayout container;
-    ImageView img;
-    @DrawableRes
-    int enable;
-    @DrawableRes
-    int disable;
+    private FrameLayout container;
+    private ImageView img;
+    private int enable;
+    private int disable;
   }
 }
