@@ -6,16 +6,20 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.utils.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
+import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterData;
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -44,7 +48,8 @@ public class LauncherLineUpdate {
    * @param position The position in the list view.
    */
   public void startActivity(String string, int position) {
-    LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, string, mActivity.getFileData().getName(), position);
+    LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, string,
+        mActivity.getFileData().getName(), position, mActivity.getUndoRedoManager().isChanged());
   }
 
   /**
@@ -68,11 +73,13 @@ public class LauncherLineUpdate {
                 /* nothing to do */
                 return;
               }
-              mApp.getHexChanged().set(true);
               List<LineEntry> li = SysHelper.formatBuffer(buf, null);
-              if (li.isEmpty())
-                mActivity.getAdapterHex().removeItem(position);
-              else {
+              if (li.isEmpty()) {
+                HexTextArrayAdapter adapter = mActivity.getAdapterHex();
+                Map<Integer, FilterData<LineEntry>> map = new HashMap<>();
+                map.put(position, adapter.getFilteredList().get(position));
+                mActivity.getUndoRedoManager().insertInUnDoRedoForDelete(adapter, map).execute();
+              } else {
                 String query = mActivity.getSearchQuery();
                 if (!query.isEmpty())
                   mActivity.doSearch("");

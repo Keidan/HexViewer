@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -309,10 +310,10 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
     return mEntryFilter;
   }
 
-  protected static class FilterData<T> {
-    protected T value;
-    protected int origin;
-    protected boolean updated = false;
+  public static class FilterData<T> {
+    public T value;
+    public int origin;
+    public boolean updated = false;
 
     protected FilterData(T value, int origin) {
       this.value = value;

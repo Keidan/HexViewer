@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.documentfile.provider.DocumentFile;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
@@ -27,11 +26,9 @@ import fr.ralala.hexviewer.utils.FileHelper;
  */
 public class LauncherSave {
   private final MainActivity mActivity;
-  private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherSave;
 
   public LauncherSave(MainActivity activity) {
-    mApp = ApplicationCtx.getInstance();
     mActivity = activity;
     register();
   }
@@ -108,7 +105,6 @@ public class LauncherSave {
     if (file != null) {
       final Runnable r = () -> {
         new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getAdapterHex().getItems()));
-        mApp.getHexChanged().set(false);
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       };
       if (showConfirm) {
@@ -125,7 +121,6 @@ public class LauncherSave {
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
         new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getAdapterHex().getItems()));
-        mApp.getHexChanged().set(false);
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       }
     }

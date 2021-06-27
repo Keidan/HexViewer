@@ -82,6 +82,7 @@ public class LauncherOpen {
   public void processFileOpen(final Uri uri, final boolean openFromAppIntent, final boolean addRecent) {
     if (uri != null && uri.getPath() != null) {
       mActivity.setFileData(new FileData(uri, openFromAppIntent));
+      mActivity.getUndoRedoManager().clear();
       new TaskOpen(mActivity, mActivity.getAdapterHex(), mActivity.getPayloadPlainSwipe().getAdapterPlain(), mActivity, addRecent).execute(uri);
     } else {
       UIHelper.toast(mActivity, mActivity.getString(R.string.error_filename));

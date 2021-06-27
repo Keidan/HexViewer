@@ -80,7 +80,6 @@
     <string name="error_file_not_found">The file %1$s was not found</string>
     <string name="error_file_permission">No permission has been granted for file %1$s</string>
     <string name="items_selected">%1$d Selected</string>
-    <string name="items_deleted">%1$d lines were deleted</string>
     <string name="confirm_save">Save file "%1$s"?</string>
     <string name="control_language_change">Please save your work first.</string>
 </resources>

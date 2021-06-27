@@ -11,6 +11,7 @@
     android:orientation="horizontal"
     android:baselineAligned="false">
   <FrameLayout
+    android:id="@+id/containerUndo"
     android:layout_weight="0.5"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -22,10 +23,11 @@
       android:layout_height="32dp"
       android:text="@null"
       android:contentDescription="@string/content_description_undo"
-      android:src="@drawable/ic_undo"/>
+      android:src="@drawable/ic_undo_disabled"/>
   </FrameLayout>
 
   <FrameLayout
+    android:id="@+id/containerRedo"
     android:layout_weight="0.5"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -37,7 +39,7 @@
       android:layout_height="32dp"
       android:text="@null"
       android:contentDescription="@string/content_description_redo"
-      android:src="@drawable/ic_redo"/>
+      android:src="@drawable/ic_redo_disabled"/>
   </FrameLayout>
   </LinearLayout>
 

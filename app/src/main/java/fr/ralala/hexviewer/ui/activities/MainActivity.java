@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -41,6 +43,7 @@ import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.ui.undoredo.UndoRedoManager;
 import fr.ralala.hexviewer.utils.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.LineEntry;
@@ -74,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private TextView mRecentlyOpen = null;
   private String mSearchQuery = "";
   private PayloadPlainSwipe mPayloadPlainSwipe;
-  private MultiChoiceCallback mMultiChoiceCallback;
   private AlertDialog mOrphanDialog = null;
   private LauncherLineUpdate mLauncherLineUpdate;
   private LauncherSave mLauncherSave;
   private LauncherOpen mLauncherOpen;
   private LauncherRecentlyOpen mLauncherRecentlyOpen;
   private PopupWindow mPopup;
+  private UndoRedoManager mUndoRedoManager;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     setContentView(R.layout.activity_main);
     mApp = ApplicationCtx.getInstance();
+    mUndoRedoManager = new UndoRedoManager(this);
 
     LinearLayout mainLayout = findViewById(R.id.mainLayout);
     mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);
@@ -133,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(this);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-    mMultiChoiceCallback = new MultiChoiceCallback(this, mPayloadHex, mAdapterHex, mainLayout);
-    mPayloadHex.setMultiChoiceModeListener(mMultiChoiceCallback);
+    MultiChoiceCallback multiChoiceCallback = new MultiChoiceCallback(this, mPayloadHex, mAdapterHex);
+    mPayloadHex.setMultiChoiceModeListener(multiChoiceCallback);
 
     mPayloadPlainSwipe = new PayloadPlainSwipe();
     mPayloadPlainSwipe.onCreate(this);
@@ -182,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Uri uri = getIntent().getData();
         if (uri != null) {
           final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, FileHelper.takeUriPermissions(this, uri, false));
-          if (mApp.getHexChanged().get()) {// a save operation is pending?
+          if (mUndoRedoManager.isChanged()) {// a save operation is pending?
             confirmFileChanged(r);
           } else {
             r.run();
@@ -212,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     MenuCompat.setGroupDividerEnabled(menu, true);
 
     mSearchMenu = menu.findItem(R.id.action_search);
-
+    mSearchMenu.setVisible(false);
     // Searchable configuration
     SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
     if (searchManager != null) {
@@ -311,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       if(mPlainMenu != null)
         mPlainMenu.setChecked(false);
       mFileData = null;
+      mUndoRedoManager.clear();
     }
     setTitle(getResources().getConfiguration());
   }
@@ -321,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param cfg Screen configuration.
    */
   public void setTitle(Configuration cfg) {
-    UIHelper.setTitle(this, cfg.orientation, true, mFileData == null ? null : mFileData.getName());
+    UIHelper.setTitle(this, cfg.orientation, true, mFileData == null ? null : mFileData.getName(), mUndoRedoManager.isChanged());
   }
 
   /**
@@ -368,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public void onPopupItemClick(int id) {
     if (id == R.id.action_open) {
       final Runnable r = () -> mLauncherOpen.startActivity();
-      if (mApp.getHexChanged().get()) {// a save operation is pending?
+      if (mUndoRedoManager.isChanged()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
@@ -380,7 +385,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return;
       }
       new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems()));
-      mApp.getHexChanged().set(false);
       setTitle(getResources().getConfiguration());
     } else if (id == R.id.action_save_as) {
       if (FileData.isEmpty(mFileData)) {
@@ -391,19 +395,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_plain_text) {
       cancelSearch();
       boolean checked = !mPlainMenu.isChecked();
-      if (checked)
-        mMultiChoiceCallback.dismiss();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
       mPlainMenu.setChecked(checked);
     } else if (id == R.id.action_close) {
       final Runnable r = this::closeFile;
-      if (mApp.getHexChanged().get()) {// a save operation is pending?
+      if (mUndoRedoManager.isChanged()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
     } else if (id == R.id.action_settings) {
-      startActivity(new Intent(this, SettingsActivity.class));
+      SettingsActivity.startActivity(this, mUndoRedoManager.isChanged());
+    } else if (id == R.id.action_undo) {
+      mUndoRedoManager.undo();
+    } else if (id == R.id.action_redo) {
+      mUndoRedoManager.redo();
     }
   }
 
@@ -436,6 +442,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mSaveMenu = popupView.findViewById(R.id.action_save);
         mCloseMenu = popupView.findViewById(R.id.action_close);
         mRecentlyOpen = popupView.findViewById(R.id.action_recently_open);
+        ImageView actionRedo = popupView.findViewById(R.id.action_redo);
+        ImageView actionUndo = popupView.findViewById(R.id.action_undo);
+        FrameLayout containerRedo = popupView.findViewById(R.id.containerRedo);
+        FrameLayout containerUndo = popupView.findViewById(R.id.containerUndo);
 
         View.OnClickListener click = (v) -> {
           mPopup.dismiss();
@@ -448,7 +458,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mSaveMenu.setOnClickListener(click);
         mCloseMenu.setOnClickListener(click);
         mRecentlyOpen.setOnClickListener(click);
-
+        actionRedo.setOnClickListener(click);
+        actionUndo.setOnClickListener(click);
+        mUndoRedoManager.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
         onOpenResult(false);
       }
       //mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 0, 0);
@@ -498,7 +510,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * Closes the file context.
    */
   private void closeFile() {
-    mApp.getHexChanged().set(false);
     onOpenResult(false);
     mPayloadPlainSwipe.getAdapterPlain().clear();
     mAdapterHex.clear();
@@ -534,9 +545,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       cancelSearch();
     } else {
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-        if (mApp.getHexChanged().get()) {// a save operation is pending?
+        if (mUndoRedoManager.isChanged()) {// a save operation is pending?
           confirmFileChanged(() -> {
-            mApp.getHexChanged().set(false);
             super.onBackPressed();
             finish();
           });
@@ -622,6 +632,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public LauncherOpen getLauncherOpen() {
     return mLauncherOpen;
+  }
+
+  /**
+   * Returns the undo/redo manager.
+   *
+   * @return UndoRedoManager
+   */
+  public UndoRedoManager getUndoRedoManager() {
+    return mUndoRedoManager;
   }
 
 }

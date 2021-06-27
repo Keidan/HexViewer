@@ -1,20 +1,21 @@
 package fr.ralala.hexviewer.ui.utils;
 
-import android.content.Context;
-import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.google.android.material.snackbar.Snackbar;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.utils.LineEntry;
 
 /**
  * ******************************************************************************
@@ -27,19 +28,14 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * ******************************************************************************
  */
 public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
-  private final ApplicationCtx mApp;
   private final ListView mListView;
   private final HexTextArrayAdapter mAdapter;
-  private final View mSnackBarLayout;
-  private final MainActivity mMainActivity;
-  private Snackbar mCustomSnackBar;
+  private final MainActivity mActivity;
 
-  public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter, final View snackBarLayout) {
-    mApp = ApplicationCtx.getInstance();
-    mMainActivity = mainActivity;
+  public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {
+    mActivity = mainActivity;
     mListView = listView;
     mAdapter = adapter;
-    mSnackBarLayout = snackBarLayout;
   }
 
   /**
@@ -64,17 +60,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    */
   @Override
   public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-    dismiss();
     return false;
-  }
-
-  /**
-   * Forces a dismiss of the snackbar.
-   */
-  public void dismiss() {
-    if (mCustomSnackBar != null && mCustomSnackBar.isShown()) {
-      mCustomSnackBar.dismiss();
-    }
   }
 
   /**
@@ -87,58 +73,27 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
-      final SparseBooleanArray selected = mAdapter.getSelectedIds();
+      final List<Integer> selected = mAdapter.getSelectedIds();
+      Map<Integer, SearchableListArrayAdapter.FilterData<LineEntry>> map = new HashMap<>();
+      HexTextArrayAdapter adapter = mActivity.getAdapterHex();
       // Captures all selected ids with a loop
-      for (int i = (selected.size() - 1); i >= 0; i--) {
-        if (selected.valueAt(i)) {
-          final int position = selected.keyAt(i);
-          // Remove selected items following the ids
-          mAdapter.removeItem(position);
-        }
+      for(int i = selected.size() - 1; i >= 0; i--) {
+        int position = selected.get(i);
+        map.put(position, adapter.getFilteredList().get(position));
       }
-      mApp.getHexChanged().set(true); /* Prevents any action while the snack is open */
-      showUndoSnackbar();
+      mActivity.getUndoRedoManager().insertInUnDoRedoForDelete(adapter, map).execute();
+      mActivity.setTitle(mActivity.getResources().getConfiguration());
       // Close CAB
       mode.finish();
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {
       final int count = mAdapter.getCount();
       for (int i = 0; i < count; i++) {
-        if (!mAdapter.isPositionChecked(i)) {
-          mListView.setItemChecked(i, true);
-        }
+        mListView.setItemChecked(i, true);
       }
       return true;
     }
     return false;
-  }
-
-  /**
-   * Shows the undo snack bar.
-   */
-  private void showUndoSnackbar() {
-    final Context c = mSnackBarLayout.getContext();
-    final int checkedCount = mAdapter.getSelectedCount();
-    mCustomSnackBar = Snackbar.make(mSnackBarLayout, String.format(c.getString(R.string.items_deleted), checkedCount), Snackbar.LENGTH_LONG);
-    mCustomSnackBar.setAction(c.getString(R.string.cancel), (v) -> mAdapter.undoDelete());
-    mCustomSnackBar.addCallback(new Snackbar.Callback() {
-      @Override
-      public void onDismissed(Snackbar snackbar, int event) {
-        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-          mAdapter.clearRecentlyDeleted();
-          mApp.getHexChanged().set(true);
-        } else
-          mApp.getHexChanged().set(false);
-        mMainActivity.setTitle(mMainActivity.getResources().getConfiguration());
-        mCustomSnackBar = null;
-      }
-
-      @Override
-      public void onShown(Snackbar snackbar) {
-        // nothing to do
-      }
-    });
-    mCustomSnackBar.show();
   }
 
   /**
@@ -162,7 +117,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
     final int checkedCount = mListView.getCheckedItemCount();
-    mode.setTitle(String.format(mMainActivity.getString(R.string.items_selected), checkedCount));
-    mAdapter.toggleSelection(position);
+    mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
+    mAdapter.toggleSelection(position, checked);
   }
 }

@@ -51,16 +51,7 @@ public class ApplicationCtx extends Application {
   private String mDefaultPlainFontSize;
   private boolean mDefaultSmartInput;
   private List<String> mRecentlyOpened;
-  private final AtomicBoolean mHexChanged;
   private static ApplicationCtx instance;
-
-  /**
-   * Constructs the application context.
-   */
-  public ApplicationCtx() {
-    super();
-    mHexChanged = new AtomicBoolean(false);
-  }
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -91,15 +82,6 @@ public class ApplicationCtx extends Application {
     if (mSharedPreferences == null)
       mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     return mSharedPreferences;
-  }
-
-  /**
-   * Returns the object allowing to know if a change has taken place or not.
-   *
-   * @return AtomicBoolean
-   */
-  public AtomicBoolean getHexChanged() {
-    return mHexChanged;
   }
 
   /* ---------- Settings ---------- */

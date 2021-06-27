@@ -44,8 +44,9 @@ public class UIHelper {
    * @param orientation Screen orientation.
    * @param addAppName  Adds the application name?
    * @param filename    The file name.
+   * @param change      A change is detected?
    */
-  public static void setTitle(final Activity activity, int orientation, boolean addAppName, final String filename) {
+  public static void setTitle(final Activity activity, int orientation, boolean addAppName, final String filename, final boolean change) {
     ApplicationCtx app = ApplicationCtx.getInstance();
     int length = 0;
     if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -62,7 +63,7 @@ public class UIHelper {
           title += " - ";
       } else
         length += name.length();
-      if (app.getHexChanged().get())
+      if (change)
         title += "*";
       if (filename != null) {
         title += SysHelper.abbreviate(filename, length);

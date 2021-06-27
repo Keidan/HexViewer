@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -21,6 +22,20 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
  * ******************************************************************************
  */
 public class SettingsActivity extends AppCompatActivity {
+  private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
+  private boolean mChange;
+
+  /**
+   * Starts an activity.
+   *
+   * @param c                      Android context.
+   * @param change                 A change is detected?
+   */
+  public static void startActivity(final Context c, final boolean change) {
+    Intent intent = new Intent(c, LineUpdateActivity.class);
+    intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
+    c.startActivity(intent);
+  }
 
   /**
    * Set the base context for this ContextWrapper.
@@ -44,6 +59,14 @@ public class SettingsActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_settings);
+
+
+    mChange = false;
+    if (getIntent().getExtras() != null) {
+      Bundle extras = getIntent().getExtras();
+      mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
+    }
+
     //If you want to insert data in your settings
     SettingsFragment prefs = new SettingsFragment(this);
 
@@ -74,4 +97,11 @@ public class SettingsActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
+  /**
+   * Tests if a change is detected.
+   * @return boolean
+   */
+  public boolean isChanged() {
+    return mChange;
+  }
 }

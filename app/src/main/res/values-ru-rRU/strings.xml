@@ -65,7 +65,6 @@
     <string name="error_file_not_found">Файл %1$s не найден</string>
     <string name="error_file_permission">Для файла %1$s не предоставлено разрешение</string>
     <string name="items_selected">%1$d выбрано</string>
-    <string name="items_deleted">%1$d строк удалено</string>
     <string name="confirm_save">Сохранить файл "%1$s"?</string>
     <string name="control_language_change">Пожалуйста, сначала сохраните свою работу.</string>
 </resources>

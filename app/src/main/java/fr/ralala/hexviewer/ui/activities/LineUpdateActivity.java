@@ -40,6 +40,7 @@ public class LineUpdateActivity extends AppCompatActivity {
   private static final String ACTIVITY_EXTRA_TEXT = "ACTIVITY_EXTRA_TEXT";
   private static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
   private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
+  private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
   public static final String RESULT_REFERENCE_STRING = "RESULT_REFERENCE_STRING";
   public static final String RESULT_NEW_STRING = "RESULT_NEW_STRING";
   public static final String RESULT_POSITION = "RESULT_POSITION";
@@ -50,6 +51,7 @@ public class LineUpdateActivity extends AppCompatActivity {
   private int mPosition = -1;
   private String mHex;
   private String mFile;
+  private boolean mChange;
 
   /**
    * Starts an activity.
@@ -59,12 +61,14 @@ public class LineUpdateActivity extends AppCompatActivity {
    * @param text                   The text.
    * @param file                   The file name.
    * @param position               The item position.
+   * @param change                 A change is detected?
    */
-  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final String text, final String file, final int position) {
+  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final String text, final String file, final int position, final boolean change) {
     Intent intent = new Intent(c, LineUpdateActivity.class);
     intent.putExtra(ACTIVITY_EXTRA_TEXT, text);
     intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
     intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
+    intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
     activityResultLauncher.launch(intent);
   }
 
@@ -107,17 +111,19 @@ public class LineUpdateActivity extends AppCompatActivity {
 
     /* init */
     String text = null;
+    mChange = false;
     if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
       text = extras.getString(ACTIVITY_EXTRA_TEXT);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
+      mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
     }
     if (text == null || text.equals("null")) {
       text = "";
     }
     if (mFile != null) {
-      UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile);
+      UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile, mChange);
     }
     if (mPosition == -1) {
       mPosition = 0;
@@ -149,7 +155,7 @@ public class LineUpdateActivity extends AppCompatActivity {
 
     // Checks the orientation of the screen
     if (mFile != null && !mFile.isEmpty()) {
-      UIHelper.setTitle(this, newConfig.orientation, false, mFile);
+      UIHelper.setTitle(this, newConfig.orientation, false, mFile, mChange);
     }
   }
 

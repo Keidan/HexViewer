@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +21,7 @@ import androidx.preference.PreferenceScreen;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.BuildConfig;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.activities.SettingsActivity;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
@@ -47,7 +47,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   private static final int MAX_PLAIN_ROW_HEIGHT = 1000;
   private static final int MIN_PLAIN_FONT_SIZE = 1;
   private static final int MAX_PLAIN_FONT_SIZE = 50;
-  private final Activity mActivity;
+  private final SettingsActivity mActivity;
   private final ApplicationCtx mApp;
   protected Preference mAbbreviatePortrait;
   protected Preference mAbbreviateLandscape;
@@ -61,7 +61,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   protected Preference mVersion;
   private ListPreference mLanguage;
 
-  public SettingsFragment(Activity owner) {
+  public SettingsFragment(SettingsActivity owner) {
     mActivity = owner;
     mApp = ApplicationCtx.getInstance();
   }
@@ -182,7 +182,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   @Override
   public boolean onPreferenceChange(Preference preference, Object newValue) {
     if (preference.equals(mLanguage)) {
-      if (!mApp.getHexChanged().get()) {
+      if (!mActivity.isChanged()) {
         mApp.setApplicationLanguage("" + newValue);
         getActivity().finish();
         return true;
