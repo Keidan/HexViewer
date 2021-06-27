@@ -271,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onSaveResult(Uri uri, boolean success) {
     if (success) {
+      mUndoRedoManager.clear();
       if (mFileData.isOpenFromAppIntent()) {
         mFileData = new FileData(uri, false);
         if (mFileData.isOpenFromAppIntent())

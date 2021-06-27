@@ -106,6 +106,8 @@ public class UndoRedoManager {
       mRedo.push(command);
       manageControl(mControls[CONTROL_REDO], true);
     }
+    if(mUndo.isEmpty())
+      mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
   }
 
@@ -118,6 +120,7 @@ public class UndoRedoManager {
       command.execute();
       mUndo.push(command);
       manageControl(mControls[CONTROL_UNDO], true);
+      mActivity.setTitle(mActivity.getResources().getConfiguration());
     }
     manageControl(mControls[CONTROL_REDO], !mRedo.isEmpty());
   }
