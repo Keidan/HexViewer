@@ -107,7 +107,7 @@ public class LauncherSave {
 
     if (file != null) {
       final Runnable r = () -> {
-        new TaskSave(mActivity, mActivity).execute(f_file.getUri());
+        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getAdapterHex().getItems()));
         mApp.getHexChanged().set(false);
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       };
@@ -124,7 +124,7 @@ public class LauncherSave {
         UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
-        new TaskSave(mActivity, mActivity).execute(d_file.getUri());
+        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getAdapterHex().getItems()));
         mApp.getHexChanged().set(false);
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       }

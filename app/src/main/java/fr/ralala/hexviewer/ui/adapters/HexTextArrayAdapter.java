@@ -1,6 +1,9 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.SparseBooleanArray;
 import android.widget.TextView;
 
@@ -9,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import fr.ralala.hexviewer.utils.LineEntry;
 
 /**
  * ******************************************************************************
@@ -20,27 +25,33 @@ import java.util.Map;
  * <p>
  * ******************************************************************************
  */
-public class HexTextArrayAdapter extends SearchableListArrayAdapter {
-  private final Map<Integer, FilterData> mRecentDeleteList;
+public class HexTextArrayAdapter extends SearchableListArrayAdapter<LineEntry> {
+  private final Map<Integer, FilterData<LineEntry>> mRecentDeleteList;
   private SparseBooleanArray mSelectedItemsIds;
 
 
-  public HexTextArrayAdapter(final Context context, final List<String> objects, UserConfig userConfig) {
+  public HexTextArrayAdapter(final Context context, final List<LineEntry> objects, UserConfig userConfig) {
     super(context, objects, userConfig);
     mSelectedItemsIds = new SparseBooleanArray();
     mRecentDeleteList = new HashMap<>();
   }
-
 
   /**
    * Sets the entry text (if updated = false)
    *
    * @param view The text view.
    * @param text The text.
+   * @param updated The updated flag.
    */
   @Override
-  protected void setEntryText(final TextView view, final String text) {
-    view.setText(text);
+  protected void setEntryText(final TextView view, final LineEntry text, final boolean updated) {
+    if (updated) {
+      SpannableString spanString = new SpannableString(text.getPlain());
+      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+      view.setText(spanString);
+    } else {
+      view.setText(text.getPlain());
+    }
   }
 
   /**
@@ -64,7 +75,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * @param loc      The locale.
    */
   @Override
-  protected void extraFilter(final String line, int index, String query, final ArrayList<SearchableListArrayAdapter.FilterData> tempList, Locale loc) {
+  protected void extraFilter(final LineEntry line, int index, String query, final ArrayList<FilterData<LineEntry>> tempList, Locale loc) {
     /* nothing */
   }
 
@@ -133,8 +144,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * @param position Position of the item.
    */
   public void removeItem(final int position) {
-    FilterData fd = mFilteredList.get(position);
-    mFilteredList.remove(position);
+    FilterData<LineEntry> fd = getFilteredList().get(position);
     mRecentDeleteList.put(position, fd);
     super.removeItem(position);
   }
@@ -143,10 +153,10 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * Undo the deleted items.
    */
   public void undoDelete() {
-    for (Map.Entry<Integer, FilterData> entry : mRecentDeleteList.entrySet()) {
-      FilterData fd = entry.getValue();
-      mFilteredList.add(entry.getKey(), fd);
-      mEntryList.add(fd.origin, fd.value);
+    for (Map.Entry<Integer, FilterData<LineEntry>> entry : mRecentDeleteList.entrySet()) {
+      FilterData<LineEntry> fd = entry.getValue();
+      getFilteredList().add(entry.getKey(), fd);
+      getItems().add(fd.origin, fd.value);
     }
     clearRecentlyDeleted();
     super.notifyDataSetChanged();
@@ -167,6 +177,5 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     mRecentDeleteList.clear();
     super.clear();
   }
-
 }
 

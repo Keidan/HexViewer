@@ -9,12 +9,13 @@ import android.util.Log;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.documentfile.provider.DocumentFile;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.Payload;
+import fr.ralala.hexviewer.utils.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -27,7 +28,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * <p>
  * ******************************************************************************
  */
-public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
+public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
   private OutputStream mOutputStream = null;
   private ParcelFileDescriptor mParcelFileDescriptor = null;
@@ -36,6 +37,17 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
   public static class Result {
     private String exception = null;
     private Uri uri = null;
+  }
+
+  public static class Request {
+    private final Uri mUri;
+    private final List<LineEntry> mEntries;
+
+    public Request(Uri uri, List<LineEntry> entries) {
+      mUri = uri;
+      mEntries = entries;
+    }
+
   }
 
   public interface SaveResultListener {
@@ -109,20 +121,22 @@ public class TaskSave extends ProgressTask<Uri, TaskSave.Result> {
   /**
    * Called after the execution of the process.
    *
-   * @param uris The Uris.
+   * @param requests The requests.
    * @return Null or the exception message
    */
   @Override
-  protected Result doInBackground(final Uri... uris) {
+  protected Result doInBackground(final Request... requests) {
     final Activity activity = mActivityRef.get();
     final Result result = new Result();
-    result.uri = uris[0];
-    final ApplicationCtx app = ApplicationCtx.getInstance();
-    final Payload payload = app.getPayload();
+    final Request request = requests[0];
+    result.uri = request.mUri;
     publishProgress(0L);
     try {
       mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "w");
-      final byte[] data = payload.to(mCancel);
+      List<Byte> bytes = new ArrayList<>();
+      for(LineEntry entry : request.mEntries)
+        bytes.addAll(entry.getRaw());
+      final byte[] data = SysHelper.toByteArray(bytes, mCancel);
       if (!mCancel.get()) {
         mOutputStream = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());
         mTotalSize = data.length;

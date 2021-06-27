@@ -4,18 +4,20 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.utils.Payload;
+import fr.ralala.hexviewer.utils.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -31,14 +33,14 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   private static final String TAG = TaskOpen.class.getSimpleName();
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
-  private final ArrayAdapter<String> mAdapter;
-  private final ArrayAdapter<String> mAdapterPlain;
+  private final HexTextArrayAdapter mAdapter;
+  private final PlainTextListArrayAdapter mAdapterPlain;
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
   private final boolean mAddRecent;
 
   public static class Result {
-    private List<String> list = null;
+    private List<LineEntry> listHex = null;
     private List<String> listPlain = null;
     private String exception = null;
   }
@@ -48,8 +50,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   }
 
   public TaskOpen(final Activity activity,
-                  final ArrayAdapter<String> adapter,
-                  final ArrayAdapter<String> adapterPlain,
+                  final HexTextArrayAdapter adapter,
+                  final PlainTextListArrayAdapter adapterPlain,
                   final OpenResultListener listener, final boolean addRecent) {
     super(activity, true);
     mAdapter = adapter;
@@ -81,8 +83,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
     else if (result.exception != null)
       UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
     else {
-      if (result.list != null)
-        mAdapter.addAll(result.list);
+      if (result.listHex != null)
+        mAdapter.addAll(result.listHex);
       if (result.listPlain != null)
         mAdapterPlain.addAll(result.listPlain);
     }
@@ -125,7 +127,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   protected Result doInBackground(Uri... values) {
     final Activity activity = mActivityRef.get();
     final Result result = new Result();
-    final List<String> list = new ArrayList<>();
+    final List<LineEntry> list = new ArrayList<>();
+    final List<String> plain = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
       final Uri uri = values[0];
@@ -135,15 +138,12 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
       publishProgress(0L);
       mInputStream = cr.openInputStream(uri);
       if (mInputStream != null) {
-        /* cleanup */
-        final Payload payload = app.getPayload();
-        payload.clear();
         /* prepare buffer */
         final byte[] data = new byte[MAX_LENGTH];
         int reads;
         /* read data */
         while (!mCancel.get() && (reads = mInputStream.read(data)) != -1) {
-          payload.add(data, reads, mCancel);
+          addPlain(plain, data, reads, mCancel);
           try {
             list.addAll(SysHelper.formatBuffer(data, reads, mCancel));
           } catch (IllegalArgumentException iae) {
@@ -154,8 +154,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
         }
         /* prepare result */
         if (result.exception == null) {
-          result.listPlain = payload.getPlain();
-          result.list = list;
+          result.listPlain = plain;
+          result.listHex = list;
           if (mAddRecent)
             app.addRecentlyOpened(uri.toString());
         }
@@ -168,4 +168,32 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
     return result;
   }
 
+
+
+  /**
+   * Sets the plain content.
+   *
+   * @param plain   The list.
+   * @param payload The new payload.
+   * @param length  The array length.
+   * @param cancel  Used to cancel this method.
+   */
+  public void addPlain(final List<String> plain, final byte[] payload, final int length, final AtomicBoolean cancel) {
+    final StringBuilder sb = new StringBuilder();
+    int nbPerLine = 0;
+    for (int i = 0; i < length && (cancel == null || !cancel.get()); i++) {
+      if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
+        sb.append((char) payload[i]);
+        plain.add(sb.toString());
+        nbPerLine = 0;
+        sb.setLength(0);
+      } else {
+        sb.append((char) payload[i]);
+        nbPerLine++;
+      }
+    }
+    if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
+      plain.add(sb.toString());
+    }
+  }
 }

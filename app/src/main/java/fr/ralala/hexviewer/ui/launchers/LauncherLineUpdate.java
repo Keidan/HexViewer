@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.utils.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -68,8 +69,7 @@ public class LauncherLineUpdate {
                 return;
               }
               mApp.getHexChanged().set(true);
-              mApp.getPayload().update(position, buf);
-              List<String> li = SysHelper.formatBuffer(buf, null);
+              List<LineEntry> li = SysHelper.formatBuffer(buf, null);
               if (li.isEmpty())
                 mActivity.getAdapterHex().removeItem(position);
               else {

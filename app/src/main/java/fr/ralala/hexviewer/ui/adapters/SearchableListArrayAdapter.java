@@ -1,9 +1,6 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +27,12 @@ import fr.ralala.hexviewer.R;
  * <p>
  * ******************************************************************************
  */
-public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
+public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
   private static final int ID = R.layout.listview_simple_row;
   private final EntryFilter mEntryFilter;
-  protected final List<String> mEntryList;
+  private final List<T> mEntryList;
   private final UserConfig mUserConfig;
-  protected List<FilterData> mFilteredList;
+  private List<FilterData<T>> mFilteredList;
 
   public interface UserConfig {
     float getFontSize();
@@ -45,12 +42,28 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
     boolean isRowHeightAuto();
   }
 
-  public SearchableListArrayAdapter(final Context context, final List<String> objects, UserConfig userConfig) {
+  public SearchableListArrayAdapter(final Context context, final List<T> objects, UserConfig userConfig) {
     super(context, ID, objects);
     mEntryFilter = new EntryFilter();
     mEntryList = objects;
     mFilteredList = new ArrayList<>();
     mUserConfig = userConfig;
+  }
+
+  /**
+   * Returns the list of items.
+   * @return List<T>
+   */
+  public List<T> getItems() {
+    return mEntryList;
+  }
+
+  /**
+   * Returns the list of filtered items.
+   * @return List<FilterData<T>>
+   */
+  public List<FilterData<T>> getFilteredList() {
+    return mFilteredList;
   }
 
   /**
@@ -60,7 +73,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @return This value may be null.
    */
   @Override
-  public String getItem(final int position) {
+  public T getItem(final int position) {
     if (mFilteredList != null)
       return mFilteredList.get(position).value;
     return null;
@@ -72,7 +85,9 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param position Position of the item.
    */
   public void removeItem(final int position) {
-    FilterData fd = mFilteredList.get(position);
+    if(position >= mFilteredList.size())
+      return;
+    FilterData<T> fd = mFilteredList.get(position);
     if (fd.origin < mEntryList.size())
       mEntryList.remove(fd.origin);
     mFilteredList.remove(position);
@@ -85,10 +100,10 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param position Position of the item.
    * @param t        The data.
    */
-  public void setItem(final int position, final List<String> t) {
+  public void setItem(final int position, final List<T> t) {
     int size = t.size();
     if (size == 1) {
-      FilterData fd = mFilteredList.get(position);
+      FilterData<T> fd = mFilteredList.get(position);
       fd.value = t.get(0);
       fd.updated = true;
       mEntryList.set(fd.origin, t.get(0));
@@ -99,8 +114,8 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
       /* Then we modify the existing element */
       int origin = mFilteredList.get(position).origin + 1;
-      FilterData fd = mFilteredList.get(position);
-      final String newVal = t.get(0);
+      FilterData<T> fd = mFilteredList.get(position);
+      final T newVal = t.get(0);
       if (!fd.value.equals(newVal)) {
         fd.value = newVal;
         fd.updated = true;
@@ -109,8 +124,8 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
 
       /* finally we add the elements */
       for (int i = 1; i < size; i++) {
-        String value = t.get(i);
-        fd = new FilterData(value, origin + i);
+        T value = t.get(i);
+        fd = new FilterData<>(value, origin + i);
         fd.updated = true;
         if (origin + i < mEntryList.size())
           mEntryList.add(origin + i, t.get(i));
@@ -132,7 +147,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @return The position of the specified item.
    */
   @Override
-  public int getPosition(String item) {
+  public int getPosition(T item) {
     return super.getPosition(item);
   }
 
@@ -183,11 +198,12 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    *
    * @param collection The items to be added.
    */
-  public void addAll(@NonNull Collection<? extends String> collection) {
+  public void addAll(@NonNull Collection<? extends T> collection) {
     /* Here the list is already empty */
-    mEntryList.addAll(collection);
-    for (int i = 0; i < mEntryList.size(); i++) {
-      mFilteredList.add(new FilterData(mEntryList.get(i), i));
+    int i = 0;
+    for (T t : collection) {
+      mEntryList.add(t);
+      mFilteredList.add(new FilterData<>(t, i++));
     }
     notifyDataSetChanged();
   }
@@ -215,7 +231,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
     }
     if (v != null && v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
-      FilterData fd = mFilteredList.get(position);
+      FilterData<T> fd = mFilteredList.get(position);
 
       applyUpdated(holder, fd);
 
@@ -234,14 +250,8 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param tv TextView
    * @param fd FilterData
    */
-  private void applyUpdated(final TextView tv, final FilterData fd) {
-    if (fd.updated) {
-      SpannableString spanString = new SpannableString(fd.value);
-      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
-      tv.setText(spanString);
-    } else {
-      setEntryText(tv, fd.value);
-    }
+  private void applyUpdated(final TextView tv, final FilterData<T> fd) {
+    setEntryText(tv, fd.value, fd.updated);
   }
 
   /**
@@ -264,8 +274,9 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    *
    * @param view The text view.
    * @param text The text.
+   * @param updated The updated flag.
    */
-  protected abstract void setEntryText(final TextView view, final String text);
+  protected abstract void setEntryText(final TextView view, final T text, final boolean updated);
 
   /**
    * Returns true if the item is selected.
@@ -284,7 +295,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
    * @param tempList The output list.
    * @param loc      The locale.
    */
-  protected abstract void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc);
+  protected abstract void extraFilter(final T line, int index, String query, final ArrayList<FilterData<T>> tempList, Locale loc);
 
   // Filter part
 
@@ -298,12 +309,12 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
     return mEntryFilter;
   }
 
-  protected static class FilterData {
-    protected String value;
+  protected static class FilterData<T> {
+    protected T value;
     protected int origin;
     protected boolean updated = false;
 
-    protected FilterData(String value, int origin) {
+    protected FilterData(T value, int origin) {
       this.value = value;
       this.origin = origin;
     }
@@ -317,18 +328,18 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
       final FilterResults filterResults = new FilterResults();
-      final ArrayList<FilterData> tempList = new ArrayList<>();
+      final ArrayList<FilterData<T>> tempList = new ArrayList<>();
       boolean clear = (constraint == null || constraint.length() == 0);
       String query = "";
       final Locale loc = Locale.getDefault();
       if (!clear)
         query = constraint.toString().toLowerCase(loc);
       for (int i = 0; i < mEntryList.size(); i++) {
-        String s = mEntryList.get(i);
+        T s = mEntryList.get(i);
         if (clear)
-          tempList.add(new FilterData(s, i));
-        else if (s.toLowerCase(loc).contains(query))
-          tempList.add(new FilterData(s, i));
+          tempList.add(new FilterData<>(s, i));
+        else if (s.toString().toLowerCase(loc).contains(query))
+          tempList.add(new FilterData<>(s, i));
         else
           extraFilter(s, i, query, tempList, loc);
       }
@@ -346,7 +357,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<String> {
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-      mFilteredList = (ArrayList<FilterData>) results.values;
+      mFilteredList = (ArrayList<FilterData<T>>) results.values;
       notifyDataSetChanged();
     }
   }

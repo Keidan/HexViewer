@@ -1,18 +1,23 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -38,6 +43,7 @@ import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.LineEntry;
 
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
 
@@ -60,12 +66,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private TextView mPleaseOpenFile = null;
   private ListView mPayloadHex = null;
   private MenuItem mSearchMenu = null;
-  private MenuItem mPlainMenu = null;
-  private MenuItem mSaveMenu = null;
-  private MenuItem mSaveAsMenu = null;
-  private MenuItem mCloseMenu = null;
+  private CheckBox mPlainMenu = null;
+  private TextView mSaveMenu = null;
+  private TextView mSaveAsMenu = null;
+  private TextView mCloseMenu = null;
   private SearchView mSearchView = null;
-  private MenuItem mRecentlyOpen = null;
+  private TextView mRecentlyOpen = null;
   private String mSearchQuery = "";
   private PayloadPlainSwipe mPayloadPlainSwipe;
   private MultiChoiceCallback mMultiChoiceCallback;
@@ -74,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private LauncherSave mLauncherSave;
   private LauncherOpen mLauncherOpen;
   private LauncherRecentlyOpen mLauncherRecentlyOpen;
+  private PopupWindow mPopup;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -203,14 +210,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onCreateOptionsMenu(final Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     MenuCompat.setGroupDividerEnabled(menu, true);
-    mSearchMenu = menu.findItem(R.id.action_search);
-    mPlainMenu = menu.findItem(R.id.action_plain_text);
-    mSaveAsMenu = menu.findItem(R.id.action_save_as);
-    mSaveMenu = menu.findItem(R.id.action_save);
-    mCloseMenu = menu.findItem(R.id.action_close);
-    mRecentlyOpen = menu.findItem(R.id.action_recently_open);
 
-    onOpenResult(false);
+    mSearchMenu = menu.findItem(R.id.action_search);
 
     // Searchable configuration
     SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -253,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param queryStr The query string.
    */
   public void doSearch(String queryStr) {
-    final SearchableListArrayAdapter laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mAdapterHex);
+    final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mAdapterHex);
     laa.getFilter().filter(queryStr);
   }
 
@@ -271,8 +272,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (mFileData.isOpenFromAppIntent())
           mFileData.clearOpenFromAppIntent();
         setMenuEnabled(mSaveMenu, true);
+        setTitle(getResources().getConfiguration());
       } else {
         mFileData = new FileData(uri, false);
+        setTitle(getResources().getConfiguration());
       }
     }
   }
@@ -305,6 +308,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
+      if(mPlainMenu != null)
+        mPlainMenu.setChecked(false);
       mFileData = null;
     }
     setTitle(getResources().getConfiguration());
@@ -336,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param menu    MenuItem
    * @param enabled If true then the item will be invokable; if false it is won't be invokable.
    */
-  private void setMenuEnabled(final MenuItem menu, final boolean enabled) {
+  private void setMenuEnabled(final TextView menu, final boolean enabled) {
     if (menu != null)
       menu.setEnabled(enabled);
   }
@@ -357,50 +362,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Called when the user select an option menu item.
-   *
-   * @param item The selected item.
-   * @return boolean
+   * Handles the click on the popup menu item.
+   * @param id The view id.
    */
-  @Override
-  public boolean onOptionsItemSelected(final MenuItem item) {
-    final int id = item.getItemId();
+  public void onPopupItemClick(int id) {
     if (id == R.id.action_open) {
       final Runnable r = () -> mLauncherOpen.startActivity();
       if (mApp.getHexChanged().get()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
-      return true;
     } else if (id == R.id.action_recently_open) {
       mLauncherRecentlyOpen.startActivity();
-      return true;
     } else if (id == R.id.action_save) {
       if (FileData.isEmpty(mFileData)) {
         UIHelper.toast(this, getString(R.string.open_a_file_before));
-        return true;
+        return;
       }
-      new TaskSave(this, this).execute(mFileData.getUri());
+      new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems()));
       mApp.getHexChanged().set(false);
       setTitle(getResources().getConfiguration());
-      return true;
     } else if (id == R.id.action_save_as) {
       if (FileData.isEmpty(mFileData)) {
         UIHelper.toast(this, getString(R.string.open_a_file_before));
-        return true;
+        return;
       }
       mLauncherSave.startActivity();
-      return true;
     } else if (id == R.id.action_plain_text) {
-      /* to hex */
-      /* to plain */
-      boolean checked = !item.isChecked();
+      cancelSearch();
+      boolean checked = !mPlainMenu.isChecked();
       if (checked)
         mMultiChoiceCallback.dismiss();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
-      item.setChecked(checked);
-      return true;
+      mPlainMenu.setChecked(checked);
     } else if (id == R.id.action_close) {
       final Runnable r = this::closeFile;
       if (mApp.getHexChanged().get()) {// a save operation is pending?
@@ -410,7 +405,66 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_settings) {
       startActivity(new Intent(this, SettingsActivity.class));
     }
+  }
+
+  /**
+   * Called when the user select an option menu item.
+   *
+   * @param item The selected item.
+   * @return boolean
+   */
+  @Override
+  public boolean onOptionsItemSelected(final MenuItem item) {
+    final int id = item.getItemId();
+    if (id == R.id.action_more) {
+      if(mPopup == null) {
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.main_popup, null);
+        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int with = popupView.getMeasuredWidth();
+
+        mPopup = new PopupWindow(popupView,
+            with + 150,
+            WindowManager.LayoutParams.WRAP_CONTENT, true);
+
+        mPopup.setElevation(5.0f);
+        mPopup.setOutsideTouchable(true);
+
+        mPlainMenu = popupView.findViewById(R.id.action_plain_text);
+        mSaveAsMenu = popupView.findViewById(R.id.action_save_as);
+        mSaveMenu = popupView.findViewById(R.id.action_save);
+        mCloseMenu = popupView.findViewById(R.id.action_close);
+        mRecentlyOpen = popupView.findViewById(R.id.action_recently_open);
+
+        View.OnClickListener click = (v) -> {
+          mPopup.dismiss();
+          onPopupItemClick(v.getId());
+        };
+        popupView.findViewById(R.id.action_open).setOnClickListener(click);
+        popupView.findViewById(R.id.action_settings).setOnClickListener(click);
+        mPlainMenu.setOnClickListener(click);
+        mSaveAsMenu.setOnClickListener(click);
+        mSaveMenu.setOnClickListener(click);
+        mCloseMenu.setOnClickListener(click);
+        mRecentlyOpen.setOnClickListener(click);
+
+        onOpenResult(false);
+      }
+      //mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 0, 0);
+      mPopup.showAsDropDown(findViewById(R.id.action_more));
+    }
     return super.onOptionsItemSelected(item);
+  }
+
+  /**
+   * Cancels search.
+   */
+  private void cancelSearch() {
+    if (mSearchView != null && !mSearchView.isIconified()) {
+      doSearch("");
+      mSearchView.setIconified(true);
+    }
   }
 
   /**
@@ -445,13 +499,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void closeFile() {
     mApp.getHexChanged().set(false);
-    mApp.getPayload().clear();
     onOpenResult(false);
     mPayloadPlainSwipe.getAdapterPlain().clear();
     mAdapterHex.clear();
-    if (mSearchView != null && !mSearchView.isIconified()) {
-      mSearchView.setIconified(true);
-    }
+    cancelSearch();
   }
 
   /**
@@ -464,14 +515,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    String string = mAdapterHex.getItem(position);
-    if (string == null)
+    LineEntry e = mAdapterHex.getItem(position);
+    if (e == null)
       return;
     if (mPayloadPlainSwipe.isVisible()) {
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
-    mLauncherLineUpdate.startActivity(string, position);
+    mLauncherLineUpdate.startActivity(e.getPlain(), position);
   }
 
   /**
@@ -480,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onBackPressed() {
     if (mSearchView != null && !mSearchView.isIconified()) {
-      mSearchView.setIconified(true);
+      cancelSearch();
     } else {
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
         if (mApp.getHexChanged().get()) {// a save operation is pending?
@@ -506,7 +557,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    *
    * @return MenuItem
    */
-  public MenuItem getMenuRecentlyOpen() {
+  public TextView getMenuRecentlyOpen() {
     return mRecentlyOpen;
   }
 

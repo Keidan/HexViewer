@@ -15,7 +15,6 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -33,7 +32,6 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private final HexTextArrayAdapter mAdapter;
   private final View mSnackBarLayout;
   private final MainActivity mMainActivity;
-  private SparseBooleanArray mBackup;
   private Snackbar mCustomSnackBar;
 
   public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter, final View snackBarLayout) {
@@ -90,7 +88,6 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
       final SparseBooleanArray selected = mAdapter.getSelectedIds();
-      mBackup = selected.clone();
       // Captures all selected ids with a loop
       for (int i = (selected.size() - 1); i >= 0; i--) {
         if (selected.valueAt(i)) {
@@ -108,7 +105,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       final int count = mAdapter.getCount();
       for (int i = 0; i < count; i++) {
         if (!mAdapter.isPositionChecked(i)) {
-          onItemCheckedStateChanged(mode, i, -1, true);
+          mListView.setItemChecked(i, true);
         }
       }
       return true;
@@ -129,16 +126,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       public void onDismissed(Snackbar snackbar, int event) {
         if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
           mAdapter.clearRecentlyDeleted();
-          // Captures all selected ids with a loop
-          for (int i = (mBackup.size() - 1); i >= 0; i--) {
-            if (mBackup.valueAt(i)) {
-              // Remove selected items following the ids
-              final int position = mBackup.keyAt(i);
-              final byte[] buf = SysHelper.hexStringToByteArray("");
-              mApp.getHexChanged().set(true);
-              mApp.getPayload().update(position, buf);
-            }
-          }
+          mApp.getHexChanged().set(true);
         } else
           mApp.getHexChanged().set(false);
         mMainActivity.setTitle(mMainActivity.getResources().getConfiguration());

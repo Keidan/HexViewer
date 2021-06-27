@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
-import fr.ralala.hexviewer.utils.Payload;
 
 /**
  * ******************************************************************************
@@ -41,7 +40,6 @@ public class ApplicationCtx extends Application {
   public static final String CFG_VERSION = "version";
   public static final String CFG_LICENSE = "license";
   public static final String CFG_LANGUAGE = "language";
-  private final Payload mPayload;
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
@@ -61,7 +59,6 @@ public class ApplicationCtx extends Application {
    */
   public ApplicationCtx() {
     super();
-    mPayload = new Payload();
     mHexChanged = new AtomicBoolean(false);
   }
 
@@ -103,15 +100,6 @@ public class ApplicationCtx extends Application {
    */
   public AtomicBoolean getHexChanged() {
     return mHexChanged;
-  }
-
-  /**
-   * Returns the payload.
-   *
-   * @return Payload
-   */
-  public Payload getPayload() {
-    return mPayload;
   }
 
   /* ---------- Settings ---------- */

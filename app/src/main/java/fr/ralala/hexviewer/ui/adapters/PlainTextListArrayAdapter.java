@@ -1,6 +1,9 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ import java.util.Locale;
  * <p>
  * ******************************************************************************
  */
-public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
+public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String> {
 
   public PlainTextListArrayAdapter(final Context context, final List<String> objects, UserConfig userConfig) {
     super(context, objects, userConfig);
@@ -28,10 +31,17 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
    *
    * @param view The text view.
    * @param text The text.
+   * @param updated The updated flag.
    */
   @Override
-  protected void setEntryText(final TextView view, final String text) {
-    view.setText(ignoreNonDisplayedChar(text));
+  protected void setEntryText(final TextView view, final String text, final boolean updated) {
+    if (updated) {
+      SpannableString spanString = new SpannableString(text);
+      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+      view.setText(spanString);
+    } else {
+      view.setText(ignoreNonDisplayedChar(text));
+    }
   }
 
   /**
@@ -55,12 +65,12 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
    * @param loc      The locale.
    */
   @Override
-  protected void extraFilter(final String line, int index, String query, final ArrayList<FilterData> tempList, Locale loc) {
+  protected void extraFilter(final String line, int index, String query, final ArrayList<FilterData<String>> tempList, Locale loc) {
     StringBuilder sb = new StringBuilder();
     for (char c : line.toCharArray())
       sb.append(String.format("%02X", (byte) c));
     if (sb.toString().toLowerCase(loc).contains(query)) {
-      tempList.add(new FilterData(line, index));
+      tempList.add(new FilterData<>(line, index));
     }
   }
 

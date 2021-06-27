@@ -34,6 +34,9 @@
     <string name="source">Source:</string>
     <string name="result">Result:</string>
     <string name="empty_value">Empty</string>
+
+    <string name="content_description_undo" translatable="false">Undo</string>
+    <string name="content_description_redo" translatable="false">Redo</string>
     <string name="default_abbreviate_portrait" translatable="false">8</string>
     <string name="default_abbreviate_landscape" translatable="false">16</string>
     <string name="default_hex_row_height_auto" translatable="false">true</string>
