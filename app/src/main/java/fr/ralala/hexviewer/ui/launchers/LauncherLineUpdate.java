@@ -12,7 +12,6 @@ import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
@@ -32,11 +31,9 @@ import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterD
  */
 public class LauncherLineUpdate {
   private final MainActivity mActivity;
-  private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherLineUpdate;
 
   public LauncherLineUpdate(MainActivity activity) {
-    mApp = ApplicationCtx.getInstance();
     mActivity = activity;
     register();
   }
