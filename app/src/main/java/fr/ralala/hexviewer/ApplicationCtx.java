@@ -387,7 +387,7 @@ public class ApplicationCtx extends Application {
    * Loads the default locale.
    */
   private void loadDefaultLocal() {
-    if(mLanguage == null) {
+    if (mLanguage == null) {
       Locale loc = Locale.getDefault();
       mLanguage = loc.getLanguage();
       if (loc.getCountry() != null && !loc.getCountry().isEmpty())
