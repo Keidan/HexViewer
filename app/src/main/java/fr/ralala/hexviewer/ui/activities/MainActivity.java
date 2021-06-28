@@ -110,6 +110,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     setContentView(R.layout.activity_main);
     mApp = ApplicationCtx.getInstance();
+    /* sanity check */
+    String[] languages = getResources().getStringArray(R.array.languages_values);
+    boolean found = false;
+    for(String language : languages)
+      if(language.equals(mApp.getApplicationLanguage(this))) {
+        found = true;
+        break;
+      }
+    if(!found) {
+      mApp.setApplicationLanguage("en-US");
+      recreate();
+    }
+
     mUnDoRedo = new UnDoRedo(this);
 
     LinearLayout mainLayout = findViewById(R.id.mainLayout);
