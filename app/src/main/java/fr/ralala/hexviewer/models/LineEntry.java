@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.utils;
+package fr.ralala.hexviewer.models;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ import java.util.List;
  * <p>
  * ******************************************************************************
  */
-
 public class LineEntry {
   private final String mPlain;
   private final List<Byte> mRaw;

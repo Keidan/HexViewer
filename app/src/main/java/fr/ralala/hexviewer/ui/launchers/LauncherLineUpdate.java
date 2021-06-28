@@ -12,13 +12,13 @@ import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import fr.ralala.hexviewer.models.FilterData;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
-import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterData;
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -46,7 +46,7 @@ public class LauncherLineUpdate {
    */
   public void startActivity(String string, int position) {
     LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, string,
-        mActivity.getFileData().getName(), position, mActivity.getUndoRedoManager().isChanged());
+        mActivity.getFileData().getName(), position, mActivity.getUnDoRedo().isChanged());
   }
 
   /**
@@ -75,7 +75,7 @@ public class LauncherLineUpdate {
                 HexTextArrayAdapter adapter = mActivity.getAdapterHex();
                 Map<Integer, FilterData<LineEntry>> map = new HashMap<>();
                 map.put(position, adapter.getFilteredList().get(position));
-                mActivity.getUndoRedoManager().insertInUnDoRedoForDelete(adapter, map).execute();
+                mActivity.getUnDoRedo().insertInUnDoRedoForDelete(adapter, map).execute();
               } else {
                 String query = mActivity.getSearchQuery();
                 if (!query.isEmpty())

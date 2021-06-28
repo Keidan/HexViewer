@@ -56,7 +56,7 @@ public class LauncherRecentlyOpen {
               if (FileHelper.isFileExists(mActivity.getContentResolver(), uri)) {
                 if (FileHelper.hasUriPermission(mActivity, uri, true)) {
                   final Runnable r = () -> mActivity.getLauncherOpen().processFileOpen(uri, false, true);
-                  if (mActivity.getUndoRedoManager().isChanged()) {// a save operation is pending?
+                  if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
                     mActivity.confirmFileChanged(r);
                   } else
                     r.run();

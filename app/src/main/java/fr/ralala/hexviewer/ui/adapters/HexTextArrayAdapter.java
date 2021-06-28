@@ -11,7 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.FilterData;
+import fr.ralala.hexviewer.models.LineEntry;
 
 /**
  * ******************************************************************************

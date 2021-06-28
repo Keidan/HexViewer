@@ -16,6 +16,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FilterData;
 
 /**
  * ******************************************************************************
@@ -75,7 +76,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
   @Override
   public T getItem(final int position) {
     if (mFilteredList != null)
-      return mFilteredList.get(position).value;
+      return mFilteredList.get(position).getValue();
     return null;
   }
 
@@ -88,8 +89,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
     if(position >= mFilteredList.size())
       return;
     FilterData<T> fd = mFilteredList.get(position);
-    if (fd.origin < mEntryList.size())
-      mEntryList.remove(fd.origin);
+    if (fd.getOrigin() < mEntryList.size())
+      mEntryList.remove(fd.getOrigin());
     mFilteredList.remove(position);
     super.notifyDataSetChanged();
   }
@@ -104,29 +105,29 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
     int size = t.size();
     if (size == 1) {
       FilterData<T> fd = mFilteredList.get(position);
-      fd.value = t.get(0);
-      fd.updated = true;
-      mEntryList.set(fd.origin, t.get(0));
+      fd.setValue(t.get(0));
+      fd.setUpdated(true);
+      mEntryList.set(fd.getOrigin(), t.get(0));
     } else {
       /* first we move the existing indexes - filtered */
       for (int i = position + 1; i < mFilteredList.size(); i++)
-        mFilteredList.get(i).origin += size;
+        mFilteredList.get(i).setOrigin(mFilteredList.get(i).getOrigin() + size);
 
       /* Then we modify the existing element */
-      int origin = mFilteredList.get(position).origin + 1;
+      int origin = mFilteredList.get(position).getOrigin() + 1;
       FilterData<T> fd = mFilteredList.get(position);
       final T newVal = t.get(0);
-      if (!fd.value.equals(newVal)) {
-        fd.value = newVal;
-        fd.updated = true;
-        mEntryList.set(fd.origin, t.get(0));
+      if (!fd.getValue().equals(newVal)) {
+        fd.setValue(newVal);
+        fd.setUpdated(true);
+        mEntryList.set(fd.getOrigin(), t.get(0));
       }
 
       /* finally we add the elements */
       for (int i = 1; i < size; i++) {
         T value = t.get(i);
         fd = new FilterData<>(value, origin + i);
-        fd.updated = true;
+        fd.setUpdated(true);
         if (origin + i < mEntryList.size())
           mEntryList.add(origin + i, t.get(i));
         else
@@ -172,7 +173,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
   @Override
   public long getItemId(int position) {
     if (mFilteredList != null)
-      return mFilteredList.get(position).value.hashCode();
+      return mFilteredList.get(position).getValue().hashCode();
     return 0;
   }
 
@@ -236,7 +237,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
       applyUpdated(holder, fd);
 
       holder.setTextColor(ContextCompat.getColor(getContext(),
-          fd.updated ? R.color.colorTextUpdated : R.color.textColor));
+          fd.isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
 
       applyUserConfig(holder);
       v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
@@ -251,7 +252,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
    * @param fd FilterData
    */
   private void applyUpdated(final TextView tv, final FilterData<T> fd) {
-    setEntryText(tv, fd.value, fd.updated);
+    setEntryText(tv, fd.getValue(), fd.isUpdated());
   }
 
   /**
@@ -307,17 +308,6 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<T> {
   @Override
   public Filter getFilter() {
     return mEntryFilter;
-  }
-
-  public static class FilterData<T> {
-    public T value;
-    public int origin;
-    public boolean updated = false;
-
-    protected FilterData(T value, int origin) {
-      this.value = value;
-      this.origin = origin;
-    }
   }
 
   /**

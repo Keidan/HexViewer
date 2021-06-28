@@ -17,7 +17,7 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**

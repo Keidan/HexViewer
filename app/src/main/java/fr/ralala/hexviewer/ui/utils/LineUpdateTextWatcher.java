@@ -20,7 +20,7 @@ import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.EmojiSpan;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**

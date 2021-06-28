@@ -15,7 +15,7 @@ import java.util.List;
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**

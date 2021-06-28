@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import fr.ralala.hexviewer.models.LineEntry;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>

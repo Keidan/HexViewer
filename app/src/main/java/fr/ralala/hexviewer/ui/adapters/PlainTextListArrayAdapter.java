@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import fr.ralala.hexviewer.models.FilterData;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>

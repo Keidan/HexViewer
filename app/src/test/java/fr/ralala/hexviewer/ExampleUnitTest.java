@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 import static org.junit.Assert.assertEquals;

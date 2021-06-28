@@ -8,11 +8,11 @@ import java.util.Stack;
 
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FilterData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.utils.LineEntry;
-
-import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterData;
+import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
 
 /**
  * ******************************************************************************
@@ -24,7 +24,7 @@ import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterD
  * <p>
  * ******************************************************************************
  */
-public class UndoRedoManager {
+public class UnDoRedo {
   private static final int CONTROL_UNDO = 0;
   private static final int CONTROL_REDO = 1;
   private final MainActivity mActivity;
@@ -32,7 +32,7 @@ public class UndoRedoManager {
   private final Stack<ICommand> mUndo;
   private final Stack<ICommand> mRedo;
 
-  public UndoRedoManager(MainActivity activity) {
+  public UnDoRedo(MainActivity activity) {
     mActivity = activity;
     mControls = new Control[2];
     mUndo = new Stack<>();

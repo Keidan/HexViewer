@@ -12,7 +12,7 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.FileData;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
 
 /**
@@ -82,7 +82,7 @@ public class LauncherOpen {
   public void processFileOpen(final Uri uri, final boolean openFromAppIntent, final boolean addRecent) {
     if (uri != null && uri.getPath() != null) {
       mActivity.setFileData(new FileData(uri, openFromAppIntent));
-      mActivity.getUndoRedoManager().clear();
+      mActivity.getUnDoRedo().clear();
       new TaskOpen(mActivity, mActivity.getAdapterHex(), mActivity.getPayloadPlainSwipe().getAdapterPlain(), mActivity, addRecent).execute(uri);
     } else {
       UIHelper.toast(mActivity, mActivity.getString(R.string.error_filename));

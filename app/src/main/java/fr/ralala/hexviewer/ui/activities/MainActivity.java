@@ -44,10 +44,10 @@ import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.ui.undoredo.UndoRedoManager;
-import fr.ralala.hexviewer.utils.FileData;
+import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.utils.LineEntry;
+import fr.ralala.hexviewer.models.LineEntry;
 
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private LauncherOpen mLauncherOpen;
   private LauncherRecentlyOpen mLauncherRecentlyOpen;
   private PopupWindow mPopup;
-  private UndoRedoManager mUndoRedoManager;
+  private UnDoRedo mUnDoRedo;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     setContentView(R.layout.activity_main);
     mApp = ApplicationCtx.getInstance();
-    mUndoRedoManager = new UndoRedoManager(this);
+    mUnDoRedo = new UnDoRedo(this);
 
     LinearLayout mainLayout = findViewById(R.id.mainLayout);
     mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Uri uri = getIntent().getData();
         if (uri != null) {
           final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, FileHelper.takeUriPermissions(this, uri, false));
-          if (mUndoRedoManager.isChanged()) {// a save operation is pending?
+          if (mUnDoRedo.isChanged()) {// a save operation is pending?
             confirmFileChanged(r);
           } else {
             r.run();
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onSaveResult(Uri uri, boolean success) {
     if (success) {
-      mUndoRedoManager.clear();
+      mUnDoRedo.clear();
       if (mFileData.isOpenFromAppIntent()) {
         mFileData = new FileData(uri, false);
         if (mFileData.isOpenFromAppIntent())
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       if(mPlainMenu != null)
         mPlainMenu.setChecked(false);
       mFileData = null;
-      mUndoRedoManager.clear();
+      mUnDoRedo.clear();
     }
     setTitle(getResources().getConfiguration());
   }
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param cfg Screen configuration.
    */
   public void setTitle(Configuration cfg) {
-    UIHelper.setTitle(this, cfg.orientation, true, mFileData == null ? null : mFileData.getName(), mUndoRedoManager.isChanged());
+    UIHelper.setTitle(this, cfg.orientation, true, mFileData == null ? null : mFileData.getName(), mUnDoRedo.isChanged());
   }
 
   /**
@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public void onPopupItemClick(int id) {
     if (id == R.id.action_open) {
       final Runnable r = () -> mLauncherOpen.startActivity();
-      if (mUndoRedoManager.isChanged()) {// a save operation is pending?
+      if (mUnDoRedo.isChanged()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
@@ -404,16 +404,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPlainMenu.setChecked(checked);
     } else if (id == R.id.action_close) {
       final Runnable r = this::closeFile;
-      if (mUndoRedoManager.isChanged()) {// a save operation is pending?
+      if (mUnDoRedo.isChanged()) {// a save operation is pending?
         confirmFileChanged(r);
       } else
         r.run();
     } else if (id == R.id.action_settings) {
-      SettingsActivity.startActivity(this, mUndoRedoManager.isChanged());
+      SettingsActivity.startActivity(this, mUnDoRedo.isChanged());
     } else if (id == R.id.action_undo) {
-      mUndoRedoManager.undo();
+      mUnDoRedo.undo();
     } else if (id == R.id.action_redo) {
-      mUndoRedoManager.redo();
+      mUnDoRedo.redo();
     }
   }
 
@@ -464,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mRecentlyOpen.setOnClickListener(click);
         actionRedo.setOnClickListener(click);
         actionUndo.setOnClickListener(click);
-        mUndoRedoManager.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
+        mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
         onOpenResult(false);
       }
       mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 0, 0);
@@ -549,7 +549,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       cancelSearch();
     } else {
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-        if (mUndoRedoManager.isChanged()) {// a save operation is pending?
+        if (mUnDoRedo.isChanged()) {// a save operation is pending?
           confirmFileChanged(() -> {
             super.onBackPressed();
             finish();
@@ -639,12 +639,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Returns the undo/redo manager.
+   * Returns the undo/redo.
    *
-   * @return UndoRedoManager
+   * @return UnDoRedo
    */
-  public UndoRedoManager getUndoRedoManager() {
-    return mUndoRedoManager;
+  public UnDoRedo getUnDoRedo() {
+    return mUnDoRedo;
   }
 
 }

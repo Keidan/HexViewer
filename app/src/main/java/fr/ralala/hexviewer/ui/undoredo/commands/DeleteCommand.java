@@ -1,14 +1,14 @@
-package fr.ralala.hexviewer.ui.undoredo;
+package fr.ralala.hexviewer.ui.undoredo.commands;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import fr.ralala.hexviewer.models.FilterData;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.utils.LineEntry;
-
-import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.FilterData;
+import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.ui.undoredo.ICommand;
 
 public class DeleteCommand implements ICommand {
   private final Map<Integer, FilterData<LineEntry>> mDeleteList;
@@ -37,7 +37,7 @@ public class DeleteCommand implements ICommand {
     for(Integer i : getKeys()) {
       FilterData<LineEntry> fd = mDeleteList.get(i);
       mAdapter.getFilteredList().add(i, fd);
-      mAdapter.getItems().add(fd.origin, fd.value);
+      mAdapter.getItems().add(fd.getOrigin(), fd.getValue());
     }
     mAdapter.notifyDataSetChanged();
   }

@@ -1,6 +1,8 @@
-package fr.ralala.hexviewer.utils;
+package fr.ralala.hexviewer.models;
 
 import android.net.Uri;
+
+import fr.ralala.hexviewer.utils.FileHelper;
 
 /**
  * ******************************************************************************
