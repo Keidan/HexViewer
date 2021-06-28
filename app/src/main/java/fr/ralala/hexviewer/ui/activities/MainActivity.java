@@ -468,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
         onOpenResult(false);
       }
-      mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 0, 0);
+      mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 12, 120);
       //mPopup.showAsDropDown(findViewById(R.id.action_more));
     }
     return super.onOptionsItemSelected(item);
