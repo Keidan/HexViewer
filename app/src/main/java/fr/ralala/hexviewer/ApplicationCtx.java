@@ -394,7 +394,7 @@ public class ApplicationCtx extends Application {
     if (split.length == 2)
       locale = new Locale(split[0], split[1]);
     else
-      locale = new Locale(split[1]);
+      locale = new Locale(split[0]);
     Locale.setDefault(locale);
 
     Configuration configuration = context.getResources().getConfiguration();
