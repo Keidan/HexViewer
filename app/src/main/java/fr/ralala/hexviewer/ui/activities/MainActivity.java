@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -162,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onResume() {
     super.onResume();
+    if(mPopup != null && mPopup.isShowing())
+      mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
     onOpenResult(!FileData.isEmpty(mFileData));
@@ -464,8 +467,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mUndoRedoManager.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
         onOpenResult(false);
       }
-      //mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 0, 0);
-      mPopup.showAsDropDown(findViewById(R.id.action_more));
+      mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 0, 0);
+      //mPopup.showAsDropDown(findViewById(R.id.action_more));
     }
     return super.onOptionsItemSelected(item);
   }
