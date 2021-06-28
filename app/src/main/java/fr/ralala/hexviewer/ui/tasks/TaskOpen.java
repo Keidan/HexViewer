@@ -13,12 +13,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -168,7 +168,6 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
     }
     return result;
   }
-
 
 
   /**

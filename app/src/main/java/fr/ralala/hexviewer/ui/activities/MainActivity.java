@@ -33,6 +33,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
@@ -42,13 +44,11 @@ import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherSave;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
+import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
-import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.models.Line;
 
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
 
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onResume() {
     super.onResume();
-    if(mPopup != null && mPopup.isShowing())
+    if (mPopup != null && mPopup.isShowing())
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
-      if(mPlainMenu != null)
+      if (mPlainMenu != null)
         mPlainMenu.setChecked(false);
       mFileData = null;
       mUnDoRedo.clear();
@@ -374,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Handles the click on the popup menu item.
+   *
    * @param id The view id.
    */
   public void onPopupItemClick(int id) {
@@ -428,9 +429,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_more) {
-      if(mPopup == null) {
+      if (mPopup == null) {
 
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.main_popup, null);
         popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         int with = popupView.getMeasuredWidth();
@@ -468,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
         onOpenResult(false);
       }
-      mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP|Gravity.END, 12, 120);
+      mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP | Gravity.END, 12, 120);
       //mPopup.showAsDropDown(findViewById(R.id.action_more));
     }
     return super.onOptionsItemSelected(item);

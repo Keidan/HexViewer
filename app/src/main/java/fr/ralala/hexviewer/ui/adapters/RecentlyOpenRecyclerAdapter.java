@@ -37,12 +37,14 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
   public interface OnEventListener {
     /**
      * Called when a click is captured.
+     *
      * @param ud The associated item.
      */
     void onClick(@NonNull UriData ud);
 
     /**
      * Called when a click is captured.
+     *
      * @param ud The associated item.
      */
     void onDelete(@NonNull UriData ud);
@@ -56,6 +58,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
   /**
    * Returns the SwipeToDeleteCallback.
+   *
    * @return SwipeToDeleteCallback
    */
   public SwipeToDeleteCallback getSwipeToDeleteCallback() {
@@ -92,7 +95,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
     if (ud != null) {
       // Set item views based on the views and data model
       TextView textView = viewHolder.text1;
-      if(mListener != null)
+      if (mListener != null)
         textView.setOnClickListener((v) -> mListener.onClick(ud));
       textView.setText((ud.index + " - " + ud.value));
     }
@@ -137,19 +140,20 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
 
     public SwipeToDeleteCallback(final Context context) {
-      super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+      super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
       mBackground = new ColorDrawable(ContextCompat.getColor(context, R.color.colorResultError));
     }
 
 
     /**
      * Called by ItemTouchHelper on RecyclerView's onDraw callback.
-     * @param c The canvas which RecyclerView is drawing its children
-     * @param recyclerView The recycler view.
-     * @param viewHolder The ViewHolder which is being interacted by the User or it was interacted and simply animating to its original position
-     * @param dX The amount of horizontal displacement caused by user's action
-     * @param dY The amount of vertical displacement caused by user's action
-     * @param actionState The type of interaction on the View. Is either ACTION_STATE_DRAG or ACTION_STATE_SWIPE.
+     *
+     * @param c                 The canvas which RecyclerView is drawing its children
+     * @param recyclerView      The recycler view.
+     * @param viewHolder        The ViewHolder which is being interacted by the User or it was interacted and simply animating to its original position
+     * @param dX                The amount of horizontal displacement caused by user's action
+     * @param dY                The amount of vertical displacement caused by user's action
+     * @param actionState       The type of interaction on the View. Is either ACTION_STATE_DRAG or ACTION_STATE_SWIPE.
      * @param isCurrentlyActive True if this view is currently being controlled by the user or false it is simply animating back to its original state.
      */
     @Override
@@ -176,9 +180,10 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
     /**
      * Called when ItemTouchHelper wants to move the dragged item from its old position to the new position.
+     *
      * @param recyclerView The RecyclerView to which ItemTouchHelper is attached to.
-     * @param viewHolder The ViewHolder which is being dragged by the user.
-     * @param target The ViewHolder over which the currently active item is being dragged.
+     * @param viewHolder   The ViewHolder which is being dragged by the user.
+     * @param target       The ViewHolder over which the currently active item is being dragged.
      * @return True if the viewHolder has been moved to the adapter position of target.
      */
     @Override
@@ -189,8 +194,9 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
     /**
      * Called when a ViewHolder is swiped by the user.
+     *
      * @param viewHolder The ViewHolder which has been swiped by the user.
-     * @param direction The direction to which the ViewHolder is swiped. It is one of UP, DOWN, LEFT or RIGHT.
+     * @param direction  The direction to which the ViewHolder is swiped. It is one of UP, DOWN, LEFT or RIGHT.
      */
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -198,7 +204,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       UriData ud = mItems.get(position);
       mItems.remove(position);
       notifyItemRemoved(position);
-      if(mListener != null)
+      if (mListener != null)
         mListener.onDelete(ud);
     }
   }

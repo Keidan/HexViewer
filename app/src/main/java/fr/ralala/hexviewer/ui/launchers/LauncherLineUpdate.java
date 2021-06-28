@@ -12,12 +12,12 @@ import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**

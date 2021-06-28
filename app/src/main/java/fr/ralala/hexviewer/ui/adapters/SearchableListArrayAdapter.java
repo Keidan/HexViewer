@@ -16,8 +16,8 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineFilter;
 
 /**
  * ******************************************************************************
@@ -54,7 +54,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
 
   /**
    * Returns the list of items.
-   * @return List<ListData<T>>
+   *
+   * @return List<ListData < T>>
    */
   public List<LineData<T>> getItems() {
     return mEntryList;
@@ -62,7 +63,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
 
   /**
    * Returns the list of filtered items.
-   * @return List<FilterData<T>>
+   *
+   * @return List<FilterData < T>>
    */
   public List<LineFilter<T>> getFilteredList() {
     return mFilteredList;
@@ -87,7 +89,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @param position Position of the item.
    */
   public void removeItem(final int position) {
-    if(position >= mFilteredList.size())
+    if (position >= mFilteredList.size())
       return;
     LineFilter<T> fd = mFilteredList.get(position);
     if (fd.getOrigin() < mEntryList.size())
@@ -228,8 +230,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
   /**
    * Sets the entry text (if updated = false)
    *
-   * @param view The text view.
-   * @param text The text.
+   * @param view    The text view.
+   * @param text    The text.
    * @param updated The updated flag.
    */
   protected abstract void setEntryText(final TextView view, final T text, final boolean updated);
@@ -267,6 +269,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
 
   /**
    * Manual filter update.
+   *
    * @param constraint The constraint.
    */
   public void manualFilterUpdate(CharSequence constraint) {
@@ -296,6 +299,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
           extraFilter(s, i, query, tempList, loc);
       }
     }
+
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
       final FilterResults filterResults = new FilterResults();

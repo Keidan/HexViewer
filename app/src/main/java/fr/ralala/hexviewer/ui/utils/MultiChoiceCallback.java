@@ -6,16 +6,15 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.Line;
 
 /**
  * ******************************************************************************
@@ -77,7 +76,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       Map<Integer, LineFilter<Line>> map = new HashMap<>();
       HexTextArrayAdapter adapter = mActivity.getAdapterHex();
       // Captures all selected ids with a loop
-      for(int i = selected.size() - 1; i >= 0; i--) {
+      for (int i = selected.size() - 1; i >= 0; i--) {
         int position = selected.get(i);
         map.put(position, adapter.getFilteredList().get(position));
       }

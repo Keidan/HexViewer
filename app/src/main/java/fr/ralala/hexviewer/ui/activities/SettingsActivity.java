@@ -28,8 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
   /**
    * Starts an activity.
    *
-   * @param c                      Android context.
-   * @param change                 A change is detected?
+   * @param c      Android context.
+   * @param change A change is detected?
    */
   public static void startActivity(final Context c, final boolean change) {
     Intent intent = new Intent(c, SettingsActivity.class);
@@ -99,6 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
 
   /**
    * Tests if a change is detected.
+   *
    * @return boolean
    */
   public boolean isChanged() {

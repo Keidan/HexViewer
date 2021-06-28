@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineFilter;
 
 /**
  * ******************************************************************************
@@ -32,8 +32,8 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String
   /**
    * Sets the entry text (if updated = false)
    *
-   * @param view The text view.
-   * @param text The text.
+   * @param view    The text view.
+   * @param text    The text.
    * @param updated The updated flag.
    */
   @Override

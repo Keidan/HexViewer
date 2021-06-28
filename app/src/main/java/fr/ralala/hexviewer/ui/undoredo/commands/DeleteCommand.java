@@ -3,9 +3,9 @@ package fr.ralala.hexviewer.ui.undoredo.commands;
 import java.util.List;
 import java.util.Map;
 
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -33,7 +33,7 @@ public class DeleteCommand implements ICommand {
    */
   public void execute() {
     List<Integer> list = SysHelper.getMapKeys(mList);
-    for(int i = list.size() - 1; i >= 0; i--) {
+    for (int i = list.size() - 1; i >= 0; i--) {
       mAdapter.removeItem(list.get(i));
     }
     mAdapter.notifyDataSetChanged();
@@ -43,7 +43,7 @@ public class DeleteCommand implements ICommand {
    * Un-Execute the command.
    */
   public void unExecute() {
-    for(Integer i : SysHelper.getMapKeys(mList)) {
+    for (Integer i : SysHelper.getMapKeys(mList)) {
       LineFilter<Line> fd = mList.get(i);
       mAdapter.getFilteredList().add(i, fd);
       mAdapter.getItems().add(fd.getOrigin(), fd.getData());

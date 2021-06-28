@@ -9,11 +9,11 @@ import java.util.Stack;
 
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
 
@@ -75,9 +75,9 @@ public class UnDoRedo {
   /**
    * Updates command.
    *
-   * @param activity MainActivity.
+   * @param activity      MainActivity.
    * @param firstPosition The first position index.
-   * @param entries The entries.
+   * @param entries       The entries.
    * @return The command.
    */
   public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
@@ -117,7 +117,7 @@ public class UnDoRedo {
       mRedo.push(command);
       manageControl(mControls[CONTROL_REDO], true);
     }
-    if(mUndo.isEmpty())
+    if (mUndo.isEmpty())
       mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
   }

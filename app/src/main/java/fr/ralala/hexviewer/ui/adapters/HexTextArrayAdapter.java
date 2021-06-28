@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineFilter;
 
 /**
  * ******************************************************************************
@@ -36,8 +36,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   /**
    * Sets the entry text (if updated = false)
    *
-   * @param view The text view.
-   * @param text The text.
+   * @param view    The text view.
+   * @param text    The text.
    * @param updated The updated flag.
    */
   @Override

@@ -2,9 +2,9 @@ package fr.ralala.hexviewer.ui.undoredo.commands;
 
 import java.util.List;
 
-import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
@@ -102,7 +102,7 @@ public class UpdateCommand implements ICommand {
       adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
     } else {
       /* First, we delete the elements*/
-      for(int i = size - 1; i > 0; i--) {
+      for (int i = size - 1; i > 0; i--) {
         adapter.getItems().remove(mPrevLine.getOrigin() + i);
         if (mRealIndex + i < adapter.getFilteredList().size())
           adapter.getFilteredList().remove(mRealIndex + i);
