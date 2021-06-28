@@ -77,6 +77,7 @@ public class ApplicationCtx extends Application {
     EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
     EmojiCompat.init(config);
     loadDefaultLocal();
+    setApplicationLanguage(mLanguage);
   }
 
   private SharedPreferences getPref(final Context context) {
