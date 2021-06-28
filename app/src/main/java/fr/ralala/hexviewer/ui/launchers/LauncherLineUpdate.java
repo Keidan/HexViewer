@@ -12,11 +12,12 @@ import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import fr.ralala.hexviewer.models.FilterData;
+import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -70,20 +71,14 @@ public class LauncherLineUpdate {
                 /* nothing to do */
                 return;
               }
-              List<LineEntry> li = SysHelper.formatBuffer(buf, null);
+              List<LineData<Line>> li = SysHelper.formatBuffer(buf, null);
               if (li.isEmpty()) {
                 HexTextArrayAdapter adapter = mActivity.getAdapterHex();
-                Map<Integer, FilterData<LineEntry>> map = new HashMap<>();
+                Map<Integer, LineFilter<Line>> map = new HashMap<>();
                 map.put(position, adapter.getFilteredList().get(position));
                 mActivity.getUnDoRedo().insertInUnDoRedoForDelete(adapter, map).execute();
               } else {
-                String query = mActivity.getSearchQuery();
-                if (!query.isEmpty())
-                  mActivity.doSearch("");
-                mActivity.getAdapterHex().setItem(position, li);
-                if (!query.isEmpty())
-                  mActivity.doSearch(mActivity.getSearchQuery());
-                mActivity.setTitle(mActivity.getResources().getConfiguration());
+                mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, li).execute();
               }
             } else
               Log.e(getClass().getSimpleName(), "Null data!!!");

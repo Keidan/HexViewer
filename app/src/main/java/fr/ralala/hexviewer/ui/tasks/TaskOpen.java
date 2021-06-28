@@ -13,11 +13,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -40,8 +41,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   private final boolean mAddRecent;
 
   public static class Result {
-    private List<LineEntry> listHex = null;
-    private List<String> listPlain = null;
+    private List<LineData<Line>> listHex = null;
+    private List<LineData<String>> listPlain = null;
     private String exception = null;
   }
 
@@ -127,8 +128,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   protected Result doInBackground(Uri... values) {
     final Activity activity = mActivityRef.get();
     final Result result = new Result();
-    final List<LineEntry> list = new ArrayList<>();
-    final List<String> plain = new ArrayList<>();
+    final List<LineData<Line>> list = new ArrayList<>();
+    final List<LineData<String>> plain = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
       final Uri uri = values[0];
@@ -178,13 +179,13 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
    * @param length  The array length.
    * @param cancel  Used to cancel this method.
    */
-  public void addPlain(final List<String> plain, final byte[] payload, final int length, final AtomicBoolean cancel) {
+  public void addPlain(final List<LineData<String>> plain, final byte[] payload, final int length, final AtomicBoolean cancel) {
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;
     for (int i = 0; i < length && (cancel == null || !cancel.get()); i++) {
       if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
         sb.append((char) payload[i]);
-        plain.add(sb.toString());
+        plain.add(new LineData<>(sb.toString()));
         nbPerLine = 0;
         sb.setLength(0);
       } else {
@@ -193,7 +194,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
       }
     }
     if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
-      plain.add(sb.toString());
+      plain.add(new LineData<>(sb.toString()));
     }
   }
 }

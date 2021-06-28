@@ -3,11 +3,14 @@ package fr.ralala.hexviewer.utils;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
+import fr.ralala.hexviewer.models.LineData;
 
 /**
  * ******************************************************************************
@@ -25,6 +28,17 @@ public class SysHelper {
   private static final float SIZE_1GB = 0x40000000;
   public static final int MAX_BY_ROW = 16;
   public static final int MAX_BY_LINE = ((MAX_BY_ROW * 2) + MAX_BY_ROW) + 19; /* 19 = nb spaces */
+
+  /**
+   * Sorts keys.
+   *
+   * @return List<Integer>
+   */
+  public static <T> List<Integer> getMapKeys(final Map<Integer, T> map) {
+    List<Integer> sortedKeys = new ArrayList<>(map.keySet());
+    Collections.sort(sortedKeys);
+    return sortedKeys;
+  }
 
   /**
    * Returns the byte array.
@@ -125,8 +139,8 @@ public class SysHelper {
    * @param cancel Used to cancel this method.
    * @return List<LineEntry>
    */
-  public static List<LineEntry> formatBuffer(final byte[] buffer, AtomicBoolean cancel) {
-    List<LineEntry> lines;
+  public static List<LineData<Line>> formatBuffer(final byte[] buffer, AtomicBoolean cancel) {
+    List<LineData<Line>> lines;
     try {
       lines = formatBuffer(buffer, buffer.length, cancel);
     } catch (IllegalArgumentException iae) {
@@ -143,13 +157,13 @@ public class SysHelper {
    * @param cancel Used to cancel this method.
    * @return List<String>
    */
-  public static List<LineEntry> formatBuffer(final byte[] buffer, final int length, AtomicBoolean cancel) throws IllegalArgumentException {
+  public static List<LineData<Line>> formatBuffer(final byte[] buffer, final int length, AtomicBoolean cancel) throws IllegalArgumentException {
     int len = length;
     if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
     StringBuilder currentLine = new StringBuilder();
     StringBuilder currentEndLine = new StringBuilder();
-    final List<LineEntry> lines = new ArrayList<>();
+    final List<LineData<Line>> lines = new ArrayList<>();
     final List<Byte> currentLineRaw = new ArrayList<>();
     int currentIndex = 0;
     int bufferIndex = 0;
@@ -219,9 +233,9 @@ public class SysHelper {
    * @param currentLineRaw The current line in raw.
    * @return The nex index.
    */
-  private static int formatBufferPrepareLineComplete(final List<LineEntry> lines, final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine, final List<Byte> currentLineRaw) {
+  private static int formatBufferPrepareLineComplete(final List<LineData<Line>> lines, final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine, final List<Byte> currentLineRaw) {
     if (currentIndex == MAX_BY_ROW - 1) {
-      lines.add(new LineEntry(currentLine + " " + currentEndLine, new ArrayList<>(currentLineRaw)));
+      lines.add(new LineData<>(new Line(currentLine + " " + currentEndLine, new ArrayList<>(currentLineRaw))));
       currentEndLine.delete(0, currentEndLine.length());
       currentLine.delete(0, currentLine.length());
       currentLineRaw.clear();
@@ -239,7 +253,7 @@ public class SysHelper {
    * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    */
-  private static void formatBufferAlign(final List<LineEntry> lines, int currentIndex, final String currentLine, final String currentEndLine, final List<Byte> currentLineRaw) {
+  private static void formatBufferAlign(final List<LineData<Line>> lines, int currentIndex, final String currentLine, final String currentEndLine, final List<Byte> currentLineRaw) {
     /* align 'line' */
     int i = currentIndex;
     if (i != 0 && (i < MAX_BY_ROW || i <= currentLine.length())) {
@@ -249,7 +263,7 @@ public class SysHelper {
         off.append((i == mid) ? "    " : "   "); /* 4 spaces ex: "00  " or 3 spaces ex: "00 " */
       off.append("  "); /* 2 spaces separator */
       String s = currentLine.trim();
-      lines.add(new LineEntry(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw)));
+      lines.add(new LineData<>(new Line(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw))));
     }
   }
 

@@ -1,5 +1,7 @@
 package fr.ralala.hexviewer.models;
 
+import androidx.annotation.NonNull;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -10,14 +12,30 @@ package fr.ralala.hexviewer.models;
  * <p>
  * ******************************************************************************
  */
-public class FilterData<T> {
+public class LineData<T> {
   private T mValue;
-  private int mOrigin;
-  private boolean mUpdated = false;
+  private boolean mUpdated;
 
-  public FilterData(T value, int origin) {
+
+  public LineData(LineData<T> ld) {
+    mValue = ld.mValue;
+    mUpdated = ld.mUpdated;
+  }
+
+  public LineData(T value) {
     mValue = value;
-    mOrigin = origin;
+    mUpdated = false;
+  }
+
+  public LineData(T value, boolean updated) {
+    mValue = value;
+    mUpdated = updated;
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+    return "" + mValue;
   }
 
   /**
@@ -34,22 +52,6 @@ public class FilterData<T> {
    */
   public void setUpdated(boolean updated) {
     mUpdated = updated;
-  }
-
-  /**
-   * Gets the origin index.
-   * @return int
-   */
-  public int getOrigin() {
-    return mOrigin;
-  }
-
-  /**
-   * Sets origin index.
-   * @param origin The new value.
-   */
-  public void setOrigin(int origin) {
-    mOrigin = origin;
   }
 
   /**

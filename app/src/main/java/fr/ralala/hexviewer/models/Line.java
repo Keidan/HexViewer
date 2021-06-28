@@ -12,11 +12,11 @@ import java.util.List;
  * <p>
  * ******************************************************************************
  */
-public class LineEntry {
+public class Line {
   private final String mPlain;
   private final List<Byte> mRaw;
 
-  public LineEntry(final String plain, List<Byte> raw) {
+  public Line(final String plain, List<Byte> raw) {
     mPlain = plain;
     mRaw = raw;
   }

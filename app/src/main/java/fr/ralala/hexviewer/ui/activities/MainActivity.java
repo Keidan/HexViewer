@@ -33,6 +33,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
@@ -47,7 +48,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
 
 import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
 
@@ -261,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param queryStr The query string.
    */
   public void doSearch(String queryStr) {
+    mSearchQuery = queryStr;
     final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mAdapterHex);
     laa.getFilter().filter(queryStr);
   }
@@ -529,14 +531,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    LineEntry e = mAdapterHex.getItem(position);
+    LineData<Line> e = mAdapterHex.getItem(position);
     if (e == null)
       return;
     if (mPayloadPlainSwipe.isVisible()) {
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
-    mLauncherLineUpdate.startActivity(e.getPlain(), position);
+    mLauncherLineUpdate.startActivity(e.getValue().getPlain(), position);
   }
 
   /**

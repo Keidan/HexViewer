@@ -14,8 +14,9 @@ import java.util.List;
 
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -41,9 +42,9 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
 
   public static class Request {
     private final Uri mUri;
-    private final List<LineEntry> mEntries;
+    private final List<LineData<Line>> mEntries;
 
-    public Request(Uri uri, List<LineEntry> entries) {
+    public Request(Uri uri, List<LineData<Line>> entries) {
       mUri = uri;
       mEntries = entries;
     }
@@ -134,8 +135,8 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
     try {
       mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "w");
       List<Byte> bytes = new ArrayList<>();
-      for(LineEntry entry : request.mEntries)
-        bytes.addAll(entry.getRaw());
+      for(LineData<Line> entry : request.mEntries)
+        bytes.addAll(entry.getValue().getRaw());
       final byte[] data = SysHelper.toByteArray(bytes, mCancel);
       if (!mCancel.get()) {
         mOutputStream = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());

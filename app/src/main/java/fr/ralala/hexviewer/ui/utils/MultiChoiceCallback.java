@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.FilterData;
+import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
 
 /**
  * ******************************************************************************
@@ -74,7 +74,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
       final List<Integer> selected = mAdapter.getSelectedIds();
-      Map<Integer, FilterData<LineEntry>> map = new HashMap<>();
+      Map<Integer, LineFilter<Line>> map = new HashMap<>();
       HexTextArrayAdapter adapter = mActivity.getAdapterHex();
       // Captures all selected ids with a loop
       for(int i = selected.size() - 1; i >= 0; i--) {

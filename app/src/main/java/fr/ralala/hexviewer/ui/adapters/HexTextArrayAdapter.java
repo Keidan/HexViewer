@@ -11,8 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import fr.ralala.hexviewer.models.FilterData;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.Line;
+import fr.ralala.hexviewer.models.LineData;
 
 /**
  * ******************************************************************************
@@ -24,10 +25,10 @@ import fr.ralala.hexviewer.models.LineEntry;
  * <p>
  * ******************************************************************************
  */
-public class HexTextArrayAdapter extends SearchableListArrayAdapter<LineEntry> {
+public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   private List<Integer> mSelectedItemsIds;
 
-  public HexTextArrayAdapter(final Context context, final List<LineEntry> objects, UserConfig userConfig) {
+  public HexTextArrayAdapter(final Context context, final List<LineData<Line>> objects, UserConfig userConfig) {
     super(context, objects, userConfig);
     mSelectedItemsIds = new ArrayList<>();
   }
@@ -40,7 +41,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<LineEntry> {
    * @param updated The updated flag.
    */
   @Override
-  protected void setEntryText(final TextView view, final LineEntry text, final boolean updated) {
+  protected void setEntryText(final TextView view, final Line text, final boolean updated) {
     if (updated) {
       SpannableString spanString = new SpannableString(text.getPlain());
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
@@ -71,7 +72,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<LineEntry> {
    * @param loc      The locale.
    */
   @Override
-  protected void extraFilter(final LineEntry line, int index, String query, final ArrayList<FilterData<LineEntry>> tempList, Locale loc) {
+  protected void extraFilter(final LineData<Line> line, int index, String query, final ArrayList<LineFilter<Line>> tempList, Locale loc) {
     /* nothing */
   }
 
@@ -84,7 +85,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<LineEntry> {
     if (checked) {
       mSelectedItemsIds.add(position);
     } else {
-      mSelectedItemsIds.remove(position);
+      mSelectedItemsIds.remove(Integer.valueOf(position));
     }
     notifyDataSetChanged();
   }

@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import fr.ralala.hexviewer.models.FilterData;
+import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineData;
 
 /**
  * ******************************************************************************
@@ -24,7 +25,7 @@ import fr.ralala.hexviewer.models.FilterData;
  */
 public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String> {
 
-  public PlainTextListArrayAdapter(final Context context, final List<String> objects, UserConfig userConfig) {
+  public PlainTextListArrayAdapter(final Context context, final List<LineData<String>> objects, UserConfig userConfig) {
     super(context, objects, userConfig);
   }
 
@@ -67,12 +68,12 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String
    * @param loc      The locale.
    */
   @Override
-  protected void extraFilter(final String line, int index, String query, final ArrayList<FilterData<String>> tempList, Locale loc) {
+  protected void extraFilter(final LineData<String> line, int index, String query, final ArrayList<LineFilter<String>> tempList, Locale loc) {
     StringBuilder sb = new StringBuilder();
-    for (char c : line.toCharArray())
+    for (char c : line.getValue().toCharArray())
       sb.append(String.format("%02X", (byte) c));
     if (sb.toString().toLowerCase(loc).contains(query)) {
-      tempList.add(new FilterData<>(line, index));
+      tempList.add(new LineFilter<>(line, index));
     }
   }
 

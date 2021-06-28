@@ -3,16 +3,19 @@ package fr.ralala.hexviewer.ui.undoredo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.FilterData;
+import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
+import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
 
 /**
  * ******************************************************************************
@@ -70,14 +73,21 @@ public class UnDoRedo {
   }
 
   /**
-   * Inserts update command..
+   * Updates command.
+   *
+   * @param activity MainActivity.
+   * @param firstPosition The first position index.
+   * @param entries The entries.
+   * @return The command.
    */
-  public void insertInUnDoRedoForUpdate() {
-    /*ICommand cmd = new UpdateCommand(le);
+  public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
+    ICommand cmd = new UpdateCommand(activity, firstPosition, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
-    mRedo.clear();*/
+    mRedo.clear();
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    return cmd;
   }
 
   /**
@@ -87,12 +97,13 @@ public class UnDoRedo {
    * @param entries The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForDelete(final HexTextArrayAdapter adapter, final Map<Integer, FilterData<LineEntry>> entries) {
+  public ICommand insertInUnDoRedoForDelete(final HexTextArrayAdapter adapter, final Map<Integer, LineFilter<Line>> entries) {
     ICommand cmd = new DeleteCommand(adapter, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
     return cmd;
   }
 

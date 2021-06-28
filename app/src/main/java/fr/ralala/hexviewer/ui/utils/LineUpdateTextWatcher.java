@@ -20,7 +20,8 @@ import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.EmojiSpan;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.Line;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -174,9 +175,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
         CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
         StringBuilder newChangeHex = new StringBuilder();
         byte[] newChangeBytes = newChange.toString().getBytes();
-        List<LineEntry> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
-        for (LineEntry str : list)
-          newChangeHex.append(SysHelper.extractHex(str.getPlain()));
+        List<LineData<Line>> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
+        for (LineData<Line> str : list)
+          newChangeHex.append(SysHelper.extractHex(str.getValue().getPlain()));
         mNewString = formatText((notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
       }
     }
@@ -211,10 +212,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private String formatText(String text) {
     final byte[] buf = SysHelper.hexStringToByteArray(text);
-    List<LineEntry> li = SysHelper.formatBuffer(buf, null);
+    List<LineData<Line>> li = SysHelper.formatBuffer(buf, null);
     StringBuilder sb = new StringBuilder();
-    for (LineEntry line : li) {
-      sb.append(SysHelper.extractHex(line.getPlain())).append(" ");
+    for (LineData<Line> line : li) {
+      sb.append(SysHelper.extractHex(line.getValue().getPlain())).append(" ");
     }
     return sb.toString().trim();
   }
