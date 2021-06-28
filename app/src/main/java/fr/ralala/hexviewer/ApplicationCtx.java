@@ -51,6 +51,7 @@ public class ApplicationCtx extends Application {
   private boolean mDefaultSmartInput;
   private List<String> mRecentlyOpened;
   private static ApplicationCtx instance;
+  private String mLanguage = null;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -75,6 +76,7 @@ public class ApplicationCtx extends Application {
     /* EmojiCompat */
     EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
     EmojiCompat.init(config);
+    loadDefaultLocal();
   }
 
   private SharedPreferences getPref(final Context context) {
@@ -366,7 +368,7 @@ public class ApplicationCtx extends Application {
    * @return String.
    */
   public String getApplicationLanguage(final Context context) {
-    return getPref(context).getString(CFG_LANGUAGE, Locale.getDefault().getLanguage());
+    return getPref(context).getString(CFG_LANGUAGE, mLanguage);
   }
 
   /**
@@ -382,12 +384,25 @@ public class ApplicationCtx extends Application {
   }
 
   /**
+   * Loads the default locale.
+   */
+  private void loadDefaultLocal() {
+    if(mLanguage == null) {
+      Locale loc = Locale.getDefault();
+      mLanguage = loc.getLanguage();
+      if (loc.getCountry() != null && !loc.getCountry().isEmpty())
+        mLanguage += "-" + loc.getCountry();
+    }
+  }
+
+  /**
    * This method must be called in attachBaseContext.
    *
    * @param context Context
    * @return The new cfg context.
    */
   public Context onAttach(Context context) {
+    loadDefaultLocal();
     String lang = getApplicationLanguage(context);
     String[] split = lang.split("-");
     Locale locale;
@@ -395,6 +410,7 @@ public class ApplicationCtx extends Application {
       locale = new Locale(split[0], split[1]);
     else
       locale = new Locale(split[0]);
+
     Locale.setDefault(locale);
 
     Configuration configuration = context.getResources().getConfiguration();
