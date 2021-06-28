@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
    * @param change                 A change is detected?
    */
   public static void startActivity(final Context c, final boolean change) {
-    Intent intent = new Intent(c, LineUpdateActivity.class);
+    Intent intent = new Intent(c, SettingsActivity.class);
     intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
     c.startActivity(intent);
   }
