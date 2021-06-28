@@ -398,10 +398,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mLauncherSave.startActivity();
     } else if (id == R.id.action_plain_text) {
       cancelSearch();
-      boolean checked = !mPlainMenu.isChecked();
+      boolean checked = mPlainMenu.isChecked();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
-      mPlainMenu.setChecked(checked);
     } else if (id == R.id.action_close) {
       final Runnable r = this::closeFile;
       if (mUnDoRedo.isChanged()) {// a save operation is pending?
