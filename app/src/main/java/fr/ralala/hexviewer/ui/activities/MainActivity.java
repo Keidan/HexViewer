@@ -480,7 +480,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actionRedo.setOnClickListener(click);
         actionUndo.setOnClickListener(click);
         mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
-        onOpenResult(false);
+        if(mFileData == null)
+          onOpenResult(false);
+        else if(mFileData.isOpenFromAppIntent()) {
+          setMenuVisible(mSearchMenu, true);
+          mPlainMenu.setEnabled(true);
+          setMenuEnabled(mSaveMenu, false);
+          setMenuEnabled(mSaveAsMenu, true);
+          setMenuEnabled(mCloseMenu, true);
+          setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
+          mPleaseOpenFile.setVisibility(View.GONE);
+          mPayloadHex.setVisibility(View.VISIBLE);
+          mPayloadPlainSwipe.setVisible(false);
+        }
       }
       mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP | Gravity.END, 12, 120);
       //mPopup.showAsDropDown(findViewById(R.id.action_more));
