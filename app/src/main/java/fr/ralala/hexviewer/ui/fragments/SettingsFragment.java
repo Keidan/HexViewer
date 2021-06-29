@@ -39,14 +39,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   private static final int MAX_ABBREVIATE_PORTRAIT = 25;
   private static final int MIN_ABBREVIATE_LANDSCAPE = 4;
   private static final int MAX_ABBREVIATE_LANDSCAPE = 80;
-  private static final int MIN_HEX_ROW_HEIGHT = 100;
+  private static final int MIN_HEX_ROW_HEIGHT = 10;
   private static final int MAX_HEX_ROW_HEIGHT = 1000;
   private static final int MIN_HEX_FONT_SIZE = 1;
   private static final int MAX_HEX_FONT_SIZE = 50;
-  private static final int MIN_PLAIN_ROW_HEIGHT = 100;
+  private static final int MIN_PLAIN_ROW_HEIGHT = 50;
   private static final int MAX_PLAIN_ROW_HEIGHT = 1000;
   private static final int MIN_PLAIN_FONT_SIZE = 1;
-  private static final int MAX_PLAIN_FONT_SIZE = 50;
+  private static final int MAX_PLAIN_FONT_SIZE = 10;
   private final SettingsActivity mActivity;
   private final ApplicationCtx mApp;
   protected Preference mAbbreviatePortrait;
