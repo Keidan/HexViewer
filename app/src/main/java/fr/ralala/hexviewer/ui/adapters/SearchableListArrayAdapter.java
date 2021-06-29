@@ -92,8 +92,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
     if (position >= mFilteredList.size())
       return;
     LineFilter<T> fd = mFilteredList.get(position);
-    if (fd.getOrigin() < mEntryList.size())
-      mEntryList.remove(fd.getOrigin());
+    mEntryList.remove(fd.getOrigin());
     mFilteredList.remove(position);
     super.notifyDataSetChanged();
   }

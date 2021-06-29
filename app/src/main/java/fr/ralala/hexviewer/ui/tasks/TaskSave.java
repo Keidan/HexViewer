@@ -133,7 +133,7 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
     result.uri = request.mUri;
     publishProgress(0L);
     try {
-      mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "w");
+      mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "wt");
       List<Byte> bytes = new ArrayList<>();
       for (LineData<Line> entry : request.mEntries)
         bytes.addAll(entry.getValue().getRaw());
