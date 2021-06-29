@@ -405,6 +405,7 @@ public class ApplicationCtx extends Application {
   public Context onAttach(Context context) {
     loadDefaultLocal();
     String lang = getApplicationLanguage(context);
+    mLanguage = lang;
     String[] split = lang.split("-");
     Locale locale;
     if (split.length == 2)
