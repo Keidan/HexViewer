@@ -7,8 +7,8 @@ android {
         applicationId "fr.ralala.hexviewer"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 15
-        versionName "1.13"
+        versionCode 16
+        versionName "1.14"
     }
 
     compileOptions {

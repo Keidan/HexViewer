@@ -1,0 +1,26 @@
+* An undo/redo function is now available.
+* Fix a bug with invalid file names when opening via the gallery.
+* Fix a bug where files whose permissions could not be obtained were still added to the list of recent files.
+* Fix a bug where when a file was being edited but the user opened a new one via the gallery (for example), the changes were lost.
+* Fix a bug with files opened from outside (via the gallery for example) that were not saveable.
+    * Note: At first, the file can only be saved via "save as" and, due to Android permissions, the only way to make it appear in the list of recent files is to re-open it.
+* From now on, the toast icon is directly managed by the system (the icon may not be present depending on the Android version).
+* Modification of URLs in the "About" menu.
+* Fix a bug with the save menu that was not working.
+* Fix a bug where after a "save as", the old file was always used for "save".
+    * Note: The list of recent files cannot be updated with the new file location.
+* It's now possible to cancel the save confirmation if the opened file is modified but the user quits the application, closes the file or opens a new file without having saved the changes first.
+* It's now possible to manually change the language of the application.
+    * Note 1: No unsaved changes are possible before changing the language and if a file is opened, it will be automatically closed.
+    * Note 2: The language change does not affect Android applications such as the file manager used to open and save files.
+* It's now possible to search for hidden characters in plain text mode using their hexa code.
+* Fix a bug when inserting emoji while typing plain text.
+* It's now possible to manually remove (by swiping) an entry from the list of recently used files.
+
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
