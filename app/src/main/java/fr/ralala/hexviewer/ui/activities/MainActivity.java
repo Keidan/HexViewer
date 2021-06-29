@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private TextView mPleaseOpenFile = null;
   private ListView mPayloadHex = null;
   private MenuItem mSearchMenu = null;
-  private CheckBox mPlainMenu = null;
+  private CheckBox mPlainMenuCheckBox = null;
+  private TextView mPlainMenuTextView = null;
+  private LinearLayout mPlainMenuContainer = null;
   private TextView mSaveMenu = null;
   private TextView mSaveAsMenu = null;
   private TextView mCloseMenu = null;
@@ -310,12 +312,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onOpenResult(boolean success) {
-    boolean checked = false;
     setMenuVisible(mSearchMenu, success);
-    if (mPlainMenu != null) {
-      checked = mPlainMenu.isChecked();
-      mPlainMenu.setEnabled(success);
-    }
+    boolean checked = setEnablePlain(success);
     if (mFileData != null && mFileData.isOpenFromAppIntent())
       setMenuEnabled(mSaveMenu, false);
     else
@@ -331,8 +329,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
-      if (mPlainMenu != null)
-        mPlainMenu.setChecked(false);
+      setEnablePlain(false);
       mFileData = null;
       mUnDoRedo.clear();
     }
@@ -357,6 +354,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private void setMenuVisible(final MenuItem menu, final boolean visible) {
     if (menu != null)
       menu.setVisible(visible);
+  }
+
+
+  /**
+   * Sets whether the plaintext checkbox is enabled.
+   * @param enabled If true then the item will be invokable; if false it is won't be invokable.
+   * @return checked
+   */
+  private boolean setEnablePlain(final boolean enabled) {
+    boolean checked = false;
+    if(mPlainMenuCheckBox != null) {
+      checked = mPlainMenuCheckBox.isChecked();
+      mPlainMenuCheckBox.setEnabled(enabled);
+    }
+    if(mPlainMenuTextView != null) {
+      mPlainMenuTextView.setEnabled(enabled);
+    }
+    if(mPlainMenuContainer != null) {
+      mPlainMenuContainer.setEnabled(enabled);
+    }
+    return checked;
   }
 
   /**
@@ -412,9 +430,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return;
       }
       mLauncherSave.startActivity();
-    } else if (id == R.id.action_plain_text) {
+    } else if (id == R.id.action_plain_text_cb || id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container) {
+      if(id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container)
+        mPlainMenuCheckBox.setChecked(!mPlainMenuCheckBox.isChecked());
       cancelSearch();
-      boolean checked = mPlainMenu.isChecked();
+      boolean checked = mPlainMenuCheckBox.isChecked();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
     } else if (id == R.id.action_close) {
@@ -456,7 +476,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mPopup.setElevation(5.0f);
         mPopup.setOutsideTouchable(true);
 
-        mPlainMenu = popupView.findViewById(R.id.action_plain_text);
+        mPlainMenuCheckBox = popupView.findViewById(R.id.action_plain_text_cb);
+        mPlainMenuContainer = popupView.findViewById(R.id.action_plain_text_container);
+        mPlainMenuTextView = popupView.findViewById(R.id.action_plain_text_tv);
         mSaveAsMenu = popupView.findViewById(R.id.action_save_as);
         mSaveMenu = popupView.findViewById(R.id.action_save);
         mCloseMenu = popupView.findViewById(R.id.action_close);
@@ -472,7 +494,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         };
         popupView.findViewById(R.id.action_open).setOnClickListener(click);
         popupView.findViewById(R.id.action_settings).setOnClickListener(click);
-        mPlainMenu.setOnClickListener(click);
+        mPlainMenuContainer.setOnClickListener(click);
+        mPlainMenuTextView.setOnClickListener(click);
+        mPlainMenuCheckBox.setOnClickListener(click);
         mSaveAsMenu.setOnClickListener(click);
         mSaveMenu.setOnClickListener(click);
         mCloseMenu.setOnClickListener(click);
@@ -484,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           onOpenResult(false);
         else if(mFileData.isOpenFromAppIntent()) {
           setMenuVisible(mSearchMenu, true);
-          mPlainMenu.setEnabled(true);
+          setEnablePlain(true);
           setMenuEnabled(mSaveMenu, false);
           setMenuEnabled(mSaveAsMenu, true);
           setMenuEnabled(mCloseMenu, true);
