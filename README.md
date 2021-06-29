@@ -40,10 +40,10 @@ Download the software :
 *   Spanish: [@sguinetti](https://github.com/sguinetti)
 	
 ## Screenshots
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="600px" height="270px" alt="Home screen">
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="600px" height="270px" alt="Hex display">
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="600px" height="270px" alt="Update mode">
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.jpg" width="600px" height="270px" alt="Plain display">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="270px" height="600px" alt="Home screen">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="270px" height="600px" alt="Hex display">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="270px" height="600px" alt="Update mode">
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.jpg" width="270px" height="600px" alt="Plain display">
 
 ## License
 [GPLv3](https://github.com/Keidan/HexViewer/blob/master/license.txt)
