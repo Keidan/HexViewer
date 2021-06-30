@@ -69,10 +69,14 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String
    */
   @Override
   protected void extraFilter(final LineData<String> line, int index, String query, final ArrayList<LineFilter<String>> tempList, Locale loc) {
-    StringBuilder sb = new StringBuilder();
-    for (char c : line.getValue().toCharArray())
-      sb.append(String.format("%02X", (byte) c));
-    if (sb.toString().toLowerCase(loc).contains(query)) {
+    StringBuilder sbNoSpaces = new StringBuilder();
+    StringBuilder sbSpaces = new StringBuilder();
+    for (char c : line.getValue().toCharArray()) {
+      final String str = String.format("%02X", (byte) c);
+      sbNoSpaces.append(str);
+      sbSpaces.append(str).append(" ");
+    }
+    if (sbNoSpaces.toString().toLowerCase(loc).contains(query) || sbSpaces.toString().trim().toLowerCase(loc).contains(query)) {
       tempList.add(new LineFilter<>(line, index));
     }
   }
