@@ -34,6 +34,7 @@ public class UnDoRedo {
   private final Control[] mControls;
   private final Stack<ICommand> mUndo;
   private final Stack<ICommand> mRedo;
+  private int mReferenceIndex;
 
   public UnDoRedo(MainActivity activity) {
     mActivity = activity;
@@ -69,7 +70,14 @@ public class UnDoRedo {
    * @return boolean
    */
   public boolean isChanged() {
-    return !mUndo.empty();
+    return mReferenceIndex != mUndo.size();
+  }
+
+  /**
+   * Updates change index.
+   */
+  public void refreshChange() {
+    mReferenceIndex = mUndo.size();
   }
 
   /**
@@ -86,6 +94,7 @@ public class UnDoRedo {
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
+
     mActivity.setTitle(mActivity.getResources().getConfiguration());
     return cmd;
   }
@@ -103,6 +112,7 @@ public class UnDoRedo {
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
+
     mActivity.setTitle(mActivity.getResources().getConfiguration());
     return cmd;
   }
@@ -117,8 +127,7 @@ public class UnDoRedo {
       mRedo.push(command);
       manageControl(mControls[CONTROL_REDO], true);
     }
-    if (mUndo.isEmpty())
-      mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
   }
 
@@ -131,8 +140,8 @@ public class UnDoRedo {
       command.execute();
       mUndo.push(command);
       manageControl(mControls[CONTROL_UNDO], true);
-      mActivity.setTitle(mActivity.getResources().getConfiguration());
     }
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_REDO], !mRedo.isEmpty());
   }
 
@@ -144,6 +153,7 @@ public class UnDoRedo {
       manageControl(ctrl, false);
     mUndo.clear();
     mRedo.clear();
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
   }
 
   /**
