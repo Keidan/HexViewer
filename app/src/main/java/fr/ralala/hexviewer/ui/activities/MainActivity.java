@@ -433,7 +433,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_plain_text_cb || id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container) {
       if(id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container)
         mPlainMenuCheckBox.setChecked(!mPlainMenuCheckBox.isChecked());
-      //cancelSearch();
       boolean checked = mPlainMenuCheckBox.isChecked();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
