@@ -433,10 +433,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_plain_text_cb || id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container) {
       if(id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container)
         mPlainMenuCheckBox.setChecked(!mPlainMenuCheckBox.isChecked());
-      cancelSearch();
+      //cancelSearch();
       boolean checked = mPlainMenuCheckBox.isChecked();
       mPayloadPlainSwipe.setVisible(checked);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
+      if(mSearchQuery != null && !mSearchQuery.isEmpty())
+        doSearch(mSearchQuery);
     } else if (id == R.id.action_close) {
       final Runnable r = this::closeFile;
       if (mUnDoRedo.isChanged()) {// a save operation is pending?
