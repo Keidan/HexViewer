@@ -2,6 +2,7 @@
 <resources>
     <string-array name="languages_entries">
         <item>Английский</item>
+        <item>Немецкий</item>
         <item>Испанский</item>
         <item>Французский</item>
         <item>Русский</item>

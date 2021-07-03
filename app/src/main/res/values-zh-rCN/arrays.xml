@@ -2,6 +2,7 @@
 <resources>
     <string-array name="languages_entries">
         <item>英语</item>
+        <item>德文</item>
         <item>西班牙语</item>
         <item>法语</item>
         <item>俄语</item>

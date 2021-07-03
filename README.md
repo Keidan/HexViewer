@@ -36,6 +36,7 @@ Download the software :
 *   Chinese: [@sr093906](https://github.com/sr093906) 
 *   English: [@Keidan](https://github.com/Keidan)
 *   French: [@Keidan](https://github.com/Keidan)
+*   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021)
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
 *   Spanish: [@sguinetti](https://github.com/sguinetti)
 	

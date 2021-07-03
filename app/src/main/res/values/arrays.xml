@@ -2,6 +2,7 @@
 <resources>
     <string-array name="languages_values" translatable="false">
         <item>en-US</item>
+        <item>de-DE</item>
         <item>es-ES</item>
         <item>fr-FR</item>
         <item>ru-RU</item>
@@ -10,6 +11,7 @@
 
     <string-array name="languages_entries">
         <item>English</item>
+        <item>German</item>
         <item>Spanish</item>
         <item>French</item>
         <item>Russian</item>
