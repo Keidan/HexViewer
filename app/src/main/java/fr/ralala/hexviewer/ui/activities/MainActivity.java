@@ -115,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     /* sanity check */
     String[] languages = getResources().getStringArray(R.array.languages_values);
     boolean found = false;
-    for(String language : languages)
-      if(language.equals(mApp.getApplicationLanguage(this))) {
+    for (String language : languages)
+      if (language.equals(mApp.getApplicationLanguage(this))) {
         found = true;
         break;
       }
-    if(!found) {
+    if (!found) {
       mApp.setApplicationLanguage("en-US");
       recreate();
     }
@@ -359,19 +359,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Sets whether the plaintext checkbox is enabled.
+   *
    * @param enabled If true then the item will be invokable; if false it is won't be invokable.
    * @return checked
    */
   private boolean setEnablePlain(final boolean enabled) {
     boolean checked = false;
-    if(mPlainMenuCheckBox != null) {
+    if (mPlainMenuCheckBox != null) {
       checked = mPlainMenuCheckBox.isChecked();
       mPlainMenuCheckBox.setEnabled(enabled);
     }
-    if(mPlainMenuTextView != null) {
+    if (mPlainMenuTextView != null) {
       mPlainMenuTextView.setEnabled(enabled);
     }
-    if(mPlainMenuContainer != null) {
+    if (mPlainMenuContainer != null) {
       mPlainMenuContainer.setEnabled(enabled);
     }
     return checked;
@@ -410,46 +411,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onPopupItemClick(int id) {
     if (id == R.id.action_open) {
-      final Runnable r = () -> mLauncherOpen.startActivity();
-      if (mUnDoRedo.isChanged()) {// a save operation is pending?
-        confirmFileChanged(r);
-      } else
-        r.run();
+      popupActionOpen();
     } else if (id == R.id.action_recently_open) {
-      mLauncherRecentlyOpen.startActivity();
+      popupActionRecentlyOpen();
     } else if (id == R.id.action_save) {
-      if (FileData.isEmpty(mFileData)) {
-        UIHelper.toast(this, getString(R.string.open_a_file_before));
-        return;
-      }
-      new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems()));
-      setTitle(getResources().getConfiguration());
+      popupActionSave();
     } else if (id == R.id.action_save_as) {
-      if (FileData.isEmpty(mFileData)) {
-        UIHelper.toast(this, getString(R.string.open_a_file_before));
-        return;
-      }
-      mLauncherSave.startActivity();
-    } else if (id == R.id.action_plain_text_cb || id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container) {
-      if(id == R.id.action_plain_text_tv ||id == R.id.action_plain_text_container)
-        mPlainMenuCheckBox.setChecked(!mPlainMenuCheckBox.isChecked());
-      boolean checked = mPlainMenuCheckBox.isChecked();
-      mPayloadPlainSwipe.setVisible(checked);
-      mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
-      if(mSearchQuery != null && !mSearchQuery.isEmpty())
-        doSearch(mSearchQuery);
+      popupActionSaveAs();
+    } else if (id == R.id.action_plain_text_cb || id == R.id.action_plain_text_tv || id == R.id.action_plain_text_container) {
+      popupActionPlainText(id);
     } else if (id == R.id.action_close) {
-      final Runnable r = this::closeFile;
-      if (mUnDoRedo.isChanged()) {// a save operation is pending?
-        confirmFileChanged(r);
-      } else
-        r.run();
+      popupActionClose();
     } else if (id == R.id.action_settings) {
-      SettingsActivity.startActivity(this, mUnDoRedo.isChanged());
+      popupActionSettings();
     } else if (id == R.id.action_undo) {
-      mUnDoRedo.undo();
+      popupActionUndo();
     } else if (id == R.id.action_redo) {
-      mUnDoRedo.redo();
+      popupActionRedo();
     }
   }
 
@@ -505,9 +483,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actionRedo.setOnClickListener(click);
         actionUndo.setOnClickListener(click);
         mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
-        if(mFileData == null)
+        if (mFileData == null)
           onOpenResult(false);
-        else if(mFileData.isOpenFromAppIntent()) {
+        else if (mFileData.isOpenFromAppIntent()) {
           setMenuVisible(mSearchMenu, true);
           setEnablePlain(true);
           setMenuEnabled(mSaveMenu, false);
@@ -563,16 +541,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Closes the file context.
-   */
-  private void closeFile() {
-    onOpenResult(false);
-    mPayloadPlainSwipe.getAdapterPlain().clear();
-    mAdapterHex.clear();
-    cancelSearch();
-  }
-
-  /**
    * Callback method to be invoked when an item in this AdapterView has been clicked.
    *
    * @param parent   The AdapterView where the click happened.
@@ -617,6 +585,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mLastBackPressed = System.currentTimeMillis();
     }
   }
+
+  /* ------------ EXPORTED METHODS ------------ */
 
   /**
    * Returns the menu RecentlyOpen
@@ -699,5 +669,99 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     return mUnDoRedo;
   }
 
+  /* ------------ POPUP ACTIONS ------------ */
+
+  /**
+   * Action when the user clicks on the "open" menu.
+   */
+  private void popupActionOpen() {
+    final Runnable r = () -> mLauncherOpen.startActivity();
+    if (mUnDoRedo.isChanged()) {// a save operation is pending?
+      confirmFileChanged(r);
+    } else
+      r.run();
+  }
+
+  /**
+   * Action when the user clicks on the "save" menu.
+   */
+  private void popupActionSave() {
+    if (FileData.isEmpty(mFileData)) {
+      UIHelper.toast(this, getString(R.string.open_a_file_before));
+      return;
+    }
+    new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems()));
+    setTitle(getResources().getConfiguration());
+  }
+
+  /**
+   * Action when the user clicks on the "save as" menu.
+   */
+  private void popupActionSaveAs() {
+    if (FileData.isEmpty(mFileData)) {
+      UIHelper.toast(this, getString(R.string.open_a_file_before));
+      return;
+    }
+    mLauncherSave.startActivity();
+  }
+
+  /**
+   * Action when the user clicks on the "recently open" menu.
+   */
+  private void popupActionRecentlyOpen() {
+    mLauncherRecentlyOpen.startActivity();
+  }
+
+  /**
+   * Action when the user clicks on the "plain text" menu.
+   *
+   * @param id Action id.
+   */
+  private void popupActionPlainText(int id) {
+    if (id == R.id.action_plain_text_tv || id == R.id.action_plain_text_container)
+      mPlainMenuCheckBox.setChecked(!mPlainMenuCheckBox.isChecked());
+    boolean checked = mPlainMenuCheckBox.isChecked();
+    mPayloadPlainSwipe.setVisible(checked);
+    mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
+    if (mSearchQuery != null && !mSearchQuery.isEmpty())
+      doSearch(mSearchQuery);
+  }
+
+  /**
+   * Action when the user clicks on the "close" menu.
+   */
+  private void popupActionClose() {
+    final Runnable r = () -> {
+      onOpenResult(false);
+      mPayloadPlainSwipe.getAdapterPlain().clear();
+      mAdapterHex.clear();
+      cancelSearch();
+    };
+    if (mUnDoRedo.isChanged()) {// a save operation is pending?
+      confirmFileChanged(r);
+    } else
+      r.run();
+  }
+
+  /**
+   * Action when the user clicks on the "settings" menu.
+   */
+  private void popupActionSettings() {
+    SettingsActivity.startActivity(this, mUnDoRedo.isChanged());
+  }
+
+  /**
+   * Action when the user clicks on the "undo" menu.
+   */
+  private void popupActionUndo() {
+    mUnDoRedo.undo();
+  }
+
+  /**
+   * Action when the user clicks on the "redo" menu.
+   */
+  private void popupActionRedo() {
+    mUnDoRedo.redo();
+  }
 }
 

@@ -1,6 +1,6 @@
 # HexViewer
 [![Build Status](https://travis-ci.com/Keidan/HexViewer.svg?branch=master)][travis]
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6bab365f0570441c9c8f86a6f2b5cf4e)][codacy]
+[![CodeFactor](https://www.codefactor.io/repository/github/keidan/hexviewer/badge)][codefactor]
 [![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 
@@ -52,5 +52,5 @@ Download the software :
 
 [travis]: https://travis-ci.com/Keidan/HexViewer
 [releases]: https://github.com/Keidan/HexViewer/releases
-[codacy]: https://www.codacy.com/gh/Keidan/HexViewer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Keidan/HexViewer&amp;utm_campaign=Badge_Grade
+[codefactor]: https://www.codefactor.io/repository/github/keidan/hexviewer
 [license]: https://github.com/Keidan/HexViewer/blob/master/license.txt

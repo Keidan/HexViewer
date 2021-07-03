@@ -166,17 +166,13 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
   }
 
   /**
-   * Get a View that displays the data at the specified position in the data set.
+   * Inflate the view.
    *
-   * @param position    The position of the item within the adapter's data set of the item whose view we want.
    * @param convertView This value may be null.
-   * @param parent      This value cannot be null.
-   * @return This value cannot be null.
+   * @return The view.
    */
-  @Override
-  public @NonNull
-  View getView(final int position, final View convertView,
-               @NonNull final ViewGroup parent) {
+  private @NonNull
+  View inflateView(final View convertView) {
     View v = convertView;
     if (v == null) {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -186,7 +182,17 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
         v.setTag(label1);
       }
     }
-    if (v != null && v.getTag() != null) {
+    return v == null ? new View(getContext()) : v;
+  }
+
+  /**
+   * Fills the view.
+   *
+   * @param v        This can't be null.
+   * @param position The position of the item within the adapter's data set of the item whose view we want.
+   */
+  private void fillView(final @NonNull View v, final int position) {
+    if (v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
       LineFilter<T> fd = mFilteredList.get(position);
 
@@ -198,7 +204,23 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
       applyUserConfig(holder);
       v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
     }
-    return v == null ? new View(getContext()) : v;
+  }
+
+  /**
+   * Get a View that displays the data at the specified position in the data set.
+   *
+   * @param position    The position of the item within the adapter's data set of the item whose view we want.
+   * @param convertView This value may be null.
+   * @param parent      This value cannot be null.
+   * @return This value cannot be null.
+   */
+  @Override
+  public @NonNull
+  View getView(final int position, final View convertView,
+               @NonNull final ViewGroup parent) {
+    View v = inflateView(convertView);
+    fillView(v, position);
+    return v;
   }
 
   /**
