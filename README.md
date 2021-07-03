@@ -19,6 +19,7 @@ This application offers the following features:
 *   Search option in the open file (hexadecimal and plain text modes).
 
 (1) At first, the file can only be saved via "save as" and due to Android permissions reasons, the only way to make it appear in the list of recent files is to reopen it.
+
 (2) Due to file permissions, after a "save as", the list of recent files cannot be updated with the new file location.
 
 Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices.
