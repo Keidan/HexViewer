@@ -1,6 +1,6 @@
 # HexViewer
 [![Build Status](https://travis-ci.com/Keidan/HexViewer.svg?branch=master)][travis]
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5eea72aaa59442b39e64749c5cb76872)][codacy]
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6bab365f0570441c9c8f86a6f2b5cf4e)][codacy]
 [![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 
