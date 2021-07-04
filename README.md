@@ -22,7 +22,7 @@ This application offers the following features:
 
 (2) Due to file permissions, after a "save as", the list of recent files cannot be updated with the new file location.
 
-Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices.
+_Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices._
 
 ## Instructions
 Download the software :
@@ -31,16 +31,25 @@ Download the software :
 	cd devel
 	git clone git://github.com/Keidan/HexViewer.git
 	cd HexViewer
- 	Use with android studio 
-  
+ 	Use with android studio
+
 ## Translations
-*   Chinese: [@sr093906](https://github.com/sr093906) 
+*   Chinese: [@sr093906](https://github.com/sr093906)
 *   English: [@Keidan](https://github.com/Keidan)
 *   French: [@Keidan](https://github.com/Keidan)
 *   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021)
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
 *   Spanish: [@sguinetti](https://github.com/sguinetti)
-	
+
+Note: In the settings, the list of languages is sorted as follows:
+*   en-US: English (always first)
+*   Other languages according to the alphabetical order of their codes, i.e.:
+    * de-DE: German
+    * es-ES: Spanish
+    * fr-FR: French
+    * ru-RU: Russian
+    * zh-CN: Chinese
+
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="270px" height="600px" alt="Home screen"></p>
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="270px" height="600px" alt="Hex display"></p>
