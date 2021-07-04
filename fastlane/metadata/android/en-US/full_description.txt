@@ -20,3 +20,12 @@ Translations:
 * German: @iNtEgraIR2021
 * Russian: @OmlineEditor
 * Spanish: @sguinetti
+
+Note: In the settings, the list of languages is sorted as follows:
+*   en-US: English (always first)
+*   Other languages according to the alphabetical order of their codes, i.e.:
+    * de-DE: German
+    * es-ES: Spanish
+    * fr-FR: French
+    * ru-RU: Russian
+    * zh-CN: Chinese
