@@ -1,0 +1,12 @@
+* Fix a bug with plain text search.
+* The undo/redo history is no longer cleared after saving.
+* The search is no longer cleared when switching from the hexadecimal view to the plain text view and vice versa.
+* German translation added, thanks to iNtEgraIR2021.
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
