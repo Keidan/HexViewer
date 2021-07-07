@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public void onOpenResult(boolean success) {
     setMenuVisible(mSearchMenu, success);
     boolean checked = setEnablePlain(success);
-    if (mFileData != null && mFileData.isOpenFromAppIntent())
+    if (!FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent())
       setMenuEnabled(mSaveMenu, false);
     else
       setMenuEnabled(mSaveMenu, success);
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param cfg Screen configuration.
    */
   public void setTitle(Configuration cfg) {
-    UIHelper.setTitle(this, cfg.orientation, true, mFileData == null ? null : mFileData.getName(), mUnDoRedo.isChanged());
+    UIHelper.setTitle(this, cfg.orientation, true, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
   }
 
   /**
@@ -522,6 +522,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param runnable The action to be taken if the user validates or not
    */
   public void confirmFileChanged(final Runnable runnable) {
+    if(FileData.isEmpty(mFileData)) {
+      runnable.run();
+      return;
+    }
     new AlertDialog.Builder(this)
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(R.string.action_close_title)
