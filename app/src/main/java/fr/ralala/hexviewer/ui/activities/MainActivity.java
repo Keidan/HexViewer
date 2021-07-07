@@ -285,11 +285,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   /**
    * Method called when the file is saved.
    *
-   * @param uri     The new Uri.
-   * @param success The result.
+   * @param uri          The new Uri.
+   * @param success      The result.
+   * @param userRunnable User runnable (can be null).
    */
   @Override
-  public void onSaveResult(Uri uri, boolean success) {
+  public void onSaveResult(Uri uri, boolean success, final Runnable userRunnable) {
     if (success) {
       mUnDoRedo.refreshChange();
       if (mFileData.isOpenFromAppIntent()) {
@@ -303,6 +304,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle(getResources().getConfiguration());
       }
     }
+    if(userRunnable != null)
+      userRunnable.run();
   }
 
   /**
@@ -524,12 +527,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         .setTitle(R.string.action_close_title)
         .setMessage(String.format(getString(R.string.confirm_save), mFileData.getName()))
         .setPositiveButton(R.string.yes, (dialog, which) -> {
-          final Uri uri = FileHelper.getParentUri(mFileData.getUri());
-          if (uri != null && FileHelper.hasUriPermission(this, uri, false))
-            mLauncherSave.processFileSave(uri, mFileData.getName(), false);
-          else
-            UIHelper.toast(this, String.format(getString(R.string.error_file_permission), mFileData.getName()));
-          runnable.run();
+          new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), runnable));
           dialog.dismiss();
         })
         .setNegativeButton(R.string.no, (dialog, which) -> {
@@ -690,7 +688,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.open_a_file_before));
       return;
     }
-    new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems()));
+    new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), null));
     setTitle(getResources().getConfiguration());
   }
 

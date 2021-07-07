@@ -36,6 +36,7 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
   private final SaveResultListener mListener;
 
   public static class Result {
+    private Runnable runnable;
     private String exception = null;
     private Uri uri = null;
   }
@@ -43,16 +44,18 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
   public static class Request {
     private final Uri mUri;
     private final List<LineData<Line>> mEntries;
+    private final Runnable mRunnable;
 
-    public Request(Uri uri, List<LineData<Line>> entries) {
+    public Request(Uri uri, List<LineData<Line>> entries, final Runnable runnable) {
       mUri = uri;
       mEntries = entries;
+      mRunnable = runnable;
     }
 
   }
 
   public interface SaveResultListener {
-    void onSaveResult(Uri uri, boolean success);
+    void onSaveResult(Uri uri, boolean success, final Runnable userRunnable);
   }
 
   public TaskSave(final Activity activity, final SaveResultListener listener) {
@@ -82,7 +85,7 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
     else
       UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
     if (mListener != null)
-      mListener.onSaveResult(result.uri, result.exception == null && !mCancel.get());
+      mListener.onSaveResult(result.uri, result.exception == null && !mCancel.get(), result.runnable);
   }
 
   /**
@@ -131,6 +134,7 @@ public class TaskSave extends ProgressTask<TaskSave.Request, TaskSave.Result> {
     final Result result = new Result();
     final Request request = requests[0];
     result.uri = request.mUri;
+    result.runnable = request.mRunnable;
     publishProgress(0L);
     try {
       mParcelFileDescriptor = activity.getContentResolver().openFileDescriptor(result.uri, "wt");

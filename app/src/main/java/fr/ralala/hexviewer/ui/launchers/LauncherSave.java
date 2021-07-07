@@ -73,7 +73,7 @@ public class LauncherSave {
         layout.setError(mActivity.getString(R.string.error_filename));
         return;
       }
-      processFileSave(uri, s_file, true);
+      processFileSave(uri, s_file);
       dialog.dismiss();
     }));
   }
@@ -84,9 +84,8 @@ public class LauncherSave {
    *
    * @param uri         Uri data.
    * @param filename    The filename
-   * @param showConfirm Shows confirm box.
    */
-  public void processFileSave(final Uri uri, final String filename, final boolean showConfirm) {
+  private void processFileSave(final Uri uri, final String filename) {
     DocumentFile sourceDir = DocumentFile.fromTreeUri(mActivity, uri);
     if (sourceDir == null) {
       UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
@@ -103,24 +102,19 @@ public class LauncherSave {
     final DocumentFile f_file = file;
 
     if (file != null) {
-      final Runnable r = () -> {
-        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getAdapterHex().getItems()));
-        mActivity.setTitle(mActivity.getResources().getConfiguration());
-      };
-      if (showConfirm) {
-        UIHelper.showConfirmDialog(mActivity, mActivity.getString(R.string.action_save_title),
-            mActivity.getString(R.string.confirm_overwrite),
-            (view) -> r.run());
-      } else {
-        r.run();
-      }
+      UIHelper.showConfirmDialog(mActivity, mActivity.getString(R.string.action_save_title),
+          mActivity.getString(R.string.confirm_overwrite),
+          (view) -> {
+            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getAdapterHex().getItems(), null));
+            mActivity.setTitle(mActivity.getResources().getConfiguration());
+          });
     } else {
       DocumentFile d_file = sourceDir.createFile("application/octet-stream", filename);
       if (d_file == null) {
         UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
-        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getAdapterHex().getItems()));
+        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getAdapterHex().getItems(), null));
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       }
     }
