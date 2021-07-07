@@ -334,8 +334,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPayloadPlainSwipe.setVisible(false);
       setEnablePlain(false);
       mFileData = null;
-      mUnDoRedo.clear();
     }
+    mUnDoRedo.clear();
     setTitle(getResources().getConfiguration());
   }
 

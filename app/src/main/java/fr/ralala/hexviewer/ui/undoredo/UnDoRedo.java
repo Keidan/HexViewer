@@ -153,6 +153,7 @@ public class UnDoRedo {
       manageControl(ctrl, false);
     mUndo.clear();
     mRedo.clear();
+    mReferenceIndex = 0;
     mActivity.setTitle(mActivity.getResources().getConfiguration());
   }
 
