@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "fr.ralala.hexviewer"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 17
         versionName "1.15"

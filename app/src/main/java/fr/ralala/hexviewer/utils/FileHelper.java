@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.UriPermission;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -65,6 +66,8 @@ public class FileHelper {
    * @return False if permission is not granted for this Uri.
    */
   public static boolean takeUriPermissions(final Context c, final Uri uri, boolean fromDir) {
+    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.M)
+      return true;
     boolean success = false;
     try {
       final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
@@ -92,25 +95,26 @@ public class FileHelper {
    * @param uri Uri
    */
   public static void releaseUriPermissions(final Context c, final Uri uri) {
-    if (hasUriPermission(c, uri, true))
-      try {
-        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-        c.getContentResolver().releasePersistableUriPermission(uri, takeFlags);
+    if(Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
+      if (hasUriPermission(c, uri, true))
+        try {
+          final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+          c.getContentResolver().releasePersistableUriPermission(uri, takeFlags);
 
-        Uri dir = getParentUri(uri);
-        final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
-        int found = 0;
-        for (UriPermission up : list) {
-          if (up.getUri().equals(dir)) {
-            found++;
+          Uri dir = getParentUri(uri);
+          final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
+          int found = 0;
+          for (UriPermission up : list) {
+            if (up.getUri().equals(dir)) {
+              found++;
+            }
           }
+          if (found == 1) {
+            c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+          }
+        } catch (Exception e) {
+          Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
         }
-        if (found == 1) {
-          c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        }
-      } catch (Exception e) {
-        Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
-      }
   }
 
   /**
@@ -122,6 +126,8 @@ public class FileHelper {
    * @return False if permission is not granted for this Uri.
    */
   public static boolean hasUriPermission(final Context c, final Uri uri, boolean readPermission) {
+    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.M)
+      return true;
     final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
     boolean found = false;
     for (UriPermission up : list) {

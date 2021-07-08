@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -161,10 +164,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadPlainSwipe.onCreate(this);
 
     /* permissions */
-    ActivityCompat.requestPermissions(this, new String[]{
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    }, 1);
+    boolean requestPermissions = true;
+    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+      if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+          ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        requestPermissions = false;
+      }
+    }
+    if(requestPermissions)
+      ActivityCompat.requestPermissions(this, new String[]{
+          Manifest.permission.WRITE_EXTERNAL_STORAGE,
+          Manifest.permission.READ_EXTERNAL_STORAGE
+      }, 1);
 
     mLauncherOpen = new LauncherOpen(this, mainLayout);
     mLauncherSave = new LauncherSave(this);
@@ -204,7 +215,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         closeOrphanDialog();
         Uri uri = getIntent().getData();
         if (uri != null) {
-          final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, FileHelper.takeUriPermissions(this, uri, false));
+          boolean addRecent;
+          if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+            addRecent = false;
+          }
+          else
+            addRecent = FileHelper.takeUriPermissions(this, uri, false);
+          final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, addRecent);
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
             confirmFileChanged(r);
           } else {
