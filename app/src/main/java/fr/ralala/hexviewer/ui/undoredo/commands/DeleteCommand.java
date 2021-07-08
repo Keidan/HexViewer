@@ -32,7 +32,6 @@ public class DeleteCommand implements ICommand {
    * Execute the command.
    */
   public void execute() {
-    //faire décalage indexes
     List<Integer> list = SysHelper.getMapKeys(mList);
     for (int i = list.size() - 1; i >= 0; i--) {
       int position = list.get(i);
@@ -47,7 +46,6 @@ public class DeleteCommand implements ICommand {
    * Un-Execute the command.
    */
   public void unExecute() {
-    //faire restaure décalage indexes
     for (Integer i : SysHelper.getMapKeys(mList)) {
       LineFilter<Line> ld = mList.get(i);
       mAdapter.getFilteredList().add(i, ld);
