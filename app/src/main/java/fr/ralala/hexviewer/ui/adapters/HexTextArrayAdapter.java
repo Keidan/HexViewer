@@ -83,7 +83,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    */
   public void toggleSelection(int position, boolean checked) {
     if (checked) {
-      mSelectedItemsIds.add(position);
+      if(!mSelectedItemsIds.contains(position))
+        mSelectedItemsIds.add(position);
     } else {
       mSelectedItemsIds.remove(Integer.valueOf(position));
     }
