@@ -32,9 +32,13 @@ public class DeleteCommand implements ICommand {
    * Execute the command.
    */
   public void execute() {
+    //faire décalage indexes
     List<Integer> list = SysHelper.getMapKeys(mList);
     for (int i = list.size() - 1; i >= 0; i--) {
-      mAdapter.removeItem(list.get(i));
+      int position = list.get(i);
+      LineFilter<Line> ld = mAdapter.getFilteredList().get(position);
+      mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(true);
+      mAdapter.getFilteredList().remove(position);
     }
     mAdapter.notifyDataSetChanged();
   }
@@ -43,10 +47,11 @@ public class DeleteCommand implements ICommand {
    * Un-Execute the command.
    */
   public void unExecute() {
+    //faire restaure décalage indexes
     for (Integer i : SysHelper.getMapKeys(mList)) {
-      LineFilter<Line> fd = mList.get(i);
-      mAdapter.getFilteredList().add(i, fd);
-      mAdapter.getItems().add(fd.getOrigin(), fd.getData());
+      LineFilter<Line> ld = mList.get(i);
+      mAdapter.getFilteredList().add(i, ld);
+      mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(false);
     }
     mAdapter.notifyDataSetChanged();
   }

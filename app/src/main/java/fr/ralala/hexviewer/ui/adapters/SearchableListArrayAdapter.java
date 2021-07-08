@@ -84,20 +84,6 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
   }
 
   /**
-   * Remove an item.
-   *
-   * @param position Position of the item.
-   */
-  public void removeItem(final int position) {
-    if (position >= mFilteredList.size())
-      return;
-    LineFilter<T> fd = mFilteredList.get(position);
-    mEntryList.remove(fd.getOrigin());
-    mFilteredList.remove(position);
-    super.notifyDataSetChanged();
-  }
-
-  /**
    * Returns the position of the specified item in the array.
    *
    * @param item The item to retrieve the position of. This value may be null.
@@ -195,6 +181,9 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
     if (v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
       LineFilter<T> fd = mFilteredList.get(position);
+
+      if(fd.getData().isFalselyDeleted())
+        return;
 
       applyUpdated(holder, fd);
 
@@ -312,6 +301,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
         query = constraint.toString().toLowerCase(loc);
       for (int i = 0; i < mEntryList.size(); i++) {
         LineData<T> s = mEntryList.get(i);
+        if(s.isFalselyDeleted())
+          continue;
         if (clear)
           tempList.add(new LineFilter<>(s, i));
         else if (s.toString().toLowerCase(loc).contains(query))

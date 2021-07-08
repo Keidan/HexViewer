@@ -145,7 +145,8 @@ public class PayloadPlainSwipe {
   private List<LineData<String>> refreshPlain(final AtomicBoolean cancel) {
     final List<Byte> payload = new ArrayList<>();
     for (LineData<Line> le : mActivity.getAdapterHex().getItems())
-      payload.addAll(le.getValue().getRaw());
+      if(!le.isFalselyDeleted())
+        payload.addAll(le.getValue().getRaw());
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;
     final List<LineData<String>> list = new ArrayList<>();
@@ -156,7 +157,7 @@ public class PayloadPlainSwipe {
         nbPerLine = 0;
         sb.setLength(0);
       } else {
-        sb.append((char) (char) payload.get(i).byteValue());
+        sb.append((char) payload.get(i).byteValue());
         nbPerLine++;
       }
     }
