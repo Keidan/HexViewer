@@ -8,8 +8,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
@@ -26,11 +28,11 @@ import fr.ralala.hexviewer.models.LineFilter;
  * ******************************************************************************
  */
 public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
-  private List<Integer> mSelectedItemsIds;
+  private Set<Integer> mSelectedItemsIds;
 
   public HexTextArrayAdapter(final Context context, final List<LineData<Line>> objects, UserConfig userConfig) {
     super(context, objects, userConfig);
-    mSelectedItemsIds = new ArrayList<>();
+    mSelectedItemsIds = new HashSet<>();
   }
 
   /**
@@ -83,10 +85,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    */
   public void toggleSelection(int position, boolean checked) {
     if (checked) {
-      if(!mSelectedItemsIds.contains(position))
-        mSelectedItemsIds.add(position);
+      mSelectedItemsIds.add(position);
     } else {
-      mSelectedItemsIds.remove(Integer.valueOf(position));
+      mSelectedItemsIds.remove(position);
     }
     notifyDataSetChanged();
   }
@@ -95,7 +96,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    * Removes the item selection.
    */
   public void removeSelection() {
-    mSelectedItemsIds = new ArrayList<>();
+    mSelectedItemsIds = new HashSet<>();
     notifyDataSetChanged();
   }
 
@@ -106,8 +107,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    * @return SparseBooleanArray
    */
   public List<Integer> getSelectedIds() {
-    Collections.sort(mSelectedItemsIds);
-    return mSelectedItemsIds;
+    List<Integer> li = new ArrayList<>(mSelectedItemsIds);
+    Collections.sort(li);
+    return li;
   }
 }
 
