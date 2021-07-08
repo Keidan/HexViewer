@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
-    onOpenResult(!FileData.isEmpty(mFileData));
+    onOpenResult(!FileData.isEmpty(mFileData), false);
     if (mPayloadHex.getVisibility() == View.VISIBLE)
       mAdapterHex.refresh();
     else if (mPayloadPlainSwipe.isVisible())
@@ -312,9 +312,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * Method called when the file is opened.
    *
    * @param success The result.
+   * @param fromOpen Called from open
    */
   @Override
-  public void onOpenResult(boolean success) {
+  public void onOpenResult(boolean success, boolean fromOpen) {
     setMenuVisible(mSearchMenu, success);
     boolean checked = setEnablePlain(success);
     if (!FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent())
@@ -328,14 +329,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPleaseOpenFile.setVisibility(View.GONE);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
       mPayloadPlainSwipe.setVisible(checked);
+      if(fromOpen)
+        mUnDoRedo.clear();
     } else {
       mPleaseOpenFile.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
       setEnablePlain(false);
       mFileData = null;
+      mUnDoRedo.clear();
     }
-    mUnDoRedo.clear();
     setTitle(getResources().getConfiguration());
   }
 
@@ -487,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actionUndo.setOnClickListener(click);
         mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
         if (mFileData == null)
-          onOpenResult(false);
+          onOpenResult(false, false);
         else if (mFileData.isOpenFromAppIntent()) {
           setMenuVisible(mSearchMenu, true);
           setEnablePlain(true);
@@ -734,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void popupActionClose() {
     final Runnable r = () -> {
-      onOpenResult(false);
+      onOpenResult(false, false);
       mPayloadPlainSwipe.getAdapterPlain().clear();
       mAdapterHex.clear();
       cancelSearch();

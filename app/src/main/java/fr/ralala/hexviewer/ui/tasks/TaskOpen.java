@@ -47,7 +47,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   }
 
   public interface OpenResultListener {
-    void onOpenResult(boolean success);
+    void onOpenResult(boolean success, boolean fromOpen);
   }
 
   public TaskOpen(final Activity activity,
@@ -90,7 +90,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
         mAdapterPlain.addAll(result.listPlain);
     }
     if (mListener != null)
-      mListener.onOpenResult(result.exception == null && !mCancel.get());
+      mListener.onOpenResult(result.exception == null && !mCancel.get(), true);
     super.onPostExecute(result);
   }
 
@@ -116,7 +116,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
     super.onCancelled();
     close();
     if (mListener != null)
-      mListener.onOpenResult(false);
+      mListener.onOpenResult(false, true);
   }
 
   /**
