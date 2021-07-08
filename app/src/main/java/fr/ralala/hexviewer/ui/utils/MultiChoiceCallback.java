@@ -1,9 +1,18 @@
 package fr.ralala.hexviewer.ui.utils;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.HashMap;
@@ -30,11 +39,18 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private final ListView mListView;
   private final HexTextArrayAdapter mAdapter;
   private final MainActivity mActivity;
+  private MenuItem mMenuSelectAll;
+  private final ImageView mRefreshActionView;
 
+  @SuppressLint("InflateParams")
   public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {
     mActivity = mainActivity;
     mListView = listView;
     mAdapter = adapter;
+    /* Attach a rotating ImageView to the refresh item as an ActionView */
+    LayoutInflater inflater = (LayoutInflater)mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    mRefreshActionView = (ImageView) inflater.inflate(R.layout.refresh_action_view, null);
+
   }
 
   /**
@@ -47,6 +63,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
     mode.getMenuInflater().inflate(R.menu.main_clear, menu);
+    mMenuSelectAll = menu.findItem(R.id.action_select_all);
     return true;
   }
 
@@ -86,10 +103,30 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       mode.finish();
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {
-      final int count = mAdapter.getCount();
-      for (int i = 0; i < count; i++) {
-        mListView.setItemChecked(i, true);
+      if(mMenuSelectAll != null) {
+        Animation rotation = AnimationUtils.loadAnimation(mActivity, R.anim.clockwise_refresh);
+        rotation.setRepeatCount(Animation.INFINITE);
+        item.setCheckable(false);// Do not accept any click events while scanning
+        mRefreshActionView.startAnimation(rotation);
+        mMenuSelectAll.setActionView(mRefreshActionView);
       }
+      final Handler handler = new Handler(Looper.getMainLooper());
+      handler.postDelayed(() -> {
+        final int count = mAdapter.getCount();
+        for (int i = 0; i < count; i++) {
+          mListView.setItemChecked(i, true);
+        }
+
+        if(mMenuSelectAll != null) {
+          mMenuSelectAll.setCheckable(true);
+          View view =  mMenuSelectAll.getActionView();
+          if (view != null) {
+            view.clearAnimation();
+            mMenuSelectAll.setActionView(null);
+          }
+        }
+      }, 1000);
+
       return true;
     }
     return false;
