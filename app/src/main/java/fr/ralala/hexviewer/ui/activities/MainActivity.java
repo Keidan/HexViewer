@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private ApplicationCtx mApp = null;
   private HexTextArrayAdapter mAdapterHex = null;
   private FileData mFileData = null;
-  private TextView mPleaseOpenFile = null;
+  private RelativeLayout mIdleView = null;
   private ListView mPayloadHex = null;
   private MenuItem mSearchMenu = null;
   private CheckBox mPlainMenuCheckBox = null;
@@ -132,11 +133,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mUnDoRedo = new UnDoRedo(this);
 
     LinearLayout mainLayout = findViewById(R.id.mainLayout);
-    mPleaseOpenFile = findViewById(R.id.pleaseOpenFile);
+    mIdleView = findViewById(R.id.idleView);
     mPayloadHex = findViewById(R.id.payloadView);
 
-    mPleaseOpenFile.setVisibility(View.VISIBLE);
+    mIdleView.setVisibility(View.VISIBLE);
     mPayloadHex.setVisibility(View.GONE);
+
+    findViewById(R.id.buttonOpenFile).setOnClickListener((v) ->
+        onPopupItemClick(R.id.action_open));
+    findViewById(R.id.buttonRecentlyOpen).setOnClickListener((v) ->
+        onPopupItemClick(R.id.action_recently_open));
 
     mAdapterHex = new HexTextArrayAdapter(this,
         new ArrayList<>(),
@@ -331,13 +337,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     setMenuEnabled(mCloseMenu, success);
     setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
     if (success) {
-      mPleaseOpenFile.setVisibility(View.GONE);
+      mIdleView.setVisibility(View.GONE);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
       mPayloadPlainSwipe.setVisible(checked);
       if(fromOpen)
         mUnDoRedo.clear();
     } else {
-      mPleaseOpenFile.setVisibility(View.VISIBLE);
+      mIdleView.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
       setEnablePlain(false);
@@ -506,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           setMenuEnabled(mSaveAsMenu, true);
           setMenuEnabled(mCloseMenu, true);
           setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
-          mPleaseOpenFile.setVisibility(View.GONE);
+          mIdleView.setVisibility(View.GONE);
           mPayloadHex.setVisibility(View.VISIBLE);
           mPayloadPlainSwipe.setVisible(false);
         }
