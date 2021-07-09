@@ -1,28 +1,20 @@
 package fr.ralala.hexviewer.ui.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.view.LayoutInflater;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.preference.CheckBoxPreference;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.BuildConfig;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.activities.SettingsActivity;
-import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
+import fr.ralala.hexviewer.ui.activities.settings.SettingsListsLandscapeActivity;
+import fr.ralala.hexviewer.ui.activities.settings.SettingsListsPortraitActivity;
 
 /**
  * ******************************************************************************
@@ -34,36 +26,17 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * <p>
  * ******************************************************************************
  */
-public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
-  private static final int MIN_ABBREVIATE_PORTRAIT = 1;
-  private static final int MAX_ABBREVIATE_PORTRAIT = 25;
-  private static final int MIN_ABBREVIATE_LANDSCAPE = 4;
-  private static final int MAX_ABBREVIATE_LANDSCAPE = 80;
-  private static final int MIN_HEX_ROW_HEIGHT = 10;
-  private static final int MAX_HEX_ROW_HEIGHT = 1000;
-  private static final int MIN_HEX_FONT_SIZE = 1;
-  private static final int MAX_HEX_FONT_SIZE = 50;
-  private static final int MIN_PLAIN_ROW_HEIGHT = 50;
-  private static final int MAX_PLAIN_ROW_HEIGHT = 1000;
-  private static final int MIN_PLAIN_FONT_SIZE = 1;
-  private static final int MAX_PLAIN_FONT_SIZE = 10;
-  private final SettingsActivity mActivity;
-  private final ApplicationCtx mApp;
+public class SettingsFragment extends AbstractSettingsFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
   protected Preference mAbbreviatePortrait;
   protected Preference mAbbreviateLandscape;
-  protected CheckBoxPreference mHexRowHeightAuto;
-  protected Preference mHexRowHeight;
-  protected Preference mHexFontSize;
-  protected CheckBoxPreference mPlainRowHeightAuto;
-  protected Preference mPlainRowHeight;
-  protected Preference mPlainFontSize;
+  protected Preference mSettingsListsPortrait;
+  protected Preference mSettingsListsLandscape;
   protected Preference mLicense;
   protected Preference mVersion;
   private ListPreference mLanguage;
 
-  public SettingsFragment(SettingsActivity owner) {
-    mActivity = owner;
-    mApp = ApplicationCtx.getInstance();
+  public SettingsFragment(AppCompatActivity owner) {
+    super(owner);
   }
 
   /**
@@ -82,32 +55,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     mAbbreviatePortrait = findPreference(ApplicationCtx.CFG_ABBREVIATE_PORTRAIT);
     mAbbreviateLandscape = findPreference(ApplicationCtx.CFG_ABBREVIATE_LANDSCAPE);
-    mHexRowHeightAuto = findPreference(ApplicationCtx.CFG_HEX_ROW_HEIGHT_AUTO);
-    mHexRowHeight = findPreference(ApplicationCtx.CFG_HEX_ROW_HEIGHT);
-    mHexFontSize = findPreference(ApplicationCtx.CFG_HEX_FONT_SIZE);
-    mPlainRowHeightAuto = findPreference(ApplicationCtx.CFG_PLAIN_ROW_HEIGHT_AUTO);
-    mPlainRowHeight = findPreference(ApplicationCtx.CFG_PLAIN_ROW_HEIGHT);
-    mPlainFontSize = findPreference(ApplicationCtx.CFG_PLAIN_FONT_SIZE);
+    mSettingsListsPortrait = findPreference(ApplicationCtx.CFG_LISTS_PORTRAIT);
+    mSettingsListsLandscape = findPreference(ApplicationCtx.CFG_LISTS_LANDSCAPE);
     mLicense = findPreference(ApplicationCtx.CFG_LICENSE);
     mVersion = findPreference(ApplicationCtx.CFG_VERSION);
     mLanguage = findPreference(ApplicationCtx.CFG_LANGUAGE);
 
     mAbbreviatePortrait.setOnPreferenceClickListener(this);
     mAbbreviateLandscape.setOnPreferenceClickListener(this);
-    mHexRowHeightAuto.setOnPreferenceClickListener(this);
-    mHexRowHeight.setOnPreferenceClickListener(this);
-    mHexFontSize.setOnPreferenceClickListener(this);
-    mPlainRowHeightAuto.setOnPreferenceClickListener(this);
-    mPlainRowHeight.setOnPreferenceClickListener(this);
-    mPlainFontSize.setOnPreferenceClickListener(this);
+    mSettingsListsPortrait.setOnPreferenceClickListener(this);
+    mSettingsListsLandscape.setOnPreferenceClickListener(this);
     mLicense.setOnPreferenceClickListener(this);
     mVersion.setOnPreferenceClickListener(this);
     mLanguage.setOnPreferenceChangeListener(this);
 
-    mHexRowHeightAuto.setChecked(mApp.isHexRowHeightAuto());
-    mPlainRowHeightAuto.setChecked(mApp.isPlainRowHeightAuto());
-    mHexRowHeight.setEnabled(!mApp.isHexRowHeightAuto());
-    mPlainRowHeight.setEnabled(!mApp.isPlainRowHeightAuto());
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
     mLanguage.setDefaultValue(mApp.getApplicationLanguage(getContext()));
@@ -134,40 +95,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
           MIN_ABBREVIATE_LANDSCAPE,
           MAX_ABBREVIATE_LANDSCAPE,
           mApp::setAbbreviateLandscape);
-    } else if (preference.equals(mHexRowHeightAuto)) {
-      mHexRowHeight.setEnabled(!mHexRowHeightAuto.isChecked());
-    } else if (preference.equals(mHexRowHeight)) {
-      displayDialog(mHexRowHeight.getTitle(),
-          mApp.getHexRowHeight(),
-          MIN_HEX_ROW_HEIGHT,
-          MAX_HEX_ROW_HEIGHT,
-          mApp::setHexRowHeight);
-    } else if (preference.equals(mHexFontSize)) {
-      displayDialog(mHexFontSize.getTitle(),
-          mApp.getHexFontSize(),
-          MIN_HEX_FONT_SIZE,
-          MAX_HEX_FONT_SIZE,
-          mApp::setHexFontSize, true);
-    } else if (preference.equals(mPlainRowHeightAuto)) {
-      mPlainRowHeight.setEnabled(!mPlainRowHeightAuto.isChecked());
-    } else if (preference.equals(mPlainRowHeight)) {
-      displayDialog(mPlainRowHeight.getTitle(),
-          mApp.getPlainRowHeight(),
-          MIN_PLAIN_ROW_HEIGHT,
-          MAX_PLAIN_ROW_HEIGHT,
-          mApp::setPlainRowHeight);
-    } else if (preference.equals(mPlainFontSize)) {
-      displayDialog(mPlainFontSize.getTitle(),
-          mApp.getPlainFontSize(),
-          MIN_PLAIN_FONT_SIZE,
-          MAX_PLAIN_FONT_SIZE,
-          mApp::setPlainFontSize, true);
     } else if (preference.equals(mLicense)) {
       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer/blob/master/license.txt"));
       startActivity(browserIntent);
     } else if (preference.equals(mVersion)) {
       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer"));
       startActivity(browserIntent);
+    } else if (preference.equals(mSettingsListsPortrait)) {
+      SettingsListsPortraitActivity.startActivity(mActivity);
+    } else if (preference.equals(mSettingsListsLandscape)) {
+      SettingsListsLandscapeActivity.startActivity(mActivity);
     }
     return false;
   }
@@ -182,12 +119,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
   @Override
   public boolean onPreferenceChange(Preference preference, Object newValue) {
     if (preference.equals(mLanguage)) {
-      if (!mActivity.isChanged()) {
+      if (!((SettingsActivity) mActivity).isChanged()) {
         mApp.setApplicationLanguage("" + newValue);
-        getActivity().finish();
+        mActivity.finish();
         return true;
       } else {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(mActivity)
             .setCancelable(false)
             .setIcon(R.mipmap.ic_launcher)
             .setTitle(preference.getTitle())
@@ -196,126 +133,5 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
       }
     }
     return false;
-  }
-
-  /* ----------------------------- */
-  private interface InputValidated<T> {
-    void onValidated(T n);
-  }
-
-  /**
-   * Displays the input dialog box.
-   *
-   * @param title        Dialog title.
-   * @param defaultValue Default value.
-   * @param minValue     Min value.
-   * @param maxValue     Max value.
-   * @param iv           Callback which will be called if the entry is valid.
-   */
-  @SuppressLint("InflateParams")
-  private void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated<Integer> iv) {
-    displayDialog(title, defaultValue, minValue, maxValue, (v) -> iv.onValidated(v.intValue()), false);
-  }
-
-  /**
-   * Displays the input dialog box.
-   *
-   * @param title        Dialog title.
-   * @param defaultValue Default value.
-   * @param minValue     Min value.
-   * @param maxValue     Max value.
-   * @param iv           Callback which will be called if the entry is valid.
-   */
-  @SuppressLint("InflateParams")
-  private void displayDialog(CharSequence title, float defaultValue, float minValue, float maxValue, InputValidated<Float> iv, boolean decimal) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-    builder.setCancelable(false)
-        .setTitle(title)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
-        });
-    LayoutInflater factory = LayoutInflater.from(mActivity);
-    builder.setView(factory.inflate(R.layout.content_dialog_pref_input, null));
-    final AlertDialog dialog = builder.create();
-    dialog.show();
-    EditText et = dialog.findViewById(R.id.editText);
-    if (et != null) {
-      int inputType = InputType.TYPE_CLASS_NUMBER;
-      String def;
-      int maxLen;
-      if (decimal) {
-        maxLen = 5;
-        inputType |= InputType.TYPE_NUMBER_FLAG_DECIMAL;
-        def = String.valueOf(defaultValue);
-      } else {
-        maxLen = 3;
-        def = String.valueOf((int) defaultValue);
-      }
-      et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLen)});
-      et.setInputType(inputType);
-      et.setText(def);
-      et.requestFocus();
-      Editable text = et.getText();
-      if (text.length() > 0) {
-        text.replace(0, 1, text.subSequence(0, 1), 0, 1);
-        et.selectAll();
-      }
-    }
-    final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
-      if (et != null && validInput(et, defaultValue, minValue, maxValue, iv, decimal)) {
-        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-        dialog.dismiss();
-      }
-    });
-    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> {
-      if (et != null)
-        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-      dialog.dismiss();
-    });
-  }
-
-
-  /**
-   * Validation of the input.
-   *
-   * @param et           EditText
-   * @param defaultValue Default value.
-   * @param minValue     Min value.
-   * @param maxValue     Max value.
-   * @param iv           Callback
-   * @return False on error.
-   */
-  private boolean validInput(EditText et, float defaultValue, float minValue, float maxValue, InputValidated<Float> iv, boolean decimal) {
-    try {
-      Editable s = et.getText();
-      float nb = Float.parseFloat(s.toString());
-      if (s.length() == 0) {
-        et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
-        et.selectAll();
-        return false;
-      } else {
-        if (nb < minValue) {
-          UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
-          et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
-          et.selectAll();
-          return false;
-        } else if (nb > maxValue) {
-          UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
-          et.setText(String.valueOf(!decimal ? (int) maxValue : maxValue));
-          et.selectAll();
-          return false;
-        } else
-          et.setError(null);
-        iv.onValidated(nb);
-        return true;
-      }
-    } catch (Exception ex) {
-      UIHelper.shakeError(et, ex.getMessage());
-      et.setText(String.valueOf(!decimal ? (int) defaultValue : defaultValue));
-      et.selectAll();
-      return false;
-    }
   }
 }

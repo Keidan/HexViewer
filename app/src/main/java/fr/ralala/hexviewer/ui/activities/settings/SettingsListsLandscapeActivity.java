@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.ui.activities;
+package fr.ralala.hexviewer.ui.activities.settings;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
+import fr.ralala.hexviewer.ui.fragments.SettingsFragmentListsLandscape;
 
 /**
  * ******************************************************************************
@@ -21,19 +21,15 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
  * <p>
  * ******************************************************************************
  */
-public class SettingsActivity extends AppCompatActivity {
-  private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
-  private boolean mChange;
+public class SettingsListsLandscapeActivity extends AppCompatActivity {
 
   /**
    * Starts an activity.
    *
    * @param c      Android context.
-   * @param change A change is detected?
    */
-  public static void startActivity(final Context c, final boolean change) {
-    Intent intent = new Intent(c, SettingsActivity.class);
-    intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
+  public static void startActivity(final Context c) {
+    Intent intent = new Intent(c, SettingsListsLandscapeActivity.class);
     c.startActivity(intent);
   }
 
@@ -60,15 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_settings);
 
-
-    mChange = false;
-    if (getIntent().getExtras() != null) {
-      Bundle extras = getIntent().getExtras();
-      mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
-    }
-
     //If you want to insert data in your settings
-    SettingsFragment prefs = new SettingsFragment(this);
+    SettingsFragmentListsLandscape prefs = new SettingsFragmentListsLandscape(this);
 
     getSupportFragmentManager()
         .beginTransaction()
@@ -95,14 +84,5 @@ public class SettingsActivity extends AppCompatActivity {
       return true;
     }
     return super.onOptionsItemSelected(item);
-  }
-
-  /**
-   * Tests if a change is detected.
-   *
-   * @return boolean
-   */
-  public boolean isChanged() {
-    return mChange;
   }
 }

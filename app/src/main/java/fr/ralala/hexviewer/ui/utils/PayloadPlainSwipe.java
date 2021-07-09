@@ -15,7 +15,8 @@ import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
-import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -56,22 +57,9 @@ public class PayloadPlainSwipe {
     mPayloadPlain.setVisibility(View.GONE);
 
     mAdapterPlain = new PlainTextListArrayAdapter(activity,
-        new ArrayList<>(), new SearchableListArrayAdapter.UserConfig() {
-      @Override
-      public float getFontSize() {
-        return mApp.getPlainFontSize();
-      }
-
-      @Override
-      public int getRowHeight() {
-        return mApp.getPlainRowHeight();
-      }
-
-      @Override
-      public boolean isRowHeightAuto() {
-        return mApp.isPlainRowHeightAuto();
-      }
-    });
+        new ArrayList<>(),
+        new UserConfigPortrait(false),
+        new UserConfigLandscape(false));
     mPayloadPlain.setAdapter(mAdapterPlain);
   }
 

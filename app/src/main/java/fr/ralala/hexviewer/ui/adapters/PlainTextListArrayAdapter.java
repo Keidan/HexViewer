@@ -25,8 +25,8 @@ import fr.ralala.hexviewer.models.LineFilter;
  */
 public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String> {
 
-  public PlainTextListArrayAdapter(final Context context, final List<LineData<String>> objects, UserConfig userConfig) {
-    super(context, objects, userConfig);
+  public PlainTextListArrayAdapter(final Context context, final List<LineData<String>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
+    super(context, objects, userConfigPortrait, userConfigLandscape);
   }
 
   /**

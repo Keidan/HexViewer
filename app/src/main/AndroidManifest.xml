@@ -44,16 +44,51 @@
         <activity
           android:name=".ui.activities.LineUpdateActivity"
           android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask"/>
+          android:launchMode="singleTask">
+
+            <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".ui.activities.MainActivity"/>
+        </activity>
 
         <activity
           android:name=".ui.activities.RecentlyOpenActivity"
           android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask"/>
+          android:launchMode="singleTask">
+
+            <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".ui.activities.MainActivity"/>
+        </activity>
 
         <activity
-          android:name=".ui.activities.SettingsActivity"
+          android:name=".ui.activities.settings.SettingsActivity"
           android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask"/>
+          android:launchMode="singleTask">
+
+            <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".ui.activities.MainActivity"/>
+        </activity>
+
+        <activity
+          android:name=".ui.activities.settings.SettingsListsPortraitActivity"
+          android:configChanges="locale|orientation|screenSize"
+          android:launchMode="singleTask">
+
+            <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".ui.activities.settings.SettingsActivity"/>
+        </activity>
+
+        <activity
+          android:name=".ui.activities.settings.SettingsListsLandscapeActivity"
+          android:configChanges="locale|orientation|screenSize"
+          android:launchMode="singleTask">
+
+            <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".ui.activities.settings.SettingsActivity"/>
+        </activity>
     </application>
 </manifest>

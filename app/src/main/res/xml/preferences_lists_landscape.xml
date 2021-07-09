@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:key="prefScreen"
+  android:clearTaskOnLaunch="true"
+  android:launchMode="singleTask">
+
+  <androidx.preference.PreferenceCategory
+    app:iconSpaceReserved="false"
+    android:title="@string/settings_category_hex">
+    <androidx.preference.CheckBoxPreference
+      app:iconSpaceReserved="false"
+      android:key="hexRowHeightAutoLandscape"
+      android:title="@string/settings_pref_title_hex_row_height_auto"
+      android:summary="@string/settings_pref_summary_hex_row_height_auto" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="hexRowHeightLandscape"
+      android:title="@string/settings_pref_title_hex_row_height"
+      android:summary="@string/settings_pref_summary_hex_row_height" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="hexFontSizeLandscape"
+      android:title="@string/settings_pref_title_hex_font_size"
+      android:summary="@string/settings_pref_summary_hex_font_size" />
+  </androidx.preference.PreferenceCategory>
+
+  <androidx.preference.PreferenceCategory
+    app:iconSpaceReserved="false"
+    android:title="@string/settings_category_plain">
+    <androidx.preference.CheckBoxPreference
+      app:iconSpaceReserved="false"
+      android:key="plainRowHeightAutoLandscape"
+      android:title="@string/settings_pref_title_plain_row_height_auto"
+      android:summary="@string/settings_pref_summary_plain_row_height_auto" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="plainRowHeightLandscape"
+      android:title="@string/settings_pref_title_plain_row_height"
+      android:summary="@string/settings_pref_summary_plain_row_height" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="plainFontSizeLandscape"
+      android:title="@string/settings_pref_title_plain_font_size"
+      android:summary="@string/settings_pref_summary_plain_font_size" />
+  </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

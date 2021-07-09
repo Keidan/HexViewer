@@ -30,8 +30,8 @@ import fr.ralala.hexviewer.models.LineFilter;
 public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   private Set<Integer> mSelectedItemsIds;
 
-  public HexTextArrayAdapter(final Context context, final List<LineData<Line>> objects, UserConfig userConfig) {
-    super(context, objects, userConfig);
+  public HexTextArrayAdapter(final Context context, final List<LineData<Line>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
+    super(context, objects, userConfigPortrait, userConfigLandscape);
     mSelectedItemsIds = new HashSet<>();
   }
 

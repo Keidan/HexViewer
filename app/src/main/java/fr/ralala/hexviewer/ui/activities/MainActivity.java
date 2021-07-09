@@ -39,8 +39,11 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
@@ -52,8 +55,6 @@ import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
-
-import static fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter.UserConfig;
 
 /**
  * ******************************************************************************
@@ -138,22 +139,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mPayloadHex.setVisibility(View.GONE);
 
     mAdapterHex = new HexTextArrayAdapter(this,
-        new ArrayList<>(), new UserConfig() {
-      @Override
-      public float getFontSize() {
-        return mApp.getHexFontSize();
-      }
-
-      @Override
-      public int getRowHeight() {
-        return mApp.getHexRowHeight();
-      }
-
-      @Override
-      public boolean isRowHeightAuto() {
-        return mApp.isHexRowHeightAuto();
-      }
-    });
+        new ArrayList<>(),
+        new UserConfigPortrait(true),
+        new UserConfigLandscape(true));
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(this);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -420,7 +408,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-
+    if (mPayloadPlainSwipe.isVisible())
+      mPayloadPlainSwipe.getAdapterPlain().notifyDataSetChanged();
+    else if(mPayloadHex.getVisibility() == View.VISIBLE)
+      mAdapterHex.notifyDataSetChanged();
     // Checks the orientation of the screen
     if (!FileData.isEmpty(mFileData)) {
       setTitle(newConfig);
