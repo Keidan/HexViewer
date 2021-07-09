@@ -19,7 +19,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
- * Settings fragments
+ * Abstract settings fragments
  * </p>
  *
  * @author Keidan

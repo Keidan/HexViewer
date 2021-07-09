@@ -12,7 +12,7 @@ import fr.ralala.hexviewer.R;
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
- * Settings fragments
+ * Settings fragments for lists in portrait mode.
  * </p>
  *
  * @author Keidan
