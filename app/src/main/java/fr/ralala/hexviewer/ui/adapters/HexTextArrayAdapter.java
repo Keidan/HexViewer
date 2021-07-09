@@ -24,6 +24,8 @@ import fr.ralala.hexviewer.models.LineFilter;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

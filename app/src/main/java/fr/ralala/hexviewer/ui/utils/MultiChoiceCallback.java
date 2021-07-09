@@ -32,6 +32,8 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

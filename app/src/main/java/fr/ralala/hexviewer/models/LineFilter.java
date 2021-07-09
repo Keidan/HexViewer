@@ -7,6 +7,8 @@ package fr.ralala.hexviewer.models;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

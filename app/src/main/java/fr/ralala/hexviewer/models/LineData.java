@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

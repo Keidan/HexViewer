@@ -23,6 +23,8 @@ import fr.ralala.hexviewer.ApplicationCtx;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

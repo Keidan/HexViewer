@@ -16,6 +16,8 @@ import fr.ralala.hexviewer.ui.undoredo.ICommand;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

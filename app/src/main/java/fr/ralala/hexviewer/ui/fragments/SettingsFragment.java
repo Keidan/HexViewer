@@ -23,6 +23,8 @@ import fr.ralala.hexviewer.ui.activities.settings.SettingsListsPortraitActivity;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

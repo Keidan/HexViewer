@@ -14,6 +14,8 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

@@ -7,6 +7,8 @@ package fr.ralala.hexviewer.ui.undoredo;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

@@ -13,6 +13,8 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragmentListsLandscape;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

@@ -22,6 +22,8 @@ import androidx.preference.PreferenceManager;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

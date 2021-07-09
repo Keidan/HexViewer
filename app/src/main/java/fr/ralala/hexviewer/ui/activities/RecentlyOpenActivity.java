@@ -21,6 +21,18 @@ import fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter;
 
 import static fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter.UriData;
 
+/**
+ * ******************************************************************************
+ * <p><b>Project HexViewer</b><br/>
+ * Recently open activity
+ * </p>
+ *
+ * @author Keidan
+ *
+ * License: GPLv3
+ * <p>
+ * ******************************************************************************
+ */
 public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyOpenRecyclerAdapter.OnEventListener {
   private ApplicationCtx mApp = null;
 

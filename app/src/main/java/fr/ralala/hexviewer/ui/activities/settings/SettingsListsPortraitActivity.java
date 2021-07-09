@@ -13,6 +13,8 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragmentListsPortrait;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

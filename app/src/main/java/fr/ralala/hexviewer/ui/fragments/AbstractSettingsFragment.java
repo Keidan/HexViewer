@@ -23,6 +23,8 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

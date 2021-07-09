@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
@@ -26,12 +25,13 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */
 public class PayloadPlainSwipe {
   private MainActivity mActivity;
-  private ApplicationCtx mApp;
   private ListView mPayloadPlain = null;
   private PlainTextListArrayAdapter mAdapterPlain = null;
   private SwipeRefreshLayout mPayloadPlainSwipeRefreshLayout;
@@ -44,7 +44,6 @@ public class PayloadPlainSwipe {
    */
   public void onCreate(final MainActivity activity) {
     mActivity = activity;
-    mApp = ApplicationCtx.getInstance();
     mPayloadPlain = activity.findViewById(R.id.payloadPlain);
     mPayloadPlainSwipeRefreshLayout = activity.findViewById(R.id.payloadPlainSwipeRefreshLayout);
     // Configure SwipeRefreshLayout

@@ -10,6 +10,8 @@ import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */

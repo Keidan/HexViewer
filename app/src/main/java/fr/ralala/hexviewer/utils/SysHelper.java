@@ -19,6 +19,8 @@ import fr.ralala.hexviewer.models.LineData;
  * </p>
  *
  * @author Keidan
+ *
+ * License: GPLv3
  * <p>
  * ******************************************************************************
  */
