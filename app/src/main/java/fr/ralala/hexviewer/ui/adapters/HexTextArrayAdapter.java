@@ -33,7 +33,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
  * <p>
  * ******************************************************************************
@@ -149,8 +149,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   /**
    * Applies the necessary changes if the "updated" field is true.
    *
-   * @param tv TextView
-   * @param fd FilterData
+   * @param tv        TextView
+   * @param fd        FilterData
    * @param landscape Landscape mode ?
    */
   private void applyUpdated(final TextView tv, final LineFilter<Line> fd, boolean landscape) {
@@ -161,10 +161,10 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
     } else {
       String str = fd.getData().getValue().getPlain();
       tv.setText(str);
-      if(mApp.isLineNumber()) {
+      if (mApp.isLineNumber()) {
         tv.measure(0, 0);       //must call measure!
         Point p = UIHelper.getScreenSize(mApp);
-        if(!landscape && ((100 * tv.getMeasuredWidth()) / p.x) >= 75)
+        if (!landscape && ((100 * tv.getMeasuredWidth()) / p.x) >= 75)
           tv.setText(str.substring(0, 48));
       }
     }
@@ -182,10 +182,10 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
       final Holder holder = (Holder) v.getTag();
       LineFilter<Line> fd = getFilteredList().get(position);
 
-      if(fd.getData().isFalselyDeleted())
+      if (fd.getData().isFalselyDeleted())
         return;
       boolean landscape;
-      if(mApp.isLineNumber()) {
+      if (mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getItemsCount()).length();
         final String s = String.format("%0" + maxLength + "X", fd.getOrigin());
         final @ColorInt int color = ContextCompat.getColor(getContext(),
@@ -195,15 +195,14 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
         landscape = applyUserConfig(holder.lineNumbers);
         holder.lineNumbers.setVisibility(View.VISIBLE);
 
-        if(position == 0) {
+        if (position == 0) {
           mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
           mTitle.titleContent.setText(getContext().getString(R.string.title_content));
           mTitle.titleContent.setTextColor(color);
           applyUserConfig(mTitle.titleContent);
           applyUserConfig(mTitle.titleLineNumbers);
         }
-      }
-      else {
+      } else {
         holder.lineNumbers.setVisibility(View.GONE);
         landscape = false;
       }
