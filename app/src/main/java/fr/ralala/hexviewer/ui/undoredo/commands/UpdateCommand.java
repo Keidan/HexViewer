@@ -31,14 +31,14 @@ public class UpdateCommand implements ICommand {
   public UpdateCommand(final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
     mList = entries;
     mActivity = activity;
-    mRealIndex = activity.getAdapterHex().getFilteredList().get(firstPosition).getOrigin();
+    mRealIndex = activity.getPayloadHex().getAdapter().getFilteredList().get(firstPosition).getOrigin();
   }
 
   /**
    * Execute the command.
    */
   public void execute() {
-    HexTextArrayAdapter adapter = mActivity.getAdapterHex();
+    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
     String query = mActivity.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
@@ -90,7 +90,7 @@ public class UpdateCommand implements ICommand {
    * Un-Execute the command.
    */
   public void unExecute() {
-    HexTextArrayAdapter adapter = mActivity.getAdapterHex();
+    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
     String query = mActivity.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */

@@ -13,9 +13,7 @@ import android.widget.TextView;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
-import fr.ralala.hexviewer.ui.utils.PopupCheckboxHelper;
 
 /**
  * ******************************************************************************
@@ -24,19 +22,19 @@ import fr.ralala.hexviewer.ui.utils.PopupCheckboxHelper;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
  * <p>
  * ******************************************************************************
  */
 public class MainPopupWindow {
-  private PopupWindow mPopup = null;
-  private TextView mSaveMenu = null;
-  private TextView mSaveAsMenu = null;
-  private TextView mCloseMenu = null;
-  private TextView mRecentlyOpen = null;
-  private PopupCheckboxHelper mPlainText = null;
-  private PopupCheckboxHelper mLineNumbers = null;
+  private final PopupWindow mPopup;
+  private final TextView mSaveMenu;
+  private final TextView mSaveAsMenu;
+  private final TextView mCloseMenu;
+  private final TextView mRecentlyOpen;
+  private final PopupCheckboxHelper mPlainText;
+  private final PopupCheckboxHelper mLineNumbers;
 
   public interface ClickListener {
     void onClick(int id);
@@ -78,7 +76,7 @@ public class MainPopupWindow {
 
     View.OnClickListener click = (v) -> {
       mPopup.dismiss();
-      if(clickListener != null)
+      if (clickListener != null)
         clickListener.onClick(v.getId());
     };
     popupView.findViewById(R.id.action_open).setOnClickListener(click);
@@ -105,14 +103,15 @@ public class MainPopupWindow {
 
   /**
    * Shows the popup
+   *
    * @param more Button "more"
    */
   public void show(View more) {
     if (mPopup != null) {
 
-    mPopup.showAtLocation(more, Gravity.TOP | Gravity.END, 12, 120);
-    //mPopup.showAsDropDown(findViewById(R.id.action_more));
-  }
+      mPopup.showAtLocation(more, Gravity.TOP | Gravity.END, 12, 120);
+      //mPopup.showAsDropDown(findViewById(R.id.action_more));
+    }
   }
 
   /**
@@ -134,23 +133,25 @@ public class MainPopupWindow {
 
   /**
    * Enables/Disables the save as menu.
+   *
    * @param en boolean
    */
   public void setMenusEnable(boolean en) {
     setMenuEnabled(mSaveAsMenu, en);
     setMenuEnabled(mCloseMenu, en);
     setMenuEnabled(mRecentlyOpen, !ApplicationCtx.getInstance().getRecentlyOpened().isEmpty());
-      if(mLineNumbers != null)
-        mLineNumbers.setEnable(en);
-      if(!en && mPlainText != null) {
-          mPlainText.setChecked(false);
-          mPlainText.setEnable(false);
+    if (mLineNumbers != null)
+      mLineNumbers.setEnable(en);
+    if (!en && mPlainText != null) {
+      mPlainText.setChecked(false);
+      mPlainText.setEnable(false);
 
-      }
+    }
   }
 
   /**
    * Enables/Disables the save menu.
+   *
    * @param en boolean
    */
   public void setSaveMenuEnable(boolean en) {
@@ -170,6 +171,7 @@ public class MainPopupWindow {
 
   /**
    * Returns PopupCheckboxHelper for plain text.
+   *
    * @return PopupCheckboxHelper
    */
   public PopupCheckboxHelper getPlainText() {
@@ -178,6 +180,7 @@ public class MainPopupWindow {
 
   /**
    * Returns PopupCheckboxHelper for line numbers.
+   *
    * @return PopupCheckboxHelper
    */
   public PopupCheckboxHelper getLineNumbers() {

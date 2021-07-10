@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.ui.utils;
+package fr.ralala.hexviewer.ui.popup;
 
 import android.view.View;
 import android.widget.CheckBox;
@@ -15,7 +15,7 @@ import java.util.List;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
  * <p>
  * ******************************************************************************
@@ -38,12 +38,13 @@ public class PopupCheckboxHelper {
 
   /**
    * Test if the id is in the list.
-   * @param id The identifier to be tested.
-   * @param containerAndTextViewOnly  Container and text view only ?
+   *
+   * @param id                       The identifier to be tested.
+   * @param containerAndTextViewOnly Container and text view only ?
    * @return boolean
    */
   public boolean containsId(int id, boolean containerAndTextViewOnly) {
-    if(!containerAndTextViewOnly)
+    if (!containerAndTextViewOnly)
       return mIds.contains(id);
     return mIds.get(0) == id || mIds.get(1) == id;
   }
@@ -52,7 +53,7 @@ public class PopupCheckboxHelper {
    * Toggle the check state.
    */
   public void toggleCheck() {
-    if(mCheckbox != null)
+    if (mCheckbox != null)
       mCheckbox.setChecked(!mCheckbox.isChecked());
   }
 
@@ -62,12 +63,13 @@ public class PopupCheckboxHelper {
    * @param checked The new state.
    */
   public void setChecked(boolean checked) {
-    if(mCheckbox != null)
+    if (mCheckbox != null)
       mCheckbox.setChecked(checked);
   }
 
   /**
    * Sets the on click listener
+   *
    * @param listener OnClickListener
    */
   public void setOnClickListener(View.OnClickListener listener) {
@@ -78,6 +80,7 @@ public class PopupCheckboxHelper {
     if (mContainer != null)
       mContainer.setOnClickListener(listener);
   }
+
   /**
    * Sets whether the checkbox is enabled.
    *
@@ -101,6 +104,7 @@ public class PopupCheckboxHelper {
 
   /**
    * Tests if the checkbox is checked.
+   *
    * @return boolean
    */
   public boolean isChecked() {

@@ -14,12 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -33,10 +30,7 @@ import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
-import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
-import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
-import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
@@ -45,9 +39,9 @@ import fr.ralala.hexviewer.ui.popup.MainPopupWindow;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
-import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
+import fr.ralala.hexviewer.ui.utils.PayloadHexHelper;
 import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
-import fr.ralala.hexviewer.ui.utils.PopupCheckboxHelper;
+import fr.ralala.hexviewer.ui.popup.PopupCheckboxHelper;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 
@@ -67,12 +61,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static final int BACK_TIME_DELAY = 2000;
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
-  private HexTextArrayAdapter mAdapterHex = null;
   private FileData mFileData = null;
   private RelativeLayout mIdleView = null;
-  private ListView mPayloadHex = null;
   private MenuItem mSearchMenu = null;
-
   private SearchView mSearchView = null;
   private String mSearchQuery = "";
   private PayloadPlainSwipe mPayloadPlainSwipe = null;
@@ -83,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private LauncherRecentlyOpen mLauncherRecentlyOpen = null;
   private UnDoRedo mUnDoRedo = null;
   private MainPopupWindow mPopup = null;
+  private PayloadHexHelper mPayloadHexHelper;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -125,25 +117,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     LinearLayout mainLayout = findViewById(R.id.mainLayout);
     mIdleView = findViewById(R.id.idleView);
-    mPayloadHex = findViewById(R.id.payloadView);
-
     mIdleView.setVisibility(View.VISIBLE);
-    mPayloadHex.setVisibility(View.GONE);
 
     findViewById(R.id.buttonOpenFile).setOnClickListener((v) ->
         onPopupItemClick(R.id.action_open));
     findViewById(R.id.buttonRecentlyOpen).setOnClickListener((v) ->
         onPopupItemClick(R.id.action_recently_open));
 
-    mAdapterHex = new HexTextArrayAdapter(this,
-        new ArrayList<>(),
-        new UserConfigPortrait(true),
-        new UserConfigLandscape(true));
-    mPayloadHex.setAdapter(mAdapterHex);
-    mPayloadHex.setOnItemClickListener(this);
-    mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-    MultiChoiceCallback multiChoiceCallback = new MultiChoiceCallback(this, mPayloadHex, mAdapterHex);
-    mPayloadHex.setMultiChoiceModeListener(multiChoiceCallback);
+    mPayloadHexHelper = new PayloadHexHelper();
+    mPayloadHexHelper.onCreate(this);
 
     mPayloadPlainSwipe = new PayloadPlainSwipe();
     mPayloadPlainSwipe.onCreate(this);
@@ -180,8 +162,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mApp.applyApplicationLanguage(this);
     /* refresh */
     onOpenResult(!FileData.isEmpty(mFileData), false);
-    if (mPayloadHex.getVisibility() == View.VISIBLE)
-      mAdapterHex.refresh();
+    if (mPayloadHexHelper.isVisible())
+      mPayloadHexHelper.refreshAdapter();
     else if (mPayloadPlainSwipe.isVisible())
       mPayloadPlainSwipe.refreshAdapter();
   }
@@ -210,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
             UIHelper.confirmFileChanged(this, mFileData, r,
                 () -> new TaskSave(this, this).execute(
-                    new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
+                    new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
           } else {
             r.run();
           }
@@ -282,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void doSearch(String queryStr) {
     mSearchQuery = queryStr;
-    final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mAdapterHex);
+    final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mPayloadHexHelper.getAdapter());
     laa.getFilter().filter(queryStr);
   }
 
@@ -335,13 +317,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
     if (success) {
       mIdleView.setVisibility(View.GONE);
-      mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
+      mPayloadHexHelper.setVisible(!checked);
       mPayloadPlainSwipe.setVisible(checked);
       if(fromOpen)
         mUnDoRedo.clear();
     } else {
       mIdleView.setVisibility(View.VISIBLE);
-      mPayloadHex.setVisibility(View.GONE);
+      mPayloadHexHelper.setVisible(false);
       mPayloadPlainSwipe.setVisible(false);
       mFileData = null;
       mUnDoRedo.clear();
@@ -380,8 +362,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     super.onConfigurationChanged(newConfig);
     if (mPayloadPlainSwipe.isVisible())
       mPayloadPlainSwipe.getAdapterPlain().notifyDataSetChanged();
-    else if(mPayloadHex.getVisibility() == View.VISIBLE)
-      mAdapterHex.notifyDataSetChanged();
+    else if(mPayloadHexHelper.isVisible())
+      mPayloadHexHelper.getAdapter().notifyDataSetChanged();
     // Checks the orientation of the screen
     if (!FileData.isEmpty(mFileData)) {
       setTitle(newConfig);
@@ -438,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         else if (mFileData.isOpenFromAppIntent()) {
           setMenuVisible(mSearchMenu, true);
           mIdleView.setVisibility(View.GONE);
-          mPayloadHex.setVisibility(View.VISIBLE);
+          mPayloadHexHelper.setVisible(true);
           mPayloadPlainSwipe.setVisible(false);
         }
       }
@@ -467,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    LineData<Line> e = mAdapterHex.getItem(position);
+    LineData<Line> e = mPayloadHexHelper.getAdapter().getItem(position);
     if (e == null)
       return;
     if (mPayloadPlainSwipe.isVisible()) {
@@ -493,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           };
           UIHelper.confirmFileChanged(this, mFileData, r,
               () -> new TaskSave(this, this).execute(
-                  new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
+                  new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
         } else {
           super.onBackPressed();
           finish();
@@ -554,12 +536,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Returns the hex adapter.
+   * Returns the PayloadHexHelper
    *
-   * @return HexTextArrayAdapter
+   * @return PayloadHexHelper
    */
-  public HexTextArrayAdapter getAdapterHex() {
-    return mAdapterHex;
+  public PayloadHexHelper getPayloadHex() {
+    return mPayloadHexHelper;
   }
 
   /**
@@ -599,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
+              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
     } else
       r.run();
   }
@@ -612,7 +594,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.open_a_file_before));
       return;
     }
-    new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), null));
+    new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(),
+        mPayloadHexHelper.getAdapter().getItems(), null));
     setTitle(getResources().getConfiguration());
   }
 
@@ -646,7 +629,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       plainText.toggleCheck();
     boolean checked = plainText.isChecked();
     mPayloadPlainSwipe.setVisible(checked);
-    mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
+    mPayloadHexHelper.setVisible(!checked);
     if (mSearchQuery != null && !mSearchQuery.isEmpty())
       doSearch(mSearchQuery);
     refreshLineNumbers(lineNumbers);
@@ -659,16 +642,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private void refreshLineNumbers(PopupCheckboxHelper lineNumbers) {
     if (lineNumbers != null) {
       boolean checked = lineNumbers.isChecked();
-      if(mPayloadHex.getVisibility() == View.VISIBLE) {
+      if(mPayloadHexHelper.isVisible()) {
         if(mApp.isLineNumber() && !checked) {
           lineNumbers.setChecked(true);
-          mAdapterHex.notifyDataSetChanged();
+          mPayloadHexHelper.refreshLineNumbers();
         }
         lineNumbers.setEnable(true);
       } else if(mPayloadPlainSwipe.isVisible()) {
         if(checked) {
           lineNumbers.setChecked(false);
-          mAdapterHex.notifyDataSetChanged();
+          mPayloadHexHelper.refreshLineNumbers();
         }
         lineNumbers.setEnable(false);
       }
@@ -686,8 +669,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       lineNumbers.toggleCheck();
     boolean checked = lineNumbers.isChecked();
     mApp.setLineNumber(checked);
-    if(mPayloadHex.getVisibility() == View.VISIBLE)
-      mAdapterHex.notifyDataSetChanged();
+    if(mPayloadHexHelper.isVisible())
+      mPayloadHexHelper.refreshLineNumbers();
   }
 
   /**
@@ -697,13 +680,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     final Runnable r = () -> {
       onOpenResult(false, false);
       mPayloadPlainSwipe.getAdapterPlain().clear();
-      mAdapterHex.clear();
+      mPayloadHexHelper.getAdapter().clear();
       cancelSearch();
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
+              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
     } else
       r.run();
   }

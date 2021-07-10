@@ -107,7 +107,7 @@ public class LauncherSave {
       UIHelper.showConfirmDialog(mActivity, mActivity.getString(R.string.action_save_title),
           mActivity.getString(R.string.confirm_overwrite),
           (view) -> {
-            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getAdapterHex().getItems(), null));
+            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getPayloadHex().getAdapter().getItems(), null));
             mActivity.setTitle(mActivity.getResources().getConfiguration());
           });
     } else {
@@ -116,7 +116,7 @@ public class LauncherSave {
         UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
-        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getAdapterHex().getItems(), null));
+        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getPayloadHex().getAdapter().getItems(), null));
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       }
     }

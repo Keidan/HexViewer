@@ -75,7 +75,7 @@ public class LauncherLineUpdate {
               }
               List<LineData<Line>> li = SysHelper.formatBuffer(buf, null);
               if (li.isEmpty()) {
-                HexTextArrayAdapter adapter = mActivity.getAdapterHex();
+                HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
                 Map<Integer, LineFilter<Line>> map = new HashMap<>();
                 map.put(position, adapter.getFilteredList().get(position));
                 mActivity.getUnDoRedo().insertInUnDoRedoForDelete(adapter, map).execute();

@@ -41,15 +41,52 @@
       android:text="@string/action_recently_open_title"/>
     </LinearLayout>
   </RelativeLayout>
-  <ListView
-    android:id="@+id/payloadView"
-    android:visibility="gone"
+  <RelativeLayout
+    android:id="@+id/payloadViewContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fastScrollEnabled="true"
-    android:padding="1dp"
-    android:textSize="12sp"
-    android:typeface="monospace" />
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:id="@+id/title"
+      android:visibility="gone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentTop="true"
+      android:orientation="horizontal">
+
+      <TextView
+        android:id="@+id/titleLineNumbers"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@null"
+        android:textSize="@dimen/listview_hex_row_font_size"
+        android:typeface="monospace"
+        android:paddingEnd="5dp"
+        android:paddingStart="2dp"/>
+      <TextView
+        android:id="@+id/titleContent"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@null"
+        android:textSize="@dimen/listview_hex_row_font_size"
+        android:typeface="monospace" />
+
+    </LinearLayout>
+
+    <ListView
+      android:id="@+id/payloadView"
+      android:visibility="gone"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fastScrollEnabled="true"
+      android:layout_below="@id/title"
+      android:padding="1dp"
+      android:textSize="12sp"
+      android:typeface="monospace" />
+  </RelativeLayout>
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/payloadPlainSwipeRefreshLayout"

@@ -63,7 +63,7 @@ public class PayloadPlainSwipe {
   }
 
   /**
-   * Called when the activity is resumed.
+   * Called to refresh the adapter.
    */
   public void refreshAdapter() {
     mAdapterPlain.refresh();
@@ -131,7 +131,7 @@ public class PayloadPlainSwipe {
    */
   private List<LineData<String>> refreshPlain(final AtomicBoolean cancel) {
     final List<Byte> payload = new ArrayList<>();
-    for (LineData<Line> le : mActivity.getAdapterHex().getItems())
+    for (LineData<Line> le : mActivity.getPayloadHex().getAdapter().getItems())
       if(!le.isFalselyDeleted())
         payload.addAll(le.getValue().getRaw());
     final StringBuilder sb = new StringBuilder();

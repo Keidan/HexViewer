@@ -61,7 +61,7 @@ public class LauncherRecentlyOpen {
                   final Runnable r = () -> mActivity.getLauncherOpen().processFileOpen(uri, false, true);
                   if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
                     UIHelper.confirmFileChanged(mActivity, mActivity.getFileData(), r, () -> new TaskSave(mActivity, mActivity).execute(
-                        new TaskSave.Request(mActivity.getFileData().getUri(), mActivity.getAdapterHex().getItems(), r)));
+                        new TaskSave.Request(mActivity.getFileData().getUri(), mActivity.getPayloadHex().getAdapter().getItems(), r)));
                   } else
                     r.run();
                 } else {

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
@@ -41,9 +42,19 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   private static final int ID = R.layout.listview_hex_row;
   private Set<Integer> mSelectedItemsIds;
   private final ApplicationCtx mApp;
+  private final LineNumbersTitle mTitle;
 
-  public HexTextArrayAdapter(final Context context, final List<LineData<Line>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
-    super(context, ID, objects, userConfigPortrait, userConfigLandscape);
+  public static class LineNumbersTitle {
+    public TextView titleLineNumbers;
+    public TextView titleContent;
+  }
+
+  public HexTextArrayAdapter(final Context activity, final List<LineData<Line>> objects,
+                             LineNumbersTitle title,
+                             UserConfig userConfigPortrait,
+                             UserConfig userConfigLandscape) {
+    super(activity, ID, objects, userConfigPortrait, userConfigLandscape);
+    mTitle = title;
     mSelectedItemsIds = new HashSet<>();
     mApp = ApplicationCtx.getInstance();
   }
@@ -177,11 +188,20 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
       if(mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getItemsCount()).length();
         final String s = String.format("%0" + maxLength + "X", fd.getOrigin());
+        final @ColorInt int color = ContextCompat.getColor(getContext(),
+            R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
-        holder.lineNumbers.setTextColor(ContextCompat.getColor(getContext(),
-            R.color.colorLineNumbers));
+        holder.lineNumbers.setTextColor(color);
         landscape = applyUserConfig(holder.lineNumbers);
         holder.lineNumbers.setVisibility(View.VISIBLE);
+
+        if(position == 0) {
+          mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
+          mTitle.titleContent.setText(getContext().getString(R.string.title_content));
+          mTitle.titleContent.setTextColor(color);
+          applyUserConfig(mTitle.titleContent);
+          applyUserConfig(mTitle.titleLineNumbers);
+        }
       }
       else {
         holder.lineNumbers.setVisibility(View.GONE);
@@ -196,8 +216,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   }
 
   private static class Holder {
-    TextView lineNumbers;
-    TextView content;
+    private TextView lineNumbers;
+    private TextView content;
   }
 }
 

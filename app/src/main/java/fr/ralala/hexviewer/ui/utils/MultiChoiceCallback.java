@@ -93,7 +93,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     if (item.getItemId() == R.id.action_clear) {
       final List<Integer> selected = mAdapter.getSelectedIds();
       Map<Integer, LineFilter<Line>> map = new HashMap<>();
-      HexTextArrayAdapter adapter = mActivity.getAdapterHex();
+      HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
       // Captures all selected ids with a loop
       for (int i = selected.size() - 1; i >= 0; i--) {
         int position = selected.get(i);

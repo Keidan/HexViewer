@@ -85,7 +85,7 @@ public class LauncherOpen {
     if (uri != null && uri.getPath() != null) {
       mActivity.setFileData(new FileData(uri, openFromAppIntent));
       mActivity.getUnDoRedo().clear();
-      new TaskOpen(mActivity, mActivity.getAdapterHex(), mActivity.getPayloadPlainSwipe().getAdapterPlain(), mActivity, addRecent).execute(uri);
+      new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity.getPayloadPlainSwipe().getAdapterPlain(), mActivity, addRecent).execute(uri);
     } else {
       UIHelper.toast(mActivity, mActivity.getString(R.string.error_filename));
     }
