@@ -25,6 +25,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -35,7 +36,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
  * <p>
  * ******************************************************************************
@@ -45,11 +46,12 @@ public class UIHelper {
 
   /**
    * Returns the SIZE of the screen.
+   *
    * @param c Android context.
    * @return int
    */
   public static Point getScreenSize(final Context c) {
-    if(mScreen == null) {
+    if (mScreen == null) {
       WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
       Display display = wm.getDefaultDisplay();
       mScreen = new Point();
@@ -231,5 +233,34 @@ public class UIHelper {
     }
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et, layout));
     return dialog;
+  }
+
+  /**
+   * Display a confirmation message when the file is modified. A backup will automatically be made.
+   *
+   * @param c            The Android context.
+   * @param fd           FileData.
+   * @param runnable     The action to be taken if the user validates or not.
+   * @param runnableSave To call TaskSave.
+   */
+  public static void confirmFileChanged(final Context c, final FileData fd, final Runnable runnable, final Runnable runnableSave) {
+    if (FileData.isEmpty(fd)) {
+      runnable.run();
+      return;
+    }
+    new AlertDialog.Builder(c)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(R.string.action_close_title)
+        .setMessage(String.format(c.getString(R.string.confirm_save), fd.getName()))
+        .setPositiveButton(R.string.yes, (dialog, which) -> {
+          runnableSave.run();
+          dialog.dismiss();
+        })
+        .setNegativeButton(R.string.no, (dialog, which) -> {
+          runnable.run();
+          dialog.dismiss();
+        })
+        .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+        .show();
   }
 }

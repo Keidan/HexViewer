@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,18 +9,12 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -48,6 +41,7 @@ import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherSave;
+import fr.ralala.hexviewer.ui.popup.MainPopupWindow;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
@@ -78,11 +72,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private RelativeLayout mIdleView = null;
   private ListView mPayloadHex = null;
   private MenuItem mSearchMenu = null;
-  private TextView mSaveMenu = null;
-  private TextView mSaveAsMenu = null;
-  private TextView mCloseMenu = null;
+
   private SearchView mSearchView = null;
-  private TextView mRecentlyOpen = null;
   private String mSearchQuery = "";
   private PayloadPlainSwipe mPayloadPlainSwipe = null;
   private AlertDialog mOrphanDialog = null;
@@ -90,10 +81,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private LauncherSave mLauncherSave = null;
   private LauncherOpen mLauncherOpen = null;
   private LauncherRecentlyOpen mLauncherRecentlyOpen = null;
-  private PopupWindow mPopup = null;
   private UnDoRedo mUnDoRedo = null;
-  private PopupCheckboxHelper mPlainText = null;
-  private PopupCheckboxHelper mLineNumbers = null;
+  private MainPopupWindow mPopup = null;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -186,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onResume() {
     super.onResume();
-    if (mPopup != null && mPopup.isShowing())
+    if (mPopup != null)
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
@@ -219,7 +208,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             addRecent = FileHelper.takeUriPermissions(this, uri, false);
           final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, addRecent);
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
-            confirmFileChanged(r);
+            UIHelper.confirmFileChanged(this, mFileData, r,
+                () -> new TaskSave(this, this).execute(
+                    new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
           } else {
             r.run();
           }
@@ -310,7 +301,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mFileData = new FileData(uri, false);
         if (mFileData.isOpenFromAppIntent())
           mFileData.clearOpenFromAppIntent();
-        setMenuEnabled(mSaveMenu, true);
+        if(mPopup != null)
+          mPopup.setSaveMenuEnable(true);
         setTitle(getResources().getConfiguration());
       } else {
         mFileData = new FileData(uri, false);
@@ -330,17 +322,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onOpenResult(boolean success, boolean fromOpen) {
     setMenuVisible(mSearchMenu, success);
-    boolean checked = mPlainText != null && mPlainText.setEnable(success);
-    if (!FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent())
-      setMenuEnabled(mSaveMenu, false);
-    else
-      setMenuEnabled(mSaveMenu, success);
-    setMenuEnabled(mSaveAsMenu, success);
-    setMenuEnabled(mCloseMenu, success);
-    setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
+    boolean checked = mPopup != null && mPopup.getPlainText() != null && mPopup.getPlainText().setEnable(success);
+    if (!FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent()) {
+      if(mPopup != null)
+        mPopup.setSaveMenuEnable(false);
+    } else {
+      if(mPopup != null)
+        mPopup.setSaveMenuEnable(success);
+    }
+    if(mPopup != null) {
+      mPopup.setMenusEnable(success);
+    }
     if (success) {
-      if(mLineNumbers != null)
-        mLineNumbers.setEnable(true);
       mIdleView.setVisibility(View.GONE);
       mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
       mPayloadPlainSwipe.setVisible(checked);
@@ -350,13 +343,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mIdleView.setVisibility(View.VISIBLE);
       mPayloadHex.setVisibility(View.GONE);
       mPayloadPlainSwipe.setVisible(false);
-      if(mPlainText != null) {
-        mPlainText.setChecked(false);
-        mPlainText.setEnable(false);
-      }
-      if(mLineNumbers != null) {
-        mLineNumbers.setEnable(false);
-      }
       mFileData = null;
       mUnDoRedo.clear();
     }
@@ -383,16 +369,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       menu.setVisible(visible);
   }
 
-  /**
-   * Sets whether the menu item is enabled.
-   *
-   * @param menu    MenuItem
-   * @param enabled If true then the item will be invokable; if false it is won't be invokable.
-   */
-  private void setMenuEnabled(final TextView menu, final boolean enabled) {
-    if (menu != null)
-      menu.setEnabled(enabled);
-  }
 
   /**
    * Called by the system when the device configuration changes while your activity is running.
@@ -426,10 +402,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       popupActionSave();
     } else if (id == R.id.action_save_as) {
       popupActionSaveAs();
-    } else if (mPlainText != null && mPlainText.containsId(id, false)) {
-      popupActionPlainText(id);
-    } else if (mLineNumbers != null && mLineNumbers.containsId(id, false)) {
-      popupActionLineNumbers(id);
     } else if (id == R.id.action_close) {
       popupActionClose();
     } else if (id == R.id.action_settings) {
@@ -438,6 +410,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       popupActionUndo();
     } else if (id == R.id.action_redo) {
       popupActionRedo();
+    } else if(mPopup != null) {
+      if (mPopup.getPlainText() != null && mPopup.getPlainText().containsId(id, false)) {
+        popupActionPlainText(id, mPopup.getPlainText(), mPopup.getLineNumbers());
+      } else if (mPopup.getLineNumbers() != null && mPopup.getLineNumbers().containsId(id, false)) {
+        popupActionLineNumbers(id, mPopup.getLineNumbers());
+      }
     }
   }
 
@@ -452,73 +430,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     final int id = item.getItemId();
     if (id == R.id.action_more) {
       if (mPopup == null) {
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.main_popup, null);
-        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        int with = popupView.getMeasuredWidth();
-
-        mPopup = new PopupWindow(popupView,
-            with + 150,
-            WindowManager.LayoutParams.WRAP_CONTENT, true);
-
-        mPopup.setElevation(5.0f);
-        mPopup.setOutsideTouchable(true);
-
-        mPlainText = new PopupCheckboxHelper(popupView,
-            R.id.action_plain_text_container,
-            R.id.action_plain_text_tv,
-            R.id.action_plain_text_cb);
-
-        mLineNumbers = new PopupCheckboxHelper(popupView,
-            R.id.action_line_numbers_container,
-            R.id.action_line_numbers_tv,
-            R.id.action_line_numbers_cb);
-
-        mSaveAsMenu = popupView.findViewById(R.id.action_save_as);
-        mSaveMenu = popupView.findViewById(R.id.action_save);
-        mCloseMenu = popupView.findViewById(R.id.action_close);
-        mRecentlyOpen = popupView.findViewById(R.id.action_recently_open);
-        ImageView actionRedo = popupView.findViewById(R.id.action_redo);
-        ImageView actionUndo = popupView.findViewById(R.id.action_undo);
-        FrameLayout containerRedo = popupView.findViewById(R.id.containerRedo);
-        FrameLayout containerUndo = popupView.findViewById(R.id.containerUndo);
-
-        View.OnClickListener click = (v) -> {
-          mPopup.dismiss();
-          onPopupItemClick(v.getId());
-        };
-        popupView.findViewById(R.id.action_open).setOnClickListener(click);
-        popupView.findViewById(R.id.action_settings).setOnClickListener(click);
-        mPlainText.setOnClickListener(click);
-        mLineNumbers.setOnClickListener(click);
-        mSaveAsMenu.setOnClickListener(click);
-        mSaveMenu.setOnClickListener(click);
-        mCloseMenu.setOnClickListener(click);
-        mRecentlyOpen.setOnClickListener(click);
-        actionRedo.setOnClickListener(click);
-        actionUndo.setOnClickListener(click);
-        mUnDoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
-        if(mLineNumbers != null) {
-          mLineNumbers.setChecked(mApp.isLineNumber());
-        }
+        mPopup = new MainPopupWindow(this, mUnDoRedo,
+            !FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent(),
+            this::onPopupItemClick);
         if (mFileData == null)
           onOpenResult(false, false);
         else if (mFileData.isOpenFromAppIntent()) {
           setMenuVisible(mSearchMenu, true);
-          if(mPlainText != null)
-            mPlainText.setEnable(true);
-          setMenuEnabled(mSaveMenu, false);
-          setMenuEnabled(mSaveAsMenu, true);
-          setMenuEnabled(mCloseMenu, true);
-          setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().isEmpty());
           mIdleView.setVisibility(View.GONE);
           mPayloadHex.setVisibility(View.VISIBLE);
           mPayloadPlainSwipe.setVisible(false);
         }
       }
-      mPopup.showAtLocation(findViewById(R.id.action_more), Gravity.TOP | Gravity.END, 12, 120);
-      //mPopup.showAsDropDown(findViewById(R.id.action_more));
+      mPopup.show(findViewById(R.id.action_more));
     }
     return super.onOptionsItemSelected(item);
   }
@@ -531,32 +455,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       doSearch("");
       mSearchView.setIconified(true);
     }
-  }
-
-  /**
-   * Display a confirmation message when the file is modified. A backup will automatically be made.
-   *
-   * @param runnable The action to be taken if the user validates or not
-   */
-  public void confirmFileChanged(final Runnable runnable) {
-    if(FileData.isEmpty(mFileData)) {
-      runnable.run();
-      return;
-    }
-    new AlertDialog.Builder(this)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(R.string.action_close_title)
-        .setMessage(String.format(getString(R.string.confirm_save), mFileData.getName()))
-        .setPositiveButton(R.string.yes, (dialog, which) -> {
-          new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), runnable));
-          dialog.dismiss();
-        })
-        .setNegativeButton(R.string.no, (dialog, which) -> {
-          runnable.run();
-          dialog.dismiss();
-        })
-        .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-        .show();
   }
 
   /**
@@ -589,10 +487,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else {
       if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
         if (mUnDoRedo.isChanged()) {// a save operation is pending?
-          confirmFileChanged(() -> {
+          Runnable r = () -> {
             super.onBackPressed();
             finish();
-          });
+          };
+          UIHelper.confirmFileChanged(this, mFileData, r,
+              () -> new TaskSave(this, this).execute(
+                  new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
         } else {
           super.onBackPressed();
           finish();
@@ -613,7 +514,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @return MenuItem
    */
   public TextView getMenuRecentlyOpen() {
-    return mRecentlyOpen;
+    return mPopup == null ? null : mPopup.getMenuRecentlyOpen();
   }
 
   /**
@@ -696,7 +597,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private void popupActionOpen() {
     final Runnable r = () -> mLauncherOpen.startActivity();
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
-      confirmFileChanged(r);
+      UIHelper.confirmFileChanged(this, mFileData, r,
+          () -> new TaskSave(this, this).execute(
+              new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
     } else
       r.run();
   }
@@ -735,36 +638,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * Action when the user clicks on the "plain text" menu.
    *
    * @param id Action id.
+   * @param plainText Plain text checkbox.
+   * @param lineNumbers Line numbers checkbox.
    */
-  private void popupActionPlainText(int id) {
-    if (mPlainText != null && mPlainText.containsId(id, true))
-      mPlainText.toggleCheck();
-    boolean checked = mPlainText != null && mPlainText.isChecked();
+  private void popupActionPlainText(int id, PopupCheckboxHelper plainText, PopupCheckboxHelper lineNumbers) {
+    if (plainText.containsId(id, true))
+      plainText.toggleCheck();
+    boolean checked = plainText.isChecked();
     mPayloadPlainSwipe.setVisible(checked);
     mPayloadHex.setVisibility(checked ? View.GONE : View.VISIBLE);
     if (mSearchQuery != null && !mSearchQuery.isEmpty())
       doSearch(mSearchQuery);
-    refreshLineNumbers();
+    refreshLineNumbers(lineNumbers);
   }
 
   /**
    * Refreshes the lines number
+   * @param lineNumbers Line numbers checkbox.
    */
-  private void refreshLineNumbers() {
-    if (mLineNumbers != null) {
-      boolean checked = mLineNumbers.isChecked();
+  private void refreshLineNumbers(PopupCheckboxHelper lineNumbers) {
+    if (lineNumbers != null) {
+      boolean checked = lineNumbers.isChecked();
       if(mPayloadHex.getVisibility() == View.VISIBLE) {
         if(mApp.isLineNumber() && !checked) {
-          mLineNumbers.setChecked(true);
+          lineNumbers.setChecked(true);
           mAdapterHex.notifyDataSetChanged();
         }
-        mLineNumbers.setEnable(true);
+        lineNumbers.setEnable(true);
       } else if(mPayloadPlainSwipe.isVisible()) {
         if(checked) {
-          mLineNumbers.setChecked(false);
+          lineNumbers.setChecked(false);
           mAdapterHex.notifyDataSetChanged();
         }
-        mLineNumbers.setEnable(false);
+        lineNumbers.setEnable(false);
       }
     }
   }
@@ -773,11 +679,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * Action when the user clicks on the "line numbers" menu.
    *
    * @param id Action id.
+   * @param lineNumbers Line numbers checkbox.
    */
-  private void popupActionLineNumbers(int id) {
-    if (mLineNumbers != null && mLineNumbers.containsId(id, true))
-      mLineNumbers.toggleCheck();
-    boolean checked = mLineNumbers != null && mLineNumbers.isChecked();
+  private void popupActionLineNumbers(int id, PopupCheckboxHelper lineNumbers) {
+    if (lineNumbers.containsId(id, true))
+      lineNumbers.toggleCheck();
+    boolean checked = lineNumbers.isChecked();
     mApp.setLineNumber(checked);
     if(mPayloadHex.getVisibility() == View.VISIBLE)
       mAdapterHex.notifyDataSetChanged();
@@ -794,7 +701,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       cancelSearch();
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
-      confirmFileChanged(r);
+      UIHelper.confirmFileChanged(this, mFileData, r,
+          () -> new TaskSave(this, this).execute(
+              new TaskSave.Request(mFileData.getUri(), mAdapterHex.getItems(), r)));
     } else
       r.run();
   }

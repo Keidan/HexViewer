@@ -10,6 +10,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.activities.RecentlyOpenActivity;
+import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 
@@ -59,7 +60,8 @@ public class LauncherRecentlyOpen {
                 if (FileHelper.hasUriPermission(mActivity, uri, true)) {
                   final Runnable r = () -> mActivity.getLauncherOpen().processFileOpen(uri, false, true);
                   if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
-                    mActivity.confirmFileChanged(r);
+                    UIHelper.confirmFileChanged(mActivity, mActivity.getFileData(), r, () -> new TaskSave(mActivity, mActivity).execute(
+                        new TaskSave.Request(mActivity.getFileData().getUri(), mActivity.getAdapterHex().getItems(), r)));
                   } else
                     r.run();
                 } else {
