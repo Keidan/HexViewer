@@ -40,7 +40,7 @@ public class MainPopupWindow {
     void onClick(int id);
   }
 
-  public MainPopupWindow(final Context ctx, UnDoRedo undoRedo, boolean isOpenFromAppIntent, ClickListener clickListener) {
+  public MainPopupWindow(final Context ctx, UnDoRedo undoRedo, ClickListener clickListener) {
     ApplicationCtx app = ApplicationCtx.getInstance();
 
     LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,14 +91,6 @@ public class MainPopupWindow {
     actionUndo.setOnClickListener(click);
     undoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
     mLineNumbers.setChecked(app.isLineNumber());
-
-    if (isOpenFromAppIntent) {
-      mPlainText.setEnable(true);
-      setMenuEnabled(mSaveMenu, false);
-      setMenuEnabled(mSaveAsMenu, true);
-      setMenuEnabled(mCloseMenu, true);
-      setMenuEnabled(mRecentlyOpen, !app.getRecentlyOpened().isEmpty());
-    }
   }
 
   /**

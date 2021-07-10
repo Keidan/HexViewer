@@ -115,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     mUnDoRedo = new UnDoRedo(this);
 
+    mPopup = new MainPopupWindow(this, mUnDoRedo, this::onPopupItemClick);
+
     LinearLayout mainLayout = findViewById(R.id.mainLayout);
     mIdleView = findViewById(R.id.idleView);
     mIdleView.setVisibility(View.VISIBLE);
@@ -411,19 +413,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_more) {
-      if (mPopup == null) {
-        mPopup = new MainPopupWindow(this, mUnDoRedo,
-            !FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent(),
-            this::onPopupItemClick);
-        if (mFileData == null)
-          onOpenResult(false, false);
-        else if (mFileData.isOpenFromAppIntent()) {
-          setMenuVisible(mSearchMenu, true);
-          mIdleView.setVisibility(View.GONE);
-          mPayloadHexHelper.setVisible(true);
-          mPayloadPlainSwipe.setVisible(false);
-        }
-      }
       mPopup.show(findViewById(R.id.action_more));
     }
     return super.onOptionsItemSelected(item);
