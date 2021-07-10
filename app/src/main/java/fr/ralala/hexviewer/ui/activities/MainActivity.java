@@ -151,7 +151,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mLauncherLineUpdate = new LauncherLineUpdate(this);
     mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
 
-    handleIntent(getIntent());
+    if(savedInstanceState == null)
+      handleIntent(getIntent());
   }
 
   /**
