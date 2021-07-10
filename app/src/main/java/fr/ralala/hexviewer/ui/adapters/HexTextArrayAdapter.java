@@ -25,6 +25,7 @@ import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -154,19 +155,19 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    * @param landscape Landscape mode ?
    */
   private void applyUpdated(final TextView tv, final LineFilter<Line> fd, boolean landscape) {
+    String str = fd.getData().getValue().getPlain();
     if (fd.getData().isUpdated()) {
-      SpannableString spanString = new SpannableString(fd.getData().getValue().getPlain());
+      SpannableString spanString = new SpannableString(str);
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
       tv.setText(spanString);
     } else {
-      String str = fd.getData().getValue().getPlain();
       tv.setText(str);
-      if (mApp.isLineNumber()) {
-        tv.measure(0, 0);       //must call measure!
-        Point p = UIHelper.getScreenSize(mApp);
-        if (!landscape && ((100 * tv.getMeasuredWidth()) / p.x) >= 75)
-          tv.setText(str.substring(0, 48));
-      }
+    }
+    if (mApp.isLineNumber()) {
+      tv.measure(0, 0);       //must call measure!
+      Point p = UIHelper.getScreenSize(mApp);
+      if (!landscape && ((100 * tv.getMeasuredWidth()) / p.x) >= 75)
+        tv.setText(str.substring(0, 48));
     }
   }
 
@@ -187,7 +188,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
       boolean landscape;
       if (mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getItemsCount()).length();
-        final String s = String.format("%0" + maxLength + "X", fd.getOrigin());
+        final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * SysHelper.MAX_BY_ROW);
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
