@@ -26,16 +26,31 @@ public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfi
 
   @Override
   public float getFontSize() {
-    return mIsHexList ? mApp.getHexFontSizeLandscape() : mApp.getPlainFontSizeLandscape();
+    if(mIsHexList) {
+      if(mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersLandscape().getFontSize();
+      return mApp.getListSettingsHexLandscape().getFontSize();
+    }
+    return mApp.getListSettingsPlainLandscape().getFontSize();
   }
 
   @Override
   public int getRowHeight() {
-    return mIsHexList ? mApp.getHexRowHeightLandscape() : mApp.getPlainRowHeightLandscape();
+    if(mIsHexList) {
+      if(mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersLandscape().getRowHeight();
+      return mApp.getListSettingsHexLandscape().getRowHeight();
+    }
+    return mApp.getListSettingsPlainLandscape().getRowHeight();
   }
 
   @Override
   public boolean isRowHeightAuto() {
-    return mIsHexList ? mApp.isHexRowHeightAutoLandscape() : mApp.isPlainRowHeightAutoLandscape();
+    if(mIsHexList) {
+      if(mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersLandscape().isRowHeightAuto();
+      return mApp.getListSettingsHexLandscape().isRowHeightAuto();
+    }
+    return mApp.getListSettingsPlainLandscape().isRowHeightAuto();
   }
 }

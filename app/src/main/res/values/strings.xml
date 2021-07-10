@@ -40,14 +40,26 @@
     <string name="content_description_redo" translatable="false">Redo</string>
     <string name="default_abbreviate_portrait" translatable="false">8</string>
     <string name="default_abbreviate_landscape" translatable="false">16</string>
-    <string name="default_hex_row_height_auto" translatable="false">true</string>
-    <string name="default_hex_row_height" translatable="false">100</string>
-    <string name="default_hex_font_size" translatable="false">9</string>
-    <string name="default_plain_row_height_auto" translatable="false">true</string>
-    <string name="default_plain_row_height" translatable="false">100</string>
-    <string name="default_plain_font_size" translatable="false">12</string>
+    <string name="default_hex_row_height_auto_portrait" translatable="false">true</string>
+    <string name="default_hex_row_height_portrait" translatable="false">100</string>
+    <string name="default_hex_font_size_portrait" translatable="false">9</string>
+    <string name="default_hex_row_height_auto_landscape" translatable="false">true</string>
+    <string name="default_hex_row_height_landscape" translatable="false">100</string>
+    <string name="default_hex_font_size_landscape" translatable="false">16</string>
+    <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false">true</string>
+    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false">100</string>
+    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false">11</string>
+    <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false">true</string>
+    <string name="default_hex_row_height_landscape_lines_numbers" translatable="false">100</string>
+    <string name="default_hex_font_size_landscape_lines_numbers" translatable="false">16</string>
+    <string name="default_plain_row_height_auto_portrait" translatable="false">true</string>
+    <string name="default_plain_row_height_portrait" translatable="false">100</string>
+    <string name="default_plain_font_size_portrait" translatable="false">12</string>
+    <string name="default_plain_row_height_auto_landscape" translatable="false">true</string>
+    <string name="default_plain_row_height_landscape" translatable="false">100</string>
+    <string name="default_plain_font_size_landscape" translatable="false">16</string>
     <string name="default_smart_input" translatable="false">false</string>
-    <string name="default_lines_number" translatable="false">false</string>
+    <string name="default_lines_number" translatable="false">true</string>
     <string name="title_content" translatable="false">00&#160;01&#160;02&#160;03&#160;04&#160;05&#160;06&#160;07&#160;&#160;08&#160;09&#160;0A&#160;0B&#160;0C&#160;0D&#160;0E&#160;0F</string>
 
     <string name="new_value">New value</string>
@@ -64,19 +76,14 @@
     <string name="settings_pref_title_lists_landscape">Height &amp; Font size</string>
     <string name="settings_pref_summary_lists_landscape">Click to edit</string>
     <string name="settings_category_hex">Text in hex</string>
-    <string name="settings_pref_title_hex_row_height_auto">Automatic height</string>
-    <string name="settings_pref_summary_hex_row_height_auto">Automatically determines height based on font size.</string>
-    <string name="settings_pref_title_hex_row_height">Height</string>
-    <string name="settings_pref_summary_hex_row_height">Height of the row in the list.</string>
-    <string name="settings_pref_title_hex_font_size">Font size</string>
-    <string name="settings_pref_summary_hex_font_size">Font size of the texts in the list.</string>
+    <string name="settings_category_hex_line_numbers">Text in hex (line numbers)</string>
     <string name="settings_category_plain">Plain text</string>
-    <string name="settings_pref_title_plain_row_height_auto">Automatic height</string>
-    <string name="settings_pref_summary_plain_row_height_auto">Automatically determines height based on font size.</string>
-    <string name="settings_pref_title_plain_row_height">Height</string>
-    <string name="settings_pref_summary_plain_row_height">Height of the row in the list.</string>
-    <string name="settings_pref_title_plain_font_size">Font size</string>
-    <string name="settings_pref_summary_plain_font_size">Font size of the texts in the list.</string>
+    <string name="settings_pref_title_row_height_auto">Automatic height</string>
+    <string name="settings_pref_summary_row_height_auto">Automatically determines height based on font size.</string>
+    <string name="settings_pref_title_row_height">Height</string>
+    <string name="settings_pref_summary_row_height">Height of the row in the list.</string>
+    <string name="settings_pref_title_font_size">Font size</string>
+    <string name="settings_pref_summary_font_size">Font size of the texts in the list.</string>
     <string name="settings_category_about">About</string>
     <string name="settings_pref_title_version">Version</string>
     <string name="settings_pref_title_license">License</string>

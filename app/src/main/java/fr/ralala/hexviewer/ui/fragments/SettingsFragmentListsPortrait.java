@@ -25,6 +25,9 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
   protected CheckBoxPreference mHexRowHeightAuto;
   protected Preference mHexRowHeight;
   protected Preference mHexFontSize;
+  protected CheckBoxPreference mHexRowHeightAutoLineNumbers;
+  protected Preference mHexRowHeightLineNumbers;
+  protected Preference mHexFontSizeLineNumbers;
   protected CheckBoxPreference mPlainRowHeightAuto;
   protected Preference mPlainRowHeight;
   protected Preference mPlainFontSize;
@@ -50,6 +53,9 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
     mHexRowHeightAuto = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO);
     mHexRowHeight = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT);
     mHexFontSize = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_FONT_SIZE);
+    mHexRowHeightAutoLineNumbers = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS);
+    mHexRowHeightLineNumbers = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS);
+    mHexFontSizeLineNumbers = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS);
     mPlainRowHeightAuto = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO);
     mPlainRowHeight = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_ROW_HEIGHT);
     mPlainFontSize = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_FONT_SIZE);
@@ -57,14 +63,20 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
     mHexRowHeightAuto.setOnPreferenceClickListener(this);
     mHexRowHeight.setOnPreferenceClickListener(this);
     mHexFontSize.setOnPreferenceClickListener(this);
+    mHexRowHeightAutoLineNumbers.setOnPreferenceClickListener(this);
+    mHexRowHeightLineNumbers.setOnPreferenceClickListener(this);
+    mHexFontSizeLineNumbers.setOnPreferenceClickListener(this);
     mPlainRowHeightAuto.setOnPreferenceClickListener(this);
     mPlainRowHeight.setOnPreferenceClickListener(this);
     mPlainFontSize.setOnPreferenceClickListener(this);
 
-    mHexRowHeightAuto.setChecked(mApp.isHexRowHeightAutoPortrait());
-    mPlainRowHeightAuto.setChecked(mApp.isPlainRowHeightAutoPortrait());
-    mHexRowHeight.setEnabled(!mApp.isHexRowHeightAutoPortrait());
-    mPlainRowHeight.setEnabled(!mApp.isPlainRowHeightAutoPortrait());
+    mHexRowHeightAuto.setChecked(mApp.getListSettingsHexPortrait().isRowHeightAuto());
+    mHexRowHeight.setEnabled(!mApp.getListSettingsHexPortrait().isRowHeightAuto());
+    mHexRowHeightAutoLineNumbers.setChecked(mApp.getListSettingsHexLineNumbersPortrait().isRowHeightAuto());
+    mHexRowHeightLineNumbers.setEnabled(!mApp.getListSettingsHexLineNumbersPortrait().isRowHeightAuto());
+
+    mPlainRowHeightAuto.setChecked(mApp.getListSettingsPlainPortrait().isRowHeightAuto());
+    mPlainRowHeight.setEnabled(!mApp.getListSettingsPlainPortrait().isRowHeightAuto());
   }
 
 
@@ -80,30 +92,45 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
       mHexRowHeight.setEnabled(!mHexRowHeightAuto.isChecked());
     } else if (preference.equals(mHexRowHeight)) {
       displayDialog(mHexRowHeight.getTitle(),
-          mApp.getHexRowHeightPortrait(),
+          mApp.getListSettingsHexPortrait().getRowHeight(),
           MIN_HEX_ROW_HEIGHT,
           MAX_HEX_ROW_HEIGHT,
-          mApp::setHexRowHeightPortrait);
+          (n) -> mApp.getListSettingsHexPortrait().setRowHeight(n));
     } else if (preference.equals(mHexFontSize)) {
       displayDialog(mHexFontSize.getTitle(),
-          mApp.getHexFontSizePortrait(),
+          mApp.getListSettingsHexPortrait().getFontSize(),
           MIN_HEX_FONT_SIZE,
           MAX_HEX_FONT_SIZE,
-          mApp::setHexFontSizePortrait, true);
-    } else if (preference.equals(mPlainRowHeightAuto)) {
+          (n) -> mApp.getListSettingsHexPortrait().setFontSize(n), true);
+    } else if (preference.equals(mHexRowHeightAutoLineNumbers)) {
+      mHexRowHeightLineNumbers.setEnabled(!mHexRowHeightAutoLineNumbers.isChecked());
+    } else if (preference.equals(mHexRowHeightLineNumbers)) {
+      displayDialog(mHexRowHeightLineNumbers.getTitle(),
+          mApp.getListSettingsHexLineNumbersPortrait().getRowHeight(),
+          MIN_HEX_ROW_HEIGHT,
+          MAX_HEX_ROW_HEIGHT,
+          (n) -> mApp.getListSettingsHexLineNumbersPortrait().setRowHeight(n));
+    } else if (preference.equals(mHexFontSizeLineNumbers)) {
+      displayDialog(mHexFontSizeLineNumbers.getTitle(),
+          mApp.getListSettingsHexLineNumbersPortrait().getFontSize(),
+          MIN_HEX_FONT_SIZE,
+          MAX_HEX_FONT_SIZE,
+          (n) -> mApp.getListSettingsHexLineNumbersPortrait().setFontSize(n), true);
+    }
+    else if (preference.equals(mPlainRowHeightAuto)) {
       mPlainRowHeight.setEnabled(!mPlainRowHeightAuto.isChecked());
     } else if (preference.equals(mPlainRowHeight)) {
       displayDialog(mPlainRowHeight.getTitle(),
-          mApp.getPlainRowHeightPortrait(),
+          mApp.getListSettingsPlainPortrait().getRowHeight(),
           MIN_PLAIN_ROW_HEIGHT,
           MAX_PLAIN_ROW_HEIGHT,
-          mApp::setPlainRowHeightPortrait);
+          (n) -> mApp.getListSettingsPlainPortrait().setRowHeight(n));
     } else if (preference.equals(mPlainFontSize)) {
       displayDialog(mPlainFontSize.getTitle(),
-          mApp.getPlainFontSizePortrait(),
+          mApp.getListSettingsPlainPortrait().getFontSize(),
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
-          mApp::setPlainFontSizePortrait, true);
+          (n) -> mApp.getListSettingsPlainPortrait().setFontSize(n), true);
     }
     return false;
   }

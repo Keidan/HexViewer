@@ -14,6 +14,7 @@ import java.util.Locale;
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
+import fr.ralala.hexviewer.models.ListSettings;
 
 /**
  * ******************************************************************************
@@ -22,7 +23,7 @@ import androidx.preference.PreferenceManager;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
  * <p>
  * ******************************************************************************
@@ -35,12 +36,18 @@ public class ApplicationCtx extends Application {
   public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT = "hexRowHeight";
   public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO = "hexRowHeightAuto";
   public static final String CFG_PORTRAIT_HEX_FONT_SIZE = "hexFontSize";
-  public static final String CFG_PORTRAIT_PLAIN_ROW_HEIGHT = "plainRowHeight";
-  public static final String CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAuto";
-  public static final String CFG_PORTRAIT_PLAIN_FONT_SIZE = "plainFontSize";
   public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT = "hexRowHeightLandscape";
   public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO = "hexRowHeightAutoLandscape";
   public static final String CFG_LANDSCAPE_HEX_FONT_SIZE = "hexFontSizeLandscape";
+  public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS = "hexRowHeightLineNumbers";
+  public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS = "hexRowHeightAutoLineNumbers";
+  public static final String CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS = "hexFontSizeLineNumbers";
+  public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS = "hexRowHeightLineNumbersLandscape";
+  public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS = "hexRowHeightAutoLineNumbersLandscape";
+  public static final String CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS = "hexFontSizeLineNumbersLandscape";
+  public static final String CFG_PORTRAIT_PLAIN_ROW_HEIGHT = "plainRowHeight";
+  public static final String CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAuto";
+  public static final String CFG_PORTRAIT_PLAIN_FONT_SIZE = "plainFontSize";
   public static final String CFG_LANDSCAPE_PLAIN_ROW_HEIGHT = "plainRowHeightLandscape";
   public static final String CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAutoLandscape";
   public static final String CFG_LANDSCAPE_PLAIN_FONT_SIZE = "plainFontSizeLandscape";
@@ -53,17 +60,17 @@ public class ApplicationCtx extends Application {
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
-  private String mDefaultHexRowHeight;
-  private boolean mDefaultHexRowHeightAuto;
-  private String mDefaultHexFontSize;
-  private String mDefaultPlainRowHeight;
-  private boolean mDefaultPlainRowHeightAuto;
-  private String mDefaultPlainFontSize;
   private boolean mDefaultSmartInput;
   private List<String> mRecentlyOpened;
   private static ApplicationCtx instance;
   private String mLanguage = null;
   private boolean mDefaultLinesNumber;
+  private ListSettings mListSettingsHexPortrait;
+  private ListSettings mListSettingsHexLandscape;
+  private ListSettings mListSettingsHexLineNumbersPortrait;
+  private ListSettings mListSettingsHexLineNumbersLandscape;
+  private ListSettings mListSettingsPlainPortrait;
+  private ListSettings mListSettingsPlainLandscape;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -76,16 +83,36 @@ public class ApplicationCtx extends Application {
     mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     mDefaultAbbreviatePortrait = getString(R.string.default_abbreviate_portrait);
     mDefaultAbbreviateLandscape = getString(R.string.default_abbreviate_landscape);
-    mDefaultHexRowHeightAuto = Boolean.parseBoolean(getString(R.string.default_hex_row_height_auto));
-    mDefaultHexRowHeight = getString(R.string.default_hex_row_height);
-    mDefaultHexFontSize = getString(R.string.default_hex_font_size);
-    mDefaultPlainRowHeightAuto = Boolean.parseBoolean(getString(R.string.default_plain_row_height_auto));
-    mDefaultPlainRowHeight = getString(R.string.default_plain_row_height);
-    mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = getRecentlyOpened();
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
 
+    mListSettingsHexPortrait = new ListSettings(this,
+        CFG_PORTRAIT_HEX_ROW_HEIGHT, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO, CFG_PORTRAIT_HEX_FONT_SIZE,
+        R.string.default_hex_row_height_portrait, R.string.default_hex_row_height_auto_portrait,
+        R.string.default_hex_font_size_portrait);
+    mListSettingsHexLandscape = new ListSettings(this,
+        CFG_LANDSCAPE_HEX_ROW_HEIGHT, CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_HEX_FONT_SIZE,
+        R.string.default_hex_row_height_landscape, R.string.default_hex_row_height_auto_landscape,
+        R.string.default_hex_font_size_landscape);
+
+    mListSettingsHexLineNumbersPortrait = new ListSettings(this,
+        CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS, CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS,
+        R.string.default_hex_row_height_portrait_lines_numbers, R.string.default_hex_row_height_auto_portrait_lines_numbers,
+        R.string.default_hex_font_size_portrait_lines_numbers);
+    mListSettingsHexLineNumbersLandscape = new ListSettings(this,
+        CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS, CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS, CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS,
+        R.string.default_hex_row_height_landscape_lines_numbers, R.string.default_hex_row_height_auto_landscape_lines_numbers,
+        R.string.default_hex_font_size_landscape_lines_numbers);
+
+    mListSettingsPlainPortrait = new ListSettings(this,
+        CFG_PORTRAIT_PLAIN_ROW_HEIGHT, CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO, CFG_PORTRAIT_PLAIN_FONT_SIZE,
+        R.string.default_plain_row_height_portrait, R.string.default_plain_row_height_auto_portrait,
+        R.string.default_plain_font_size_portrait);
+    mListSettingsPlainLandscape = new ListSettings(this,
+        CFG_LANDSCAPE_PLAIN_ROW_HEIGHT, CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_PLAIN_FONT_SIZE,
+        R.string.default_plain_row_height_landscape, R.string.default_plain_row_height_auto_landscape,
+        R.string.default_plain_font_size_landscape);
     /* EmojiCompat */
     EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
     EmojiCompat.init(config);
@@ -93,7 +120,7 @@ public class ApplicationCtx extends Application {
     setApplicationLanguage(mLanguage);
   }
 
-  private SharedPreferences getPref(final Context context) {
+  public SharedPreferences getPref(final Context context) {
     if (mSharedPreferences == null)
       mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     return mSharedPreferences;
@@ -251,250 +278,57 @@ public class ApplicationCtx extends Application {
   }
 
   /**
-   * Returns the row height auto state for the hex list view (portrait).
+   * Returns the list settings for the hex list (portrait).
    *
-   * @return boolean
+   * @return ListSettings
    */
-  public boolean isHexRowHeightAutoPortrait() {
-    try {
-      return getPref(this).getBoolean(CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO, mDefaultHexRowHeightAuto);
-    } catch (Exception ignore) {
-      return mDefaultHexRowHeightAuto;
-    }
+  public ListSettings getListSettingsHexPortrait() {
+    return mListSettingsHexPortrait;
   }
 
   /**
-   * Returns the row height for the hex list view (portrait).
+   * Returns the list settings for the hex list (landscape).
    *
-   * @return int
+   * @return ListSettings
    */
-  public int getHexRowHeightPortrait() {
-    try {
-      return Integer.parseInt(getPref(this).getString(CFG_PORTRAIT_HEX_ROW_HEIGHT, mDefaultHexRowHeight));
-    } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultHexRowHeight);
-    }
+  public ListSettings getListSettingsHexLandscape() {
+    return mListSettingsHexLandscape;
   }
 
   /**
-   * Change the row height for the hex list view (portrait).
+   * Returns the list settings for the hex list with line numbers(portrait).
    *
-   * @param number The new number.
+   * @return ListSettings
    */
-  public void setHexRowHeightPortrait(int number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_PORTRAIT_HEX_ROW_HEIGHT, String.valueOf(number));
-    e.apply();
+  public ListSettings getListSettingsHexLineNumbersPortrait() {
+    return mListSettingsHexLineNumbersPortrait;
   }
 
   /**
-   * Returns the font size for the hex list view (portrait).
+   * Returns the list settings for the hex list with line numbers(landscape).
    *
-   * @return float
+   * @return ListSettings
    */
-  public float getHexFontSizePortrait() {
-    try {
-      return Float.parseFloat(getPref(this).getString(CFG_PORTRAIT_HEX_FONT_SIZE, mDefaultHexFontSize));
-    } catch (Exception ignore) {
-      return Float.parseFloat(mDefaultHexFontSize);
-    }
+  public ListSettings getListSettingsHexLineNumbersLandscape() {
+    return mListSettingsHexLineNumbersLandscape;
   }
 
   /**
-   * Change the font size for the hex list view (portrait).
+   * Returns the list settings for the plain text list(portrait).
    *
-   * @param number The new number.
+   * @return ListSettings
    */
-  public void setHexFontSizePortrait(float number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_PORTRAIT_HEX_FONT_SIZE, String.valueOf(number));
-    e.apply();
-  }
-
-
-  /**
-   * Returns the row height auto state for the hex list view (portrait).
-   *
-   * @return boolean
-   */
-  public boolean isPlainRowHeightAutoPortrait() {
-    try {
-      return getPref(this).getBoolean(CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO, mDefaultPlainRowHeightAuto);
-    } catch (Exception ignore) {
-      return mDefaultPlainRowHeightAuto;
-    }
+  public ListSettings getListSettingsPlainPortrait() {
+    return mListSettingsPlainPortrait;
   }
 
   /**
-   * Returns the row height for the hex list view (portrait).
+   * Returns the list settings for the plain text list(landscape).
    *
-   * @return int
+   * @return ListSettings
    */
-  public int getPlainRowHeightPortrait() {
-    try {
-      return Integer.parseInt(getPref(this).getString(CFG_PORTRAIT_PLAIN_ROW_HEIGHT, mDefaultPlainRowHeight));
-    } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultPlainRowHeight);
-    }
-  }
-
-  /**
-   * Change the row height for the hex list view (portrait).
-   *
-   * @param number The new number.
-   */
-  public void setPlainRowHeightPortrait(int number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_PORTRAIT_PLAIN_ROW_HEIGHT, String.valueOf(number));
-    e.apply();
-  }
-
-  /**
-   * Returns the font size for the hex list view (portrait).
-   *
-   * @return float
-   */
-  public float getPlainFontSizePortrait() {
-    try {
-      return Float.parseFloat(getPref(this).getString(CFG_PORTRAIT_PLAIN_FONT_SIZE, mDefaultPlainFontSize));
-    } catch (Exception ignore) {
-      return Float.parseFloat(mDefaultPlainFontSize);
-    }
-  }
-
-  /**
-   * Change the font size for the hex list view (portrait).
-   *
-   * @param number The new number.
-   */
-  public void setPlainFontSizePortrait(float number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_PORTRAIT_PLAIN_FONT_SIZE, String.valueOf(number));
-    e.apply();
-  }
-
-
-  /**
-   * Returns the row height auto state for the hex list view (landscape).
-   *
-   * @return boolean
-   */
-  public boolean isHexRowHeightAutoLandscape() {
-    try {
-      return getPref(this).getBoolean(CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO, isHexRowHeightAutoPortrait());
-    } catch (Exception ignore) {
-      return mDefaultHexRowHeightAuto;
-    }
-  }
-
-  /**
-   * Returns the row height for the hex list view (landscape).
-   *
-   * @return int
-   */
-  public int getHexRowHeightLandscape() {
-    try {
-      return Integer.parseInt(getPref(this).getString(CFG_LANDSCAPE_HEX_ROW_HEIGHT, "" + getHexRowHeightPortrait()));
-    } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultHexRowHeight);
-    }
-  }
-
-  /**
-   * Change the row height for the hex list view (landscape).
-   *
-   * @param number The new number.
-   */
-  public void setHexRowHeightLandscape(int number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_LANDSCAPE_HEX_ROW_HEIGHT, String.valueOf(number));
-    e.apply();
-  }
-
-  /**
-   * Returns the font size for the hex list view (landscape).
-   *
-   * @return float
-   */
-  public float getHexFontSizeLandscape() {
-    try {
-      return Float.parseFloat(getPref(this).getString(CFG_LANDSCAPE_HEX_FONT_SIZE, "" + getHexFontSizePortrait()));
-    } catch (Exception ignore) {
-      return Float.parseFloat(mDefaultHexFontSize);
-    }
-  }
-
-  /**
-   * Change the font size for the hex list view (landscape).
-   *
-   * @param number The new number.
-   */
-  public void setHexFontSizeLandscape(float number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_LANDSCAPE_HEX_FONT_SIZE, String.valueOf(number));
-    e.apply();
-  }
-
-
-  /**
-   * Returns the row height auto state for the hex list view (landscape).
-   *
-   * @return boolean
-   */
-  public boolean isPlainRowHeightAutoLandscape() {
-    try {
-      return getPref(this).getBoolean(CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO, isPlainRowHeightAutoPortrait());
-    } catch (Exception ignore) {
-      return mDefaultPlainRowHeightAuto;
-    }
-  }
-
-  /**
-   * Returns the row height for the hex list view (landscape).
-   *
-   * @return int
-   */
-  public int getPlainRowHeightLandscape() {
-    try {
-      return Integer.parseInt(getPref(this).getString(CFG_LANDSCAPE_PLAIN_ROW_HEIGHT, "" + getPlainRowHeightPortrait()));
-    } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultPlainRowHeight);
-    }
-  }
-
-  /**
-   * Change the row height for the hex list view (landscape).
-   *
-   * @param number The new number.
-   */
-  public void setPlainRowHeightLandscape(int number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_LANDSCAPE_PLAIN_ROW_HEIGHT, String.valueOf(number));
-    e.apply();
-  }
-
-  /**
-   * Returns the font size for the hex list view (landscape).
-   *
-   * @return float
-   */
-  public float getPlainFontSizeLandscape() {
-    try {
-      return Float.parseFloat(getPref(this).getString(CFG_LANDSCAPE_PLAIN_FONT_SIZE, "" + getPlainFontSizePortrait()));
-    } catch (Exception ignore) {
-      return Float.parseFloat(mDefaultPlainFontSize);
-    }
-  }
-
-  /**
-   * Change the font size for the hex list view (landscape).
-   *
-   * @param number The new number.
-   */
-  public void setPlainFontSizeLandscape(float number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_LANDSCAPE_PLAIN_FONT_SIZE, String.valueOf(number));
-    e.apply();
+  public ListSettings getListSettingsPlainLandscape() {
+    return mListSettingsPlainLandscape;
   }
   /*-------------------- LOCALE --------------------*/
 

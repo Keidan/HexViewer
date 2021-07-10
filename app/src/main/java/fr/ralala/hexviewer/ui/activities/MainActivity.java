@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         onPopupItemClick(R.id.action_open));
     findViewById(R.id.buttonRecentlyOpen).setOnClickListener((v) ->
         onPopupItemClick(R.id.action_recently_open));
-
+    findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().isEmpty());
     mPayloadHexHelper = new PayloadHexHelper();
     mPayloadHexHelper.onCreate(this);
 
@@ -682,6 +682,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPayloadPlainSwipe.getAdapterPlain().clear();
       mPayloadHexHelper.getAdapter().clear();
       cancelSearch();
+      findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().isEmpty());
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,

@@ -26,16 +26,31 @@ public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig
 
   @Override
   public float getFontSize() {
-    return mIsHexList ? mApp.getHexFontSizePortrait() : mApp.getPlainFontSizePortrait();
+    if(mIsHexList) {
+      if(mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersPortrait().getFontSize();
+      return mApp.getListSettingsHexPortrait().getFontSize();
+    }
+    return mApp.getListSettingsPlainPortrait().getFontSize();
   }
 
   @Override
   public int getRowHeight() {
-    return mIsHexList ? mApp.getHexRowHeightPortrait() : mApp.getPlainRowHeightPortrait();
+    if(mIsHexList) {
+      if(mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersPortrait().getRowHeight();
+      return mApp.getListSettingsHexPortrait().getRowHeight();
+    }
+    return mApp.getListSettingsPlainPortrait().getRowHeight();
   }
 
   @Override
   public boolean isRowHeightAuto() {
-    return mIsHexList ? mApp.isHexRowHeightAutoPortrait() : mApp.isPlainRowHeightAutoPortrait();
+    if(mIsHexList) {
+      if(mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersPortrait().isRowHeightAuto();
+      return mApp.getListSettingsHexPortrait().isRowHeightAuto();
+    }
+    return mApp.getListSettingsPlainPortrait().isRowHeightAuto();
   }
 }
