@@ -38,7 +38,7 @@ public class ListSettings {
     mKeyFontSize = keyFontSize;
 
     mDefaultRowHeightAuto = Boolean.parseBoolean(mApp.getString(defaultRowHeightAuto));
-    mDefaultRowHeight = mApp.getString(defaultRowHeightAuto);
+    mDefaultRowHeight = mApp.getString(defaultRowHeight);
     mDefaultFontSize = mApp.getString(defaultFontSize);
   }
 
