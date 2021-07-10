@@ -4,6 +4,7 @@
     <string name="search_hint">Suchen&#8230;</string>
     <string name="action_open_title">Öffnen</string>
     <string name="action_plain_text_title">Einfacher Text</string>
+    <string name="action_line_numbers_title">Zeilennummern</string>
     <string name="action_save_title">Speichern</string>
     <string name="action_save_as_title">Speichern unter &#8230;</string>
     <string name="action_close_title">Schließen</string>

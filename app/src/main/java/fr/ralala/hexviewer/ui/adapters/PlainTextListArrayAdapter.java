@@ -1,15 +1,17 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
 
@@ -26,27 +28,10 @@ import fr.ralala.hexviewer.models.LineFilter;
  * ******************************************************************************
  */
 public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String> {
+  private static final int ID = R.layout.listview_simple_row;
 
   public PlainTextListArrayAdapter(final Context context, final List<LineData<String>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
-    super(context, objects, userConfigPortrait, userConfigLandscape);
-  }
-
-  /**
-   * Sets the entry text (if updated = false)
-   *
-   * @param view    The text view.
-   * @param text    The text.
-   * @param updated The updated flag.
-   */
-  @Override
-  protected void setEntryText(final TextView view, final String text, final boolean updated) {
-    if (updated) {
-      SpannableString spanString = new SpannableString(text);
-      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
-      view.setText(spanString);
-    } else {
-      view.setText(ignoreNonDisplayedChar(text));
-    }
+    super(context, ID, objects, userConfigPortrait, userConfigLandscape);
   }
 
   /**
@@ -94,6 +79,48 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String
     for (char c : ref.toCharArray())
       sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
     return sb.toString();
+  }
+
+
+  /**
+   * Inflate the view.
+   *
+   * @param convertView This value may be null.
+   * @return The view.
+   */
+  protected @NonNull
+  View inflateView(final View convertView) {
+    View v = convertView;
+    if (v == null) {
+      final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      if (inflater != null) {
+        v = inflater.inflate(ID, null);
+        final TextView label1 = v.findViewById(R.id.label1);
+        v.setTag(label1);
+      }
+    }
+    return v == null ? new View(getContext()) : v;
+  }
+
+  /**
+   * Fills the view.
+   *
+   * @param v        This can't be null.
+   * @param position The position of the item within the adapter's data set of the item whose view we want.
+   */
+  @Override
+  protected void fillView(final @NonNull View v, final int position) {
+    if (v.getTag() != null) {
+      final TextView holder = (TextView) v.getTag();
+      LineFilter<String> fd = getFilteredList().get(position);
+
+      if(fd.getData().isFalselyDeleted())
+        return;
+
+      holder.setText(ignoreNonDisplayedChar(fd.getData().getValue()));
+      holder.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
+      applyUserConfig(holder);
+    }
   }
 }
 

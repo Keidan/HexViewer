@@ -4,6 +4,7 @@
     <string name="search_hint">Search&#8230;</string>
     <string name="action_open_title">Open</string>
     <string name="action_plain_text_title">Plain text</string>
+    <string name="action_line_numbers_title">Line numbers</string>
     <string name="action_save_title">Save</string>
     <string name="action_save_as_title">Save As &#8230;</string>
     <string name="action_close_title">Close</string>
@@ -41,11 +42,12 @@
     <string name="default_abbreviate_landscape" translatable="false">16</string>
     <string name="default_hex_row_height_auto" translatable="false">true</string>
     <string name="default_hex_row_height" translatable="false">100</string>
-    <string name="default_hex_font_size" translatable="false">12</string>
+    <string name="default_hex_font_size" translatable="false">9</string>
     <string name="default_plain_row_height_auto" translatable="false">true</string>
     <string name="default_plain_row_height" translatable="false">100</string>
     <string name="default_plain_font_size" translatable="false">12</string>
     <string name="default_smart_input" translatable="false">false</string>
+    <string name="default_lines_number" translatable="false">false</string>
 
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>

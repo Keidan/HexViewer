@@ -49,6 +49,7 @@ public class ApplicationCtx extends Application {
   public static final String CFG_VERSION = "version";
   public static final String CFG_LICENSE = "license";
   public static final String CFG_LANGUAGE = "language";
+  public static final String CFG_LINES_NUMBER = "linesNumber";
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
@@ -62,6 +63,7 @@ public class ApplicationCtx extends Application {
   private List<String> mRecentlyOpened;
   private static ApplicationCtx instance;
   private String mLanguage = null;
+  private boolean mDefaultLinesNumber;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -82,6 +84,7 @@ public class ApplicationCtx extends Application {
     mDefaultPlainFontSize = getString(R.string.default_plain_font_size);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = getRecentlyOpened();
+    mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
 
     /* EmojiCompat */
     EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
@@ -97,6 +100,31 @@ public class ApplicationCtx extends Application {
   }
 
   /* ---------- Settings ---------- */
+
+
+  /**
+   * Tests if the line numbers are displayed or not.
+   *
+   * @return bool
+   */
+  public boolean isLineNumber() {
+    try {
+      return getPref(this).getBoolean(CFG_LINES_NUMBER, mDefaultLinesNumber);
+    } catch (Exception ignore) {
+      return mDefaultLinesNumber;
+    }
+  }
+
+  /**
+   * Show/Hide the line numbers.
+   *
+   * @param mode The new mode.
+   */
+  public void setLineNumber(boolean mode) {
+    SharedPreferences.Editor e = getPref(this).edit();
+    e.putBoolean(CFG_LINES_NUMBER, mode);
+    e.apply();
+  }
 
   /**
    * Adds a new element to the list.
@@ -524,7 +552,8 @@ public class ApplicationCtx extends Application {
     if (mLanguage == null) {
       Locale loc = Locale.getDefault();
       mLanguage = loc.getLanguage();
-      if (loc.getCountry() != null && !loc.getCountry().isEmpty())
+      loc.getCountry();
+      if (!loc.getCountry().isEmpty())
         mLanguage += "-" + loc.getCountry();
     }
   }

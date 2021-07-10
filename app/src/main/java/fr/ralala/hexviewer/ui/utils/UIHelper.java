@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
@@ -38,6 +41,22 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class UIHelper {
+  private static Point mScreen = null;
+
+  /**
+   * Returns the SIZE of the screen.
+   * @param c Android context.
+   * @return int
+   */
+  public static Point getScreenSize(final Context c) {
+    if(mScreen == null) {
+      WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
+      Display display = wm.getDefaultDisplay();
+      mScreen = new Point();
+      display.getSize(mScreen);
+    }
+    return mScreen;
+  }
 
   /**
    * Sets the activity title.

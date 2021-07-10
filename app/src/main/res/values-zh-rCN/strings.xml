@@ -3,6 +3,7 @@
   <string name="search_hint">搜索&#8230;</string>
   <string name="action_open_title">打开</string>
   <string name="action_plain_text_title">纯文本</string>
+  <string name="action_line_numbers_title">行号</string>
   <string name="action_save_title">保存</string>
   <string name="action_save_as_title">另存为 &#8230;</string>
   <string name="action_close_title">关闭</string>

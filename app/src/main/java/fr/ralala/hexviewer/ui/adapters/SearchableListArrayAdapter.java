@@ -2,7 +2,6 @@ package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,8 +14,6 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
 
@@ -33,7 +30,6 @@ import fr.ralala.hexviewer.models.LineFilter;
  * ******************************************************************************
  */
 public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineData<T>> {
-  private static final int ID = R.layout.listview_simple_row;
   private final EntryFilter mEntryFilter;
   private final List<LineData<T>> mEntryList;
   private final UserConfig mUserConfigPortrait;
@@ -48,8 +44,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
     boolean isRowHeightAuto();
   }
 
-  public SearchableListArrayAdapter(final Context context, final List<LineData<T>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
-    super(context, ID, objects);
+  public SearchableListArrayAdapter(final Context context, final int layoutId, final List<LineData<T>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
+    super(context, layoutId, objects);
     mEntryFilter = new EntryFilter();
     mEntryList = objects;
     mFilteredList = new ArrayList<>();
@@ -64,6 +60,15 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    */
   public List<LineData<T>> getItems() {
     return mEntryList;
+  }
+
+  /**
+   * Returns the number of items.
+   *
+   * @return int
+   */
+  public int getItemsCount() {
+    return mEntryList.size();
   }
 
   /**
@@ -162,19 +167,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @param convertView This value may be null.
    * @return The view.
    */
-  private @NonNull
-  View inflateView(final View convertView) {
-    View v = convertView;
-    if (v == null) {
-      final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-      if (inflater != null) {
-        v = inflater.inflate(ID, null);
-        final TextView label1 = v.findViewById(R.id.label1);
-        v.setTag(label1);
-      }
-    }
-    return v == null ? new View(getContext()) : v;
-  }
+  protected abstract @NonNull
+  View inflateView(final View convertView);
 
   /**
    * Fills the view.
@@ -182,23 +176,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @param v        This can't be null.
    * @param position The position of the item within the adapter's data set of the item whose view we want.
    */
-  private void fillView(final @NonNull View v, final int position) {
-    if (v.getTag() != null) {
-      final TextView holder = (TextView) v.getTag();
-      LineFilter<T> fd = mFilteredList.get(position);
-
-      if(fd.getData().isFalselyDeleted())
-        return;
-
-      applyUpdated(holder, fd);
-
-      holder.setTextColor(ContextCompat.getColor(getContext(),
-          fd.getData().isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
-
-      applyUserConfig(holder);
-      v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
-    }
-  }
+  protected abstract void fillView(final @NonNull View v, final int position);
 
   /**
    * Get a View that displays the data at the specified position in the data set.
@@ -218,44 +196,27 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
   }
 
   /**
-   * Applies the necessary changes if the "updated" field is true.
-   *
-   * @param tv TextView
-   * @param fd FilterData
-   */
-  private void applyUpdated(final TextView tv, final LineFilter<T> fd) {
-    setEntryText(tv, fd.getData().getValue(), fd.getData().isUpdated());
-  }
-
-  /**
    * Applies the user config.
    *
    * @param tv TextView
+   * @return true if landscape.
    */
-  private void applyUserConfig(final TextView tv) {
+  protected boolean applyUserConfig(final TextView tv) {
     Configuration cfg = getContext().getResources().getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       tv.setTextSize(mUserConfigLandscape.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigLandscape.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigLandscape.getRowHeight();
       tv.setLayoutParams(lp);
+      return true;
     } else if (mUserConfigPortrait != null) {
       tv.setTextSize(mUserConfigPortrait.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigPortrait.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigPortrait.getRowHeight();
       tv.setLayoutParams(lp);
     }
+    return false;
   }
-
-
-  /**
-   * Sets the entry text (if updated = false)
-   *
-   * @param view    The text view.
-   * @param text    The text.
-   * @param updated The updated flag.
-   */
-  protected abstract void setEntryText(final TextView view, final T text, final boolean updated);
 
   /**
    * Returns true if the item is selected.

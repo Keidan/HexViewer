@@ -1,9 +1,12 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,9 +16,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
  * ******************************************************************************
@@ -30,29 +38,14 @@ import fr.ralala.hexviewer.models.LineFilter;
  * ******************************************************************************
  */
 public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
+  private static final int ID = R.layout.listview_hex_row;
   private Set<Integer> mSelectedItemsIds;
+  private final ApplicationCtx mApp;
 
   public HexTextArrayAdapter(final Context context, final List<LineData<Line>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
-    super(context, objects, userConfigPortrait, userConfigLandscape);
+    super(context, ID, objects, userConfigPortrait, userConfigLandscape);
     mSelectedItemsIds = new HashSet<>();
-  }
-
-  /**
-   * Sets the entry text (if updated = false)
-   *
-   * @param view    The text view.
-   * @param text    The text.
-   * @param updated The updated flag.
-   */
-  @Override
-  protected void setEntryText(final TextView view, final Line text, final boolean updated) {
-    if (updated) {
-      SpannableString spanString = new SpannableString(text.getPlain());
-      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
-      view.setText(spanString);
-    } else {
-      view.setText(text.getPlain());
-    }
+    mApp = ApplicationCtx.getInstance();
   }
 
   /**
@@ -77,7 +70,11 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    */
   @Override
   protected void extraFilter(final LineData<Line> line, int index, String query, final ArrayList<LineFilter<Line>> tempList, Locale loc) {
-    /* nothing */
+    final int maxLength = String.format("%X", getItemsCount()).length();
+    final String s = String.format("%0" + maxLength + "X", index);
+    if (s.toLowerCase(loc).contains(query)) {
+      tempList.add(new LineFilter<>(line, index));
+    }
   }
 
   /**
@@ -112,6 +109,95 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
     List<Integer> li = new ArrayList<>(mSelectedItemsIds);
     Collections.sort(li);
     return li;
+  }
+
+
+  /**
+   * Inflate the view.
+   *
+   * @param convertView This value may be null.
+   * @return The view.
+   */
+  protected @NonNull
+  View inflateView(final View convertView) {
+    View v = convertView;
+    if (v == null) {
+      final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      if (inflater != null) {
+        v = inflater.inflate(ID, null);
+        Holder holder = new Holder();
+        holder.content = v.findViewById(R.id.content);
+        holder.lineNumbers = v.findViewById(R.id.lineNumbers);
+        v.setTag(holder);
+      }
+    }
+    return v == null ? new View(getContext()) : v;
+  }
+
+
+  /**
+   * Applies the necessary changes if the "updated" field is true.
+   *
+   * @param tv TextView
+   * @param fd FilterData
+   * @param landscape Landscape mode ?
+   */
+  private void applyUpdated(final TextView tv, final LineFilter<Line> fd, boolean landscape) {
+    if (fd.getData().isUpdated()) {
+      SpannableString spanString = new SpannableString(fd.getData().getValue().getPlain());
+      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+      tv.setText(spanString);
+    } else {
+      String str = fd.getData().getValue().getPlain();
+      tv.setText(str);
+      if(mApp.isLineNumber()) {
+        tv.measure(0, 0);       //must call measure!
+        Point p = UIHelper.getScreenSize(mApp);
+        if(!landscape && ((100 * tv.getMeasuredWidth()) / p.x) >= 75)
+          tv.setText(str.substring(0, 48));
+      }
+    }
+  }
+
+  /**
+   * Fills the view.
+   *
+   * @param v        This can't be null.
+   * @param position The position of the item within the adapter's data set of the item whose view we want.
+   */
+  @Override
+  protected void fillView(final @NonNull View v, final int position) {
+    if (v.getTag() != null) {
+      final Holder holder = (Holder) v.getTag();
+      LineFilter<Line> fd = getFilteredList().get(position);
+
+      if(fd.getData().isFalselyDeleted())
+        return;
+      boolean landscape;
+      if(mApp.isLineNumber()) {
+        final int maxLength = String.format("%X", getItemsCount()).length();
+        final String s = String.format("%0" + maxLength + "X", fd.getOrigin());
+        holder.lineNumbers.setText(s);
+        holder.lineNumbers.setTextColor(ContextCompat.getColor(getContext(),
+            R.color.colorLineNumbers));
+        landscape = applyUserConfig(holder.lineNumbers);
+        holder.lineNumbers.setVisibility(View.VISIBLE);
+      }
+      else {
+        holder.lineNumbers.setVisibility(View.GONE);
+        landscape = false;
+      }
+      applyUpdated(holder.content, fd, landscape);
+      holder.content.setTextColor(ContextCompat.getColor(getContext(),
+          fd.getData().isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
+      applyUserConfig(holder.content);
+      v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
+    }
+  }
+
+  private static class Holder {
+    TextView lineNumbers;
+    TextView content;
   }
 }
 

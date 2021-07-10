@@ -20,4 +20,5 @@
   <color name="colorResultError">#FFD34248</color>
   <color name="colorResultWarning">#FFFF9800</color>
   <color name="colorTextUpdated">#FFD34248</color>
+  <color name="colorLineNumbers">#FFFFC107</color>
 </resources>
