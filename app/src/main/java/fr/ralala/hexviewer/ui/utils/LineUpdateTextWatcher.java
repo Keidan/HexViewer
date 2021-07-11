@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -47,6 +48,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private boolean mBetweenDigits = false;
   private int mStart = 0;
   private boolean mIgnore = false;// indicates if the change was made by the TextWatcher itself.
+  private boolean mRemove = false;
+  private int mStartOffsetForOverwrite = 0;
 
   public LineUpdateTextWatcher(Context context, TextView result, TextInputLayout layout, ApplicationCtx app) {
     mContext = context;
@@ -116,14 +119,47 @@ public class LineUpdateTextWatcher implements TextWatcher {
       processNewStringEmpty();
       return;
     }
-    if (mApp.isSmartInput() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
+
+    if(!processAfterTextChangeOverwrite(strNew))
+      processAfterTextChangeSmartInput(strOld, strNew);
+
+    processResultAndError(strNew);
+  }
+
+  /**
+   * Management of the afterTextChanged method when the Overwrite box is checked.
+   * @param strNew String
+   * @return True if the method has consumed the event
+   */
+  private boolean processAfterTextChangeOverwrite(final String strNew) {
+    boolean remove = mRemove;
+    boolean consumed = false;
+    mRemove = false;
+    if (!remove && !mApp.isSmartInput() && mApp.isOverwrite() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
+      mIgnore = true; // prevent infinite loop
+      final EditText et = mLayout.getEditText();
+      mStart = et.getSelectionStart();
+      et.setText(strNew);
+      et.setSelection(Math.max(0, Math.min(mStart + mStartOffsetForOverwrite, et.getText().length())));
+      mIgnore = false; // release, so the TextWatcher start to listen again.
+      consumed = true;
+    }
+    return consumed;
+  }
+
+  /**
+   * Management of the afterTextChanged method when the SmartInput box is checked.
+   * @param strOld String
+   * @param strNew String
+   */
+  private void processAfterTextChangeSmartInput(final String strOld, final String strNew) {
+    if (mApp.isSmartInput() && (mApp.isOverwrite() || !mOldString.equals(strNew)) && mLayout.getEditText() != null) {
       mIgnore = true; // prevent infinite loop
       final EditText et = mLayout.getEditText();
       et.setText(strNew);
-      fixCursorPosition(et, strOld, strNew);
+      fixCursorPositionForSmartInput(et, strOld, strNew);
       mIgnore = false; // release, so the TextWatcher start to listen again.
     }
-    processResultAndError(strNew);
   }
 
   /**
@@ -158,32 +194,15 @@ public class LineUpdateTextWatcher implements TextWatcher {
     mNewString = s.toString();
     if (mApp.isSmartInput()) {
       if (count == 0) { /* remove */
-        mStart = start + before;
-        /* remove one space */
-        Matcher m = PATTERN_4HEX.matcher(mNewString);
-        if (m.find()) {
-          String grp = m.group(1);
-          if (grp != null)
-            mNewString = mNewString.replace(grp, grp.substring(2)).replaceAll(" {2}", " ");
-        } else
-          /* remove one char */
-          mNewString = mNewString.replaceAll("(^\\p{XDigit} | \\p{XDigit} | \\p{XDigit}$| {2}|^\\p{XDigit}$)", " ").trim();
-        if (mNewString.length() < 2)
-          mNewString = "";
+        processRemoveWithSmartInput(start, before);
       } else {  /* add */
-        mStart = start == 0 ? 0 : start + 1;
-        final String notChangedStart = mNewString.substring(0, start);
-        final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
-        CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
-        StringBuilder newChangeHex = new StringBuilder();
-        byte[] newChangeBytes = newChange.toString().getBytes();
-        List<LineData<Line>> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
-        for (LineData<Line> str : list)
-          newChangeHex.append(SysHelper.extractHex(str.getValue().getPlain()));
-        mNewString = formatText((notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "").toLowerCase(Locale.US));
+        processAddWithSmartInput(start, count);
       }
+    } else if(mApp.isOverwrite()) {
+      processOverwriteWithoutSmartInput(start, before, count);
     }
   }
+
 
   @NonNull
   public static String normalizeForEmoji(CharSequence charSequence) {
@@ -225,7 +244,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
   /**
    * Update of the cursor position.
    */
-  private void fixCursorPosition(final @NonNull EditText et, final String strOld, final String strNew) {
+  private void fixCursorPositionForSmartInput(final @NonNull EditText et, final String strOld, final String strNew) {
     final int newLen = strNew.length();
     final int oldLen = strOld.length();
     final int delta = Math.abs(newLen - oldLen);
@@ -238,5 +257,101 @@ public class LineUpdateTextWatcher implements TextWatcher {
       if (mBetweenDigits) pos++;
     }
     et.setSelection(Math.max(0, Math.min(pos, newLen)));
+  }
+
+  /**
+   * Management of the addition of text with the SmartInput option.
+   * @param start int
+   * @param count int
+   */
+  private void processAddWithSmartInput(int start, int count) {
+    mStart = start == 0 ? 0 : start + 1;
+    final String notChangedStart = mNewString.substring(0, start);
+    final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
+    CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
+
+    Log.e("hex", "notChangedStart: '" + notChangedStart + "', notChangedEnd: '" + notChangedEnd + "', newChange: '" + newChange + "'");
+
+    StringBuilder newChangeHex = new StringBuilder();
+    byte[] newChangeBytes = newChange.toString().getBytes();
+    List<LineData<Line>> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
+    for (LineData<Line> str : list)
+      newChangeHex.append(SysHelper.extractHex(str.getValue().getPlain()));
+
+    String str;
+    if(!mApp.isOverwrite())
+      str = (notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "");
+    else {
+      String endStr = notChangedEnd.replaceAll(" ", "");
+      String startStr = notChangedStart.replaceAll(" ", "");
+      String ns = newChangeHex.toString().replaceAll(" ", "");
+      boolean odd = !SysHelper.isEven(startStr.length());
+      if(odd) {
+        startStr = startStr.substring(0, startStr.length() - 1);
+        endStr = endStr.substring(1);
+      }
+      str = startStr + ns;
+      if(!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
+        str += endStr.substring(ns.length());
+      }
+      else if(ns.length() <= endStr.length())
+        str += endStr;
+      mStart += odd ? 1 : 2;
+      mBetweenDigits = false;
+    }
+    mNewString = formatText(str.replaceAll(" ", "").toLowerCase(Locale.US));
+  }
+
+  /**
+   * Management of text deletion with the SmartInput option.
+   * @param start int
+   * @param before int
+   */
+  private void processRemoveWithSmartInput(int start, int before) {
+    mStart = start + before;
+    /* remove one space */
+    Matcher m = PATTERN_4HEX.matcher(mNewString);
+    if (m.find()) {
+      String grp = m.group(1);
+      if (grp != null)
+        mNewString = mNewString.replace(grp, grp.substring(2)).replaceAll(" {2}", " ");
+    } else
+      /* remove one char */
+      mNewString = mNewString.replaceAll("(^\\p{XDigit} | \\p{XDigit} | \\p{XDigit}$| {2}|^\\p{XDigit}$)", " ").trim();
+    if (mNewString.length() < 2)
+      mNewString = "";
+  }
+
+  /**
+   * Management of text insertion in Overwrite mode without the SmartInput option.
+   * @param start int
+   * @param before int
+   * @param count int
+   */
+  private void processOverwriteWithoutSmartInput(int start, int before, int count) {
+    if (count == 0) { /* remove */
+      mRemove = true;
+    } else {
+      final String notChangedStart = mNewString.substring(0, start).replaceAll(" ", "");
+      String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
+      mStartOffsetForOverwrite = (notChangedEnd.startsWith(" ") || notChangedEnd.isEmpty()) ? 1 : 0;
+      notChangedEnd = notChangedEnd.replaceAll(" ", "");
+      CharSequence newChange = mNewString.substring(start, Math.min(start + count, mNewString.length())).replaceAll(" ", "");
+      int nbChars = newChange.length() - Math.max(0, before);
+      if(nbChars < 0) nbChars = 0;
+      if (nbChars > notChangedEnd.length())
+        mNewString = notChangedStart + newChange;
+      else
+        mNewString = notChangedStart + newChange + (!notChangedEnd.isEmpty() ? notChangedEnd.substring(nbChars) : "");
+
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < mNewString.length(); i += 2) {
+        sb.append(mNewString.charAt(i));
+        if (i + 1 < mNewString.length())
+          sb.append(mNewString.charAt(i + 1));
+        sb.append(" ");
+      }
+      mNewString = sb.toString().trim();
+    }
   }
 }

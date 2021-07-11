@@ -103,6 +103,7 @@ public class LineUpdateActivity extends AppCompatActivity {
     mEtInputHex = findViewById(R.id.etInputHex);
     mTilInputHex = findViewById(R.id.tilInputHex);
     AppCompatCheckBox chkSmartInput = findViewById(R.id.chkSmartInput);
+    AppCompatCheckBox chkOverwrite = findViewById(R.id.chkOverwrite);
 
 
     ActionBar actionBar = getSupportActionBar();
@@ -136,6 +137,8 @@ public class LineUpdateActivity extends AppCompatActivity {
 
     chkSmartInput.setChecked(mApp.isSmartInput());
     chkSmartInput.setOnCheckedChangeListener((comp, isChecked) -> mApp.setSmartInput(isChecked));
+    chkOverwrite.setChecked(mApp.isOverwrite());
+    chkOverwrite.setOnCheckedChangeListener((comp, isChecked) -> mApp.setOverwrite(isChecked));
 
     tvSource.setText((split[0] + "\n" + split[1]));
 

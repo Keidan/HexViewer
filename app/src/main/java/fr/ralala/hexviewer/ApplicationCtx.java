@@ -57,10 +57,12 @@ public class ApplicationCtx extends Application {
   public static final String CFG_LICENSE = "license";
   public static final String CFG_LANGUAGE = "language";
   public static final String CFG_LINES_NUMBER = "linesNumber";
+  public static final String CFG_OVERWRITE = "overwrite";
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
   private boolean mDefaultSmartInput;
+  private boolean mDefaultOverwrite;
   private List<String> mRecentlyOpened;
   private static ApplicationCtx instance;
   private String mLanguage = null;
@@ -86,6 +88,7 @@ public class ApplicationCtx extends Application {
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = getRecentlyOpened();
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
+    mDefaultOverwrite = Boolean.parseBoolean(getString(R.string.default_overwrite));
 
     mListSettingsHexPortrait = new ListSettings(this,
         CFG_PORTRAIT_HEX_ROW_HEIGHT, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO, CFG_PORTRAIT_HEX_FONT_SIZE,
@@ -226,6 +229,30 @@ public class ApplicationCtx extends Application {
   public void setSmartInput(boolean mode) {
     SharedPreferences.Editor e = getPref(this).edit();
     e.putBoolean(CFG_SMART_INPUT, mode);
+    e.apply();
+  }
+
+  /**
+   * Test if overwrite is enabled or not.
+   *
+   * @return bool
+   */
+  public boolean isOverwrite() {
+    try {
+      return getPref(this).getBoolean(CFG_OVERWRITE, mDefaultOverwrite);
+    } catch (Exception ignore) {
+      return mDefaultOverwrite;
+    }
+  }
+
+  /**
+   * Enable/Disable the overwrite mode.
+   *
+   * @param mode The new mode.
+   */
+  public void setOverwrite(boolean mode) {
+    SharedPreferences.Editor e = getPref(this).edit();
+    e.putBoolean(CFG_OVERWRITE, mode);
     e.apply();
   }
 

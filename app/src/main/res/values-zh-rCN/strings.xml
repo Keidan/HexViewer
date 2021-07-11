@@ -68,4 +68,5 @@
   <string name="items_selected">选中了 %1$d 行</string>
   <string name="confirm_save">保存文件 "%1$s"？</string>
   <string name="control_language_change">请先保存你的工作。</string>
+  <string name="overwrite">重写</string>
 </resources>

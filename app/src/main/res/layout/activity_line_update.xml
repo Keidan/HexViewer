@@ -28,19 +28,28 @@
 
   <androidx.appcompat.widget.AppCompatCheckBox
     android:id="@+id/chkSmartInput"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/tvSource"
     android:paddingTop="5dp"
     android:paddingBottom="10dp"
     android:text="@string/smart_input"/>
 
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/chkOverwrite"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/chkSmartInput"
+    android:paddingTop="5dp"
+    android:paddingBottom="10dp"
+    android:text="@string/overwrite"/>
+
   <TextView
     android:id="@+id/tvLabelResult"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentStart="true"
-    android:layout_below="@id/chkSmartInput"
+    android:layout_below="@id/chkOverwrite"
     android:text="@string/result"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"/>

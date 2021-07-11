@@ -61,6 +61,7 @@
     <string name="default_smart_input" translatable="false">false</string>
     <string name="default_lines_number" translatable="false">true</string>
     <string name="title_content" translatable="false">00&#160;01&#160;02&#160;03&#160;04&#160;05&#160;06&#160;07&#160;&#160;08&#160;09&#160;0A&#160;0B&#160;0C&#160;0D&#160;0E&#160;0F</string>
+    <string name="default_overwrite" translatable="false">false</string>
 
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>
@@ -97,4 +98,5 @@
     <string name="items_selected">%1$d Selected</string>
     <string name="confirm_save">Save file "%1$s"?</string>
     <string name="control_language_change">Please save your work first.</string>
+    <string name="overwrite">Overwrite</string>
 </resources>
