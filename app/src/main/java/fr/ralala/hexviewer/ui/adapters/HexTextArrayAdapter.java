@@ -187,7 +187,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
         return;
       boolean landscape;
       if (mApp.isLineNumber()) {
-        final int maxLength = String.format("%X", getItemsCount()).length();
+        final int maxLength = String.format("%X", getItemsCount() * SysHelper.MAX_BY_ROW).length();
         final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * SysHelper.MAX_BY_ROW);
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
