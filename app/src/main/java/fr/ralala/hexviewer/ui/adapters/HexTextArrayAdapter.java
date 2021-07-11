@@ -200,9 +200,10 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
           mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
           mTitle.titleContent.setText(getContext().getString(R.string.title_content));
           mTitle.titleContent.setTextColor(color);
-          applyUserConfig(mTitle.titleContent);
-          applyUserConfig(mTitle.titleLineNumbers);
         }
+        applyUserConfig(mTitle.titleContent);
+        applyUserConfig(mTitle.titleLineNumbers);
+
       } else {
         holder.lineNumbers.setVisibility(View.GONE);
         landscape = false;
