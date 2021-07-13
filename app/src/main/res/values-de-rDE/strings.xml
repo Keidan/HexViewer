@@ -52,6 +52,8 @@
     <string name="settings_category_hex">Text in Hex</string>
     <string name="settings_category_hex_line_numbers">Text in hex (Zeilennummern)</string>
     <string name="settings_category_plain">Klartext</string>
+    <string name="settings_pref_title_display_data">Anzeige der Datenspalte</string>
+    <string name="settings_pref_summary_display_data">Anzeige der Datenspalte bei der Anzeige von Text in Hexadezimal.</string>
     <string name="settings_pref_title_row_height_auto">Automatische Höhe</string>
     <string name="settings_pref_summary_row_height_auto">Automatische Bestimmung der Höhe anhand der Schriftgröße</string>
     <string name="settings_pref_title_row_height">Höhe</string>

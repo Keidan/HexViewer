@@ -40,15 +40,19 @@
     <string name="content_description_redo" translatable="false">Redo</string>
     <string name="default_abbreviate_portrait" translatable="false">8</string>
     <string name="default_abbreviate_landscape" translatable="false">16</string>
+    <string name="default_hex_display_data_portrait" translatable="false">true</string>
     <string name="default_hex_row_height_auto_portrait" translatable="false">true</string>
     <string name="default_hex_row_height_portrait" translatable="false">100</string>
     <string name="default_hex_font_size_portrait" translatable="false">9</string>
+    <string name="default_hex_display_data_landscape" translatable="false">true</string>
     <string name="default_hex_row_height_auto_landscape" translatable="false">true</string>
     <string name="default_hex_row_height_landscape" translatable="false">100</string>
     <string name="default_hex_font_size_landscape" translatable="false">16</string>
+    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false">false</string>
     <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false">true</string>
     <string name="default_hex_row_height_portrait_lines_numbers" translatable="false">100</string>
     <string name="default_hex_font_size_portrait_lines_numbers" translatable="false">11</string>
+    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false">true</string>
     <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false">true</string>
     <string name="default_hex_row_height_landscape_lines_numbers" translatable="false">100</string>
     <string name="default_hex_font_size_landscape_lines_numbers" translatable="false">16</string>
@@ -79,6 +83,8 @@
     <string name="settings_category_hex">Text in hex</string>
     <string name="settings_category_hex_line_numbers">Text in hex (line numbers)</string>
     <string name="settings_category_plain">Plain text</string>
+    <string name="settings_pref_title_display_data">Display of data column</string>
+    <string name="settings_pref_summary_display_data">Display the data column when displaying text in hexadecimal.</string>
     <string name="settings_pref_title_row_height_auto">Automatic height</string>
     <string name="settings_pref_summary_row_height_auto">Automatically determines height based on font size.</string>
     <string name="settings_pref_title_row_height">Height</string>

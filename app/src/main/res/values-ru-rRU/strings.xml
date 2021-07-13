@@ -50,6 +50,8 @@
     <string name="settings_category_hex">Текст в hex</string>
     <string name="settings_category_hex_line_numbers">Текст в hex (Номера строк)</string>
     <string name="settings_category_plain">Простой текст</string>
+    <string name="settings_pref_title_display_data">Отображение колонки данных</string>
+    <string name="settings_pref_summary_display_data">Отображение колонки данных при отображении текста в шестнадцатеричном формате.</string>
     <string name="settings_pref_title_row_height_auto">Автоматическая высота</string>
     <string name="settings_pref_summary_row_height_auto">Автоматически определяет высоту в зависимости от размера шрифта.</string>
     <string name="settings_pref_title_row_height">Высота</string>

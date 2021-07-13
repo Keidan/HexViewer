@@ -1,7 +1,7 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Point;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -24,7 +24,6 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
-import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -150,12 +149,11 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   /**
    * Applies the necessary changes if the "updated" field is true.
    *
-   * @param tv        TextView
-   * @param fd        FilterData
-   * @param landscape Landscape mode ?
+   * @param tv TextView
+   * @param fd FilterData
    */
-  private void applyUpdated(final TextView tv, final LineFilter<Line> fd, boolean landscape) {
-    String str = fd.getData().getValue().getPlain();
+  private void applyUpdated(final TextView tv, final LineFilter<Line> fd) {
+    String str = getTextAccordingToUserConfig(fd.getData().getValue().getPlain());
     if (fd.getData().isUpdated()) {
       SpannableString spanString = new SpannableString(str);
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
@@ -163,12 +161,24 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
     } else {
       tv.setText(str);
     }
-    if (mApp.isLineNumber()) {
-      tv.measure(0, 0);       //must call measure!
-      Point p = UIHelper.getScreenSize(mApp);
-      if (!landscape && ((100 * tv.getMeasuredWidth()) / p.x) >= 75)
-        tv.setText(str.substring(0, 48));
-    }
+  }
+
+  /**
+   * Gets the text according to the user's configuration.
+   *
+   * @param text Text.
+   * @return The new text.
+   */
+  protected String getTextAccordingToUserConfig(final String text) {
+    String txt;
+    Configuration cfg = getContext().getResources().getConfiguration();
+    if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE && !mUserConfigLandscape.isDisplayDataColumn())
+      txt = text.substring(0, 48);
+    else if (mUserConfigPortrait != null && cfg.orientation == Configuration.ORIENTATION_PORTRAIT && !mUserConfigPortrait.isDisplayDataColumn())
+      txt = text.substring(0, 48);
+    else
+      txt = text;
+    return txt;
   }
 
   /**
@@ -185,7 +195,6 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
 
       if (fd.getData().isFalselyDeleted())
         return;
-      boolean landscape;
       if (mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getItemsCount() * SysHelper.MAX_BY_ROW).length();
         final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * SysHelper.MAX_BY_ROW);
@@ -193,7 +202,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
         holder.lineNumbers.setTextColor(color);
-        landscape = applyUserConfig(holder.lineNumbers);
+        applyUserConfig(holder.lineNumbers);
         holder.lineNumbers.setVisibility(View.VISIBLE);
 
         if (position == 0) {
@@ -206,9 +215,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
 
       } else {
         holder.lineNumbers.setVisibility(View.GONE);
-        landscape = false;
       }
-      applyUpdated(holder.content, fd, landscape);
+      applyUpdated(holder.content, fd);
       holder.content.setTextColor(ContextCompat.getColor(getContext(),
           fd.getData().isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
       applyUserConfig(holder.content);

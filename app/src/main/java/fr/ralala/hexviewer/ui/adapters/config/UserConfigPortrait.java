@@ -53,4 +53,14 @@ public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig
     }
     return mApp.getListSettingsPlainPortrait().isRowHeightAuto();
   }
+
+  @Override
+  public boolean isDisplayDataColumn() {
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersPortrait().isDisplayDataColumn();
+      return mApp.getListSettingsHexPortrait().isDisplayDataColumn();
+    }
+    return true;
+  }
 }

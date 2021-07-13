@@ -50,6 +50,8 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.preferences_lists_portrait, rootKey);
 
+    CheckBoxPreference hexDisplayData = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_DISPLAY_DATA);
+    CheckBoxPreference hexDisplayDataLineNumbers = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS);
     mHexRowHeightAuto = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO);
     mHexRowHeight = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT);
     mHexFontSize = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_FONT_SIZE);
@@ -69,6 +71,11 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
     mPlainRowHeightAuto.setOnPreferenceClickListener(this);
     mPlainRowHeight.setOnPreferenceClickListener(this);
     mPlainFontSize.setOnPreferenceClickListener(this);
+
+    if (hexDisplayData != null)
+      hexDisplayData.setChecked(mApp.getListSettingsHexPortrait().isDisplayDataColumn());
+    if (hexDisplayDataLineNumbers != null)
+      hexDisplayDataLineNumbers.setChecked(mApp.getListSettingsHexLineNumbersPortrait().isDisplayDataColumn());
 
     mHexRowHeightAuto.setChecked(mApp.getListSettingsHexPortrait().isRowHeightAuto());
     mHexRowHeight.setEnabled(!mApp.getListSettingsHexPortrait().isRowHeightAuto());

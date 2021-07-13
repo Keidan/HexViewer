@@ -30,7 +30,10 @@ import fr.ralala.hexviewer.models.LineFilter;
 public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String> {
   private static final int ID = R.layout.listview_simple_row;
 
-  public PlainTextListArrayAdapter(final Context context, final List<LineData<String>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
+  public PlainTextListArrayAdapter(final Context context,
+                                   final List<LineData<String>> objects,
+                                   UserConfig userConfigPortrait,
+                                   UserConfig userConfigLandscape) {
     super(context, ID, objects, userConfigPortrait, userConfigLandscape);
   }
 

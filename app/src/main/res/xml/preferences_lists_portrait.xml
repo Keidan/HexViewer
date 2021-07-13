@@ -10,6 +10,11 @@
     android:title="@string/settings_category_hex">
     <androidx.preference.CheckBoxPreference
       app:iconSpaceReserved="false"
+      android:key="hexDisplayData"
+      android:title="@string/settings_pref_title_display_data"
+      android:summary="@string/settings_pref_summary_display_data" />
+    <androidx.preference.CheckBoxPreference
+      app:iconSpaceReserved="false"
       android:key="hexRowHeightAuto"
       android:title="@string/settings_pref_title_row_height_auto"
       android:summary="@string/settings_pref_summary_row_height_auto" />
@@ -29,6 +34,11 @@
   <androidx.preference.PreferenceCategory
     app:iconSpaceReserved="false"
     android:title="@string/settings_category_hex_line_numbers">
+    <androidx.preference.CheckBoxPreference
+      app:iconSpaceReserved="false"
+      android:key="hexDisplayDataLineNumbers"
+      android:title="@string/settings_pref_title_display_data"
+      android:summary="@string/settings_pref_summary_display_data" />
     <androidx.preference.CheckBoxPreference
       app:iconSpaceReserved="false"
       android:key="hexRowHeightAutoLineNumbers"

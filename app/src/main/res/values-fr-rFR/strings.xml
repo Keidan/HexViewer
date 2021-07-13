@@ -50,6 +50,8 @@
   <string name="settings_category_hex">Texte en hexadécimal</string>
   <string name="settings_category_hex_line_numbers">Texte en hexadécimal (Numéros de ligne)</string>
   <string name="settings_category_plain">Texte en clair</string>
+  <string name="settings_pref_title_display_data">Affichage de la colonne des données</string>
+  <string name="settings_pref_summary_display_data">Afficher la colonne des données lors de l\'affichage du texte en hexadécimal.</string>
   <string name="settings_pref_title_row_height_auto">Hauteur automatique</string>
   <string name="settings_pref_summary_row_height_auto">Détermine automatiquement la hauteur en fonction de la taille de la police.</string>
   <string name="settings_pref_title_row_height">Hauteur</string>

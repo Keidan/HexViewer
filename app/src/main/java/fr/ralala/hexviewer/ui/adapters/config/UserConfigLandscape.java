@@ -53,4 +53,14 @@ public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfi
     }
     return mApp.getListSettingsPlainLandscape().isRowHeightAuto();
   }
+
+  @Override
+  public boolean isDisplayDataColumn() {
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
+        return mApp.getListSettingsHexLineNumbersLandscape().isDisplayDataColumn();
+      return mApp.getListSettingsHexLandscape().isDisplayDataColumn();
+    }
+    return true;
+  }
 }

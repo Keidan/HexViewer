@@ -32,8 +32,8 @@ import fr.ralala.hexviewer.models.LineFilter;
 public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineData<T>> {
   private final EntryFilter mEntryFilter;
   private final List<LineData<T>> mEntryList;
-  private final UserConfig mUserConfigPortrait;
-  private final UserConfig mUserConfigLandscape;
+  protected final UserConfig mUserConfigPortrait;
+  protected final UserConfig mUserConfigLandscape;
   private List<LineFilter<T>> mFilteredList;
 
   public interface UserConfig {
@@ -42,9 +42,15 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
     int getRowHeight();
 
     boolean isRowHeightAuto();
+
+    boolean isDisplayDataColumn();
   }
 
-  public SearchableListArrayAdapter(final Context context, final int layoutId, final List<LineData<T>> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
+  public SearchableListArrayAdapter(final Context context,
+                                    final int layoutId,
+                                    final List<LineData<T>> objects,
+                                    UserConfig userConfigPortrait,
+                                    UserConfig userConfigLandscape) {
     super(context, layoutId, objects);
     mEntryFilter = new EntryFilter();
     mEntryList = objects;
@@ -199,23 +205,20 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * Applies the user config.
    *
    * @param tv TextView
-   * @return true if landscape.
    */
-  protected boolean applyUserConfig(final TextView tv) {
+  protected void applyUserConfig(final TextView tv) {
     Configuration cfg = getContext().getResources().getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       tv.setTextSize(mUserConfigLandscape.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigLandscape.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigLandscape.getRowHeight();
       tv.setLayoutParams(lp);
-      return true;
     } else if (mUserConfigPortrait != null) {
       tv.setTextSize(mUserConfigPortrait.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigPortrait.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigPortrait.getRowHeight();
       tv.setLayoutParams(lp);
     }
-    return false;
   }
 
   /**

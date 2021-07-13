@@ -12,34 +12,56 @@ import fr.ralala.hexviewer.ApplicationCtx;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class ListSettings {
+  private final String mKeyDisplayDataColumn;
   private final String mKeyRowHeight;
   private final String mKeyRowHeightAuto;
   private final String mKeyFontSize;
   private final String mDefaultRowHeight;
+  private final boolean mDefaultDisplayDataColumn;
   private final boolean mDefaultRowHeightAuto;
   private final String mDefaultFontSize;
   private final ApplicationCtx mApp;
 
   public ListSettings(final ApplicationCtx app,
+                      final String keyDisplayDataColumn,
                       final String keyRowHeight, String keyRowHeightAuto, String keyFontSize,
+                      final @StringRes int defaultDisplayDataColumn,
                       final @StringRes int defaultRowHeight,
                       final @StringRes int defaultRowHeightAuto,
                       final @StringRes int defaultFontSize) {
     mApp = app;
 
+    mKeyDisplayDataColumn = keyDisplayDataColumn;
     mKeyRowHeight = keyRowHeight;
     mKeyRowHeightAuto = keyRowHeightAuto;
     mKeyFontSize = keyFontSize;
 
+
+    mDefaultDisplayDataColumn = defaultDisplayDataColumn == 0 || Boolean.parseBoolean(mApp.getString(defaultDisplayDataColumn));
     mDefaultRowHeightAuto = Boolean.parseBoolean(mApp.getString(defaultRowHeightAuto));
     mDefaultRowHeight = mApp.getString(defaultRowHeight);
     mDefaultFontSize = mApp.getString(defaultFontSize);
+  }
+
+  /**
+   * Tests if the data column should be displayed (only available with the hexadecimal list).
+   *
+   * @return boolean
+   */
+  public boolean isDisplayDataColumn() {
+    try {
+      if(mKeyDisplayDataColumn == null)
+        return true;
+      return mApp.getPref(mApp).getBoolean(mKeyDisplayDataColumn, mDefaultDisplayDataColumn);
+    } catch (Exception ignore) {
+      return mDefaultDisplayDataColumn;
+    }
   }
 
   /**

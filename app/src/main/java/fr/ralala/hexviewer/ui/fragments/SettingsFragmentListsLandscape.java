@@ -50,6 +50,8 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.preferences_lists_landscape, rootKey);
 
+    CheckBoxPreference hexDisplayData = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_DISPLAY_DATA);
+    CheckBoxPreference hexDisplayDataLineNumbers = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS);
     mHexRowHeightAuto = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO);
     mHexRowHeight = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_ROW_HEIGHT);
     mHexFontSize = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_FONT_SIZE);
@@ -70,6 +72,11 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
     mPlainRowHeightAuto.setOnPreferenceClickListener(this);
     mPlainRowHeight.setOnPreferenceClickListener(this);
     mPlainFontSize.setOnPreferenceClickListener(this);
+
+    if (hexDisplayData != null)
+      hexDisplayData.setChecked(mApp.getListSettingsHexLandscape().isDisplayDataColumn());
+    if (hexDisplayDataLineNumbers != null)
+      hexDisplayDataLineNumbers.setChecked(mApp.getListSettingsHexLineNumbersLandscape().isDisplayDataColumn());
 
     mHexRowHeightAuto.setChecked(mApp.getListSettingsHexLandscape().isRowHeightAuto());
     mHexRowHeight.setEnabled(!mApp.getListSettingsHexLandscape().isRowHeightAuto());

@@ -25,7 +25,7 @@ import fr.ralala.hexviewer.models.ListSettings;
  * @author Keidan
  * <p>
  * License: GPLv3
- * <p>
+ * </p>
  * ******************************************************************************
  */
 public class ApplicationCtx extends Application {
@@ -33,15 +33,19 @@ public class ApplicationCtx extends Application {
   public static final String CFG_ABBREVIATE_LANDSCAPE = "abbreviateLandscape";
   public static final String CFG_LISTS_PORTRAIT = "listsPortrait";
   public static final String CFG_LISTS_LANDSCAPE = "listsLandscape";
+  public static final String CFG_PORTRAIT_HEX_DISPLAY_DATA = "hexDisplayData";
   public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT = "hexRowHeight";
   public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO = "hexRowHeightAuto";
   public static final String CFG_PORTRAIT_HEX_FONT_SIZE = "hexFontSize";
+  public static final String CFG_LANDSCAPE_HEX_DISPLAY_DATA = "hexDisplayDataLandscape";
   public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT = "hexRowHeightLandscape";
   public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO = "hexRowHeightAutoLandscape";
   public static final String CFG_LANDSCAPE_HEX_FONT_SIZE = "hexFontSizeLandscape";
+  public static final String CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS = "hexDisplayDataLineNumbers";
   public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS = "hexRowHeightLineNumbers";
   public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS = "hexRowHeightAutoLineNumbers";
   public static final String CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS = "hexFontSizeLineNumbers";
+  public static final String CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS = "hexDisplayDataLineNumbersLandscape";
   public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS = "hexRowHeightLineNumbersLandscape";
   public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS = "hexRowHeightAutoLineNumbersLandscape";
   public static final String CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS = "hexFontSizeLineNumbersLandscape";
@@ -91,30 +95,40 @@ public class ApplicationCtx extends Application {
     mDefaultOverwrite = Boolean.parseBoolean(getString(R.string.default_overwrite));
 
     mListSettingsHexPortrait = new ListSettings(this,
+        CFG_PORTRAIT_HEX_DISPLAY_DATA,
         CFG_PORTRAIT_HEX_ROW_HEIGHT, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO, CFG_PORTRAIT_HEX_FONT_SIZE,
+        R.string.default_hex_display_data_portrait,
         R.string.default_hex_row_height_portrait, R.string.default_hex_row_height_auto_portrait,
         R.string.default_hex_font_size_portrait);
     mListSettingsHexLandscape = new ListSettings(this,
+        CFG_LANDSCAPE_HEX_DISPLAY_DATA,
         CFG_LANDSCAPE_HEX_ROW_HEIGHT, CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_HEX_FONT_SIZE,
+        R.string.default_hex_display_data_landscape,
         R.string.default_hex_row_height_landscape, R.string.default_hex_row_height_auto_landscape,
         R.string.default_hex_font_size_landscape);
 
     mListSettingsHexLineNumbersPortrait = new ListSettings(this,
+        CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS,
         CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS, CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS,
+        R.string.default_hex_display_data_portrait_lines_numbers,
         R.string.default_hex_row_height_portrait_lines_numbers, R.string.default_hex_row_height_auto_portrait_lines_numbers,
         R.string.default_hex_font_size_portrait_lines_numbers);
     mListSettingsHexLineNumbersLandscape = new ListSettings(this,
+        CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS,
         CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS, CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS, CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS,
+        R.string.default_hex_display_data_landscape_lines_numbers,
         R.string.default_hex_row_height_landscape_lines_numbers, R.string.default_hex_row_height_auto_landscape_lines_numbers,
         R.string.default_hex_font_size_landscape_lines_numbers);
 
     mListSettingsPlainPortrait = new ListSettings(this,
+        null,
         CFG_PORTRAIT_PLAIN_ROW_HEIGHT, CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO, CFG_PORTRAIT_PLAIN_FONT_SIZE,
-        R.string.default_plain_row_height_portrait, R.string.default_plain_row_height_auto_portrait,
+        0, R.string.default_plain_row_height_portrait, R.string.default_plain_row_height_auto_portrait,
         R.string.default_plain_font_size_portrait);
     mListSettingsPlainLandscape = new ListSettings(this,
+        null,
         CFG_LANDSCAPE_PLAIN_ROW_HEIGHT, CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_PLAIN_FONT_SIZE,
-        R.string.default_plain_row_height_landscape, R.string.default_plain_row_height_auto_landscape,
+        0, R.string.default_plain_row_height_landscape, R.string.default_plain_row_height_auto_landscape,
         R.string.default_plain_font_size_landscape);
     /* EmojiCompat */
     EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
