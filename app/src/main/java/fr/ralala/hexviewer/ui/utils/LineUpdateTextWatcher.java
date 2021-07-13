@@ -32,9 +32,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class LineUpdateTextWatcher implements TextWatcher {
@@ -120,7 +120,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       return;
     }
 
-    if(!processAfterTextChangeOverwrite(strNew))
+    if (!processAfterTextChangeOverwrite(strNew))
       processAfterTextChangeSmartInput(strOld, strNew);
 
     processResultAndError(strNew);
@@ -128,6 +128,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   /**
    * Management of the afterTextChanged method when the Overwrite box is checked.
+   *
    * @param strNew String
    * @return True if the method has consumed the event
    */
@@ -149,6 +150,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   /**
    * Management of the afterTextChanged method when the SmartInput box is checked.
+   *
    * @param strOld String
    * @param strNew String
    */
@@ -198,7 +200,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       } else {  /* add */
         processAddWithSmartInput(start, count);
       }
-    } else if(mApp.isOverwrite()) {
+    } else if (mApp.isOverwrite()) {
       processOverwriteWithoutSmartInput(start, before, count);
     }
   }
@@ -261,6 +263,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   /**
    * Management of the addition of text with the SmartInput option.
+   *
    * @param start int
    * @param count int
    */
@@ -279,22 +282,21 @@ public class LineUpdateTextWatcher implements TextWatcher {
       newChangeHex.append(SysHelper.extractHex(str.getValue().getPlain()));
 
     String str;
-    if(!mApp.isOverwrite())
+    if (!mApp.isOverwrite())
       str = (notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "");
     else {
       String endStr = notChangedEnd.replaceAll(" ", "");
       String startStr = notChangedStart.replaceAll(" ", "");
       String ns = newChangeHex.toString().replaceAll(" ", "");
       boolean odd = !SysHelper.isEven(startStr.length());
-      if(odd) {
+      if (odd) {
         startStr = startStr.substring(0, startStr.length() - 1);
         endStr = endStr.substring(1);
       }
       str = startStr + ns;
-      if(!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
+      if (!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
         str += endStr.substring(ns.length());
-      }
-      else if(ns.length() <= endStr.length())
+      } else if (ns.length() <= endStr.length())
         str += endStr;
       mStart += odd ? 1 : 2;
       mBetweenDigits = false;
@@ -304,7 +306,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   /**
    * Management of text deletion with the SmartInput option.
-   * @param start int
+   *
+   * @param start  int
    * @param before int
    */
   private void processRemoveWithSmartInput(int start, int before) {
@@ -324,9 +327,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   /**
    * Management of text insertion in Overwrite mode without the SmartInput option.
-   * @param start int
+   *
+   * @param start  int
    * @param before int
-   * @param count int
+   * @param count  int
    */
   private void processOverwriteWithoutSmartInput(int start, int before, int count) {
     if (count == 0) { /* remove */
@@ -338,7 +342,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       notChangedEnd = notChangedEnd.replaceAll(" ", "");
       CharSequence newChange = mNewString.substring(start, Math.min(start + count, mNewString.length())).replaceAll(" ", "");
       int nbChars = newChange.length() - Math.max(0, before);
-      if(nbChars < 0) nbChars = 0;
+      if (nbChars < 0) nbChars = 0;
       if (nbChars > notChangedEnd.length())
         mNewString = notChangedStart + newChange;
       else

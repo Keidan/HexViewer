@@ -16,9 +16,9 @@ import fr.ralala.hexviewer.R;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class SettingsFragmentListsPortrait extends AbstractSettingsFragment implements Preference.OnPreferenceClickListener {
@@ -116,8 +116,7 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
           MIN_HEX_FONT_SIZE,
           MAX_HEX_FONT_SIZE,
           (n) -> mApp.getListSettingsHexLineNumbersPortrait().setFontSize(n), true);
-    }
-    else if (preference.equals(mPlainRowHeightAuto)) {
+    } else if (preference.equals(mPlainRowHeightAuto)) {
       mPlainRowHeight.setEnabled(!mPlainRowHeightAuto.isChecked());
     } else if (preference.equals(mPlainRowHeight)) {
       displayDialog(mPlainRowHeight.getTitle(),

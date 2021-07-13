@@ -7,9 +7,9 @@ package fr.ralala.hexviewer.models;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class LineFilter<T> {
@@ -29,6 +29,7 @@ public class LineFilter<T> {
 
   /**
    * Gets the data.
+   *
    * @return ListData<T>
    */
   public LineData<T> getData() {
@@ -37,6 +38,7 @@ public class LineFilter<T> {
 
   /**
    * Sets the data.
+   *
    * @param data The new value.
    */
   public void setData(LineData<T> data) {
@@ -45,6 +47,7 @@ public class LineFilter<T> {
 
   /**
    * Gets the origin index.
+   *
    * @return int
    */
   public int getOrigin() {
@@ -53,6 +56,7 @@ public class LineFilter<T> {
 
   /**
    * Sets origin index.
+   *
    * @param origin The new value.
    */
   public void setOrigin(int origin) {

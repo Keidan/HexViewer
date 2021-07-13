@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
  * @author Keidan
  * <p>
  * License: GPLv3
- * <p>
+ * </p>
  * ******************************************************************************
  */
 public interface TaskRunnerCallback<Config, Param, Progress, Result> {
@@ -25,9 +25,11 @@ public interface TaskRunnerCallback<Config, Param, Progress, Result> {
 
   /**
    * Called before the execution of the task.
+   *
    * @return The Config.
    */
-  @Nullable Config onPreExecute();
+  @Nullable
+  Config onPreExecute();
 
   /**
    * Called after the execution of the task.
@@ -40,10 +42,11 @@ public interface TaskRunnerCallback<Config, Param, Progress, Result> {
    * Performs a computation on a background thread.
    *
    * @param config The config of the task see {@link #onPreExecute}.
-   * @param param The parameters of the task.
+   * @param param  The parameters of the task.
    * @return A result, defined by the subclass of this task.
    */
-  @Nullable Result doInBackground(@Nullable Config config, @Nullable Param param) throws Exception;
+  @Nullable
+  Result doInBackground(@Nullable Config config, @Nullable Param param) throws Exception;
 
   /**
    * Called when the async task is cancelled.

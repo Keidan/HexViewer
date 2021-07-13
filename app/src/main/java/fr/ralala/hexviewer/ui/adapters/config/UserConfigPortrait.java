@@ -10,9 +10,9 @@ import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig {
@@ -26,8 +26,8 @@ public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig
 
   @Override
   public float getFontSize() {
-    if(mIsHexList) {
-      if(mApp.isLineNumber())
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
         return mApp.getListSettingsHexLineNumbersPortrait().getFontSize();
       return mApp.getListSettingsHexPortrait().getFontSize();
     }
@@ -36,8 +36,8 @@ public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig
 
   @Override
   public int getRowHeight() {
-    if(mIsHexList) {
-      if(mApp.isLineNumber())
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
         return mApp.getListSettingsHexLineNumbersPortrait().getRowHeight();
       return mApp.getListSettingsHexPortrait().getRowHeight();
     }
@@ -46,8 +46,8 @@ public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig
 
   @Override
   public boolean isRowHeightAuto() {
-    if(mIsHexList) {
-      if(mApp.isLineNumber())
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
         return mApp.getListSettingsHexLineNumbersPortrait().isRowHeightAuto();
       return mApp.getListSettingsHexPortrait().isRowHeightAuto();
     }

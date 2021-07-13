@@ -24,9 +24,9 @@ import fr.ralala.hexviewer.models.LineFilter;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineData<T>> {
@@ -273,7 +273,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
         query = constraint.toString().toLowerCase(loc);
       for (int i = 0; i < mEntryList.size(); i++) {
         LineData<T> s = mEntryList.get(i);
-        if(s.isFalselyDeleted())
+        if (s.isFalselyDeleted())
           continue;
         if (clear)
           tempList.add(new LineFilter<>(s, i));

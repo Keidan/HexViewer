@@ -21,9 +21,9 @@ import fr.ralala.hexviewer.utils.FileHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class LauncherSave {
@@ -84,8 +84,8 @@ public class LauncherSave {
   /**
    * Process the saving of the file
    *
-   * @param uri         Uri data.
-   * @param filename    The filename
+   * @param uri      Uri data.
+   * @param filename The filename
    */
   private void processFileSave(final Uri uri, final String filename) {
     DocumentFile sourceDir = DocumentFile.fromTreeUri(mActivity, uri);

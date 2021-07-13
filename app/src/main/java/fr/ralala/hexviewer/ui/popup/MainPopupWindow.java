@@ -24,7 +24,7 @@ import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
  * @author Keidan
  * <p>
  * License: GPLv3
- * <p>
+ * </p>
  * ******************************************************************************
  */
 public class MainPopupWindow {

@@ -16,9 +16,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class DeleteCommand implements ICommand {
@@ -50,7 +50,7 @@ public class DeleteCommand implements ICommand {
   public void unExecute() {
     for (Integer i : SysHelper.getMapKeys(mList)) {
       LineFilter<Line> ld = mList.get(i);
-      if(ld != null) {
+      if (ld != null) {
         mAdapter.getFilteredList().add(i, ld);
         mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(false);
       }

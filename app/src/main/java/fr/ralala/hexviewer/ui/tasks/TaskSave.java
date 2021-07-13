@@ -28,9 +28,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, TaskSave.Result> {
@@ -73,6 +73,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
 
   /**
    * Called before the execution of the task.
+   *
    * @return The Config.
    */
   @Override
@@ -127,6 +128,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     }
 
   }
+
   /**
    * Called when the async task is cancelled.
    */
@@ -141,14 +143,14 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    * Performs a computation on a background thread.
    *
    * @param contentResolver ContentResolver.
-   * @param request Request.
+   * @param request         Request.
    * @return The result.
    */
   @Override
   public Result doInBackground(final ContentResolver contentResolver, final Request request) {
     //final Activity activity = mActivityRef.get();
     final Result result = new Result();
-    if(request == null) {
+    if (request == null) {
       result.exception = "Invalid param!";
       return result;
     }
@@ -159,7 +161,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
       mParcelFileDescriptor = contentResolver.openFileDescriptor(result.uri, "wt");
       List<Byte> bytes = new ArrayList<>();
       for (LineData<Line> entry : request.mEntries)
-        if(!entry.isFalselyDeleted())
+        if (!entry.isFalselyDeleted())
           bytes.addAll(entry.getValue().getRaw());
       final byte[] data = SysHelper.toByteArray(bytes, mCancel);
       if (!isCancelled()) {

@@ -17,9 +17,9 @@ import fr.ralala.hexviewer.ui.fragments.AbstractSettingsFragment;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public abstract class AbstractSettingsActivity extends AppCompatActivity {
@@ -38,6 +38,7 @@ public abstract class AbstractSettingsActivity extends AppCompatActivity {
 
   /**
    * User implementation (called in onCreate).
+   *
    * @return AbstractSettingsFragment
    */
   public abstract AbstractSettingsFragment onUserCreate();

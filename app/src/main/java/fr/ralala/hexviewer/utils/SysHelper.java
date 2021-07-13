@@ -21,7 +21,7 @@ import fr.ralala.hexviewer.models.LineData;
  * @author Keidan
  *
  * License: GPLv3
- * <p>
+ *
  * ******************************************************************************
  */
 public class SysHelper {

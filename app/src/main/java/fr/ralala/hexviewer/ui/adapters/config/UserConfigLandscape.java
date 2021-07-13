@@ -10,9 +10,9 @@ import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfig {
@@ -26,8 +26,8 @@ public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfi
 
   @Override
   public float getFontSize() {
-    if(mIsHexList) {
-      if(mApp.isLineNumber())
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
         return mApp.getListSettingsHexLineNumbersLandscape().getFontSize();
       return mApp.getListSettingsHexLandscape().getFontSize();
     }
@@ -36,8 +36,8 @@ public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfi
 
   @Override
   public int getRowHeight() {
-    if(mIsHexList) {
-      if(mApp.isLineNumber())
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
         return mApp.getListSettingsHexLineNumbersLandscape().getRowHeight();
       return mApp.getListSettingsHexLandscape().getRowHeight();
     }
@@ -46,8 +46,8 @@ public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfi
 
   @Override
   public boolean isRowHeightAuto() {
-    if(mIsHexList) {
-      if(mApp.isLineNumber())
+    if (mIsHexList) {
+      if (mApp.isLineNumber())
         return mApp.getListSettingsHexLineNumbersLandscape().isRowHeightAuto();
       return mApp.getListSettingsHexLandscape().isRowHeightAuto();
     }

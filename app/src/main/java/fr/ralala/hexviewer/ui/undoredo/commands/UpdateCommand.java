@@ -16,9 +16,9 @@ import fr.ralala.hexviewer.ui.undoredo.ICommand;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class UpdateCommand implements ICommand {

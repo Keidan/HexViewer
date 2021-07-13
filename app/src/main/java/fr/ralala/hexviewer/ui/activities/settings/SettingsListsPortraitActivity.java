@@ -13,9 +13,9 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragmentListsPortrait;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class SettingsListsPortraitActivity extends AbstractSettingsActivity {
@@ -32,6 +32,7 @@ public class SettingsListsPortraitActivity extends AbstractSettingsActivity {
 
   /**
    * User implementation (called in onCreate).
+   *
    * @return AbstractSettingsFragment
    */
   public AbstractSettingsFragment onUserCreate() {

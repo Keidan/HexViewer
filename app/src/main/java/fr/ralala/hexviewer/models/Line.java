@@ -9,9 +9,9 @@ import java.util.List;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class Line {
@@ -31,6 +31,7 @@ public class Line {
 
   /**
    * Returns the plain value.
+   *
    * @return String
    */
   public String getPlain() {
@@ -39,6 +40,7 @@ public class Line {
 
   /**
    * Returns the raw value.
+   *
    * @return List<Byte>
    */
   public List<Byte> getRaw() {

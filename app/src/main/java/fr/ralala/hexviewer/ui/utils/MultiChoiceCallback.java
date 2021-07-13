@@ -32,9 +32,9 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
@@ -50,7 +50,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     mListView = listView;
     mAdapter = adapter;
     /* Attach a rotating ImageView to the refresh item as an ActionView */
-    LayoutInflater inflater = (LayoutInflater)mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mRefreshActionView = (ImageView) inflater.inflate(R.layout.refresh_action_view, null);
 
   }
@@ -105,7 +105,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       mode.finish();
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {
-      if(mMenuSelectAll != null) {
+      if (mMenuSelectAll != null) {
         Animation rotation = AnimationUtils.loadAnimation(mActivity, R.anim.clockwise_refresh);
         rotation.setRepeatCount(Animation.INFINITE);
         item.setCheckable(false);// Do not accept any click events while scanning
@@ -119,9 +119,9 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
           mListView.setItemChecked(i, true);
         }
 
-        if(mMenuSelectAll != null) {
+        if (mMenuSelectAll != null) {
           mMenuSelectAll.setCheckable(true);
-          View view =  mMenuSelectAll.getActionView();
+          View view = mMenuSelectAll.getActionView();
           if (view != null) {
             view.clearAnimation();
             mMenuSelectAll.setActionView(null);

@@ -29,9 +29,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result> {
@@ -70,6 +70,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
 
   /**
    * Called before the execution of the task.
+   *
    * @return The Config.
    */
   @Override
@@ -131,7 +132,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
    * Performs a computation on a background thread.
    *
    * @param contentResolver ContentResolver.
-   * @param uri Uri.
+   * @param uri             Uri.
    * @return The result.
    */
   @Override

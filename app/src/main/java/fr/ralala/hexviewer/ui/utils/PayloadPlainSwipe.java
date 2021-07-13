@@ -25,9 +25,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class PayloadPlainSwipe {
@@ -127,12 +127,12 @@ public class PayloadPlainSwipe {
    * Refreshes the plain text list according to the list of payload data.
    *
    * @param cancel Used to cancel this method.
-   * @return List<ListData<String>>
+   * @return List<ListData < String>>
    */
   private List<LineData<String>> refreshPlain(final AtomicBoolean cancel) {
     final List<Byte> payload = new ArrayList<>();
     for (LineData<Line> le : mActivity.getPayloadHex().getAdapter().getItems())
-      if(!le.isFalselyDeleted())
+      if (!le.isFalselyDeleted())
         payload.addAll(le.getValue().getRaw());
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;

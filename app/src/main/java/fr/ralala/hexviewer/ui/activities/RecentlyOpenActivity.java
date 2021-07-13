@@ -28,9 +28,9 @@ import static fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter.UriDat
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyOpenRecyclerAdapter.OnEventListener {

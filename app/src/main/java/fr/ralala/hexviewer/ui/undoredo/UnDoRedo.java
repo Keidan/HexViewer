@@ -24,9 +24,9 @@ import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class UnDoRedo {

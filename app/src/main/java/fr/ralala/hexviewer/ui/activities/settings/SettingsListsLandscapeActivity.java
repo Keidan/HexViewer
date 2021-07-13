@@ -13,9 +13,9 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragmentListsLandscape;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class SettingsListsLandscapeActivity extends AbstractSettingsActivity {
@@ -23,7 +23,7 @@ public class SettingsListsLandscapeActivity extends AbstractSettingsActivity {
   /**
    * Starts an activity.
    *
-   * @param c      Android context.
+   * @param c Android context.
    */
   public static void startActivity(final Context c) {
     Intent intent = new Intent(c, SettingsListsLandscapeActivity.class);
@@ -32,6 +32,7 @@ public class SettingsListsLandscapeActivity extends AbstractSettingsActivity {
 
   /**
    * User implementation (called in onCreate).
+   *
    * @return AbstractSettingsFragment
    */
   public AbstractSettingsFragment onUserCreate() {

@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class LineData<T> {

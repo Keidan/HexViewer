@@ -22,9 +22,9 @@ import fr.ralala.hexviewer.models.LineFilter;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String> {
@@ -114,7 +114,7 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String
       final TextView holder = (TextView) v.getTag();
       LineFilter<String> fd = getFilteredList().get(position);
 
-      if(fd.getData().isFalselyDeleted())
+      if (fd.getData().isFalselyDeleted())
         return;
 
       holder.setText(ignoreNonDisplayedChar(fd.getData().getValue()));

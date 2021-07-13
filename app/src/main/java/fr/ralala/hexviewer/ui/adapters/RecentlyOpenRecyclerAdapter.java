@@ -25,9 +25,9 @@ import fr.ralala.hexviewer.utils.FileHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOpenRecyclerAdapter.ViewHolder> {

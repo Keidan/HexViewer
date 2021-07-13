@@ -76,6 +76,7 @@ public abstract class TaskRunner<Config, Param, Progress, Result> implements Tas
 
   /**
    * Called before the execution of the task.
+   *
    * @return The Config.
    */
   @Override

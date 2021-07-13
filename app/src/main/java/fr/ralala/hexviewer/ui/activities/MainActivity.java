@@ -36,12 +36,12 @@ import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherSave;
 import fr.ralala.hexviewer.ui.popup.MainPopupWindow;
+import fr.ralala.hexviewer.ui.popup.PopupCheckboxHelper;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.ui.utils.PayloadHexHelper;
 import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
-import fr.ralala.hexviewer.ui.popup.PopupCheckboxHelper;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 
@@ -52,9 +52,9 @@ import fr.ralala.hexviewer.utils.FileHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         requestPermissions = false;
       }
     }
-    if(requestPermissions)
+    if (requestPermissions)
       ActivityCompat.requestPermissions(this, new String[]{
           Manifest.permission.WRITE_EXTERNAL_STORAGE,
           Manifest.permission.READ_EXTERNAL_STORAGE
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mLauncherLineUpdate = new LauncherLineUpdate(this);
     mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
 
-    if(savedInstanceState == null)
+    if (savedInstanceState == null)
       handleIntent(getIntent());
   }
 
@@ -188,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           boolean addRecent;
           if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
             addRecent = false;
-          }
-          else
+          } else
             addRecent = FileHelper.takeUriPermissions(this, uri, false);
           final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, addRecent);
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
@@ -286,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mFileData = new FileData(uri, false);
         if (mFileData.isOpenFromAppIntent())
           mFileData.clearOpenFromAppIntent();
-        if(mPopup != null)
+        if (mPopup != null)
           mPopup.setSaveMenuEnable(true);
         setTitle(getResources().getConfiguration());
       } else {
@@ -294,14 +293,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle(getResources().getConfiguration());
       }
     }
-    if(userRunnable != null)
+    if (userRunnable != null)
       userRunnable.run();
   }
 
   /**
    * Method called when the file is opened.
    *
-   * @param success The result.
+   * @param success  The result.
    * @param fromOpen Called from open
    */
   @Override
@@ -309,20 +308,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     setMenuVisible(mSearchMenu, success);
     boolean checked = mPopup != null && mPopup.getPlainText() != null && mPopup.getPlainText().setEnable(success);
     if (!FileData.isEmpty(mFileData) && mFileData.isOpenFromAppIntent()) {
-      if(mPopup != null)
+      if (mPopup != null)
         mPopup.setSaveMenuEnable(false);
     } else {
-      if(mPopup != null)
+      if (mPopup != null)
         mPopup.setSaveMenuEnable(success);
     }
-    if(mPopup != null) {
+    if (mPopup != null) {
       mPopup.setMenusEnable(success);
     }
     if (success) {
       mIdleView.setVisibility(View.GONE);
       mPayloadHexHelper.setVisible(!checked);
       mPayloadPlainSwipe.setVisible(checked);
-      if(fromOpen)
+      if (fromOpen)
         mUnDoRedo.clear();
     } else {
       mIdleView.setVisibility(View.VISIBLE);
@@ -365,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     super.onConfigurationChanged(newConfig);
     if (mPayloadPlainSwipe.isVisible())
       mPayloadPlainSwipe.getAdapterPlain().notifyDataSetChanged();
-    else if(mPayloadHexHelper.isVisible())
+    else if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.getAdapter().notifyDataSetChanged();
     // Checks the orientation of the screen
     if (!FileData.isEmpty(mFileData)) {
@@ -395,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       popupActionUndo();
     } else if (id == R.id.action_redo) {
       popupActionRedo();
-    } else if(mPopup != null) {
+    } else if (mPopup != null) {
       if (mPopup.getPlainText() != null && mPopup.getPlainText().containsId(id, false)) {
         popupActionPlainText(id, mPopup.getPlainText(), mPopup.getLineNumbers());
       } else if (mPopup.getLineNumbers() != null && mPopup.getLineNumbers().containsId(id, false)) {
@@ -610,8 +609,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   /**
    * Action when the user clicks on the "plain text" menu.
    *
-   * @param id Action id.
-   * @param plainText Plain text checkbox.
+   * @param id          Action id.
+   * @param plainText   Plain text checkbox.
    * @param lineNumbers Line numbers checkbox.
    */
   private void popupActionPlainText(int id, PopupCheckboxHelper plainText, PopupCheckboxHelper lineNumbers) {
@@ -627,19 +626,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   /**
    * Refreshes the lines number
+   *
    * @param lineNumbers Line numbers checkbox.
    */
   private void refreshLineNumbers(PopupCheckboxHelper lineNumbers) {
     if (lineNumbers != null) {
       boolean checked = lineNumbers.isChecked();
-      if(mPayloadHexHelper.isVisible()) {
-        if(mApp.isLineNumber() && !checked) {
+      if (mPayloadHexHelper.isVisible()) {
+        if (mApp.isLineNumber() && !checked) {
           lineNumbers.setChecked(true);
           mPayloadHexHelper.refreshLineNumbers();
         }
         lineNumbers.setEnable(true);
-      } else if(mPayloadPlainSwipe.isVisible()) {
-        if(checked) {
+      } else if (mPayloadPlainSwipe.isVisible()) {
+        if (checked) {
           lineNumbers.setChecked(false);
           mPayloadHexHelper.refreshLineNumbers();
         }
@@ -651,7 +651,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   /**
    * Action when the user clicks on the "line numbers" menu.
    *
-   * @param id Action id.
+   * @param id          Action id.
    * @param lineNumbers Line numbers checkbox.
    */
   private void popupActionLineNumbers(int id, PopupCheckboxHelper lineNumbers) {
@@ -659,7 +659,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       lineNumbers.toggleCheck();
     boolean checked = lineNumbers.isChecked();
     mApp.setLineNumber(checked);
-    if(mPayloadHexHelper.isVisible())
+    if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.refreshLineNumbers();
   }
 

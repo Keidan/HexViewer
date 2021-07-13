@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
-
 import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -17,9 +15,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public abstract class ProgressTask<C, P, T> extends TaskRunner<C, P, Long, T> {
@@ -58,6 +56,7 @@ public abstract class ProgressTask<C, P, T> extends TaskRunner<C, P, Long, T> {
 
   /**
    * Called before the execution of the task.
+   *
    * @return The Config.
    */
   @Override

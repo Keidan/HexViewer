@@ -38,7 +38,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * @author Keidan
  * <p>
  * License: GPLv3
- * <p>
+ * </p>
  * ******************************************************************************
  */
 public class UIHelper {

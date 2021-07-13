@@ -22,9 +22,9 @@ import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
  * </p>
  *
  * @author Keidan
- *
- * License: GPLv3
  * <p>
+ * License: GPLv3
+ * </p>
  * ******************************************************************************
  */
 public class PayloadHexHelper {
@@ -110,7 +110,7 @@ public class PayloadHexHelper {
   public void setVisible(boolean b) {
     mPayloadHex.setVisibility(b ? View.VISIBLE : View.GONE);
     mPayloadViewContainer.setVisibility(b ? View.VISIBLE : View.GONE);
-    if(!b) {
+    if (!b) {
       mTitleLineNumbers.setVisibility(View.GONE);
       mTitleContent.setVisibility(View.GONE);
       mTitle.setVisibility(View.GONE);

@@ -27,7 +27,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
  * <p>
  * ******************************************************************************
