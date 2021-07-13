@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.tasks;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -33,7 +34,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * <p>
  * ******************************************************************************
  */
-public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
+public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result> {
   private static final String TAG = TaskOpen.class.getSimpleName();
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
   private final HexTextArrayAdapter mAdapter;
@@ -41,6 +42,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
   private final boolean mAddRecent;
+  private final ContentResolver mContentResolver;
+  private final Context mContext;
 
   public static class Result {
     private List<LineData<Line>> listHex = null;
@@ -57,6 +60,8 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
                   final PlainTextListArrayAdapter adapterPlain,
                   final OpenResultListener listener, final boolean addRecent) {
     super(activity, true);
+    mContext = activity;
+    mContentResolver = activity.getContentResolver();
     mAdapter = adapter;
     mAdapterPlain = adapterPlain;
     mListener = listener;
@@ -65,12 +70,14 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
 
   /**
    * Called before the execution of the task.
+   * @return The Config.
    */
   @Override
-  protected void onPreExecute() {
+  public ContentResolver onPreExecute() {
     super.onPreExecute();
     mAdapterPlain.clear();
     mAdapter.clear();
+    return mContentResolver;
   }
 
   /**
@@ -79,12 +86,12 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
    * @param result The result.
    */
   @Override
-  protected void onPostExecute(final Result result) {
-    Activity a = mActivityRef.get();
-    if (mCancel.get())
-      UIHelper.toast(a, a.getString(R.string.operation_canceled));
+  public void onPostExecute(final Result result) {
+    super.onPostExecute(result);
+    if (isCancelled())
+      UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
     else if (result.exception != null)
-      UIHelper.toast(a, a.getString(R.string.exception) + ": " + result.exception);
+      UIHelper.toast(mContext, mContext.getString(R.string.exception) + ": " + result.exception);
     else {
       if (result.listHex != null)
         mAdapter.addAll(result.listHex);
@@ -92,7 +99,7 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
         mAdapterPlain.addAll(result.listPlain);
     }
     if (mListener != null)
-      mListener.onOpenResult(result.exception == null && !mCancel.get(), true);
+      mListener.onOpenResult(result.exception == null && !isCancelled(), true);
     super.onPostExecute(result);
   }
 
@@ -111,41 +118,40 @@ public class TaskOpen extends ProgressTask<Uri, TaskOpen.Result> {
   }
 
   /**
-   * Called when the task is cancelled.
+   * Called when the async task is cancelled.
    */
   @Override
-  protected void onCancelled() {
-    super.onCancelled();
+  public void onCancelled() {
     close();
     if (mListener != null)
       mListener.onOpenResult(false, true);
   }
 
   /**
-   * Called after the execution of the process.
+   * Performs a computation on a background thread.
    *
-   * @param values The params.
+   * @param contentResolver ContentResolver.
+   * @param uri Uri.
+   * @return The result.
    */
   @Override
-  protected Result doInBackground(Uri... values) {
-    final Activity activity = mActivityRef.get();
+  public Result doInBackground(ContentResolver contentResolver, Uri uri) {
+    //final Activity activity = mActivityRef.get();
     final Result result = new Result();
     final List<LineData<Line>> list = new ArrayList<>();
     final List<LineData<String>> plain = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
-      final Uri uri = values[0];
       /* Size + stream */
-      final ContentResolver cr = activity.getContentResolver();
-      mTotalSize = FileHelper.getFileSize(cr, uri);
+      mTotalSize = FileHelper.getFileSize(contentResolver, uri);
       publishProgress(0L);
-      mInputStream = cr.openInputStream(uri);
+      mInputStream = contentResolver.openInputStream(uri);
       if (mInputStream != null) {
         /* prepare buffer */
         final byte[] data = new byte[MAX_LENGTH];
         int reads;
         /* read data */
-        while (!mCancel.get() && (reads = mInputStream.read(data)) != -1) {
+        while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
           addPlain(plain, data, reads, mCancel);
           try {
             list.addAll(SysHelper.formatBuffer(data, reads, mCancel));
