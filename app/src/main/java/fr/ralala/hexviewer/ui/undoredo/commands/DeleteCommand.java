@@ -50,8 +50,10 @@ public class DeleteCommand implements ICommand {
   public void unExecute() {
     for (Integer i : SysHelper.getMapKeys(mList)) {
       LineFilter<Line> ld = mList.get(i);
-      mAdapter.getFilteredList().add(i, ld);
-      mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(false);
+      if(ld != null) {
+        mAdapter.getFilteredList().add(i, ld);
+        mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(false);
+      }
     }
     mAdapter.notifyDataSetChanged();
   }
