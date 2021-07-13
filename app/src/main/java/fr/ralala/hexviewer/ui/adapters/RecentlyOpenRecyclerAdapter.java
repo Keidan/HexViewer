@@ -52,7 +52,9 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
     void onDelete(@NonNull UriData ud);
   }
 
-  public RecentlyOpenRecyclerAdapter(final Context context, final List<UriData> objects, final OnEventListener listener) {
+  public RecentlyOpenRecyclerAdapter(final Context context,
+                                     final List<UriData> objects,
+                                     final OnEventListener listener) {
     mItems = objects;
     mListener = listener;
     mSwipeToDeleteCallback = new SwipeToDeleteCallback(context);
