@@ -1,0 +1,23 @@
+* Fix a problematic test that in some cases made it impossible to save.
+* The undo/redo stack was not cleared when opening a new file.
+* Fix a race condition that caused the application to crash when saving the file.
+* Fix a crash when deleting lines.
+* The minimum version of android is downgraded to Android M.
+* Fix a bug when double selecting all lines to delete, which was never deselected.
+* Added an animation when selecting all lines.
+* It's now possible to dissociate the configuration of the lists according to the mode (portrait or landscape).
+* I's now possible to open a file directly from the home page.
+* It's now possible to display the line numbers (the data part can be displayed or not depending on the configuration).
+* It's now possible to overwrite data during a modification.
+* It's now possible to see the file size in the list of recently opened files.
+* Fix a bug with the update status of a line.
+* Now the status of updated lines is reset when the file is saved.
+* Fix a bug with the index of added lines that was not valid.
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
