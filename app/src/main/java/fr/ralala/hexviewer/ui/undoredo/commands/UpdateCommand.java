@@ -54,7 +54,7 @@ public class UpdateCommand implements ICommand {
     } else {
       /* first we move the existing indexes - filtered */
       for (int i = mRealIndex + 1; i < adapter.getFilteredList().size(); i++)
-        adapter.getFilteredList().get(i).setOrigin(adapter.getFilteredList().get(i).getOrigin() + size);
+        adapter.getFilteredList().get(i).setOrigin(adapter.getFilteredList().get(i).getOrigin() + (size - 1));
 
       /* Then we modify the existing element */
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
