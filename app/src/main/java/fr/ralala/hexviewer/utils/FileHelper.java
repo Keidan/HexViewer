@@ -68,7 +68,7 @@ public class FileHelper {
    * @return False if permission is not granted for this Uri.
    */
   public static boolean takeUriPermissions(final Context c, final Uri uri, boolean fromDir) {
-    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M)
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q)
       return true;
     boolean success = false;
     try {
@@ -97,7 +97,7 @@ public class FileHelper {
    * @param uri Uri
    */
   public static void releaseUriPermissions(final Context c, final Uri uri) {
-    if (Build.VERSION.SDK_INT != Build.VERSION_CODES.M)
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
       if (hasUriPermission(c, uri, true))
         try {
           final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
@@ -128,7 +128,7 @@ public class FileHelper {
    * @return False if permission is not granted for this Uri.
    */
   public static boolean hasUriPermission(final Context c, final Uri uri, boolean readPermission) {
-    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M)
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q)
       return true;
     final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
     boolean found = false;

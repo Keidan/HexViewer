@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     /* permissions */
     boolean requestPermissions = true;
-    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
       if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
           ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
         requestPermissions = false;
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Uri uri = getIntent().getData();
         if (uri != null) {
           boolean addRecent;
-          if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+          if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
             addRecent = false;
           } else
             addRecent = FileHelper.takeUriPermissions(this, uri, false);
@@ -293,6 +293,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle(getResources().getConfiguration());
       }
     }
+    else
+      mApp.removeRecentlyOpened(uri.toString());
     if (userRunnable != null)
       userRunnable.run();
   }
