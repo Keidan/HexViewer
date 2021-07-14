@@ -97,7 +97,8 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       // Captures all selected ids with a loop
       for (int i = selected.size() - 1; i >= 0; i--) {
         int position = selected.get(i);
-        map.put(position, adapter.getFilteredList().get(position));
+        LineFilter<Line> lf = adapter.getFilteredList().get(position);
+        map.put(lf.getOrigin(), lf);
       }
       mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
       mActivity.setTitle(mActivity.getResources().getConfiguration());

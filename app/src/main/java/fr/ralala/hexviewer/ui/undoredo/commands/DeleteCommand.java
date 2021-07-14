@@ -36,6 +36,9 @@ public class DeleteCommand implements ICommand {
    */
   public void execute() {
     HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
+    String query = mActivity.getSearchQuery();
+    if (!query.isEmpty())
+      adapter.manualFilterUpdate(""); /* reset filter */
     List<Integer> list = SysHelper.getMapKeys(mList);
     for (int i = list.size() - 1; i >= 0; i--) {
       int position = list.get(i);
@@ -44,9 +47,6 @@ public class DeleteCommand implements ICommand {
       adapter.getFilteredList().remove(position);
     }
     /* rebuilds origin indexes */
-    String query = mActivity.getSearchQuery();
-    if (!query.isEmpty())
-      adapter.manualFilterUpdate(""); /* reset filter */
     List<LineFilter<Line>> filteredList = adapter.getFilteredList();
     for (int i = 0; i < filteredList.size(); i++) {
       LineFilter<Line> ld = adapter.getFilteredList().get(i);
