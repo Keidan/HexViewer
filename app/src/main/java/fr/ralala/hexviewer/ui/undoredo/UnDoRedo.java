@@ -130,6 +130,8 @@ public class UnDoRedo {
     }
     mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
+    if(!isChanged())
+      mActivity.getPayloadHex().resetUpdateStatus();
   }
 
   /**
@@ -144,6 +146,8 @@ public class UnDoRedo {
     }
     mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_REDO], !mRedo.isEmpty());
+    if(!isChanged())
+      mActivity.getPayloadHex().resetUpdateStatus();
   }
 
   /**

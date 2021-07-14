@@ -114,13 +114,15 @@ public class UpdateCommand implements ICommand {
       }
       /* Then we restores the existing element */
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
-      fd.setData(mPrevLine.getData());
-      fd.getData().setUpdated(mUnDoRedo.isChanged());
-      adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
+      if (!fd.getData().toString().equals(mPrevLine.getData().toString())) {
+        fd.setData(mPrevLine.getData());
+        fd.getData().setUpdated(mUnDoRedo.isChanged());
+        adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
+      }
 
       /* finally we move the existing indexes - filtered */
       for (int i = mRealIndex + 1; i < adapter.getFilteredList().size(); i++)
-        adapter.getFilteredList().get(i).setOrigin(adapter.getFilteredList().get(i).getOrigin() - size);
+        adapter.getFilteredList().get(i).setOrigin(adapter.getFilteredList().get(i).getOrigin() - (size - 1));
     }
     if (!query.isEmpty())
       adapter.manualFilterUpdate(query); /* restore filter */
