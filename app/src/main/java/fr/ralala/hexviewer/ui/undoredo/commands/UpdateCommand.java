@@ -103,7 +103,7 @@ public class UpdateCommand implements ICommand {
     if (size == 1) {
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
       fd.setData(mPrevLine.getData());
-      fd.getData().setUpdated(mUnDoRedo.isChanged());
+      fd.getData().setUpdated(false);
       adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
     } else {
       /* First, we delete the elements*/
@@ -116,7 +116,7 @@ public class UpdateCommand implements ICommand {
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
       if (!fd.getData().toString().equals(mPrevLine.getData().toString())) {
         fd.setData(mPrevLine.getData());
-        fd.getData().setUpdated(mUnDoRedo.isChanged());
+        fd.getData().setUpdated(false);
         adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
       }
 
