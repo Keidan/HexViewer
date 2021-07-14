@@ -60,7 +60,7 @@ public class UpdateCommand implements ICommand {
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
       mPrevLine = new LineFilter<>(fd);
       final LineData<Line> newVal = mList.get(0);
-      if (!fd.getData().equals(newVal)) {
+      if (!fd.getData().toString().equals(newVal.toString())) {
         fd.setData(newVal);
         fd.getData().setUpdated(true);
         adapter.getItems().set(fd.getOrigin(), mList.get(0));
