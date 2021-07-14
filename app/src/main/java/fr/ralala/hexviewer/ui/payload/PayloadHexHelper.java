@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.Line;
+import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
@@ -29,6 +31,7 @@ import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
  * ******************************************************************************
  */
 public class PayloadHexHelper {
+  private MainActivity mActivity;
   private ListView mPayloadHex = null;
   private HexTextArrayAdapter mAdapterHex = null;
   private RelativeLayout mPayloadViewContainer = null;
@@ -42,6 +45,7 @@ public class PayloadHexHelper {
    * @param activity The owner activity
    */
   public void onCreate(final MainActivity activity) {
+    mActivity = activity;
     mPayloadViewContainer = activity.findViewById(R.id.payloadViewContainer);
     mTitle = activity.findViewById(R.id.title);
     mTitleLineNumbers = activity.findViewById(R.id.titleLineNumbers);
@@ -68,6 +72,22 @@ public class PayloadHexHelper {
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
     MultiChoiceCallback multiChoiceCallback = new MultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
     mPayloadHex.setMultiChoiceModeListener(multiChoiceCallback);
+  }
+
+  /**
+   * Resets the update status.
+   */
+  public void resetUpdateStatus() {
+    String query = mActivity.getSearchQuery();
+    if (!query.isEmpty())
+      mAdapterHex.manualFilterUpdate(""); /* reset filter */
+    for (LineFilter<Line> line : mAdapterHex.getFilteredList()) {
+      line.getData().setUpdated(false);
+      mAdapterHex.getItems().get(line.getOrigin()).setUpdated(false);
+    }
+    if (!query.isEmpty())
+      mAdapterHex.manualFilterUpdate(query);
+    mAdapterHex.notifyDataSetChanged();
   }
 
   /**

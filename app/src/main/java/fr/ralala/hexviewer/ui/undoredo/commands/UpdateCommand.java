@@ -8,6 +8,7 @@ import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
+import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 
 /**
  * ******************************************************************************
@@ -26,9 +27,11 @@ public class UpdateCommand implements ICommand {
   private final MainActivity mActivity;
   private final int mRealIndex;
   private LineFilter<Line> mPrevLine;
+  private final UnDoRedo mUnDoRedo;
 
 
-  public UpdateCommand(final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
+  public UpdateCommand(final UnDoRedo undoRedo, final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
+    mUnDoRedo = undoRedo;
     mList = entries;
     mActivity = activity;
     mRealIndex = activity.getPayloadHex().getAdapter().getFilteredList().get(firstPosition).getOrigin();
@@ -49,7 +52,7 @@ public class UpdateCommand implements ICommand {
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
       mPrevLine = new LineFilter<>(fd);
       fd.setData(mList.get(0));
-      fd.getData().setUpdated(true);
+      fd.getData().setUpdated(mUnDoRedo.isChanged());
       adapter.getItems().set(fd.getOrigin(), mList.get(0));
     } else {
       /* first we move the existing indexes - filtered */
@@ -62,7 +65,7 @@ public class UpdateCommand implements ICommand {
       final LineData<Line> newVal = mList.get(0);
       if (!fd.getData().toString().equals(newVal.toString())) {
         fd.setData(newVal);
-        fd.getData().setUpdated(true);
+        fd.getData().setUpdated(mUnDoRedo.isChanged());
         adapter.getItems().set(fd.getOrigin(), mList.get(0));
       }
 
@@ -70,7 +73,7 @@ public class UpdateCommand implements ICommand {
       for (int i = 1; i < size; i++) {
         LineData<Line> value = mList.get(i);
         fd = new LineFilter<>(value, mPrevLine.getOrigin() + i);
-        fd.getData().setUpdated(true);
+        fd.getData().setUpdated(mUnDoRedo.isChanged());
         if (mPrevLine.getOrigin() + i < adapter.getItems().size())
           adapter.getItems().add(mPrevLine.getOrigin() + i, mList.get(i));
         else
@@ -100,7 +103,7 @@ public class UpdateCommand implements ICommand {
     if (size == 1) {
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
       fd.setData(mPrevLine.getData());
-      fd.getData().setUpdated(false);
+      fd.getData().setUpdated(mUnDoRedo.isChanged());
       adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
     } else {
       /* First, we delete the elements*/
@@ -112,7 +115,7 @@ public class UpdateCommand implements ICommand {
       /* Then we restores the existing element */
       LineFilter<Line> fd = adapter.getFilteredList().get(mRealIndex);
       fd.setData(mPrevLine.getData());
-      fd.getData().setUpdated(false);
+      fd.getData().setUpdated(mUnDoRedo.isChanged());
       adapter.getItems().set(fd.getOrigin(), mPrevLine.getData());
 
       /* finally we move the existing indexes - filtered */

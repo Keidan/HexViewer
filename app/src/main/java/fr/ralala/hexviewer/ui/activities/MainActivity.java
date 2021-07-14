@@ -292,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mFileData = new FileData(uri, false);
         setTitle(getResources().getConfiguration());
       }
+      mPayloadHexHelper.resetUpdateStatus();
     }
     else
       mApp.removeRecentlyOpened(uri.toString());

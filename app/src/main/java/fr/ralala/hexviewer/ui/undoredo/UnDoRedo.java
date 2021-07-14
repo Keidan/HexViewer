@@ -90,7 +90,7 @@ public class UnDoRedo {
    * @return The command.
    */
   public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
-    ICommand cmd = new UpdateCommand(activity, firstPosition, entries);
+    ICommand cmd = new UpdateCommand(this, activity, firstPosition, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
@@ -124,8 +124,8 @@ public class UnDoRedo {
   public void undo() {
     if (!mUndo.isEmpty()) {
       ICommand command = mUndo.pop();
-      command.unExecute();
       mRedo.push(command);
+      command.unExecute();
       manageControl(mControls[CONTROL_REDO], true);
     }
     mActivity.setTitle(mActivity.getResources().getConfiguration());
@@ -138,8 +138,8 @@ public class UnDoRedo {
   public void redo() {
     if (!mRedo.isEmpty()) {
       ICommand command = mRedo.pop();
-      command.execute();
       mUndo.push(command);
+      command.execute();
       manageControl(mControls[CONTROL_UNDO], true);
     }
     mActivity.setTitle(mActivity.getResources().getConfiguration());
