@@ -99,7 +99,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         int position = selected.get(i);
         map.put(position, adapter.getFilteredList().get(position));
       }
-      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(adapter, map).execute();
+      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
       mActivity.setTitle(mActivity.getResources().getConfiguration());
       // Close CAB
       mode.finish();

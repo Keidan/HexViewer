@@ -40,8 +40,8 @@ import fr.ralala.hexviewer.ui.popup.PopupCheckboxHelper;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
-import fr.ralala.hexviewer.ui.utils.PayloadHexHelper;
-import fr.ralala.hexviewer.ui.utils.PayloadPlainSwipe;
+import fr.ralala.hexviewer.ui.payload.PayloadHexHelper;
+import fr.ralala.hexviewer.ui.payload.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 

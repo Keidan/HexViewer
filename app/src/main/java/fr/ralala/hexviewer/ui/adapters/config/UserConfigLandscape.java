@@ -55,12 +55,12 @@ public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfi
   }
 
   @Override
-  public boolean isDisplayDataColumn() {
+  public boolean isDataColumnNotDisplayed() {
     if (mIsHexList) {
       if (mApp.isLineNumber())
-        return mApp.getListSettingsHexLineNumbersLandscape().isDisplayDataColumn();
-      return mApp.getListSettingsHexLandscape().isDisplayDataColumn();
+        return !mApp.getListSettingsHexLineNumbersLandscape().isDisplayDataColumn();
+      return !mApp.getListSettingsHexLandscape().isDisplayDataColumn();
     }
-    return true;
+    return false;
   }
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -23,38 +24,62 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public class DeleteCommand implements ICommand {
   private final Map<Integer, LineFilter<Line>> mList;
-  private final HexTextArrayAdapter mAdapter;
+  private final MainActivity mActivity;
 
-  public DeleteCommand(final HexTextArrayAdapter adapter, final Map<Integer, LineFilter<Line>> entries) {
+  public DeleteCommand(final MainActivity activity, final Map<Integer, LineFilter<Line>> entries) {
     mList = entries;
-    mAdapter = adapter;
+    mActivity = activity;
   }
 
   /**
    * Execute the command.
    */
   public void execute() {
+    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
     List<Integer> list = SysHelper.getMapKeys(mList);
     for (int i = list.size() - 1; i >= 0; i--) {
       int position = list.get(i);
-      LineFilter<Line> ld = mAdapter.getFilteredList().get(position);
-      mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(true);
-      mAdapter.getFilteredList().remove(position);
+      LineFilter<Line> ld = adapter.getFilteredList().get(position);
+      adapter.getItems().remove(ld.getOrigin());
+      adapter.getFilteredList().remove(position);
     }
-    mAdapter.notifyDataSetChanged();
+    /* rebuilds origin indexes */
+    String query = mActivity.getSearchQuery();
+    if (!query.isEmpty())
+      adapter.manualFilterUpdate(""); /* reset filter */
+    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
+    for (int i = 0; i < filteredList.size(); i++) {
+      LineFilter<Line> ld = adapter.getFilteredList().get(i);
+      ld.setOrigin(i);
+    }
+    if (!query.isEmpty())
+      adapter.manualFilterUpdate(query); /* restore filter */
+    adapter.notifyDataSetChanged();
   }
 
   /**
    * Un-Execute the command.
    */
   public void unExecute() {
+    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
+    String query = mActivity.getSearchQuery();
+    if (!query.isEmpty())
+      adapter.manualFilterUpdate(""); /* reset filter */
     for (Integer i : SysHelper.getMapKeys(mList)) {
       LineFilter<Line> ld = mList.get(i);
       if (ld != null) {
-        mAdapter.getFilteredList().add(i, ld);
-        mAdapter.getItems().get(ld.getOrigin()).setFalselyDeleted(false);
+        adapter.getFilteredList().add(ld.getOrigin(), ld);
+        adapter.getItems().add(ld.getOrigin(), ld.getData());
       }
     }
-    mAdapter.notifyDataSetChanged();
+    /* rebuilds origin indexes */
+    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
+    for (int i = 0; i < filteredList.size(); i++) {
+      LineFilter<Line> ld = adapter.getFilteredList().get(i);
+      ld.setOrigin(i);
+    }
+    if (!query.isEmpty())
+      adapter.manualFilterUpdate(query); /* restore filter */
+    adapter.notifyDataSetChanged();
   }
 }

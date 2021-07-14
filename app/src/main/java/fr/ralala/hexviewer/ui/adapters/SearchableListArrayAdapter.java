@@ -43,7 +43,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
 
     boolean isRowHeightAuto();
 
-    boolean isDisplayDataColumn();
+    boolean isDataColumnNotDisplayed();
   }
 
   public SearchableListArrayAdapter(final Context context,
@@ -276,8 +276,6 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
         query = constraint.toString().toLowerCase(loc);
       for (int i = 0; i < mEntryList.size(); i++) {
         LineData<T> s = mEntryList.get(i);
-        if (s.isFalselyDeleted())
-          continue;
         if (clear)
           tempList.add(new LineFilter<>(s, i));
         else if (s.toString().toLowerCase(loc).contains(query))

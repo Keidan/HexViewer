@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.ui.utils;
+package fr.ralala.hexviewer.ui.payload;
 
 import android.os.Handler;
 import android.view.View;
@@ -132,8 +132,7 @@ public class PayloadPlainSwipe {
   private List<LineData<String>> refreshPlain(final AtomicBoolean cancel) {
     final List<Byte> payload = new ArrayList<>();
     for (LineData<Line> le : mActivity.getPayloadHex().getAdapter().getItems())
-      if (!le.isFalselyDeleted())
-        payload.addAll(le.getValue().getRaw());
+      payload.addAll(le.getValue().getRaw());
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;
     final List<LineData<String>> list = new ArrayList<>();

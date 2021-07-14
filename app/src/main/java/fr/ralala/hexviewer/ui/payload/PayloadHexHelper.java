@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.ui.utils;
+package fr.ralala.hexviewer.ui.payload;
 
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,6 +14,7 @@ import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
+import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 
 /**
  * ******************************************************************************

@@ -13,7 +13,6 @@ import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
-import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
 
@@ -104,12 +103,12 @@ public class UnDoRedo {
   /**
    * Inserts delete command.
    *
-   * @param adapter HexTextArrayAdapter.
-   * @param entries The entries.
+   * @param activity MainActivity.
+   * @param entries  The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForDelete(final HexTextArrayAdapter adapter, final Map<Integer, LineFilter<Line>> entries) {
-    ICommand cmd = new DeleteCommand(adapter, entries);
+  public ICommand insertInUnDoRedoForDelete(final MainActivity activity, final Map<Integer, LineFilter<Line>> entries) {
+    ICommand cmd = new DeleteCommand(activity, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);

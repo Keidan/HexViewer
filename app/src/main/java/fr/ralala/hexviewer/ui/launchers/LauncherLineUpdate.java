@@ -78,7 +78,7 @@ public class LauncherLineUpdate {
                 HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
                 Map<Integer, LineFilter<Line>> map = new HashMap<>();
                 map.put(position, adapter.getFilteredList().get(position));
-                mActivity.getUnDoRedo().insertInUnDoRedoForDelete(adapter, map).execute();
+                mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
               } else {
                 mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, li).execute();
               }

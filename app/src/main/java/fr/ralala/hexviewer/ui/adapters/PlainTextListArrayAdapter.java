@@ -117,9 +117,6 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter<String
       final TextView holder = (TextView) v.getTag();
       LineFilter<String> fd = getFilteredList().get(position);
 
-      if (fd.getData().isFalselyDeleted())
-        return;
-
       holder.setText(ignoreNonDisplayedChar(fd.getData().getValue()));
       holder.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
       applyUserConfig(holder);

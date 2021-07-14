@@ -161,8 +161,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
       mParcelFileDescriptor = contentResolver.openFileDescriptor(result.uri, "wt");
       List<Byte> bytes = new ArrayList<>();
       for (LineData<Line> entry : request.mEntries)
-        if (!entry.isFalselyDeleted())
-          bytes.addAll(entry.getValue().getRaw());
+        bytes.addAll(entry.getValue().getRaw());
       final byte[] data = SysHelper.toByteArray(bytes, mCancel);
       if (!isCancelled()) {
         mOutputStream = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());

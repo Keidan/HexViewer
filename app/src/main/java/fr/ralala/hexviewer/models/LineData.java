@@ -17,13 +17,11 @@ import androidx.annotation.NonNull;
 public class LineData<T> {
   private T mValue;
   private boolean mUpdated;
-  private boolean mFalselyDeleted;
 
 
   public LineData(LineData<T> ld) {
     mValue = ld.mValue;
     mUpdated = ld.mUpdated;
-    mFalselyDeleted = ld.mFalselyDeleted;
   }
 
   public LineData(T value) {
@@ -33,7 +31,6 @@ public class LineData<T> {
   public LineData(T value, boolean updated) {
     mValue = value;
     mUpdated = updated;
-    mFalselyDeleted = false;
   }
 
   @NonNull
@@ -78,21 +75,4 @@ public class LineData<T> {
     mValue = value;
   }
 
-  /**
-   * Tests if the line is falsely deleted or not.
-   *
-   * @return boolean
-   */
-  public boolean isFalselyDeleted() {
-    return mFalselyDeleted;
-  }
-
-  /**
-   * Sets if the line is falsely deleted or not.
-   *
-   * @param value The new value.
-   */
-  public void setFalselyDeleted(boolean value) {
-    mFalselyDeleted = value;
-  }
 }

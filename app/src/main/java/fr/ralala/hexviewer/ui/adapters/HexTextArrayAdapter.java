@@ -172,9 +172,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   protected String getTextAccordingToUserConfig(final String text) {
     String txt;
     Configuration cfg = getContext().getResources().getConfiguration();
-    if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE && !mUserConfigLandscape.isDisplayDataColumn())
+    if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE && mUserConfigLandscape.isDataColumnNotDisplayed())
       txt = text.substring(0, 48);
-    else if (mUserConfigPortrait != null && cfg.orientation == Configuration.ORIENTATION_PORTRAIT && !mUserConfigPortrait.isDisplayDataColumn())
+    else if (mUserConfigPortrait != null && cfg.orientation == Configuration.ORIENTATION_PORTRAIT && mUserConfigPortrait.isDataColumnNotDisplayed())
       txt = text.substring(0, 48);
     else
       txt = text;
@@ -193,8 +193,6 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
       final Holder holder = (Holder) v.getTag();
       LineFilter<Line> fd = getFilteredList().get(position);
 
-      if (fd.getData().isFalselyDeleted())
-        return;
       if (mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getItemsCount() * SysHelper.MAX_BY_ROW).length();
         final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * SysHelper.MAX_BY_ROW);

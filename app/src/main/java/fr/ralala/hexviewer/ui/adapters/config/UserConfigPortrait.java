@@ -55,12 +55,12 @@ public class UserConfigPortrait implements SearchableListArrayAdapter.UserConfig
   }
 
   @Override
-  public boolean isDisplayDataColumn() {
+  public boolean isDataColumnNotDisplayed() {
     if (mIsHexList) {
       if (mApp.isLineNumber())
-        return mApp.getListSettingsHexLineNumbersPortrait().isDisplayDataColumn();
-      return mApp.getListSettingsHexPortrait().isDisplayDataColumn();
+        return !mApp.getListSettingsHexLineNumbersPortrait().isDisplayDataColumn();
+      return !mApp.getListSettingsHexPortrait().isDisplayDataColumn();
     }
-    return true;
+    return false;
   }
 }
