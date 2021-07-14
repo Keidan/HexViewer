@@ -105,4 +105,5 @@
     <string name="confirm_save">Save file "%1$s"?</string>
     <string name="control_language_change">Please save your work first.</string>
     <string name="overwrite">Insert mode</string>
+    <string name="size">Size</string>
 </resources>

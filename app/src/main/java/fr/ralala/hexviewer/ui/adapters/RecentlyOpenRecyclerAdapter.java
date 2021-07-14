@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -98,10 +99,17 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
     final UriData ud = mItems.get(idx);
     if (ud != null) {
       // Set item views based on the views and data model
-      TextView textView = viewHolder.text1;
-      if (mListener != null)
-        textView.setOnClickListener((v) -> mListener.onClick(ud));
-      textView.setText((ud.index + " - " + ud.value));
+      TextView name = viewHolder.name;
+      TextView index = viewHolder.index;
+      TextView size = viewHolder.size;
+      if (mListener != null) {
+        name.setOnClickListener((v) -> mListener.onClick(ud));
+        index.setOnClickListener((v) -> mListener.onClick(ud));
+        size.setOnClickListener((v) -> mListener.onClick(ud));
+      }
+      index.setText(String.format("%" + String.valueOf(ud.maxLength).length() + "s - ", ud.index));
+      name.setText(ud.value);
+      size.setText(ud.size);
     }
   }
 
@@ -119,21 +127,30 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
     public final String value;
     public final Uri uri;
     public final int index;
+    public final int maxLength;
+    public String size;
 
-    public UriData(int index, String uri) {
+    public UriData(final Context ctx, int index, int maxLength, String uri) {
+      this.maxLength = maxLength;
       this.index = index;
       this.uri = Uri.parse(uri);
       this.value = FileHelper.getFileName(this.uri);
+      String label = ctx.getString(R.string.size) + ": ";
+      this.size = label + SysHelper.sizeToHuman(FileHelper.getFileSize(ctx.getContentResolver(), this.uri));
     }
   }
 
 
   static class ViewHolder extends RecyclerView.ViewHolder {
-    public TextView text1;
+    TextView index;
+    TextView size;
+    TextView name;
 
     ViewHolder(View view) {
       super(view);
-      text1 = view.findViewById(R.id.text1);
+      index = view.findViewById(R.id.index);
+      size = view.findViewById(R.id.size);
+      name = view.findViewById(R.id.name);
     }
   }
 
@@ -212,5 +229,6 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
         mListener.onDelete(ud);
     }
   }
+
 }
 

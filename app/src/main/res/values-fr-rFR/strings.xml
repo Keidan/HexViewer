@@ -71,4 +71,5 @@
   <string name="confirm_save">Enregistrer le fichier "%1$s" ?</string>
   <string name="control_language_change">Veuillez d\'abord sauvegarder votre travail.</string>
   <string name="overwrite">Mode insertion</string>
+  <string name="size">Taille</string>
 </resources>

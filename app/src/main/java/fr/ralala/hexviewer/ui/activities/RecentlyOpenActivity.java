@@ -82,8 +82,10 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     List<UriData> list = new ArrayList<>();
     final List<String> li = mApp.getRecentlyOpened();
     int index = 0;
-    for (int i = li.size() - 1; i >= 0; i--) {
-      list.add(new UriData(++index, li.get(i)));
+    int max = li.size();
+    int m = String.valueOf(max).length();
+    for (int i = max - 1; i >= 0; i--) {
+      list.add(new UriData(this, ++index, m, li.get(i)));
     }
     RecentlyOpenRecyclerAdapter adapter = new RecentlyOpenRecyclerAdapter(this, list, this);
     recyclerView.setAdapter(adapter);

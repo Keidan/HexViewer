@@ -71,4 +71,5 @@
     <string name="confirm_save">Сохранить файл "%1$s"?</string>
     <string name="control_language_change">Пожалуйста, сначала сохраните свою работу.</string>
     <string name="overwrite">Pежим вставки</string>
+    <string name="size">Папкy</string>
 </resources>
