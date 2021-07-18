@@ -64,6 +64,8 @@
   <string name="settings_category_general">常规</string>
   <string name="settings_pref_title_language">语言</string>
   <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
+  <string name="settings_pref_title_screen_orientation">屏幕方向</string>
+  <string name="settings_pref_summary_screen_orientation">配置默认的屏幕方向 (仅主界面)。</string>
   <string name="smart_input">纯文本输入</string>
   <string name="error_file_not_found">未找到文件 %1$s</string>
   <string name="error_file_permission">尚未将权限授予文件 %1$s</string>

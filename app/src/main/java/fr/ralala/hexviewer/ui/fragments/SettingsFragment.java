@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.fragments;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -36,6 +37,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   protected Preference mLicense;
   protected Preference mVersion;
   private ListPreference mLanguage;
+  private ListPreference mScreenOrientation;
 
   public SettingsFragment(AppCompatActivity owner) {
     super(owner);
@@ -62,6 +64,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mLicense = findPreference(ApplicationCtx.CFG_LICENSE);
     mVersion = findPreference(ApplicationCtx.CFG_VERSION);
     mLanguage = findPreference(ApplicationCtx.CFG_LANGUAGE);
+    mScreenOrientation = findPreference(ApplicationCtx.CFG_SCREEN_ORIENTATION);
 
     mAbbreviatePortrait.setOnPreferenceClickListener(this);
     mAbbreviateLandscape.setOnPreferenceClickListener(this);
@@ -70,10 +73,39 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mLicense.setOnPreferenceClickListener(this);
     mVersion.setOnPreferenceClickListener(this);
     mLanguage.setOnPreferenceChangeListener(this);
+    mScreenOrientation.setOnPreferenceChangeListener(this);
 
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
     mLanguage.setDefaultValue(mApp.getApplicationLanguage(getContext()));
+
+    mScreenOrientation.setDefaultValue(mApp.getScreenOrientationStr());
+    refreshUiAccordingToOrientation(null);
+  }
+
+  /**
+   * Refreshes the user interface according to the screen orientation.
+   *
+   * @param ref The reference value, if it is null, the value stored in the parameters will be used.
+   */
+  private void refreshUiAccordingToOrientation(String ref) {
+    int orientation = mApp.getScreenOrientation(ref);
+    boolean landscapeEnable;
+    boolean portraitEnable;
+    if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+      landscapeEnable = true;
+      portraitEnable = false;
+    } else if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+      landscapeEnable = false;
+      portraitEnable = true;
+    } else {
+      landscapeEnable = true;
+      portraitEnable = true;
+    }
+    mSettingsListsLandscape.setEnabled(landscapeEnable);
+    mAbbreviateLandscape.setEnabled(landscapeEnable);
+    mSettingsListsPortrait.setEnabled(portraitEnable);
+    mAbbreviatePortrait.setEnabled(portraitEnable);
   }
 
 
@@ -133,6 +165,9 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
             .setMessage(R.string.control_language_change)
             .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
       }
+    } else if (preference.equals(mScreenOrientation)) {
+      refreshUiAccordingToOrientation("" + newValue);
+      return true;
     }
     return false;
   }

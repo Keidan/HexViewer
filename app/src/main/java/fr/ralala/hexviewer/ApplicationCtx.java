@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class ApplicationCtx extends Application {
   public static final String CFG_LANGUAGE = "language";
   public static final String CFG_LINES_NUMBER = "linesNumber";
   public static final String CFG_OVERWRITE = "overwrite";
+  public static final String CFG_SCREEN_ORIENTATION = "screenOrientation";
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
@@ -77,6 +79,7 @@ public class ApplicationCtx extends Application {
   private ListSettings mListSettingsHexLineNumbersLandscape;
   private ListSettings mListSettingsPlainPortrait;
   private ListSettings mListSettingsPlainLandscape;
+  private String mDefaultScreenOrientation;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -93,6 +96,7 @@ public class ApplicationCtx extends Application {
     mRecentlyOpened = getRecentlyOpened();
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
     mDefaultOverwrite = Boolean.parseBoolean(getString(R.string.default_overwrite));
+    mDefaultScreenOrientation = getString(R.string.default_screen_orientation);
 
     mListSettingsHexPortrait = new ListSettings(this,
         CFG_PORTRAIT_HEX_DISPLAY_DATA,
@@ -145,6 +149,33 @@ public class ApplicationCtx extends Application {
 
   /* ---------- Settings ---------- */
 
+  /**
+   * Returns the orientation of the screen according to the configuration.
+   *
+   * @return SCREEN_ORIENTATION_LANDSCAPE,
+   * SCREEN_ORIENTATION_PORTRAIT or
+   * SCREEN_ORIENTATION_UNSPECIFIED
+   */
+  public String getScreenOrientationStr() {
+    return getPref(this).getString(CFG_SCREEN_ORIENTATION, mDefaultScreenOrientation);
+  }
+
+  /**
+   * Returns the orientation of the screen according to the configuration.
+   *
+   * @param ref The reference value, if it is null, the value stored in the parameters will be used.
+   * @return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
+   * ActivityInfo.SCREEN_ORIENTATION_PORTRAIT or
+   * ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+   */
+  public int getScreenOrientation(final String ref) {
+    String s = ref != null ? ref : getScreenOrientationStr();
+    if (s.equals("SCREEN_ORIENTATION_LANDSCAPE"))
+      return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    if (s.equals("SCREEN_ORIENTATION_PORTRAIT"))
+      return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    return ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+  }
 
   /**
    * Tests if the line numbers are displayed or not.

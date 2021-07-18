@@ -15,6 +15,13 @@
       android:key="language"
       android:title="@string/settings_pref_title_language"
       android:summary="@string/settings_pref_summary_language" />
+    <androidx.preference.ListPreference
+      app:iconSpaceReserved="false"
+      android:entries="@array/screen_orientation_entries"
+      android:entryValues="@array/screen_orientation_values"
+      android:key="screenOrientation"
+      android:title="@string/settings_pref_title_screen_orientation"
+      android:summary="@string/settings_pref_summary_screen_orientation" />
   </androidx.preference.PreferenceCategory>
 
   <androidx.preference.PreferenceCategory

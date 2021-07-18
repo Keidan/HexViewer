@@ -17,4 +17,17 @@
         <item>Russian</item>
         <item>Chinese</item>
     </string-array>
+
+
+    <string-array name="screen_orientation_values" translatable="false">
+        <item>SCREEN_ORIENTATION_UNSPECIFIED</item>
+        <item>SCREEN_ORIENTATION_PORTRAIT</item>
+        <item>SCREEN_ORIENTATION_LANDSCAPE</item>
+    </string-array>
+
+    <string-array name="screen_orientation_entries">
+        <item>Automatic</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
+    </string-array>
 </resources>

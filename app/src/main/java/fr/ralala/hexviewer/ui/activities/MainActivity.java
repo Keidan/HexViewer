@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onResume() {
     super.onResume();
+    setRequestedOrientation(mApp.getScreenOrientation(null));
     if (mPopup != null)
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);

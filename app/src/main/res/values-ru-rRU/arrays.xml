@@ -8,4 +8,10 @@
         <item>Русский</item>
         <item>Китайский</item>
     </string-array>
+
+    <string-array name="screen_orientation_entries">
+        <item>Автоматическая</item>
+        <item>Портретный</item>
+        <item>Ландшафтный</item>
+    </string-array>
 </resources>

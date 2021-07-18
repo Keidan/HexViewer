@@ -8,4 +8,10 @@
         <item>Ruso</item>
         <item>Chino</item>
     </string-array>
+
+    <string-array name="screen_orientation_entries">
+        <item>Automático</item>
+        <item>Retrato</item>
+        <item>Paisaje</item>
+    </string-array>
 </resources>

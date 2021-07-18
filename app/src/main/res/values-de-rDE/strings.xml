@@ -66,6 +66,8 @@
     <string name="settings_category_general">Allgemein</string>
     <string name="settings_pref_title_language">Sprache</string>
     <string name="settings_pref_summary_language">Die Sprache der Anwendung ändern.</string>
+    <string name="settings_pref_title_screen_orientation">Bildschirmausrichtung</string>
+    <string name="settings_pref_summary_screen_orientation">Konfiguriert die Standard-Bildschirmausrichtung (nur Hauptbildschirm).</string>
     <string name="smart_input">Eingabe von Klartext</string>
     <string name="error_file_not_found">Die Datei %1$s wurde nicht gefunden</string>
     <string name="error_file_permission">Für die Datei %1$s wurde die benötigte Berechtigung nicht erteilt</string>

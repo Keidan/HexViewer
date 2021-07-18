@@ -66,6 +66,7 @@
     <string name="default_lines_number" translatable="false">true</string>
     <string name="title_content" translatable="false">00&#160;01&#160;02&#160;03&#160;04&#160;05&#160;06&#160;07&#160;&#160;08&#160;09&#160;0A&#160;0B&#160;0C&#160;0D&#160;0E&#160;0F</string>
     <string name="default_overwrite" translatable="false">false</string>
+    <string name="default_screen_orientation" translatable="false">SCREEN_ORIENTATION_UNSPECIFIED</string>
 
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>
@@ -98,6 +99,8 @@
     <string name="settings_category_general">General</string>
     <string name="settings_pref_title_language">Language</string>
     <string name="settings_pref_summary_language">Change the language of the application.</string>
+    <string name="settings_pref_title_screen_orientation">Screen orientation</string>
+    <string name="settings_pref_summary_screen_orientation">Configures the default screen orientation (main screen only).</string>
     <string name="smart_input">Plain text input</string>
     <string name="error_file_not_found">The file %1$s was not found</string>
     <string name="error_file_permission">No permission has been granted for file %1$s</string>
