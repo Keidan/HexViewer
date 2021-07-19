@@ -14,13 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private static long mLastBackPressed = -1;
   private ApplicationCtx mApp = null;
   private FileData mFileData = null;
-  private RelativeLayout mIdleView = null;
+  private ConstraintLayout mIdleView = null;
   private MenuItem mSearchMenu = null;
   private SearchView mSearchView = null;
   private String mSearchQuery = "";

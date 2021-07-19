@@ -1,46 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/mainLayout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
   android:padding="1dp">
 
-  <RelativeLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/idleView"
     android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
       android:id="@+id/pleaseOpenFile"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:text="@string/please_open_file"
       android:textAlignment="center"
-      android:layout_centerInParent="true"
-      android:layout_alignParentStart="true"
-      android:text="@string/please_open_file" />
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+      android:id="@+id/linearLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:layout_alignParentBottom="true"
       android:orientation="vertical"
       android:padding="5dp"
-      android:layout_marginBottom="100dp">
-    <Button
-      android:id="@+id/buttonOpenFile"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/action_open_title" />
+      app:layout_constraintBottom_toBottomOf="@+id/guideline">
 
-    <Button
-      android:id="@+id/buttonRecentlyOpen"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/action_recently_open_title"/>
+      <Button
+        android:id="@+id/buttonOpenFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_open_title" />
+
+      <Button
+        android:id="@+id/buttonRecentlyOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_recently_open_title" />
     </LinearLayout>
-  </RelativeLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_percent="0.95" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
   <RelativeLayout
     android:id="@+id/payloadViewContainer"
     android:layout_width="match_parent"
