@@ -1,0 +1,11 @@
+* It's now possible to lock/unlock the main screen in portrait or landscape mode.
+* Fix a bug with the display of the main page in landscape.
+
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
