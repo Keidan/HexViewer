@@ -212,10 +212,8 @@ public class SysHelper {
    * @return The string.
    */
   public static String formatHex(char b, boolean upperCase) {
-    String ret = "";
-    ret += (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0xF0) >> 4);
-    ret += (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0x0F));
-    return ret;
+    return String.valueOf((upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0xF0) >> 4)) +
+        (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0x0F));
   }
 
 
