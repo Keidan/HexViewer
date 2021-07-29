@@ -30,7 +30,7 @@
     <string name="error_no_file_manager">Пожалуйста, установите файловый менеджер.</string>
     <string name="install">УСТАНОВИТЬ</string>
     <string name="please_open_file">Пожалуйста, откройте файл</string>
-    <string name="uri_exception">Uri exception</string>
+    <string name="uri_exception">URI исключение (ошибка)</string>
     <string name="source">Исходник (hex):</string>
     <string name="result">Результат:</string>
     <string name="empty_value">Пусто (ничего нет)</string>
@@ -47,8 +47,8 @@
     <string name="settings_pref_summary_abbreviate_landscape">Количество символов, отображаемых для имени файла в альбомном режиме.</string>
     <string name="settings_pref_title_lists_landscape">Высота &amp; Размер шрифта</string>
     <string name="settings_pref_summary_lists_landscape">Нажмите для редактирования</string>
-    <string name="settings_category_hex">Текст в hex</string>
-    <string name="settings_category_hex_line_numbers">Текст в hex (Номера строк)</string>
+    <string name="settings_category_hex">Текст в hex (без номеров строк)</string>
+    <string name="settings_category_hex_line_numbers">Текст в hex (с номерами строк)</string>
     <string name="settings_category_plain">Простой текст</string>
     <string name="settings_pref_title_display_data">Отображение колонки данных</string>
     <string name="settings_pref_summary_display_data">Отображение колонки данных при отображении текста в шестнадцатеричном формате.</string>
@@ -57,7 +57,7 @@
     <string name="settings_pref_title_row_height">Высота</string>
     <string name="settings_pref_summary_row_height">Высота строки при просмотре.</string>
     <string name="settings_pref_title_font_size">Размер шрифта</string>
-    <string name="settings_pref_summary_font_size">Размер шрифта текстов при просмотре.</string>
+    <string name="settings_pref_summary_font_size">Размер шрифта текста при просмотре.</string>
     <string name="settings_category_about">О программе</string>
     <string name="settings_pref_title_version">Версия</string>
     <string name="settings_pref_title_license">Лицензия</string>
@@ -73,5 +73,5 @@
     <string name="confirm_save">Сохранить файл "%1$s"?</string>
     <string name="control_language_change">Пожалуйста, сначала сохраните свою работу.</string>
     <string name="overwrite">Pежим вставки</string>
-    <string name="size">Папкy</string>
+    <string name="size">Размер</string>
 </resources>
