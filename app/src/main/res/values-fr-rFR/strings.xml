@@ -47,8 +47,8 @@
   <string name="settings_pref_summary_abbreviate_landscape">Le nombre de caractères à afficher pour le nom du fichier en mode paysage.</string>
   <string name="settings_pref_title_lists_landscape">Hauteur &amp; Taille de la police</string>
   <string name="settings_pref_summary_lists_landscape">Cliquez pour modifier</string>
-  <string name="settings_category_hex">Texte en hexadécimal (sans uméros de ligne)</string>
-  <string name="settings_category_hex_line_numbers">Texte en hexadécimal (avec uméros de ligne)</string>
+  <string name="settings_category_hex">Texte en hexadécimal (sans numéros de ligne)</string>
+  <string name="settings_category_hex_line_numbers">Texte en hexadécimal (avec numéros de ligne)</string>
   <string name="settings_category_plain">Texte en clair</string>
   <string name="settings_pref_title_display_data">Affichage de la colonne des données</string>
   <string name="settings_pref_summary_display_data">Afficher la colonne des données lors de l\'affichage du texte en hexadécimal.</string>
