@@ -81,8 +81,8 @@
     <string name="settings_pref_summary_abbreviate_landscape">The number of characters to display for the file name in landscape mode.</string>
     <string name="settings_pref_title_lists_landscape">Height &amp; Font size</string>
     <string name="settings_pref_summary_lists_landscape">Click to edit</string>
-    <string name="settings_category_hex">Text in hex</string>
-    <string name="settings_category_hex_line_numbers">Text in hex (line numbers)</string>
+    <string name="settings_category_hex">Text in hexadecimal (without line numbers)</string>
+    <string name="settings_category_hex_line_numbers">Text in hexadecimal (with line numbers)</string>
     <string name="settings_category_plain">Plain text</string>
     <string name="settings_pref_title_display_data">Display of data column</string>
     <string name="settings_pref_summary_display_data">Display the data column when displaying text in hexadecimal.</string>

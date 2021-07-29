@@ -47,8 +47,8 @@
   <string name="settings_pref_summary_abbreviate_landscape">横向模式下文件名的显示字符数。</string>
   <string name="settings_pref_title_lists_landscape">高度 &amp; 字体大小</string>>
   <string name="settings_pref_summary_lists_landscape">点击编辑</string>
-  <string name="settings_category_hex">16 进制文本</string>
-  <string name="settings_category_hex_line_numbers">16 进制文本 (行号)</string>
+  <string name="settings_category_hex">16 进制文本 (不含行号)</string>
+  <string name="settings_category_hex_line_numbers">16 进制文本 (有行号)</string>
   <string name="settings_category_plain">纯文本</string>
   <string name="settings_pref_title_display_data">显示数据列</string>
   <string name="settings_pref_summary_display_data">当以十六进制显示文本时，显示数据列。</string>
