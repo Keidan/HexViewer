@@ -74,4 +74,8 @@
   <string name="control_language_change">Veuillez d\'abord sauvegarder votre travail.</string>
   <string name="overwrite">Mode insertion</string>
   <string name="size">Taille</string>
+  <string name="unit_byte">o</string>
+  <string name="unit_kbyte">ko</string>
+  <string name="unit_mbyte">Mo</string>
+  <string name="unit_gbyte">Go</string>
 </resources>

@@ -109,4 +109,8 @@
     <string name="control_language_change">Please save your work first.</string>
     <string name="overwrite">Insert mode</string>
     <string name="size">Size</string>
+    <string name="unit_byte">B</string>
+    <string name="unit_kbyte">kB</string>
+    <string name="unit_mbyte">MB</string>
+    <string name="unit_gbyte">GB</string>
 </resources>

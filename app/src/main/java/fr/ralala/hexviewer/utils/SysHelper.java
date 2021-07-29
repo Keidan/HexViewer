@@ -1,5 +1,7 @@
 package fr.ralala.hexviewer.utils;
 
+import android.content.Context;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 
@@ -19,9 +22,9 @@ import fr.ralala.hexviewer.models.LineData;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
- *
+ * <p>
  * ******************************************************************************
  */
 public class SysHelper {
@@ -116,21 +119,22 @@ public class SysHelper {
   /**
    * Converts a size into a humanly understandable string.
    *
-   * @param f The size.
+   * @param ctx Android context.
+   * @param f   The size.
    * @return The String.
    */
-  public static String sizeToHuman(float f) {
+  public static String sizeToHuman(Context ctx, float f) {
     DecimalFormat df = new DecimalFormat("#.##");
     df.setRoundingMode(RoundingMode.FLOOR);
     String sf;
     if (f < 1000) {
-      sf = String.format(Locale.US, "%d o", (int) f);
+      sf = String.format(Locale.US, "%d %s", (int) f, ctx.getString(R.string.unit_byte));
     } else if (f < 1000000)
-      sf = df.format((f / SIZE_1KB)) + " Ko";
+      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1KB)), ctx.getString(R.string.unit_kbyte));
     else if (f < 1000000000)
-      sf = df.format((f / SIZE_1MB)) + " Mo";
+      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1MB)), ctx.getString(R.string.unit_mbyte));
     else
-      sf = df.format((f / SIZE_1GB)) + " Go";
+      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1GB)), ctx.getString(R.string.unit_gbyte));
     return sf;
   }
 

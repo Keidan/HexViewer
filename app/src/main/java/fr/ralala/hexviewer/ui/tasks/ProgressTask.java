@@ -50,7 +50,7 @@ public abstract class ProgressTask<C, P, T> extends TaskRunner<C, P, Long, T> {
   public void onProgressUpdate(Long value) {
     mCurrentSize += value;
     String text = progressText;
-    text += SysHelper.sizeToHuman(mCurrentSize) + " / " + SysHelper.sizeToHuman(mTotalSize);
+    text += SysHelper.sizeToHuman(mTextView.getContext(), mCurrentSize) + " / " + SysHelper.sizeToHuman(mTextView.getContext(), mTotalSize);
     mTextView.setText(text);
   }
 

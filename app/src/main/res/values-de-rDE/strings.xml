@@ -76,4 +76,8 @@
     <string name="control_language_change">Bitte speichern Sie Ihre Arbeit zuerst.</string>
     <string name="overwrite">Einfügemodus</string>
     <string name="size">Größe</string>
+    <string name="unit_byte">B</string>
+    <string name="unit_kbyte">kB</string>
+    <string name="unit_mbyte">MB</string>
+    <string name="unit_gbyte">GB</string>
 </resources>

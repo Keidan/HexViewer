@@ -74,4 +74,8 @@
   <string name="control_language_change">Por favor, guarde primero su trabajo.</string>
   <string name="overwrite">Modo de inserción</string>
   <string name="size">Tamaño</string>
+  <string name="unit_byte">B</string>
+  <string name="unit_kbyte">kB</string>
+  <string name="unit_mbyte">MB</string>
+  <string name="unit_gbyte">GB</string>
 </resources>

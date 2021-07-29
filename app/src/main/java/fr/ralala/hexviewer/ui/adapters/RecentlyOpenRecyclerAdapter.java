@@ -136,7 +136,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       this.uri = Uri.parse(uri);
       this.value = FileHelper.getFileName(this.uri);
       String label = ctx.getString(R.string.size) + ": ";
-      this.size = label + SysHelper.sizeToHuman(FileHelper.getFileSize(ctx.getContentResolver(), this.uri));
+      this.size = label + SysHelper.sizeToHuman(ctx, FileHelper.getFileSize(ctx.getContentResolver(), this.uri));
     }
   }
 
