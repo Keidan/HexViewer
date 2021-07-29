@@ -28,6 +28,10 @@ import fr.ralala.hexviewer.models.LineData;
  * ******************************************************************************
  */
 public class SysHelper {
+  @SuppressWarnings("SpellCheckingInspection")
+  private static final String HEX_UPPERCASE = "0123456789ABCDEF";
+  @SuppressWarnings("SpellCheckingInspection")
+  private static final String HEX_LOWERCASE = "0123456789abcdef";
   private static final float SIZE_1KB = 0x400;
   private static final float SIZE_1MB = 0x100000;
   private static final float SIZE_1GB = 0x40000000;
@@ -126,6 +130,7 @@ public class SysHelper {
   public static String sizeToHuman(Context ctx, float f) {
     DecimalFormat df = new DecimalFormat("#.##");
     df.setRoundingMode(RoundingMode.FLOOR);
+    df.setMinimumFractionDigits(2);
     String sf;
     if (f < 1000) {
       sf = String.format(Locale.US, "%d %s", (int) f, ctx.getString(R.string.unit_byte));
@@ -163,7 +168,9 @@ public class SysHelper {
    * @param cancel Used to cancel this method.
    * @return List<String>
    */
-  public static List<LineData<Line>> formatBuffer(final byte[] buffer, final int length, AtomicBoolean cancel) throws IllegalArgumentException {
+  public static List<LineData<Line>> formatBuffer(final byte[] buffer,
+                                                  final int length,
+                                                  AtomicBoolean cancel) throws IllegalArgumentException {
     int len = length;
     if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
@@ -177,7 +184,7 @@ public class SysHelper {
       if (cancel != null && cancel.get())
         break;
       final byte c = buffer[bufferIndex++];
-      currentLine.append(String.format("%02x ", c));
+      currentLine.append(formatHex((char) c, false)).append(" ");
       currentLineRaw.add(c);
       /* only the visible char */
       currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char) c : (char) 0x2e); /* 0x2e = . */
@@ -185,14 +192,32 @@ public class SysHelper {
       currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine, currentLineRaw);
       /* add a space in the half of the line */
       formatBufferManageHalfLine(currentIndex, currentLine, currentEndLine);
+
       /* next */
       len--;
     }
     if (cancel != null && cancel.get())
       return lines;
-    formatBufferAlign(lines, currentIndex, currentLine.toString(), currentEndLine.toString(), currentLineRaw);
+    formatBufferAlign(lines, currentIndex, currentLine.toString(),
+        currentEndLine.toString(), currentLineRaw);
     return lines;
   }
+
+  /**
+   * Formats a character into a hexadecimal string (2 digits).
+   * Note: Using String.format("%02X") is ~50x slower.
+   *
+   * @param b         The character.
+   * @param upperCase Uppercase ?
+   * @return The string.
+   */
+  public static String formatHex(char b, boolean upperCase) {
+    String ret = "";
+    ret += (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0xF0) >> 4);
+    ret += (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0x0F));
+    return ret;
+  }
+
 
   /**
    * Converts hex string to a binary string.
@@ -222,7 +247,9 @@ public class SysHelper {
    * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    */
-  private static void formatBufferManageHalfLine(final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine) {
+  private static void formatBufferManageHalfLine(final int currentIndex,
+                                                 final StringBuilder currentLine,
+                                                 final StringBuilder currentEndLine) {
     if (currentIndex == MAX_BY_ROW / 2) {
       currentLine.append(" ");
       currentEndLine.append(" ");
@@ -239,11 +266,15 @@ public class SysHelper {
    * @param currentLineRaw The current line in raw.
    * @return The nex index.
    */
-  private static int formatBufferPrepareLineComplete(final List<LineData<Line>> lines, final int currentIndex, final StringBuilder currentLine, final StringBuilder currentEndLine, final List<Byte> currentLineRaw) {
+  private static int formatBufferPrepareLineComplete(final List<LineData<Line>> lines,
+                                                     final int currentIndex,
+                                                     final StringBuilder currentLine,
+                                                     final StringBuilder currentEndLine,
+                                                     final List<Byte> currentLineRaw) {
     if (currentIndex == MAX_BY_ROW - 1) {
       lines.add(new LineData<>(new Line(currentLine + " " + currentEndLine, new ArrayList<>(currentLineRaw))));
-      currentEndLine.delete(0, currentEndLine.length());
-      currentLine.delete(0, currentLine.length());
+      currentEndLine.setLength(0);
+      currentLine.setLength(0);
       currentLineRaw.clear();
       return 0;
     }
@@ -259,7 +290,11 @@ public class SysHelper {
    * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    */
-  private static void formatBufferAlign(final List<LineData<Line>> lines, int currentIndex, final String currentLine, final String currentEndLine, final List<Byte> currentLineRaw) {
+  private static void formatBufferAlign(final List<LineData<Line>> lines,
+                                        int currentIndex,
+                                        final String currentLine,
+                                        final String currentEndLine,
+                                        final List<Byte> currentLineRaw) {
     /* align 'line' */
     int i = currentIndex;
     if (i != 0 && (i < MAX_BY_ROW || i <= currentLine.length())) {

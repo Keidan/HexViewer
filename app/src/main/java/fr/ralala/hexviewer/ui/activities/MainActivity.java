@@ -538,15 +538,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Returns the PayloadPlainSwipe
-   *
-   * @return PayloadPlainSwipe
-   */
-  public PayloadPlainSwipe getPayloadPlainSwipe() {
-    return mPayloadPlainSwipe;
-  }
-
-  /**
    * Returns the LauncherOpen
    *
    * @return LauncherOpen

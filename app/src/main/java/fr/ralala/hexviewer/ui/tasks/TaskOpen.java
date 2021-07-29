@@ -10,14 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -38,7 +36,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
   private static final String TAG = TaskOpen.class.getSimpleName();
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
   private final HexTextArrayAdapter mAdapter;
-  private final PlainTextListArrayAdapter mAdapterPlain;
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
   private final boolean mAddRecent;
@@ -47,7 +44,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
 
   public static class Result {
     private List<LineData<Line>> listHex = null;
-    private List<LineData<String>> listPlain = null;
     private String exception = null;
   }
 
@@ -57,13 +53,11 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
 
   public TaskOpen(final Activity activity,
                   final HexTextArrayAdapter adapter,
-                  final PlainTextListArrayAdapter adapterPlain,
                   final OpenResultListener listener, final boolean addRecent) {
     super(activity, true);
     mContext = activity;
     mContentResolver = activity.getContentResolver();
     mAdapter = adapter;
-    mAdapterPlain = adapterPlain;
     mListener = listener;
     mAddRecent = addRecent;
   }
@@ -76,7 +70,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
   @Override
   public ContentResolver onPreExecute() {
     super.onPreExecute();
-    mAdapterPlain.clear();
     mAdapter.clear();
     return mContentResolver;
   }
@@ -96,8 +89,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
     else {
       if (result.listHex != null)
         mAdapter.addAll(result.listHex);
-      if (result.listPlain != null)
-        mAdapterPlain.addAll(result.listPlain);
     }
     if (mListener != null)
       mListener.onOpenResult(result.exception == null && !isCancelled(), true);
@@ -140,7 +131,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
     //final Activity activity = mActivityRef.get();
     final Result result = new Result();
     final List<LineData<Line>> list = new ArrayList<>();
-    final List<LineData<String>> plain = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
       /* Size + stream */
@@ -153,7 +143,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
         int reads;
         /* read data */
         while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
-          addPlain(plain, data, reads, mCancel);
           try {
             list.addAll(SysHelper.formatBuffer(data, reads, mCancel));
           } catch (IllegalArgumentException iae) {
@@ -164,7 +153,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
         }
         /* prepare result */
         if (result.exception == null) {
-          result.listPlain = plain;
           result.listHex = list;
           if (mAddRecent)
             app.addRecentlyOpened(uri.toString());
@@ -176,33 +164,5 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
       close();
     }
     return result;
-  }
-
-
-  /**
-   * Sets the plain content.
-   *
-   * @param plain   The list.
-   * @param payload The new payload.
-   * @param length  The array length.
-   * @param cancel  Used to cancel this method.
-   */
-  public void addPlain(final List<LineData<String>> plain, final byte[] payload, final int length, final AtomicBoolean cancel) {
-    final StringBuilder sb = new StringBuilder();
-    int nbPerLine = 0;
-    for (int i = 0; i < length && (cancel == null || !cancel.get()); i++) {
-      if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
-        sb.append((char) payload[i]);
-        plain.add(new LineData<>(sb.toString()));
-        nbPerLine = 0;
-        sb.setLength(0);
-      } else {
-        sb.append((char) payload[i]);
-        nbPerLine++;
-      }
-    }
-    if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
-      plain.add(new LineData<>(sb.toString()));
-    }
   }
 }
