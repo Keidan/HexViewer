@@ -403,12 +403,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_redo) {
       mUnDoRedo.redo();
     } else if (id == R.id.action_go_to) {
-      if(mPopup.getPlainText().isChecked())
-        mGoToDialog.show(GoToDialog.Mode.LINE_PLAIN);
-      else if(mPopup.getLineNumbers().isChecked())
-        mGoToDialog.show(GoToDialog.Mode.ADDRESS);
-      else
-        mGoToDialog.show(GoToDialog.Mode.LINE_HEX);
+      popupActionGoTo();
     } else if (mPopup != null) {
       if (mPopup.getPlainText() != null && mPopup.getPlainText().containsId(id, false)) {
         popupActionPlainText(id, mPopup.getPlainText(), mPopup.getLineNumbers());
@@ -689,6 +684,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
               new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
     } else
       r.run();
+  }
+
+  /**
+   * Action when the user clicks on the "go to xxx" menu.
+   */
+  private void popupActionGoTo() {
+    if(mPopup.getPlainText().isChecked())
+      mGoToDialog.show(GoToDialog.Mode.LINE_PLAIN);
+    else if(mPopup.getLineNumbers().isChecked())
+      mGoToDialog.show(GoToDialog.Mode.ADDRESS);
+    else
+      mGoToDialog.show(GoToDialog.Mode.LINE_HEX);
   }
 
 }
