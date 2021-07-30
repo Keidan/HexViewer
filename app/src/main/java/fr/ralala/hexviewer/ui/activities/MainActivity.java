@@ -35,13 +35,14 @@ import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherSave;
+import fr.ralala.hexviewer.ui.payload.PayloadHexHelper;
+import fr.ralala.hexviewer.ui.payload.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.popup.MainPopupWindow;
 import fr.ralala.hexviewer.ui.popup.PopupCheckboxHelper;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
-import fr.ralala.hexviewer.ui.payload.PayloadHexHelper;
-import fr.ralala.hexviewer.ui.payload.PayloadPlainSwipe;
+import fr.ralala.hexviewer.ui.utils.GoToDialog;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
 
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private LauncherRecentlyOpen mLauncherRecentlyOpen = null;
   private UnDoRedo mUnDoRedo = null;
   private MainPopupWindow mPopup = null;
-  private PayloadHexHelper mPayloadHexHelper;
+  private PayloadHexHelper mPayloadHexHelper = null;
+  private GoToDialog mGoToDialog = null;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -150,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mLauncherSave = new LauncherSave(this);
     mLauncherLineUpdate = new LauncherLineUpdate(this);
     mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
+
+    mGoToDialog = new GoToDialog(this);
 
     if (savedInstanceState == null)
       handleIntent(getIntent());
@@ -267,7 +271,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void doSearch(String queryStr) {
     mSearchQuery = queryStr;
-    final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ? mPayloadPlainSwipe.getAdapterPlain() : mPayloadHexHelper.getAdapter());
+    final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ?
+        mPayloadPlainSwipe.getAdapter() : mPayloadHexHelper.getAdapter());
     laa.getFilter().filter(queryStr);
   }
 
@@ -294,8 +299,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle(getResources().getConfiguration());
       }
       mPayloadHexHelper.resetUpdateStatus();
-    }
-    else
+    } else
       mApp.removeRecentlyOpened(uri.toString());
     if (userRunnable != null)
       userRunnable.run();
@@ -367,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     if (mPayloadPlainSwipe.isVisible())
-      mPayloadPlainSwipe.getAdapterPlain().notifyDataSetChanged();
+      mPayloadPlainSwipe.getAdapter().notifyDataSetChanged();
     else if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.getAdapter().notifyDataSetChanged();
     // Checks the orientation of the screen
@@ -385,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (id == R.id.action_open) {
       popupActionOpen();
     } else if (id == R.id.action_recently_open) {
-      popupActionRecentlyOpen();
+      mLauncherRecentlyOpen.startActivity();
     } else if (id == R.id.action_save) {
       popupActionSave();
     } else if (id == R.id.action_save_as) {
@@ -393,11 +397,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_close) {
       popupActionClose();
     } else if (id == R.id.action_settings) {
-      popupActionSettings();
+      SettingsActivity.startActivity(this, mUnDoRedo.isChanged());
     } else if (id == R.id.action_undo) {
-      popupActionUndo();
+      mUnDoRedo.undo();
     } else if (id == R.id.action_redo) {
-      popupActionRedo();
+      mUnDoRedo.redo();
+    } else if (id == R.id.action_go_to) {
+      if(mPopup.getPlainText().isChecked())
+        mGoToDialog.show(GoToDialog.Mode.LINE_PLAIN);
+      else if(mPopup.getLineNumbers().isChecked())
+        mGoToDialog.show(GoToDialog.Mode.ADDRESS);
+      else
+        mGoToDialog.show(GoToDialog.Mode.LINE_HEX);
     } else if (mPopup != null) {
       if (mPopup.getPlainText() != null && mPopup.getPlainText().containsId(id, false)) {
         popupActionPlainText(id, mPopup.getPlainText(), mPopup.getLineNumbers());
@@ -536,6 +547,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public PayloadHexHelper getPayloadHex() {
     return mPayloadHexHelper;
   }
+  /**
+   * Returns the PayloadPlainSwipe
+   *
+   * @return PayloadPlainSwipe
+   */
+  public PayloadPlainSwipe getPayloadPlain() {
+    return mPayloadPlainSwipe;
+  }
 
   /**
    * Returns the LauncherOpen
@@ -595,13 +614,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Action when the user clicks on the "recently open" menu.
-   */
-  private void popupActionRecentlyOpen() {
-    mLauncherRecentlyOpen.startActivity();
-  }
-
-  /**
    * Action when the user clicks on the "plain text" menu.
    *
    * @param id          Action id.
@@ -640,6 +652,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         lineNumbers.setEnable(false);
       }
+      mPopup.refreshGoToName();
     }
   }
 
@@ -656,6 +669,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mApp.setLineNumber(checked);
     if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.refreshLineNumbers();
+    mPopup.refreshGoToName();
   }
 
   /**
@@ -664,7 +678,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private void popupActionClose() {
     final Runnable r = () -> {
       onOpenResult(false, false);
-      mPayloadPlainSwipe.getAdapterPlain().clear();
+      mPayloadPlainSwipe.getAdapter().clear();
       mPayloadHexHelper.getAdapter().clear();
       cancelSearch();
       findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().isEmpty());
@@ -677,25 +691,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       r.run();
   }
 
-  /**
-   * Action when the user clicks on the "settings" menu.
-   */
-  private void popupActionSettings() {
-    SettingsActivity.startActivity(this, mUnDoRedo.isChanged());
-  }
-
-  /**
-   * Action when the user clicks on the "undo" menu.
-   */
-  private void popupActionUndo() {
-    mUnDoRedo.undo();
-  }
-
-  /**
-   * Action when the user clicks on the "redo" menu.
-   */
-  private void popupActionRedo() {
-    mUnDoRedo.redo();
-  }
 }
 

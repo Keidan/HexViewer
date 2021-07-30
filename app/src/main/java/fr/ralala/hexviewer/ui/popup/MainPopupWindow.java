@@ -29,6 +29,7 @@ import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
  */
 public class MainPopupWindow {
   private final PopupWindow mPopup;
+  private final TextView mGoTo;
   private final TextView mSaveMenu;
   private final TextView mSaveAsMenu;
   private final TextView mCloseMenu;
@@ -64,7 +65,6 @@ public class MainPopupWindow {
         R.id.action_line_numbers_container,
         R.id.action_line_numbers_tv,
         R.id.action_line_numbers_cb);
-
     mSaveAsMenu = popupView.findViewById(R.id.action_save_as);
     mSaveMenu = popupView.findViewById(R.id.action_save);
     mCloseMenu = popupView.findViewById(R.id.action_close);
@@ -73,6 +73,7 @@ public class MainPopupWindow {
     ImageView actionUndo = popupView.findViewById(R.id.action_undo);
     FrameLayout containerRedo = popupView.findViewById(R.id.containerRedo);
     FrameLayout containerUndo = popupView.findViewById(R.id.containerUndo);
+    mGoTo = popupView.findViewById(R.id.action_go_to);
 
     View.OnClickListener click = (v) -> {
       mPopup.dismiss();
@@ -87,10 +88,13 @@ public class MainPopupWindow {
     mSaveMenu.setOnClickListener(click);
     mCloseMenu.setOnClickListener(click);
     mRecentlyOpen.setOnClickListener(click);
+    mGoTo.setOnClickListener(click);
     actionRedo.setOnClickListener(click);
     actionUndo.setOnClickListener(click);
     undoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
     mLineNumbers.setChecked(app.isLineNumber());
+
+    refreshGoToName();
   }
 
   /**
@@ -129,6 +133,7 @@ public class MainPopupWindow {
    * @param en boolean
    */
   public void setMenusEnable(boolean en) {
+    setMenuEnabled(mGoTo, en);
     setMenuEnabled(mSaveAsMenu, en);
     setMenuEnabled(mCloseMenu, en);
     setMenuEnabled(mRecentlyOpen, !ApplicationCtx.getInstance().getRecentlyOpened().isEmpty());
@@ -137,7 +142,18 @@ public class MainPopupWindow {
     if (!en && mPlainText != null) {
       mPlainText.setChecked(false);
       mPlainText.setEnable(false);
+    }
+  }
 
+  /**
+   * Refreshes go to menu.
+   */
+  public void refreshGoToName() {
+    if (mGoTo != null) {
+      if(mLineNumbers != null && mLineNumbers.isChecked())
+        mGoTo.setText(R.string.action_go_to_address);
+      else
+        mGoTo.setText(R.string.action_go_to_line);
     }
   }
 

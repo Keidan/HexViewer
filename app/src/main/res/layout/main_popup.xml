@@ -127,8 +127,20 @@
         android:textAppearance="?android:attr/textAppearanceListItemSmall"  />
     </LinearLayout>
     <TextView
-      android:id="@+id/action_save"
+      android:id="@+id/action_go_to"
       android:layout_below="@id/action_line_numbers_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/action_go_to_address"
+      android:background="?attr/selectableItemBackground"
+      android:gravity="center_vertical"
+      android:minHeight="?android:attr/listPreferredItemHeightSmall"
+      android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+      android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+      android:textAppearance="?android:attr/textAppearanceListItemSmall"  />
+    <TextView
+      android:id="@+id/action_save"
+      android:layout_below="@id/action_go_to"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/action_save_title"

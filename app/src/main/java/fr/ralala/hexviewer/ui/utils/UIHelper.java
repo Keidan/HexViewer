@@ -5,17 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -42,22 +40,25 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class UIHelper {
-  private static Point mScreen = null;
 
   /**
-   * Returns the SIZE of the screen.
+   * Returns the view associated with a position
    *
-   * @param c Android context.
-   * @return int
+   * @param position The position.
+   * @param listView The list view
+   * @return View
    */
-  public static Point getScreenSize(final Context c) {
-    if (mScreen == null) {
-      WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
-      Display display = wm.getDefaultDisplay();
-      mScreen = new Point();
-      display.getSize(mScreen);
+  public static View getViewByPosition(int position, ListView listView) {
+    final int count = listView.getAdapter().getCount() - 1;
+    int pos = Math.max(0, Math.min(position, count));
+    final int firstListItemPosition = listView.getFirstVisiblePosition();
+    final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+    if (pos < firstListItemPosition || pos > lastListItemPosition) {
+      return listView.getAdapter().getView(pos, null, listView);
+    } else {
+      final int childIndex = Math.max(0, Math.min(pos - firstListItemPosition, count));
+      return listView.getChildAt(childIndex);
     }
-    return mScreen;
   }
 
   /**
@@ -188,6 +189,36 @@ public class UIHelper {
   }
 
   /**
+   * Returns a TextWatcher that simply resets the layout error as soon as the user enters a text.
+   *
+   * @param layout       TextInputLayout
+   * @param errorIfEmpty Activates the color change in error if the text is empty.
+   * @return TextWatcher
+   */
+  public static TextWatcher getResetLayoutWatcher(final TextInputLayout layout, final boolean errorIfEmpty) {
+    return new TextWatcher() {
+
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        // nothing to do
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (errorIfEmpty && s.length() == 0)
+          layout.setError(" "); /* only for the color */
+        else
+          layout.setError(null);
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        // nothing to do
+      }
+    };
+  }
+
+  /**
    * Creation of a dialog box with an edittext in it.
    *
    * @param c             The Android context.
@@ -213,23 +244,7 @@ public class UIHelper {
     TextInputLayout layout = dialog.findViewById(R.id.tilEditText);
     if (et != null && layout != null) {
       et.setText(defaultValue);
-      et.addTextChangedListener(new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-          // nothing to do
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-          layout.setError(null);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-          // nothing to do
-        }
-      });
+      et.addTextChangedListener(getResetLayoutWatcher(layout, false));
     }
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et, layout));
     return dialog;

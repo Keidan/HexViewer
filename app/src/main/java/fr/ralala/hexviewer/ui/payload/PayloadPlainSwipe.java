@@ -74,7 +74,7 @@ public class PayloadPlainSwipe {
    *
    * @return SearchableListArrayAdapter
    */
-  public PlainTextListArrayAdapter getAdapterPlain() {
+  public PlainTextListArrayAdapter getAdapter() {
     return mAdapterPlain;
   }
 
@@ -151,5 +151,14 @@ public class PayloadPlainSwipe {
       list.add(new LineData<>(sb.toString()));
     }
     return list;
+  }
+
+  /**
+   * Returns the ListView
+   *
+   * @return ListView
+   */
+  public ListView getListView() {
+    return mPayloadPlain;
   }
 }

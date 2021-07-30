@@ -148,4 +148,13 @@ public class PayloadHexHelper {
     mTitleContent.setVisibility(checked ? View.VISIBLE : View.GONE);
     mTitle.setVisibility(checked ? View.VISIBLE : View.GONE);
   }
+
+  /**
+   * Returns the ListView
+   *
+   * @return ListView
+   */
+  public ListView getListView() {
+    return mPayloadHex;
+  }
 }

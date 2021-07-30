@@ -9,6 +9,8 @@
   <string name="action_close_title">Cerrar</string>
   <string name="action_settings_title">Ajustes</string>
   <string name="action_recently_open_title">Abierta reciente</string>
+  <string name="action_go_to_address">Ir a la dirección&#8230;</string>
+  <string name="action_go_to_line">Ir a la línea&#8230;</string>
   <string name="loading">Cargando&#8230;</string>
   <string name="saving">Guardando&#8230;</string>
   <string name="yes">Sí</string>
@@ -78,4 +80,6 @@
   <string name="unit_kbyte">kB</string>
   <string name="unit_mbyte">MB</string>
   <string name="unit_gbyte">GB</string>
+  <string name="hexadecimal">hexadecimal</string>
+  <string name="decimal">decimal</string>
 </resources>

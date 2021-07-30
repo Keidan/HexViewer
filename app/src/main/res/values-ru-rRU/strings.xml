@@ -9,6 +9,8 @@
     <string name="action_close_title">Закрыть</string>
     <string name="action_settings_title">Настройки</string>
     <string name="action_recently_open_title">Недавно открытые</string>
+    <string name="action_go_to_address">Перейти к aдрес&#8230;</string>
+    <string name="action_go_to_line">Перейти к строке&#8230;</string>
     <string name="loading">Загрузка&#8230;</string>
     <string name="saving">Сохранение&#8230;</string>
     <string name="yes">Да</string>
@@ -24,7 +26,7 @@
     <string name="operation_canceled">Операция отменена</string>
     <string name="exception">Исключение</string>
     <string name="confirm_overwrite">Файл существует, вы уверены, что хотите его перезаписать?</string>
-    <string name="open_a_file_before">Open a file before!</string>
+    <string name="open_a_file_before">Откройте файл до этого!</string>
     <string name="file_manager_keyword">Файловый менеджер</string>
     <string name="select_file_to_open">Выберите файл, который нужно открыть.</string>
     <string name="error_no_file_manager">Пожалуйста, установите файловый менеджер.</string>
@@ -78,4 +80,6 @@
     <string name="unit_kbyte">KБ</string>
     <string name="unit_mbyte">MБ</string>
     <string name="unit_gbyte">ГБ</string>
+    <string name="hexadecimal">шестнадцатеричный</string>
+    <string name="decimal">десятичный</string>
 </resources>

@@ -9,6 +9,8 @@
   <string name="action_close_title">关闭</string>
   <string name="action_settings_title">设置</string>
   <string name="action_recently_open_title">最近打开</string>
+  <string name="action_go_to_address">转到地址&#8230;</string>
+  <string name="action_go_to_line">转到行&#8230;</string>
   <string name="loading">正加载&#8230;</string>
   <string name="saving">正保存&#8230;</string>
   <string name="yes">是</string>
@@ -78,4 +80,6 @@
   <string name="unit_kbyte">kB</string>
   <string name="unit_mbyte">MB</string>
   <string name="unit_gbyte">GB</string>
+  <string name="hexadecimal">十六进制</string>
+  <string name="decimal">十进制</string>
 </resources>

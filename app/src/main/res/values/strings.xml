@@ -10,6 +10,8 @@
     <string name="action_close_title">Close</string>
     <string name="action_settings_title">Settings</string>
     <string name="action_recently_open_title">Recently opened</string>
+    <string name="action_go_to_address">Go to address&#8230;</string>
+    <string name="action_go_to_line">Go to line&#8230;</string>
     <string name="loading">Loading&#8230;</string>
     <string name="saving">Saving&#8230;</string>
     <string name="yes">Yes</string>
@@ -36,6 +38,7 @@
     <string name="result">Result:</string>
     <string name="empty_value">Empty</string>
 
+    <string name="zero" translatable="false">0</string>
     <string name="content_description_undo" translatable="false">Undo</string>
     <string name="content_description_redo" translatable="false">Redo</string>
     <string name="default_abbreviate_portrait" translatable="false">8</string>
@@ -113,4 +116,6 @@
     <string name="unit_kbyte">kB</string>
     <string name="unit_mbyte">MB</string>
     <string name="unit_gbyte">GB</string>
+    <string name="hexadecimal">hexadecimal</string>
+    <string name="decimal">decimal</string>
 </resources>

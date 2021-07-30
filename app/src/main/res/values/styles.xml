@@ -21,6 +21,7 @@
     <item name="android:alertDialogTheme">@style/AppTheme.DialogTheme</item>
     <item name="android:textColorHint">@color/text_color_primary_enabled</item>
     <item name="android:checkboxStyle">@style/AppTheme.CheckBoxStyle</item>
+    <item name="android:radioButtonStyle">@style/AppTheme.RadioButtonStyle</item>
   </style>
 
   <style name="AppTheme.NoActionBar">
@@ -69,5 +70,11 @@
     <!-- Customize your theme here. -->
     <item name="android:textColor">@color/colorResultWarning</item>
     <item name="android:textSize">12sp</item>
+  </style>
+
+
+  <style name="AppTheme.RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+    <item name="android:textColor">@color/text_color_enabled</item>
+    <item name="buttonTint">@color/accent_color_enabled</item>
   </style>
 </resources>
