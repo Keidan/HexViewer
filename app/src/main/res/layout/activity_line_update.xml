@@ -174,7 +174,8 @@
       android:layout_height="wrap_content"
       android:hint="@null"
       android:textSize="@dimen/activity_line_update_lv_font_size"
-      android:inputType="textMultiLine"
+      android:importantForAutofill="no"
+      android:inputType="textFilter|textMultiLine|textNoSuggestions"
       android:typeface="monospace"
       android:gravity="top"
       android:layout_marginBottom="20dp"/>
