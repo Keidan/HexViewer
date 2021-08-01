@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.ui.utils;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -245,9 +244,11 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private void fixCursorPositionForSmartInput(final @NonNull EditText et, final String strOld, final String strNew) {
     final int newLen = strNew.length();
     final int oldLen = strOld.length();
-    final int delta = Math.abs(newLen - oldLen);
+    int delta = Math.abs(newLen - oldLen);
+    if(delta == 0 && mApp.isOverwrite())
+      delta = mStartOffsetForOverwrite;
     int pos;
-    if (newLen > oldLen) {
+    if (newLen > oldLen || (newLen == oldLen && mApp.isOverwrite())) {
       pos = Math.abs(mStart + delta);
       if (mBetweenDigits) pos--;
     } else {
@@ -268,8 +269,6 @@ public class LineUpdateTextWatcher implements TextWatcher {
     final String notChangedStart = mNewString.substring(0, start);
     final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
     CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
-
-    Log.e("hex", "notChangedStart: '" + notChangedStart + "', notChangedEnd: '" + notChangedEnd + "', newChange: '" + newChange + "'");
 
     StringBuilder newChangeHex = new StringBuilder();
     byte[] newChangeBytes = newChange.toString().getBytes();
@@ -296,6 +295,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
         str += endStr;
       mStart += odd ? 1 : 2;
       mBetweenDigits = false;
+      mStartOffsetForOverwrite = ns.length();
     }
     mNewString = formatText(str.replaceAll(" ", "").toLowerCase(Locale.US));
   }
