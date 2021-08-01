@@ -36,7 +36,6 @@
     <string name="uri_exception">Uri exception</string>
     <string name="source">Source:</string>
     <string name="result">Result:</string>
-    <string name="empty_value">Empty</string>
 
     <string name="zero" translatable="false">0</string>
     <string name="content_description_undo" translatable="false">Undo</string>
@@ -67,7 +66,9 @@
     <string name="default_plain_font_size_landscape" translatable="false">16</string>
     <string name="default_smart_input" translatable="false">false</string>
     <string name="default_lines_number" translatable="false">true</string>
-    <string name="title_content" translatable="false">00&#160;01&#160;02&#160;03&#160;04&#160;05&#160;06&#160;07&#160;&#160;08&#160;09&#160;0A&#160;0B&#160;0C&#160;0D&#160;0E&#160;0F</string>
+    <string name="title_content" translatable="false">00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F</string>
+    <string name="title_content8" translatable="false">00 01 02 03 04 05 06 07</string>
+
     <string name="default_overwrite" translatable="false">false</string>
     <string name="default_screen_orientation" translatable="false">SCREEN_ORIENTATION_UNSPECIFIED</string>
 
@@ -77,12 +78,12 @@
     <string name="settings_pref_category_portrait">Portrait mode</string>
     <string name="settings_pref_title_abbreviate_portrait">Abbreviate</string>
     <string name="settings_pref_summary_abbreviate_portrait">The number of characters to display for the file name in portrait mode.</string>
-    <string name="settings_pref_title_lists_portrait">Height &amp; Font size</string>
+    <string name="settings_pref_title_lists_portrait">Height, Font size &#8230;</string>
     <string name="settings_pref_summary_lists_portrait">Click to edit</string>
     <string name="settings_pref_category_landscape">Landscape mode</string>
     <string name="settings_pref_title_abbreviate_landscape">Abbreviate</string>
     <string name="settings_pref_summary_abbreviate_landscape">The number of characters to display for the file name in landscape mode.</string>
-    <string name="settings_pref_title_lists_landscape">Height &amp; Font size</string>
+    <string name="settings_pref_title_lists_landscape">Height, Font size &#8230;</string>
     <string name="settings_pref_summary_lists_landscape">Click to edit</string>
     <string name="settings_category_hex">Text in hexadecimal (without line numbers)</string>
     <string name="settings_category_hex_line_numbers">Text in hexadecimal (with line numbers)</string>

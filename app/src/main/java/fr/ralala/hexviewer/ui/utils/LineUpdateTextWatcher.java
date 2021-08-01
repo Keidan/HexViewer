@@ -1,12 +1,10 @@
 package fr.ralala.hexviewer.ui.utils;
 
-import android.content.Context;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -16,13 +14,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.EmojiSpan;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -39,8 +37,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public class LineUpdateTextWatcher implements TextWatcher {
   private static final Pattern PATTERN_4HEX = Pattern.compile("(\\p{XDigit}{4})");
-  private final Context mContext;
-  private final TextView mResult;
+  private final LineUpdateHexArrayAdapter mResultAdapter;
   private final TextInputLayout mLayout;
   private final ApplicationCtx mApp;
   private String mNewString = "";
@@ -51,9 +48,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private boolean mRemove = false;
   private int mStartOffsetForOverwrite = 0;
 
-  public LineUpdateTextWatcher(Context context, TextView result, TextInputLayout layout, ApplicationCtx app) {
-    mContext = context;
-    mResult = result;
+  public LineUpdateTextWatcher(LineUpdateHexArrayAdapter resultAdapter,
+                               TextInputLayout layout, ApplicationCtx app) {
+    mResultAdapter = resultAdapter;
     mLayout = layout;
     mApp = app;
   }
@@ -62,8 +59,6 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * Treatment if the line is empty.
    */
   private void processNewStringEmpty() {
-    mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
-    mResult.setText(R.string.empty_value);
     if (mApp.isSmartInput()) {
       mIgnore = true; // prevent infinite loop
       final EditText et = mLayout.getEditText();
@@ -71,6 +66,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
         et.setText("");
       mIgnore = false; // release, so the TextWatcher start to listen again.
     }
+    mResultAdapter.clear();
   }
 
   /**
@@ -79,21 +75,21 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param strNew The new string.
    */
   private void processResultAndError(String strNew) {
-    boolean isError = false; /* true = error, false = warning */
     final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
     final boolean validated = SysHelper.isValidHexLine(validate, false);
-    if (!SysHelper.isEven(validate.length()) && validate.matches("\\p{XDigit}+"))
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultWarning));
-    else if (!validated) {
-      isError = true;
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultError));
-    } else
-      mResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorResultSuccess));
-
-    mResult.setText(SysHelper.hex2bin(validate));
     if (!validated) {
-      mLayout.setErrorTextAppearance(isError ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
+      mLayout.setErrorTextAppearance(SysHelper.isEven(validate.length()) ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
       mLayout.setError(" "); /* only for the color */
+    } else {
+      byte[] bytes = SysHelper.hex2bin(validate);
+      List<LineData<Line>> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+      mResultAdapter.clear();
+      for(LineData<Line> ld : li)
+        mResultAdapter.add(ld.toString());
+      mResultAdapter.getListView().post(() -> {
+        // Select the last row so it will scroll into view...
+        mResultAdapter.getListView().setSelection(mResultAdapter.getCount() - 1);
+      });
     }
   }
 
@@ -235,10 +231,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private String formatText(String text) {
     final byte[] buf = SysHelper.hexStringToByteArray(text);
-    List<LineData<Line>> li = SysHelper.formatBuffer(buf, null);
+    List<LineData<Line>> li = SysHelper.formatBuffer(buf, null, SysHelper.MAX_BY_ROW_8);
     StringBuilder sb = new StringBuilder();
     for (LineData<Line> line : li) {
-      sb.append(SysHelper.extractHex(line.getValue().getPlain())).append(" ");
+      sb.append(line.getValue().getPlain().substring(0, 23).trim()).append(" ");
     }
     return sb.toString().trim();
   }
@@ -277,9 +273,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
     StringBuilder newChangeHex = new StringBuilder();
     byte[] newChangeBytes = newChange.toString().getBytes();
-    List<LineData<Line>> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null);
+    List<LineData<Line>> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null, SysHelper.MAX_BY_ROW_8);
     for (LineData<Line> str : list)
-      newChangeHex.append(SysHelper.extractHex(str.getValue().getPlain()));
+      newChangeHex.append(str.getValue().getPlain().substring(0, 23).trim());
 
     String str;
     if (!mApp.isOverwrite())

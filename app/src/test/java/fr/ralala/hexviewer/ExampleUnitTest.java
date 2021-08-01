@@ -23,7 +23,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00                                                .", list.get(0).getValue().getPlain());
+    assertEquals("00                                               .", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -32,7 +32,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01                                             ..", list.get(0).getValue().getPlain());
+    assertEquals("00 01                                            ..", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -41,7 +41,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02                                          ...", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02                                         ...", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -50,7 +50,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03                                       ....", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03                                      ....", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -59,7 +59,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04                                    .....", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04                                   .....", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -68,7 +68,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05                                 ......", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05                                ......", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -77,7 +77,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06                              .......", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06                             .......", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -86,7 +86,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07                           ........", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07                          ........", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -95,7 +95,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08                       ........ .", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08                       .........", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -104,7 +104,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09                    ........ ..", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09                    ..........", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -113,7 +113,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a                 ........ ...", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a                 ...........", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -122,7 +122,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a 0b              ........ ....", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a 0b              ............", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -131,7 +131,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a 0b 0c           ........ .....", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a 0b 0c           .............", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -140,7 +140,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d        ........ ......", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d        ..............", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -149,7 +149,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e     ........ .......", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e     ...............", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -158,7 +158,7 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(1, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e 0f  ........ ........", list.get(0).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f  ................", list.get(0).getValue().getPlain());
   }
 
   @Test
@@ -167,8 +167,90 @@ public class ExampleUnitTest {
     List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null);
 
     assertEquals(2, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e 0f  ........ ........", list.get(0).getValue().getPlain());
-    assertEquals("10                                                .", list.get(1).getValue().getPlain());
+    assertEquals("00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f  ................", list.get(0).getValue().getPlain());
+    assertEquals("10                                               .", list.get(1).getValue().getPlain());
   }
+  @Test
+  public void testFormatBuffer18() {
+    byte[] bytes = {0};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00                       .", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer19() {
+    byte[] bytes = {0, 1};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01                    ..", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer20() {
+    byte[] bytes = {0, 1, 2};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01 02                 ...", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer21() {
+    byte[] bytes = {0, 1, 2, 3};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01 02 03              ....", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer22() {
+    byte[] bytes = {0, 1, 2, 3, 4};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01 02 03 04           .....", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer23() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01 02 03 04 05        ......", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer24() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01 02 03 04 05 06     .......", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer25() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(1, list.size());
+    assertEquals("00 01 02 03 04 05 06 07  ........", list.get(0).getValue().getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer26() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineData<Line>> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+
+    assertEquals(2, list.size());
+    assertEquals("00 01 02 03 04 05 06 07  ........", list.get(0).getValue().getPlain());
+    assertEquals("08                       .", list.get(1).getValue().getPlain());
+  }
+
 
 }

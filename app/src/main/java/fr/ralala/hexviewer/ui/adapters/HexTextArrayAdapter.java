@@ -222,9 +222,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
     }
   }
 
-  private static class Holder {
-    private TextView lineNumbers;
-    private TextView content;
+  public static class Holder {
+    public TextView lineNumbers;
+    public TextView content;
   }
 }
 

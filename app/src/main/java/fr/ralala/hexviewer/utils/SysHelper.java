@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.utils;
 
 import android.content.Context;
 
+import java.io.ByteArrayOutputStream;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class SysHelper {
   private static final float SIZE_1MB = 0x100000;
   private static final float SIZE_1GB = 0x40000000;
   public static final int MAX_BY_ROW = 16;
+  public static final int MAX_BY_ROW_8 = 8;
   public static final int MAX_BY_LINE = ((MAX_BY_ROW * 2) + MAX_BY_ROW) + 19; /* 19 = nb spaces */
 
   /**
@@ -97,30 +99,6 @@ public class SysHelper {
   }
 
   /**
-   * Extract the hexadecimal part of a string formatted with the formatBuffer function.
-   *
-   * @param string The hex string.
-   * @return Always String[2]
-   */
-  public static String[] extractHexAndSplit(final String string) {
-    return new String[]{
-        string.substring(0, 24).trim(),
-        string.substring(25, 49).trim()
-    };
-  }
-
-  /**
-   * Extract the hexadecimal part of a string formatted with the formatBuffer function.
-   *
-   * @param string The hex string.
-   * @return String
-   */
-  public static String extractHex(final String string) {
-    final String[] split = extractHexAndSplit(string);
-    return (split[0] + " " + split[1]).trim();
-  }
-
-  /**
    * Converts a size into a humanly understandable string.
    *
    * @param ctx Android context.
@@ -151,9 +129,22 @@ public class SysHelper {
    * @return List<LineEntry>
    */
   public static List<LineData<Line>> formatBuffer(final byte[] buffer, AtomicBoolean cancel) {
+    return formatBuffer(buffer, cancel, MAX_BY_ROW);
+  }
+
+  /**
+   * Formats a buffer (wireshark like).
+   *
+   * @param buffer   The input buffer.
+   * @param cancel   Used to cancel this method.
+   * @param maxByRow Max bytes by row.
+   * @return List<LineEntry>
+   */
+  public static List<LineData<Line>> formatBuffer(final byte[] buffer, AtomicBoolean cancel,
+                                                  final int maxByRow) {
     List<LineData<Line>> lines;
     try {
-      lines = formatBuffer(buffer, buffer.length, cancel);
+      lines = formatBuffer(buffer, buffer.length, cancel, maxByRow);
     } catch (IllegalArgumentException iae) {
       lines = new ArrayList<>();
     }
@@ -171,6 +162,22 @@ public class SysHelper {
   public static List<LineData<Line>> formatBuffer(final byte[] buffer,
                                                   final int length,
                                                   AtomicBoolean cancel) throws IllegalArgumentException {
+    return formatBuffer(buffer, length, cancel, MAX_BY_ROW);
+  }
+
+  /**
+   * Formats a buffer (wireshark like).
+   *
+   * @param buffer   The input buffer.
+   * @param length   The input buffer length.
+   * @param cancel   Used to cancel this method.
+   * @param maxByRow Max bytes by row.
+   * @return List<String>
+   */
+  public static List<LineData<Line>> formatBuffer(final byte[] buffer,
+                                                  final int length,
+                                                  AtomicBoolean cancel,
+                                                  final int maxByRow) throws IllegalArgumentException {
     int len = length;
     if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
@@ -189,9 +196,7 @@ public class SysHelper {
       /* only the visible char */
       currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char) c : (char) 0x2e); /* 0x2e = . */
       /* Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted. */
-      currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine, currentLineRaw);
-      /* add a space in the half of the line */
-      formatBufferManageHalfLine(currentIndex, currentLine, currentEndLine);
+      currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine, currentLineRaw, maxByRow);
 
       /* next */
       len--;
@@ -199,7 +204,7 @@ public class SysHelper {
     if (cancel != null && cancel.get())
       return lines;
     formatBufferAlign(lines, currentIndex, currentLine.toString(),
-        currentEndLine.toString(), currentLineRaw);
+        currentEndLine.toString(), currentLineRaw, maxByRow);
     return lines;
   }
 
@@ -218,40 +223,24 @@ public class SysHelper {
 
 
   /**
-   * Converts hex string to a binary string.
+   * Converts hex string to a binary array.
    *
    * @param hex The hex string.
    * @return String
    */
-  public static String hex2bin(final String hex) {
+  public static byte[] hex2bin(final String hex) {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     final String h = hex.replaceAll(" ", "");
     int len = h.length();
     if (len == 0)
-      return "";
+      return byteArrayOutputStream.toByteArray();
     int max = isEven(len) ? len : len - 1;
-    StringBuilder sb = new StringBuilder();
     for (int i = 0; i < max; i += 2) {
       byte b = (byte) ((Character.digit(h.charAt(i), 16) << 4) + Character
           .digit(h.charAt(i + 1), 16));
-      sb.append((b >= 0x20 && b <= 0x7e) ? (char) b : (char) 0x2e); /* 0x2e = . */
+      byteArrayOutputStream.write(b);
     }
-    return sb.toString();
-  }
-
-  /**
-   * If we get to the half of the line we add an extra space.
-   *
-   * @param currentIndex   The current index.
-   * @param currentLine    The current line.
-   * @param currentEndLine The end of the current line.
-   */
-  private static void formatBufferManageHalfLine(final int currentIndex,
-                                                 final StringBuilder currentLine,
-                                                 final StringBuilder currentEndLine) {
-    if (currentIndex == MAX_BY_ROW / 2) {
-      currentLine.append(" ");
-      currentEndLine.append(" ");
-    }
+    return byteArrayOutputStream.toByteArray();
   }
 
   /**
@@ -262,15 +251,18 @@ public class SysHelper {
    * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
    * @param currentLineRaw The current line in raw.
+   * @param maxByRow       Max bytes by row.
    * @return The nex index.
    */
   private static int formatBufferPrepareLineComplete(final List<LineData<Line>> lines,
                                                      final int currentIndex,
                                                      final StringBuilder currentLine,
                                                      final StringBuilder currentEndLine,
-                                                     final List<Byte> currentLineRaw) {
-    if (currentIndex == MAX_BY_ROW - 1) {
-      lines.add(new LineData<>(new Line(currentLine + " " + currentEndLine, new ArrayList<>(currentLineRaw))));
+                                                     final List<Byte> currentLineRaw,
+                                                     final int maxByRow) {
+    if (currentIndex == maxByRow - 1) {
+      lines.add(new LineData<>(new Line(currentLine + " " + currentEndLine,
+          new ArrayList<>(currentLineRaw))));
       currentEndLine.setLength(0);
       currentLine.setLength(0);
       currentLineRaw.clear();
@@ -287,20 +279,21 @@ public class SysHelper {
    * @param currentIndex   The current index.
    * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
+   * @param maxByRow       Max bytes by row.
    */
   private static void formatBufferAlign(final List<LineData<Line>> lines,
                                         int currentIndex,
                                         final String currentLine,
                                         final String currentEndLine,
-                                        final List<Byte> currentLineRaw) {
+                                        final List<Byte> currentLineRaw,
+                                        final int maxByRow) {
     /* align 'line' */
     int i = currentIndex;
-    if (i != 0 && (i < MAX_BY_ROW || i <= currentLine.length())) {
-      int mid = MAX_BY_ROW / 2;
-      StringBuilder off = new StringBuilder((i == mid) ? " " : "");
-      while (i++ <= MAX_BY_ROW - 1)
-        off.append((i == mid) ? "    " : "   "); /* 4 spaces ex: "00  " or 3 spaces ex: "00 " */
-      off.append("  "); /* 2 spaces separator */
+    if (i != 0 && (i < maxByRow || i <= currentLine.length())) {
+      StringBuilder off = new StringBuilder();
+      while (i++ <= maxByRow - 1)
+        off.append("   "); /* 3 spaces ex: "00 " */
+      off.append("  "); /* 1 or 2 spaces separator */
       String s = currentLine.trim();
       lines.add(new LineData<>(new Line(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw))));
     }

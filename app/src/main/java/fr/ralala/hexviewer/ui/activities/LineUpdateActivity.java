@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,9 +21,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.Line;
+import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -39,7 +44,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class LineUpdateActivity extends AppCompatActivity {
-  private static final String ACTIVITY_EXTRA_TEXT = "ACTIVITY_EXTRA_TEXT";
+  private static final String ACTIVITY_EXTRA_TEXTS = "ACTIVITY_EXTRA_TEXTS";
   private static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
   private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
   private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
@@ -51,23 +56,23 @@ public class LineUpdateActivity extends AppCompatActivity {
   private TextInputEditText mEtInputHex;
   private TextInputLayout mTilInputHex;
   private int mPosition = -1;
-  private String mHex;
   private String mFile;
   private boolean mChange;
+  private String mHex;
 
   /**
    * Starts an activity.
    *
    * @param c                      Android context.
    * @param activityResultLauncher Activity Result Launcher.
-   * @param text                   The text.
+   * @param texts                  The texts.
    * @param file                   The file name.
    * @param position               The item position.
    * @param change                 A change is detected?
    */
-  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final String text, final String file, final int position, final boolean change) {
+  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final byte[] texts, final String file, final int position, final boolean change) {
     Intent intent = new Intent(c, LineUpdateActivity.class);
-    intent.putExtra(ACTIVITY_EXTRA_TEXT, text);
+    intent.putExtra(ACTIVITY_EXTRA_TEXTS, texts);
     intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
     intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
     intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
@@ -98,13 +103,19 @@ public class LineUpdateActivity extends AppCompatActivity {
     setContentView(R.layout.activity_line_update);
     mApp = ApplicationCtx.getInstance();
 
-    TextView tvSource = findViewById(R.id.tvSource);
-    TextView tvResult = findViewById(R.id.tvResult);
-    mEtInputHex = findViewById(R.id.etInputHex);
-    mTilInputHex = findViewById(R.id.tilInputHex);
+    ListView lvSource = findViewById(R.id.lvSource);
+    ListView lvResult = findViewById(R.id.lvResult);
+    HexTextArrayAdapter.LineNumbersTitle titleSource = new HexTextArrayAdapter.LineNumbersTitle();
+    titleSource.titleContent = findViewById(R.id.titleContentSource);
+    titleSource.titleLineNumbers = findViewById(R.id.titleLineNumbersSource);
+    HexTextArrayAdapter.LineNumbersTitle titleResult = new HexTextArrayAdapter.LineNumbersTitle();
+    titleResult.titleContent = findViewById(R.id.titleContentResult);
+    titleResult.titleLineNumbers = findViewById(R.id.titleLineNumbersResult);
     AppCompatCheckBox chkSmartInput = findViewById(R.id.chkSmartInput);
     AppCompatCheckBox chkOverwrite = findViewById(R.id.chkOverwrite);
 
+    mEtInputHex = findViewById(R.id.etInputHex);
+    mTilInputHex = findViewById(R.id.tilInputHex);
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
@@ -113,40 +124,43 @@ public class LineUpdateActivity extends AppCompatActivity {
     }
 
     /* init */
-    String text = null;
     mChange = false;
+    List<String> list = new ArrayList<>();
+    StringBuilder sbHex = new StringBuilder();
     if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
-      text = extras.getString(ACTIVITY_EXTRA_TEXT);
+      List<LineData<Line>> li = SysHelper.formatBuffer(extras.getByteArray(ACTIVITY_EXTRA_TEXTS), null, SysHelper.MAX_BY_ROW_8);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
       mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
+      for(LineData<Line> ld : li) {
+        String s = ld.toString();
+        list.add(s);
+        sbHex.append(s.substring(0, 23).trim()).append(" ");
+      }
     }
-    if (text == null || text.equals("null")) {
-      text = "";
-    }
-    if (mFile != null) {
-      UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile, mChange);
-    }
-    if (mPosition == -1) {
-      mPosition = 0;
-    }
-    final String[] split = SysHelper.extractHexAndSplit(text);
-    mHex = split[0] + " " + split[1];
-    text = mHex.replaceAll(" ", "");
+    LineUpdateHexArrayAdapter adapterSource = new LineUpdateHexArrayAdapter(this, lvSource, titleSource, list);
+    LineUpdateHexArrayAdapter adapterResult = new LineUpdateHexArrayAdapter(this, lvResult, titleResult, new ArrayList<>(list));
+    lvSource.setAdapter(adapterSource);
+    lvResult.setAdapter(adapterResult);
 
     chkSmartInput.setChecked(mApp.isSmartInput());
     chkSmartInput.setOnCheckedChangeListener((comp, isChecked) -> mApp.setSmartInput(isChecked));
     chkOverwrite.setChecked(mApp.isOverwrite());
     chkOverwrite.setOnCheckedChangeListener((comp, isChecked) -> mApp.setOverwrite(isChecked));
 
-    tvSource.setText((split[0] + "\n" + split[1]));
 
-    tvResult.setTextColor(ContextCompat.getColor(this, R.color.colorResultSuccess));
-    tvResult.setText(SysHelper.hex2bin(text));
-
-    mEtInputHex.setText(mHex.trim());
-    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(this, tvResult, mTilInputHex, mApp));
+    if (mFile != null) {
+      UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile, mChange);
+    }
+    if (mPosition == -1) {
+      mPosition = 0;
+    }
+    mHex = sbHex.toString();
+    if(mHex.endsWith(" "))
+      mHex = mHex.substring(0, mHex.length() - 1);
+    mEtInputHex.setText(mHex);
+    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(adapterResult, mTilInputHex, mApp));
   }
 
   /**

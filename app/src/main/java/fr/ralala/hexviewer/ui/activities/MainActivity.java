@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -455,7 +457,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
-    mLauncherLineUpdate.startActivity(e.getValue().getPlain(), position);
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    for(Byte b : e.getValue().getRaw())
+      byteArrayOutputStream.write(b);
+    mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position);
   }
 
   /**

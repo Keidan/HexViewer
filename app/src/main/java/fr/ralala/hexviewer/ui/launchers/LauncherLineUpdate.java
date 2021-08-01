@@ -44,11 +44,11 @@ public class LauncherLineUpdate {
   /**
    * Starts the activity.
    *
-   * @param string   The hex string.
+   * @param texts    The hex texts.
    * @param position The position in the list view.
    */
-  public void startActivity(String string, int position) {
-    LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, string,
+  public void startActivity(final byte[] texts, int position) {
+    LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, texts,
         mActivity.getFileData().getName(), position, mActivity.getUnDoRedo().isChanged());
   }
 

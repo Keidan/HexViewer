@@ -2,6 +2,8 @@
 <resources>
   <!-- listview_hex_row.xml -->
   <dimen name="listview_hex_row_font_size">9sp</dimen>
+  <!-- activity_line_update.xml -->
+  <dimen name="activity_line_update_lv_font_size">14sp</dimen>
 
   <!-- progress_dialog -->
   <dimen name="progress_dialog_textSize">18sp</dimen>
