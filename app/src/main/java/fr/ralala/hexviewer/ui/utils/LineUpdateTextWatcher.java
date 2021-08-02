@@ -85,7 +85,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       byte[] bytes = SysHelper.hex2bin(validate);
       List<LineData<Line>> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
       mResultAdapter.clear();
-      for(LineData<Line> ld : li)
+      for (LineData<Line> ld : li)
         mResultAdapter.add(ld.toString());
       mResultAdapter.getListView().post(() -> {
         // Select the last row so it will scroll into view...
@@ -248,7 +248,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     final int newLen = strNew.length();
     final int oldLen = strOld.length();
     int delta = Math.abs(newLen - oldLen);
-    if(delta == 0 && mApp.isOverwrite())
+    if (delta == 0 && mApp.isOverwrite())
       delta = mStartOffsetForOverwrite;
     int pos;
     if (newLen > oldLen || (newLen == oldLen && mApp.isOverwrite())) {
@@ -269,7 +269,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private void processAddWithSmartInput(int start, int count) {
     int localStart = start;
-    if(mBetweenDigits)
+    if (mBetweenDigits)
       localStart = mApp.isOverwrite() ? localStart - 1 : localStart + 1;
     mStart = localStart < 0 ? 0 : localStart + 1;
     final String notChangedStart = mNewString.substring(0, localStart);
@@ -344,7 +344,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       final String notChangedStart = mNewString.substring(0, start).replaceAll(" ", "");
       String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
       mStartOffsetForOverwrite = (notChangedEnd.startsWith(" ") || notChangedEnd.isEmpty()) ? 1 : 0;
-      if(mBetweenDigits)
+      if (mBetweenDigits)
         mStartOffsetForOverwrite++;
       notChangedEnd = notChangedEnd.replaceAll(" ", "");
 
