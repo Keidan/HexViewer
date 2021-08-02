@@ -106,8 +106,8 @@
     <string name="settings_pref_summary_language">Change the language of the application.</string>
     <string name="settings_pref_title_screen_orientation">Screen orientation</string>
     <string name="settings_pref_summary_screen_orientation">Configures the default screen orientation (main screen only).</string>
-    <string name="settings_pref_title_nb_bytes">Number of bytes to display per line</string>
-    <string name="settings_pref_summary_nb_bytes">Number of bytes to display per line (8 or 16). Please note that the display of 8 bytes increases the memory requirement considerably.</string>
+    <string name="settings_pref_title_nb_bytes">Number of bytes to display in one line</string>
+    <string name="settings_pref_summary_nb_bytes">The number of bytes to display per line (8 or 16). Note that displaying 8 bytes greatly increases memory consumption.</string>
     <string name="error_file_open">It\'s not possible to change the mode when a file is open.</string>
     <string name="smart_input">Plain text input</string>
     <string name="error_file_not_found">The file %1$s was not found</string>

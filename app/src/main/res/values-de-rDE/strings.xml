@@ -69,8 +69,8 @@
     <string name="settings_pref_summary_language">Die Sprache der Anwendung ändern.</string>
     <string name="settings_pref_title_screen_orientation">Bildschirmausrichtung</string>
     <string name="settings_pref_summary_screen_orientation">Konfiguriert die Standard-Bildschirmausrichtung (nur Hauptbildschirm).</string>
-    <string name="settings_pref_title_nb_bytes">Anzahl der anzuzeigenden Bytes pro Zeile</string>
-    <string name="settings_pref_summary_nb_bytes">Anzahl der Bytes, die pro Zeile angezeigt werden sollen (8 oder 16). Bitte beachten Sie, dass die Anzeige von 8 Bytes den Speicherbedarf erheblich erhöht.</string>
+    <string name="settings_pref_title_nb_bytes">Anzahl der Bytes, die in einer Zeile angezeigt werden sollen</string>
+    <string name="settings_pref_summary_nb_bytes">Die Anzahl der Bytes, die pro Zeile angezeigt werden sollen (8 oder 16). Beachten Sie, dass die Anzeige von 8 Bytes den Speicherverbrauch stark erhöht.</string>
     <string name="error_file_open">Es ist nicht möglich, den Modus zu ändern, wenn eine Datei geöffnet ist</string>
     <string name="smart_input">Eingabe von Klartext</string>
     <string name="error_file_not_found">Die Datei %1$s wurde nicht gefunden</string>
