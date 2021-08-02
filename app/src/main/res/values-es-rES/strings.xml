@@ -67,6 +67,9 @@
   <string name="settings_pref_summary_language">Cambiar el idioma de la aplicación</string>
   <string name="settings_pref_title_screen_orientation">Orientación de la pantalla</string>
   <string name="settings_pref_summary_screen_orientation">Configura la orientación de la pantalla por defecto (sólo pantalla principal).</string>
+  <string name="settings_pref_title_nb_bytes">Número de bytes a mostrar por línea</string>
+  <string name="settings_pref_summary_nb_bytes">Número de bytes a mostrar por línea (8 o 16). Tenga en cuenta que la visualización de 8 bytes aumenta considerablemente la necesidad de memoria.</string>
+  <string name="error_file_open">No es posible cambiar el modo cuando un archivo está abierto.</string>
   <string name="smart_input">Entrada de texto simple</string>
   <string name="error_file_not_found">No se ha encontrado el archivo %1$s</string>
   <string name="error_file_permission">No se ha concedido permiso para el archivo %1$s</string>

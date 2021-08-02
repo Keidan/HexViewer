@@ -34,7 +34,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, TaskSave.Result> {
-  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 10000;
+  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 10000;
   private OutputStream mOutputStream = null;
   private ParcelFileDescriptor mParcelFileDescriptor = null;
   private final SaveResultListener mListener;

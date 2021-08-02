@@ -77,7 +77,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private void processResultAndError(String strNew) {
     final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
-    final boolean validated = SysHelper.isValidHexLine(validate, false);
+    final boolean validated = SysHelper.isValidHexLine(validate);
     if (!validated) {
       mLayout.setErrorTextAppearance(SysHelper.isEven(validate.length()) ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
       mLayout.setError(" "); /* only for the color */

@@ -36,9 +36,9 @@ public class SysHelper {
   private static final float SIZE_1KB = 0x400;
   private static final float SIZE_1MB = 0x100000;
   private static final float SIZE_1GB = 0x40000000;
-  public static final int MAX_BY_ROW = 16;
+  public static final int MAX_BY_ROW_16 = 16;
   public static final int MAX_BY_ROW_8 = 8;
-  public static final int MAX_BY_LINE = ((MAX_BY_ROW * 2) + MAX_BY_ROW) + 19; /* 19 = nb spaces */
+  public static final int MAX_BY_LINE = ((MAX_BY_ROW_16 * 2) + MAX_BY_ROW_16) + 19; /* 19 = nb spaces */
 
   /**
    * Sorts keys.
@@ -124,17 +124,6 @@ public class SysHelper {
   /**
    * Formats a buffer (wireshark like).
    *
-   * @param buffer The input buffer.
-   * @param cancel Used to cancel this method.
-   * @return List<LineEntry>
-   */
-  public static List<LineData<Line>> formatBuffer(final byte[] buffer, AtomicBoolean cancel) {
-    return formatBuffer(buffer, cancel, MAX_BY_ROW);
-  }
-
-  /**
-   * Formats a buffer (wireshark like).
-   *
    * @param buffer   The input buffer.
    * @param cancel   Used to cancel this method.
    * @param maxByRow Max bytes by row.
@@ -149,20 +138,6 @@ public class SysHelper {
       lines = new ArrayList<>();
     }
     return lines;
-  }
-
-  /**
-   * Formats a buffer (wireshark like).
-   *
-   * @param buffer The input buffer.
-   * @param length The input buffer length.
-   * @param cancel Used to cancel this method.
-   * @return List<String>
-   */
-  public static List<LineData<Line>> formatBuffer(final byte[] buffer,
-                                                  final int length,
-                                                  AtomicBoolean cancel) throws IllegalArgumentException {
-    return formatBuffer(buffer, length, cancel, MAX_BY_ROW);
   }
 
   /**
@@ -302,16 +277,13 @@ public class SysHelper {
   /**
    * Tests if the hexadecimal line is valid or not.
    *
-   * @param line       The line to test
-   * @param testLength Tests the length.
+   * @param line The line to test
    * @return True if the line is valid
    */
-  public static boolean isValidHexLine(final String line, final boolean testLength) {
+  public static boolean isValidHexLine(final String line) {
     if (line.isEmpty())
       return true;
-    final boolean isHexAndEven = line.matches("\\p{XDigit}+") && isEven(line.length());
-    final boolean isValidLength = !testLength || line.length() <= (SysHelper.MAX_BY_ROW * 2);
-    return isHexAndEven && isValidLength;
+    return line.matches("\\p{XDigit}+") && isEven(line.length());
   }
 
   /**

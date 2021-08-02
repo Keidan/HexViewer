@@ -12,6 +12,7 @@ import java.util.Map;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
@@ -73,7 +74,7 @@ public class LauncherLineUpdate {
                 /* nothing to do */
                 return;
               }
-              List<LineData<Line>> li = SysHelper.formatBuffer(buf, null);
+              List<LineData<Line>> li = SysHelper.formatBuffer(buf, null, ApplicationCtx.getInstance().getNbBytesPerLine());
               if (li.isEmpty()) {
                 HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
                 Map<Integer, LineFilter<Line>> map = new HashMap<>();

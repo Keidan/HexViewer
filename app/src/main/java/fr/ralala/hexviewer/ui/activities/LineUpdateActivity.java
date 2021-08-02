@@ -133,7 +133,7 @@ public class LineUpdateActivity extends AppCompatActivity {
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
       mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
-      for(LineData<Line> ld : li) {
+      for (LineData<Line> ld : li) {
         String s = ld.toString();
         list.add(s);
         sbHex.append(s.substring(0, 23).trim()).append(" ");
@@ -157,7 +157,7 @@ public class LineUpdateActivity extends AppCompatActivity {
       mPosition = 0;
     }
     mHex = sbHex.toString();
-    if(mHex.endsWith(" "))
+    if (mHex.endsWith(" "))
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
     mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(adapterResult, mTilInputHex, mApp));
@@ -208,7 +208,7 @@ public class LineUpdateActivity extends AppCompatActivity {
       return true;
     } else if (item.getItemId() == R.id.action_done) {
       final String validate = mEtInputHex.getText() == null ? "" : mEtInputHex.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
-      if (!SysHelper.isValidHexLine(validate, false)) {
+      if (!SysHelper.isValidHexLine(validate)) {
         mTilInputHex.setError(" "); /* only for the color */
         return false;
       }

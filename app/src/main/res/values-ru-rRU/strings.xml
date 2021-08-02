@@ -67,6 +67,9 @@
     <string name="settings_pref_summary_language">Изменить язык приложения</string>
     <string name="settings_pref_title_screen_orientation">Ориентация экрана</string>
     <string name="settings_pref_summary_screen_orientation">Настройка ориентации экрана по умолчанию (только основной экран).</string>
+    <string name="settings_pref_title_nb_bytes">Количество байтов для отображения в одной строке</string>
+    <string name="settings_pref_summary_nb_bytes">Количество байтов для отображения в одной строке (8 или 16). Обратите внимание, что отображение 8 байт значительно увеличивает потребность в памяти.</string>
+    <string name="error_file_open">Невозможно изменить режим, когда файл открыт.</string>
     <string name="smart_input">Ввод обычного текста</string>
     <string name="error_file_not_found">Файл %1$s не найден</string>
     <string name="error_file_permission">Для файла %1$s не предоставлено разрешение</string>

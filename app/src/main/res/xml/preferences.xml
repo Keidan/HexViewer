@@ -22,6 +22,14 @@
       android:key="screenOrientation"
       android:title="@string/settings_pref_title_screen_orientation"
       android:summary="@string/settings_pref_summary_screen_orientation" />
+    <androidx.preference.ListPreference
+      android:key="nbBytesPerLine"
+      app:iconSpaceReserved="false"
+      android:defaultValue="@string/default_nb_bytes_per_line"
+      android:entries="@array/nb_bytes_per_Line"
+      android:entryValues="@array/nb_bytes_per_Line"
+      android:title="@string/settings_pref_title_nb_bytes"
+      android:summary="@string/settings_pref_summary_nb_bytes" />
   </androidx.preference.PreferenceCategory>
 
   <androidx.preference.PreferenceCategory

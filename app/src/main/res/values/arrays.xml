@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="nb_bytes_per_Line" translatable="false">
+        <item>8</item>
+        <item>16</item>
+    </string-array>
+
     <string-array name="languages_values" translatable="false">
         <item>en-US</item>
         <item>de-DE</item>

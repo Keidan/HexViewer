@@ -399,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_close) {
       popupActionClose();
     } else if (id == R.id.action_settings) {
-      SettingsActivity.startActivity(this, mUnDoRedo.isChanged());
+      SettingsActivity.startActivity(this, !FileData.isEmpty(mFileData), mUnDoRedo.isChanged());
     } else if (id == R.id.action_undo) {
       mUnDoRedo.undo();
     } else if (id == R.id.action_redo) {
@@ -458,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return;
     }
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    for(Byte b : e.getValue().getRaw())
+    for (Byte b : e.getValue().getRaw())
       byteArrayOutputStream.write(b);
     mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position);
   }
@@ -547,6 +547,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public PayloadHexHelper getPayloadHex() {
     return mPayloadHexHelper;
   }
+
   /**
    * Returns the PayloadPlainSwipe
    *
@@ -695,9 +696,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * Action when the user clicks on the "go to xxx" menu.
    */
   private void popupActionGoTo() {
-    if(mPopup.getPlainText().isChecked())
+    if (mPopup.getPlainText().isChecked())
       mGoToDialog.show(GoToDialog.Mode.LINE_PLAIN);
-    else if(mPopup.getLineNumbers().isChecked())
+    else if (mPopup.getLineNumbers().isChecked())
       mGoToDialog.show(GoToDialog.Mode.ADDRESS);
     else
       mGoToDialog.show(GoToDialog.Mode.LINE_HEX);

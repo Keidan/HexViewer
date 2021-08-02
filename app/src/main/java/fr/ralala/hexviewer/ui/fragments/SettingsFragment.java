@@ -38,6 +38,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   protected Preference mVersion;
   private ListPreference mLanguage;
   private ListPreference mScreenOrientation;
+  private ListPreference mNbBytesPerLine;
 
   public SettingsFragment(AppCompatActivity owner) {
     super(owner);
@@ -65,6 +66,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mVersion = findPreference(ApplicationCtx.CFG_VERSION);
     mLanguage = findPreference(ApplicationCtx.CFG_LANGUAGE);
     mScreenOrientation = findPreference(ApplicationCtx.CFG_SCREEN_ORIENTATION);
+    mNbBytesPerLine = findPreference(ApplicationCtx.CFG_NB_BYTES_PER_LINE);
 
     mAbbreviatePortrait.setOnPreferenceClickListener(this);
     mAbbreviateLandscape.setOnPreferenceClickListener(this);
@@ -74,6 +76,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mVersion.setOnPreferenceClickListener(this);
     mLanguage.setOnPreferenceChangeListener(this);
     mScreenOrientation.setOnPreferenceChangeListener(this);
+    mNbBytesPerLine.setOnPreferenceChangeListener(this);
 
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
@@ -81,6 +84,8 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
 
     mScreenOrientation.setDefaultValue(mApp.getScreenOrientationStr());
     refreshUiAccordingToOrientation(null);
+
+    mNbBytesPerLine.setDefaultValue("" + mApp.getNbBytesPerLine());
   }
 
   /**
@@ -168,6 +173,18 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     } else if (preference.equals(mScreenOrientation)) {
       refreshUiAccordingToOrientation("" + newValue);
       return true;
+    } else if (preference.equals(mNbBytesPerLine)) {
+      if (!((SettingsActivity) mActivity).isOpen()) {
+        mApp.setNbBytesPerLine("" + newValue);
+        return true;
+      } else {
+        new AlertDialog.Builder(mActivity)
+            .setCancelable(false)
+            .setIcon(R.mipmap.ic_launcher)
+            .setTitle(preference.getTitle())
+            .setMessage(R.string.error_file_open)
+            .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+      }
     }
     return false;
   }

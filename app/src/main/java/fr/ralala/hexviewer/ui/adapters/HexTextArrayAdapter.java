@@ -173,9 +173,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
     String txt;
     Configuration cfg = getContext().getResources().getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE && mUserConfigLandscape.isDataColumnNotDisplayed())
-      txt = text.substring(0, 48);
+      txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? 48 : 24);
     else if (mUserConfigPortrait != null && cfg.orientation == Configuration.ORIENTATION_PORTRAIT && mUserConfigPortrait.isDataColumnNotDisplayed())
-      txt = text.substring(0, 48);
+      txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? 48 : 24);
     else
       txt = text;
     return txt;
@@ -194,8 +194,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
       LineFilter<Line> fd = getFilteredList().get(position);
 
       if (mApp.isLineNumber()) {
-        final int maxLength = String.format("%X", getItemsCount() * SysHelper.MAX_BY_ROW).length();
-        final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * SysHelper.MAX_BY_ROW);
+        final int nbBytesPerLines = mApp.getNbBytesPerLine();
+        final int maxLength = String.format("%X", getItemsCount() * nbBytesPerLines).length();
+        final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * nbBytesPerLines);
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
@@ -205,7 +206,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
 
         if (position == 0) {
           mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
-          mTitle.titleContent.setText(getContext().getString(R.string.title_content));
+          mTitle.titleContent.setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
+              R.string.title_content : R.string.title_content8));
           mTitle.titleContent.setTextColor(color);
         }
         applyUserConfig(mTitle.titleContent);

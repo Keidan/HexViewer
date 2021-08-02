@@ -64,6 +64,7 @@ public class ApplicationCtx extends Application {
   public static final String CFG_LINES_NUMBER = "linesNumber";
   public static final String CFG_OVERWRITE = "overwrite";
   public static final String CFG_SCREEN_ORIENTATION = "screenOrientation";
+  public static final String CFG_NB_BYTES_PER_LINE = "nbBytesPerLine";
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
@@ -80,6 +81,7 @@ public class ApplicationCtx extends Application {
   private ListSettings mListSettingsPlainPortrait;
   private ListSettings mListSettingsPlainLandscape;
   private String mDefaultScreenOrientation;
+  private String mDefaultNbBytesPerLine;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -97,6 +99,7 @@ public class ApplicationCtx extends Application {
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
     mDefaultOverwrite = Boolean.parseBoolean(getString(R.string.default_overwrite));
     mDefaultScreenOrientation = getString(R.string.default_screen_orientation);
+    mDefaultNbBytesPerLine = getString(R.string.default_nb_bytes_per_line);
 
     mListSettingsHexPortrait = new ListSettings(this,
         CFG_PORTRAIT_HEX_DISPLAY_DATA,
@@ -148,6 +151,30 @@ public class ApplicationCtx extends Application {
   }
 
   /* ---------- Settings ---------- */
+
+  /**
+   * Sets the number of bytes per line.
+   *
+   * @param nb The new value.
+   */
+  public void setNbBytesPerLine(String nb) {
+    SharedPreferences.Editor e = getPref(this).edit();
+    e.putString(CFG_NB_BYTES_PER_LINE, nb);
+    e.apply();
+  }
+
+  /**
+   * Returns the number of bytes per line.
+   *
+   * @return SysHelper.MAX_BY_ROW_8 or SysHelper.MAX_BY_ROW_16
+   */
+  public int getNbBytesPerLine() {
+    try {
+      return Integer.parseInt(getPref(this).getString(CFG_NB_BYTES_PER_LINE, mDefaultNbBytesPerLine));
+    } catch (Exception ignore) {
+      return Integer.parseInt(mDefaultNbBytesPerLine);
+    }
+  }
 
   /**
    * Returns the orientation of the screen according to the configuration.

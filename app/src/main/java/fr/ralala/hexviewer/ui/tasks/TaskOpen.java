@@ -34,7 +34,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result> {
   private static final String TAG = TaskOpen.class.getSimpleName();
-  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW * 20000;
+  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 20000;
   private final HexTextArrayAdapter mAdapter;
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
@@ -144,7 +144,8 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
         /* read data */
         while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
           try {
-            list.addAll(SysHelper.formatBuffer(data, reads, mCancel));
+            list.addAll(SysHelper.formatBuffer(data, reads, mCancel,
+                ApplicationCtx.getInstance().getNbBytesPerLine()));
           } catch (IllegalArgumentException iae) {
             result.exception = iae.getMessage();
             break;

@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -76,7 +76,7 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
     mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
         WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     String title1, title2;
-    if(mode == Mode.ADDRESS) {
+    if (mode == Mode.ADDRESS) {
       title1 = mActivity.getString(R.string.action_go_to_address);
       title2 = mActivity.getString(R.string.hexadecimal);
     } else {
@@ -89,11 +89,10 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
     mLayout = mDialog.findViewById(R.id.tilValue);
 
     if (mEt != null && mLayout != null) {
-      if(mode == Mode.ADDRESS) {
+      if (mode == Mode.ADDRESS) {
         mEt.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         mEt.setText(mPreviousGoToValueAddress);
-      }
-      else {
+      } else {
         mEt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         mEt.setText(mode == Mode.LINE_HEX ? mPreviousGoToValueLineHex : mPreviousGoToValueLinePlain);
       }
@@ -124,13 +123,13 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
       return;
 
     int position;
-    if(mMode == Mode.ADDRESS) {
-      if(!HEXADECIMAL_PATTERN.matcher(text).matches()) {
+    if (mMode == Mode.ADDRESS) {
+      if (!HEXADECIMAL_PATTERN.matcher(text).matches()) {
         if (mLayout != null)
           mLayout.setError(" "); /* only for the color */
         return;
       }
-      position = Integer.parseInt(text, 16) / SysHelper.MAX_BY_ROW;
+      position = Integer.parseInt(text, 16) / ApplicationCtx.getInstance().getNbBytesPerLine();
     } else
       position = Integer.parseInt(text);
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
@@ -141,9 +140,9 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
       mStarted = true;
       lv.smoothScrollToPositionFromTop(mPosition, 0, 500);
     });
-    if(mMode == Mode.LINE_PLAIN)
+    if (mMode == Mode.LINE_PLAIN)
       mPreviousGoToValueLinePlain = text;
-    else if(mMode == Mode.LINE_HEX)
+    else if (mMode == Mode.LINE_HEX)
       mPreviousGoToValueLineHex = text;
     else
       mPreviousGoToValueAddress = text;
@@ -175,7 +174,7 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
    */
   @Override
   public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-    if(mStarted && mPosition >= firstVisibleItem && mPosition <= visibleItemCount) {
+    if (mStarted && mPosition >= firstVisibleItem && mPosition <= visibleItemCount) {
       blinkBackground();
     }
     /* nothing to do */
