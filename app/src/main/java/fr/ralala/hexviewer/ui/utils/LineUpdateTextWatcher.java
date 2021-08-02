@@ -3,6 +3,7 @@ package fr.ralala.hexviewer.ui.utils;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -41,6 +42,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private final ApplicationCtx mApp;
   private String mNewString = "";
   private String mOldString = "";
+  private boolean mAfterSpace = false;
   private boolean mBetweenDigits = false;
   private int mStart = 0;
   private boolean mIgnore = false;// indicates if the change was made by the TextWatcher itself.
@@ -128,10 +130,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @return True if the method has consumed the event
    */
   private boolean processAfterTextChangeOverwrite(final String strNew) {
-    boolean remove = mRemove;
     boolean consumed = false;
-    mRemove = false;
-    if (!remove && !mApp.isSmartInput() && mApp.isOverwrite() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
+    if (!mRemove && !mApp.isSmartInput() && mApp.isOverwrite() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
       mIgnore = true; // prevent infinite loop
       final EditText et = mLayout.getEditText();
       mStart = et.getSelectionStart();
@@ -171,8 +171,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
   public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     if (mIgnore) /* avoid unnecessary treatments */
       return;
-    int len = s.length();
-    mBetweenDigits = (len > 3 && s.charAt(Math.min(start + 1, len - 1)) != ' ' && s.charAt(Math.max(0, start - 1)) == ' ');
+    mAfterSpace = s.length() > 0 && s.charAt(Math.max(0, start - 1)) == ' ';
+    boolean beforeSpace = s.length() > 0 && s.charAt(Math.max(0, Math.min(start, s.length() - 1))) == ' ';
+    mBetweenDigits = start != s.length() && !mAfterSpace && !beforeSpace;
+    Log.i(getClass().getName(), "afterSpace: " + mAfterSpace + ", beforeSpace: " + beforeSpace + ", betweenDigits: " + mBetweenDigits);
     mOldString = s.toString();
   }
 
@@ -188,9 +190,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
   public void onTextChanged(CharSequence s, int start, int before, int count) {
     if (mIgnore) /* avoid unnecessary treatments */
       return;
+    mRemove = mOldString.length() > s.length();
     mNewString = s.toString();
     if (mApp.isSmartInput()) {
-      if (count == 0) { /* remove */
+      if (mRemove) { /* remove */
         processRemoveWithSmartInput(start, before);
       } else {  /* add */
         processAddWithSmartInput(start, count);
@@ -265,10 +268,13 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param count int
    */
   private void processAddWithSmartInput(int start, int count) {
-    mStart = start == 0 ? 0 : start + 1;
-    final String notChangedStart = mNewString.substring(0, start);
+    int localStart = start;
+    if(mBetweenDigits)
+      localStart = mApp.isOverwrite() ? localStart - 1 : localStart + 1;
+    mStart = localStart < 0 ? 0 : localStart + 1;
+    final String notChangedStart = mNewString.substring(0, localStart);
     final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
-    CharSequence newChange = normalizeForEmoji(mNewString.substring(start, Math.min(start + count, mNewString.length())));
+    CharSequence newChange = normalizeForEmoji(mNewString.substring(Math.max(0, localStart), Math.min(localStart + count, mNewString.length())));
 
     StringBuilder newChangeHex = new StringBuilder();
     byte[] newChangeBytes = newChange.toString().getBytes();
@@ -277,15 +283,20 @@ public class LineUpdateTextWatcher implements TextWatcher {
       newChangeHex.append(str.getValue().getPlain().substring(0, 23).trim());
 
     String str;
-    if (!mApp.isOverwrite())
+    if (!mApp.isOverwrite()) {
       str = (notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "");
-    else {
+      if (mAfterSpace)
+        mStart--;
+    } else {
       String endStr = notChangedEnd.replaceAll(" ", "");
       String startStr = notChangedStart.replaceAll(" ", "");
       String ns = newChangeHex.toString().replaceAll(" ", "");
       boolean odd = !SysHelper.isEven(startStr.length());
       if (odd) {
         startStr = startStr.substring(0, startStr.length() - 1);
+      }
+      odd = !SysHelper.isEven(endStr.length());
+      if (odd) {
         endStr = endStr.substring(1);
       }
       str = startStr + ns;
@@ -293,8 +304,6 @@ public class LineUpdateTextWatcher implements TextWatcher {
         str += endStr.substring(ns.length());
       } else if (ns.length() <= endStr.length())
         str += endStr;
-      mStart += odd ? 1 : 2;
-      mBetweenDigits = false;
       mStartOffsetForOverwrite = ns.length();
     }
     mNewString = formatText(str.replaceAll(" ", "").toLowerCase(Locale.US));
@@ -329,14 +338,17 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param count  int
    */
   private void processOverwriteWithoutSmartInput(int start, int before, int count) {
-    if (count == 0) { /* remove */
-      mRemove = true;
-    } else {
+    if (!mRemove) { /* remove */
+      mStart = start < 0 ? 0 : start + 1;
+
       final String notChangedStart = mNewString.substring(0, start).replaceAll(" ", "");
       String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
       mStartOffsetForOverwrite = (notChangedEnd.startsWith(" ") || notChangedEnd.isEmpty()) ? 1 : 0;
+      if(mBetweenDigits)
+        mStartOffsetForOverwrite++;
       notChangedEnd = notChangedEnd.replaceAll(" ", "");
-      CharSequence newChange = mNewString.substring(start, Math.min(start + count, mNewString.length())).replaceAll(" ", "");
+
+      CharSequence newChange = mNewString.substring(Math.max(0, start), Math.min(start + count, mNewString.length())).replaceAll(" ", "");
       int nbChars = newChange.length() - Math.max(0, before);
       if (nbChars < 0) nbChars = 0;
       if (nbChars > notChangedEnd.length())
