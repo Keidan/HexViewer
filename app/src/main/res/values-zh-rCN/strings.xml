@@ -84,4 +84,8 @@
   <string name="unit_gbyte">GB</string>
   <string name="hexadecimal">十六进制</string>
   <string name="decimal">十进制</string>
+  <string name="error_title">错误</string>
+  <string name="error_no_line_selected">未选择任何线路</string>
+  <string name="error_edition_search_in_progress">在搜索过程中，不可能进行行编辑。</string>
+  <string name="error_edition_continuous_selection">只有在连续选择的情况下才可以进行行编辑。</string>
 </resources>

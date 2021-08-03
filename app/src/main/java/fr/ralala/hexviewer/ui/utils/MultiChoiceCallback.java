@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineFilter;
@@ -64,7 +66,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    */
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-    mode.getMenuInflater().inflate(R.menu.main_clear, menu);
+    mode.getMenuInflater().inflate(R.menu.main_multi_choice, menu);
     mMenuSelectAll = menu.findItem(R.id.action_select_all);
     return true;
   }
@@ -91,46 +93,13 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
-      final List<Integer> selected = mAdapter.getSelectedIds();
-      Map<Integer, LineFilter<Line>> map = new HashMap<>();
-      HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-      // Captures all selected ids with a loop
-      for (int i = selected.size() - 1; i >= 0; i--) {
-        int position = selected.get(i);
-        LineFilter<Line> lf = adapter.getFilteredList().get(position);
-        map.put(lf.getOrigin(), lf);
-      }
-      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
-      mActivity.setTitle(mActivity.getResources().getConfiguration());
-      // Close CAB
-      mode.finish();
+      actionClear(mode);
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {
-      if (mMenuSelectAll != null) {
-        Animation rotation = AnimationUtils.loadAnimation(mActivity, R.anim.clockwise_refresh);
-        rotation.setRepeatCount(Animation.INFINITE);
-        item.setCheckable(false);// Do not accept any click events while scanning
-        mRefreshActionView.startAnimation(rotation);
-        mMenuSelectAll.setActionView(mRefreshActionView);
-      }
-      final Handler handler = new Handler(Looper.getMainLooper());
-      handler.postDelayed(() -> {
-        final int count = mAdapter.getCount();
-        for (int i = 0; i < count; i++) {
-          mListView.setItemChecked(i, true);
-        }
-
-        if (mMenuSelectAll != null) {
-          mMenuSelectAll.setCheckable(true);
-          View view = mMenuSelectAll.getActionView();
-          if (view != null) {
-            view.clearAnimation();
-            mMenuSelectAll.setActionView(null);
-          }
-        }
-      }, 1000);
-
+      actionSelectAll(item);
       return true;
+    } else if(item.getItemId() == R.id.action_edit) {
+      return actionEdit();
     }
     return false;
   }
@@ -158,5 +127,94 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     final int checkedCount = mListView.getCheckedItemCount();
     mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
     mAdapter.toggleSelection(position, checked);
+  }
+
+  /**
+   * Clear action.
+   * @param mode     The ActionMode providing the selection mode.
+   */
+  private void actionClear(ActionMode mode) {
+    final List<Integer> selected = mAdapter.getSelectedIds();
+    Map<Integer, LineFilter<Line>> map = new HashMap<>();
+    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
+    // Captures all selected ids with a loop
+    for (int i = selected.size() - 1; i >= 0; i--) {
+      int position = selected.get(i);
+      LineFilter<Line> lf = adapter.getFilteredList().get(position);
+      map.put(lf.getOrigin(), lf);
+    }
+    mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    // Close CAB
+    mode.finish();
+  }
+
+  /**
+   * Select all action.
+   *
+   * @param item The item that was clicked.
+   */
+  private void actionSelectAll(MenuItem item) {
+    if (mMenuSelectAll != null) {
+      Animation rotation = AnimationUtils.loadAnimation(mActivity, R.anim.clockwise_refresh);
+      rotation.setRepeatCount(Animation.INFINITE);
+      item.setCheckable(false);// Do not accept any click events while scanning
+      mRefreshActionView.startAnimation(rotation);
+      mMenuSelectAll.setActionView(mRefreshActionView);
+    }
+    final Handler handler = new Handler(Looper.getMainLooper());
+    handler.postDelayed(() -> {
+      final int count = mAdapter.getCount();
+      for (int i = 0; i < count; i++) {
+        mListView.setItemChecked(i, true);
+      }
+
+      if (mMenuSelectAll != null) {
+        mMenuSelectAll.setCheckable(true);
+        View view = mMenuSelectAll.getActionView();
+        if (view != null) {
+          view.clearAnimation();
+          mMenuSelectAll.setActionView(null);
+        }
+      }
+    }, 1000);
+  }
+
+  /**
+   * Edit action.
+   * @return false on error.
+   */
+  private boolean actionEdit() {
+    if(!mActivity.getSearchQuery().trim().isEmpty()) {
+      displayError(R.string.error_edition_search_in_progress);
+      return false;
+    }
+    List<Integer> selected = mAdapter.getSelectedIds();
+    if(selected.isEmpty()) {
+      displayError(R.string.error_no_line_selected);
+      return false;
+    }
+    int previous = selected.get(0);
+    for(Integer i : selected) {
+      if(previous != i && previous + 1 != i) {
+        displayError(R.string.error_edition_continuous_selection);
+        return false;
+      }
+      previous = i;
+    }
+    return true;
+  }
+
+  /**
+   * Displays an error message.
+   * @param message The message.
+   */
+  private void displayError(@StringRes int message) {
+    new AlertDialog.Builder(mActivity)
+        .setCancelable(false)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(R.string.error_title)
+        .setMessage(message)
+        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
   }
 }

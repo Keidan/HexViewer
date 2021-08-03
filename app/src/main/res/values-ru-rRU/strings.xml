@@ -84,4 +84,8 @@
     <string name="unit_gbyte">ГБ</string>
     <string name="hexadecimal">шестнадцатеричный</string>
     <string name="decimal">десятичный</string>
+    <string name="error_title">Ошибка</string>
+    <string name="error_no_line_selected">Не выбрана ни одна линия</string>
+    <string name="error_edition_search_in_progress">Редактирование строки невозможно, если идет поиск.</string>
+    <string name="error_edition_continuous_selection">Редактирование строки возможно только при непрерывном выборе.</string>
 </resources>

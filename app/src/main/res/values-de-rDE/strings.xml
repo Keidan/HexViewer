@@ -86,4 +86,8 @@
     <string name="unit_gbyte">GB</string>
     <string name="hexadecimal">hexadezimal</string>
     <string name="decimal">dezimal</string>
+    <string name="error_title">Fehler</string>
+    <string name="error_no_line_selected">Es wurde keine Zeile ausgewählt</string>
+    <string name="error_edition_search_in_progress">Das Bearbeiten von Zeilen ist nicht möglich, wenn gerade eine Suche läuft.</string>
+    <string name="error_edition_continuous_selection">Das Bearbeiten von Zeilen ist nur bei einer fortlaufenden Auswahl möglich.</string>
 </resources>

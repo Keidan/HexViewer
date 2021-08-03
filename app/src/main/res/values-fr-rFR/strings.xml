@@ -84,4 +84,8 @@
   <string name="unit_gbyte">Go</string>
   <string name="hexadecimal">hexadécimal</string>
   <string name="decimal">décimal</string>
+  <string name="error_title">Erreur</string>
+  <string name="error_no_line_selected">Aucune ligne n\'a été sélectionnée</string>
+  <string name="error_edition_search_in_progress">L\'édition de lignes n\'est pas possible lorsqu\'une recherche est en cours.</string>
+  <string name="error_edition_continuous_selection">L\'édition de lignes n\'est possible qu\'avec une sélection continue.</string>
 </resources>
