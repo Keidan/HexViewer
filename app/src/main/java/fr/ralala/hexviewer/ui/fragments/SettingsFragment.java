@@ -165,7 +165,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       } else {
         new AlertDialog.Builder(mActivity)
             .setCancelable(false)
-            .setIcon(R.mipmap.ic_launcher)
+            .setIcon(android.R.drawable.ic_dialog_alert)
             .setTitle(preference.getTitle())
             .setMessage(R.string.control_language_change)
             .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
@@ -180,7 +180,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       } else {
         new AlertDialog.Builder(mActivity)
             .setCancelable(false)
-            .setIcon(R.mipmap.ic_launcher)
+            .setIcon(android.R.drawable.ic_dialog_alert)
             .setTitle(preference.getTitle())
             .setMessage(R.string.error_file_open)
             .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();

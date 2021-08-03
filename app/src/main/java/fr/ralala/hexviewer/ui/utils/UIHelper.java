@@ -231,7 +231,7 @@ public class UIHelper {
   public static AlertDialog createTextDialog(final Context c, String title, String defaultValue, DialogPositiveClick positiveClick) {
     AlertDialog.Builder builder = new AlertDialog.Builder(c);
     builder.setCancelable(false)
-        .setIcon(R.mipmap.ic_launcher)
+        .setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(title)
         .setPositiveButton(android.R.string.yes, null)
         .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
