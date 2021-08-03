@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.dialog.SaveDialog;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
@@ -29,9 +30,12 @@ import fr.ralala.hexviewer.utils.FileHelper;
 public class LauncherSave {
   private final MainActivity mActivity;
   private ActivityResultLauncher<Intent> activityResultLauncherSave;
+  private final SaveDialog mSaveDialog;
 
   public LauncherSave(MainActivity activity) {
     mActivity = activity;
+    mSaveDialog = new SaveDialog(activity,
+        activity.getString(R.string.action_save_title));
     register();
   }
 
@@ -68,7 +72,7 @@ public class LauncherSave {
    * @param uri Uri data.
    */
   private void processFileSaveWithDialog(final Uri uri) {
-    mActivity.setOrphanDialog(UIHelper.createTextDialog(mActivity, mActivity.getString(R.string.action_save_title), mActivity.getFileData().getName(), (dialog, content, layout) -> {
+    mActivity.setOrphanDialog(mSaveDialog.show(mActivity.getFileData().getName(), (dialog, content, layout) -> {
       mActivity.setOrphanDialog(null);
       final String s_file = content.getText().toString();
       if (s_file.trim().isEmpty()) {

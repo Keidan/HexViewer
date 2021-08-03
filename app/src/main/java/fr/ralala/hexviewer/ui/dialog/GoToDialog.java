@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.ui.utils;
+package fr.ralala.hexviewer.ui.dialog;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
  * ******************************************************************************
@@ -65,7 +66,6 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
     LayoutInflater factory = LayoutInflater.from(activity);
     builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));
     mDialog = builder.create();
-
   }
 
   /**

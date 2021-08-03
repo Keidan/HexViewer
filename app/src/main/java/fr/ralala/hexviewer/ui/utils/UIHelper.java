@@ -184,10 +184,6 @@ public class UIHelper {
   }
 
 
-  public interface DialogPositiveClick {
-    void onClick(AlertDialog dialog, EditText editText, TextInputLayout editTextLayout);
-  }
-
   /**
    * Returns a TextWatcher that simply resets the layout error as soon as the user enters a text.
    *
@@ -216,38 +212,6 @@ public class UIHelper {
         // nothing to do
       }
     };
-  }
-
-  /**
-   * Creation of a dialog box with an edittext in it.
-   *
-   * @param c             The Android context.
-   * @param title         Title of the dialog box.
-   * @param defaultValue  Default value.
-   * @param positiveClick Listener called when clicking on the validation button.
-   * @return AlertDialog
-   */
-  @SuppressLint("InflateParams")
-  public static AlertDialog createTextDialog(final Context c, String title, String defaultValue, DialogPositiveClick positiveClick) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(c);
-    builder.setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(title)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
-        });
-    LayoutInflater factory = LayoutInflater.from(c);
-    builder.setView(factory.inflate(R.layout.content_dialog_simple_text, null));
-    final AlertDialog dialog = builder.create();
-    dialog.show();
-    EditText et = dialog.findViewById(R.id.editText);
-    TextInputLayout layout = dialog.findViewById(R.id.tilEditText);
-    if (et != null && layout != null) {
-      et.setText(defaultValue);
-      et.addTextChangedListener(getResetLayoutWatcher(layout, false));
-    }
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> positiveClick.onClick(dialog, et, layout));
-    return dialog;
   }
 
   /**
