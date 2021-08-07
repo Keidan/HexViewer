@@ -1,0 +1,21 @@
+* Fix Russian translations.
+* Fix invalid unit text.
+* Modification of some texts in the parameters for a better readability.
+* Fix a bug that seriously slowed down the opening of a file.
+* It's now possible to navigate directly to a line (or an address in hex mode + line display).
+* Rewriting the design of the line change view.
+* Fix a problem of inserting unwanted characters when editing a line.
+* Fix cursor position after text insertion when the plain input mode and the overwrite mode are activated.
+* Fix a bug when pasting text in overwrite mode.
+* It's now possible to choose the display mode (8 bytes or 16 bytes) per line.
+* It's now possible to edit several times at the same time.
+
+Please note that new text additions are mostly translated via DeepL.
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
