@@ -23,10 +23,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout the code
-      - uses: actions/checkout@v2
-
+        uses: actions/checkout@v2
       - name: Build the app
         run: ./gradlew build
-        
       - name: Build the tests
         run: ./gradlew test
+ 
