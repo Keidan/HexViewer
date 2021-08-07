@@ -59,40 +59,20 @@ public class UpdateCommand implements ICommand {
     /* only existing elements  */
     if (size == mRefNbLines) {
       Log.i(getClass().getName(), "execute -> only existing elements");
-      for(int i = 0; i < mRefNbLines; i++) {
-        LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-        mPrevLines.add(new LineFilter<>(lf));
-        final LineData<Line> newVal = mList.get(i);
-        if (!lf.getData().toString().equals(newVal.toString())) {
-          lf.setData(newVal);
-          lf.getData().setUpdated(mUnDoRedo.isChanged());
-          LineData<Line> ld = items.get(lf.getOrigin());
-          ld.setValue(lf.getData().getValue());
-        }
-      }
+      updateExistingElements(filteredList, items);
     } else {
       Log.i(getClass().getName(), "execute -> multiple elements");
       int diff = Math.abs(size - mRefNbLines);
 
       /* First we modify the existing elements */
-      for(int i = 0; i < mRefNbLines; i++) {
-        LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-        mPrevLines.add(new LineFilter<>(lf));
-        final LineData<Line> newVal = mList.get(i);
-        if (!lf.getData().toString().equals(newVal.toString())) {
-          lf.setData(newVal);
-          lf.getData().setUpdated(mUnDoRedo.isChanged());
-          LineData<Line> ld = items.get(lf.getOrigin());
-          ld.setValue(lf.getData().getValue());
-        }
-      }
+      updateExistingElements(filteredList, items);
 
       /* Then we add the elements */
       LineFilter<Line> prevLine = mPrevLines.get(mPrevLines.size() - 1);
       for (int i = mRefNbLines, j = 1; i < size; i++, j++) {
         LineData<Line> value = mList.get(i);
+        value.setUpdated(mUnDoRedo.isChanged());
         LineFilter<Line> lf = new LineFilter<>(value, prevLine.getOrigin() + j);
-        lf.getData().setUpdated(mUnDoRedo.isChanged());
         if (prevLine.getOrigin() + j < adapter.getItems().size()) {
           items.add(prevLine.getOrigin() + j, mList.get(i));
         } else {
@@ -133,17 +113,6 @@ public class UpdateCommand implements ICommand {
     /* only existing elements  */
     if (size == mRefNbLines) {
       Log.i(getClass().getName(), "unExecute -> only existing elements");
-
-      for(int i = 0; i < mRefNbLines; i++) {
-        LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-        final LineData<Line> oldVal = mPrevLines.get(i).getData();
-        if (!lf.getData().toString().equals(oldVal.toString())) {
-          lf.setData(oldVal);
-          lf.getData().setUpdated(false);
-          LineData<Line> ld = items.get(lf.getOrigin());
-          ld.setValue(oldVal.getValue());
-        }
-      }
     } else {
       Log.i(getClass().getName(), "unExecute -> multiple elements");
       int diff = Math.abs(size - mRefNbLines);
@@ -161,21 +130,51 @@ public class UpdateCommand implements ICommand {
         LineFilter<Line> lf = filteredList.get(i);
         lf.setOrigin(lf.getOrigin() - diff);
       }
-
-      /* Finally we restores the existing elements */
-      for(int i = 0; i < mRefNbLines; i++) {
-        LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-        final LineData<Line> oldVal = mPrevLines.get(i).getData();
-        if (!lf.getData().toString().equals(oldVal.toString())) {
-          lf.setData(oldVal);
-          lf.getData().setUpdated(false);
-          LineData<Line> ld = items.get(lf.getOrigin());
-          ld.setValue(oldVal.getValue());
-        }
-      }
     }
+    /* Finally we restores the existing elements */
+    restoreExistingElements(filteredList, items);
+
     if (!query.isEmpty())
       adapter.manualFilterUpdate(query); /* restore filter */
     adapter.notifyDataSetChanged();
+  }
+
+  /**
+   * Restores the existing elements.
+   * @param filteredList List<LineFilter<Line>>
+   * @param items List<LineData<Line>>
+   */
+  private void restoreExistingElements(final List<LineFilter<Line>> filteredList, final List<LineData<Line>> items) {
+    for(int i = 0; i < mRefNbLines; i++) {
+      final LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
+      final LineData<Line> oldVal = new LineData<>(mPrevLines.get(i).getData());
+      if (!lf.getData().toString().equals(oldVal.toString())) {
+        oldVal.setUpdated(false);
+        lf.setData(oldVal);
+        LineData<Line> ld = items.get(lf.getOrigin());
+        ld.setValue(oldVal.getValue());
+        ld.setUpdated(oldVal.isUpdated());
+      }
+    }
+  }
+
+  /**
+   * Restores the existing elements.
+   * @param filteredList List<LineFilter<Line>>
+   * @param items List<LineData<Line>>
+   */
+  private void updateExistingElements(final List<LineFilter<Line>> filteredList, final List<LineData<Line>> items) {
+    for(int i = 0; i < mRefNbLines; i++) {
+      LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
+      mPrevLines.add(new LineFilter<>(lf));
+      final LineData<Line> newVal = new LineData<>(mList.get(i));
+      if (!lf.getData().toString().equals(newVal.toString())) {
+        newVal.setUpdated(mUnDoRedo.isChanged());
+        lf.setData(newVal);
+        LineData<Line> ld = items.get(lf.getOrigin());
+        ld.setValue(lf.getData().getValue());
+        ld.setUpdated(newVal.isUpdated());
+      }
+    }
   }
 }
