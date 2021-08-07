@@ -1,5 +1,5 @@
 # HexViewer
-[![Build Status](https://travis-ci.com/Keidan/HexViewer.svg?branch=master)][travis]
+[![Build Status](https://github.com/Keidan/HexViewer/actions/workflows/build.yml/badge.svg)][travis]
 [![CodeFactor](https://www.codefactor.io/repository/github/keidan/hexviewer/badge)][codefactor]
 [![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
@@ -62,7 +62,7 @@ Note: In the settings, the list of languages is sorted as follows:
 ## License
 [GPLv3](https://github.com/Keidan/HexViewer/blob/master/license.txt)
 
-[travis]: https://travis-ci.com/Keidan/HexViewer
+[travis]: https://github.com/Keidan/HexViewer/actions
 [releases]: https://github.com/Keidan/HexViewer/releases
 [codefactor]: https://www.codefactor.io/repository/github/keidan/hexviewer
 [license]: https://github.com/Keidan/HexViewer/blob/master/license.txt
