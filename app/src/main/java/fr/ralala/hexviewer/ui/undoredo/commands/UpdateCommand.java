@@ -61,11 +61,14 @@ public class UpdateCommand implements ICommand {
       Log.i(getClass().getName(), "execute -> only existing elements");
       for(int i = 0; i < mRefNbLines; i++) {
         LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-        LineData<Line> ld = items.get(lf.getOrigin());
         mPrevLines.add(new LineFilter<>(lf));
-        lf.setData(mList.get(i));
-        lf.getData().setUpdated(mUnDoRedo.isChanged());
-        ld.setValue(lf.getData().getValue());
+        final LineData<Line> newVal = mList.get(i);
+        if (!lf.getData().toString().equals(newVal.toString())) {
+          lf.setData(newVal);
+          lf.getData().setUpdated(mUnDoRedo.isChanged());
+          LineData<Line> ld = items.get(lf.getOrigin());
+          ld.setValue(lf.getData().getValue());
+        }
       }
     } else {
       Log.i(getClass().getName(), "execute -> multiple elements");
@@ -130,12 +133,16 @@ public class UpdateCommand implements ICommand {
     /* only existing elements  */
     if (size == mRefNbLines) {
       Log.i(getClass().getName(), "unExecute -> only existing elements");
-      for(int i = 0; i < mPrevLines.size(); i++) {
+
+      for(int i = 0; i < mRefNbLines; i++) {
         LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-        LineData<Line> ld = items.get(lf.getOrigin());
-        lf.setData(mPrevLines.get(i).getData());
-        lf.getData().setUpdated(false);
-        ld.setValue(lf.getData().getValue());
+        final LineData<Line> oldVal = mPrevLines.get(i).getData();
+        if (!lf.getData().toString().equals(oldVal.toString())) {
+          lf.setData(oldVal);
+          lf.getData().setUpdated(false);
+          LineData<Line> ld = items.get(lf.getOrigin());
+          ld.setValue(oldVal.getValue());
+        }
       }
     } else {
       Log.i(getClass().getName(), "unExecute -> multiple elements");
