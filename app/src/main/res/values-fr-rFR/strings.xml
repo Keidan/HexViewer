@@ -17,9 +17,7 @@
   <string name="no">Non</string>
   <string name="cancel">Annuler</string>
   <string name="on_double_back_exit_text">Appuyez une fois de plus pour sortir !</string>
-  <string name="update">Mise à jour</string>
   <string name="update_hint_hex">Texte</string>
-  <string name="update_hint_plain">Texte en clair</string>
   <string name="error_not_supported_in_plain_text">Fonctionnement non pris en charge lors de l\'affichage en texte clair</string>
   <string name="error_filename">Nom de fichier invalide !</string>
   <string name="save_success">Sauvegarde réussie</string>

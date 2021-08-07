@@ -18,9 +18,7 @@
     <string name="no">Nein</string>
     <string name="cancel">Abbrechen</string>
     <string name="on_double_back_exit_text">Zum Schließen noch einmal drücken!</string>
-    <string name="update">Update</string>
     <string name="update_hint_hex">Text</string>
-    <string name="update_hint_plain">Klartext</string>
     <string name="error_not_supported_in_plain_text">Bedienung bei Klartextanzeige nicht unterstützt</string>
     <string name="error_filename">Ungültiger Dateiname!</string>
     <string name="save_success">Erfolgreich gespeichert.</string>

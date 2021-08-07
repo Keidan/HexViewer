@@ -17,9 +17,7 @@
   <string name="no">No</string>
   <string name="cancel">Cancelar</string>
   <string name="on_double_back_exit_text">¡Pulsa de nuevo para salir!</string>
-  <string name="update">Actualizar</string>
   <string name="update_hint_hex">Texto</string>
-  <string name="update_hint_plain">Texto sin codificar</string>
   <string name="error_not_supported_in_plain_text">La operación en texto sin codificar no está admitida</string>
   <string name="error_filename">¡Error de nombre de archivo!</string>
   <string name="save_success">Guardado completado</string>

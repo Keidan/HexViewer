@@ -18,9 +18,7 @@
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="on_double_back_exit_text">Press once again to exit!</string>
-    <string name="update">Update</string>
     <string name="update_hint_hex">Text</string>
-    <string name="update_hint_plain">Plain text</string>
     <string name="error_not_supported_in_plain_text">Operation not supported during plain text display</string>
     <string name="error_filename">Invalid file name!</string>
     <string name="save_success">Save success.</string>

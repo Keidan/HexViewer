@@ -17,9 +17,7 @@
     <string name="no">Нет</string>
     <string name="cancel">Отмена</string>
     <string name="on_double_back_exit_text">Нажмите еще раз, чтобы выйти!</string>
-    <string name="update">Обновить</string>
     <string name="update_hint_hex">Текст</string>
-    <string name="update_hint_plain">Простой текст</string>
     <string name="error_not_supported_in_plain_text">Операция не поддерживается при отображении обычного текста</string>
     <string name="error_filename">Неверное имя файла!</string>
     <string name="save_success">Сохранили успешно</string>

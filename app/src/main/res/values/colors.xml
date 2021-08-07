@@ -16,7 +16,6 @@
   <color name="textColorPrimaryDisabled">#FF9E9E9E</color>
   <color name="textColorSecondaryDisabled">#FF919191</color>
   <color name="colorAccentDisabled">#FF76A6B6</color>
-  <color name="colorResultSuccess">#FF42D348</color>
   <color name="colorResultError">#FFD34248</color>
   <color name="colorResultWarning">#FFFF9800</color>
   <color name="colorTextUpdated">#FFD34248</color>
