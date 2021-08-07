@@ -14,6 +14,7 @@ import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
+import fr.ralala.hexviewer.ui.undoredo.commands.UpdateAndDeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
 
 /**
@@ -86,11 +87,35 @@ public class UnDoRedo {
    *
    * @param activity      MainActivity.
    * @param firstPosition The first position index.
+   * @param refNbLines    The reference number of lines.
    * @param entries       The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, List<LineData<Line>> entries) {
-    ICommand cmd = new UpdateCommand(this, activity, firstPosition, entries);
+  public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, final int refNbLines, List<LineData<Line>> entries) {
+    ICommand cmd = new UpdateCommand(this, activity, firstPosition, refNbLines, entries);
+    mUndo.push(cmd);
+    manageControl(mControls[CONTROL_UNDO], true);
+    manageControl(mControls[CONTROL_REDO], false);
+    mRedo.clear();
+
+    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    return cmd;
+  }
+
+  /**
+   * Updates and delete command.
+   *
+   * @param activity       MainActivity.
+   * @param firstPosition  The first position index.
+   * @param entriesUpdated Entries to be updated.
+   * @param entriesDeleted Entries to be deleted.
+   * @return The command.
+   */
+  public ICommand insertInUnDoRedoForUpdateAndDelete(final MainActivity activity,
+                                                     final int firstPosition,
+                                                     List<LineData<Line>> entriesUpdated,
+                                                     final Map<Integer, LineFilter<Line>> entriesDeleted) {
+    ICommand cmd = new UpdateAndDeleteCommand(this, activity, firstPosition, entriesUpdated, entriesDeleted);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
@@ -130,7 +155,7 @@ public class UnDoRedo {
     }
     mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
-    if(!isChanged())
+    if (!isChanged())
       mActivity.getPayloadHex().resetUpdateStatus();
   }
 
@@ -146,7 +171,7 @@ public class UnDoRedo {
     }
     mActivity.setTitle(mActivity.getResources().getConfiguration());
     manageControl(mControls[CONTROL_REDO], !mRedo.isEmpty());
-    if(!isChanged())
+    if (!isChanged())
       mActivity.getPayloadHex().resetUpdateStatus();
   }
 

@@ -1,9 +1,12 @@
 package fr.ralala.hexviewer.ui.undoredo.commands;
 
+import android.util.Log;
+
 import java.util.List;
 import java.util.Map;
 
 import fr.ralala.hexviewer.models.Line;
+import fr.ralala.hexviewer.models.LineData;
 import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
@@ -35,21 +38,25 @@ public class DeleteCommand implements ICommand {
    * Execute the command.
    */
   public void execute() {
+    Log.i(getClass().getName(), "execute");
     HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
     String query = mActivity.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
     List<Integer> list = SysHelper.getMapKeys(mList);
+
+    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
+    List<LineData<Line>> items = adapter.getItems();
+
     for (int i = list.size() - 1; i >= 0; i--) {
       int position = list.get(i);
-      LineFilter<Line> ld = adapter.getFilteredList().get(position);
-      adapter.getItems().remove(ld.getOrigin());
-      adapter.getFilteredList().remove(position);
+      LineFilter<Line> ld = filteredList.get(position);
+      items.remove(ld.getOrigin());
+      filteredList.remove(position);
     }
     /* rebuilds origin indexes */
-    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
     for (int i = 0; i < filteredList.size(); i++) {
-      LineFilter<Line> ld = adapter.getFilteredList().get(i);
+      LineFilter<Line> ld = filteredList.get(i);
       ld.setOrigin(i);
     }
     if (!query.isEmpty())
@@ -61,21 +68,25 @@ public class DeleteCommand implements ICommand {
    * Un-Execute the command.
    */
   public void unExecute() {
+    Log.i(getClass().getName(), "unExecute");
     HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
     String query = mActivity.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
+
+    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
+    List<LineData<Line>> items = adapter.getItems();
+
     for (Integer i : SysHelper.getMapKeys(mList)) {
       LineFilter<Line> ld = mList.get(i);
       if (ld != null) {
-        adapter.getFilteredList().add(ld.getOrigin(), ld);
-        adapter.getItems().add(ld.getOrigin(), ld.getData());
+        filteredList.add(ld.getOrigin(), ld);
+        items.add(ld.getOrigin(), ld.getData());
       }
     }
     /* rebuilds origin indexes */
-    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
     for (int i = 0; i < filteredList.size(); i++) {
-      LineFilter<Line> ld = adapter.getFilteredList().get(i);
+      LineFilter<Line> ld = filteredList.get(i);
       ld.setOrigin(i);
     }
     if (!query.isEmpty())

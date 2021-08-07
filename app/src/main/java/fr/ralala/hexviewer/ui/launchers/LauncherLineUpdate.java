@@ -48,9 +48,9 @@ public class LauncherLineUpdate {
    * @param texts    The hex texts.
    * @param position The position in the list view.
    */
-  public void startActivity(final byte[] texts, int position) {
+  public void startActivity(final byte[] texts, final int position, final int nbLines) {
     LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, texts,
-        mActivity.getFileData().getName(), position, mActivity.getUnDoRedo().isChanged());
+        mActivity.getFileData().getName(), position, nbLines, mActivity.getUnDoRedo().isChanged());
   }
 
   /**
@@ -67,6 +67,7 @@ public class LauncherLineUpdate {
               String refString = bundle.getString(LineUpdateActivity.RESULT_REFERENCE_STRING);
               String newString = bundle.getString(LineUpdateActivity.RESULT_NEW_STRING);
               int position = bundle.getInt(LineUpdateActivity.RESULT_POSITION);
+              int nbLines = bundle.getInt(LineUpdateActivity.RESULT_NB_LINES);
 
               final byte[] buf = SysHelper.hexStringToByteArray(newString);
               final byte[] ref = SysHelper.hexStringToByteArray(refString);
@@ -75,14 +76,24 @@ public class LauncherLineUpdate {
                 return;
               }
               List<LineData<Line>> li = SysHelper.formatBuffer(buf, null, ApplicationCtx.getInstance().getNbBytesPerLine());
+              HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
+              List<LineFilter<Line>> filteredList = adapter.getFilteredList();
               if (li.isEmpty()) {
-                HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
                 Map<Integer, LineFilter<Line>> map = new HashMap<>();
-                LineFilter<Line> lf = adapter.getFilteredList().get(position);
-                map.put(lf.getOrigin(), lf);
+                for (int i = position; i < position + nbLines; i++) {
+                  LineFilter<Line> lf = filteredList.get(i);
+                  map.put(lf.getOrigin(), lf);
+                }
                 mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
+              } else if (li.size() >= nbLines) {
+                mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, nbLines, li).execute();
               } else {
-                mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, li).execute();
+                Map<Integer, LineFilter<Line>> map = new HashMap<>();
+                for (int i = position + li.size(); i < position + nbLines; i++) {
+                  LineFilter<Line> lf = filteredList.get(i);
+                  map.put(lf.getOrigin(), lf);
+                }
+                mActivity.getUnDoRedo().insertInUnDoRedoForUpdateAndDelete(mActivity, position, li, map).execute();
               }
             } else
               Log.e(getClass().getSimpleName(), "Null data!!!");

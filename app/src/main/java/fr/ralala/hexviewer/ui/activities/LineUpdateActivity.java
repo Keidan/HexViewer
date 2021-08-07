@@ -46,16 +46,19 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class LineUpdateActivity extends AppCompatActivity {
   private static final String ACTIVITY_EXTRA_TEXTS = "ACTIVITY_EXTRA_TEXTS";
   private static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
+  private static final String ACTIVITY_EXTRA_NB_LINES = "ACTIVITY_EXTRA_NB_LINES";
   private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
   private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
   public static final String RESULT_REFERENCE_STRING = "RESULT_REFERENCE_STRING";
   public static final String RESULT_NEW_STRING = "RESULT_NEW_STRING";
   public static final String RESULT_POSITION = "RESULT_POSITION";
+  public static final String RESULT_NB_LINES = "RESULT_NB_LINES";
 
   private ApplicationCtx mApp = null;
   private TextInputEditText mEtInputHex;
   private TextInputLayout mTilInputHex;
   private int mPosition = -1;
+  private int mNbLines = 0;
   private String mFile;
   private boolean mChange;
   private String mHex;
@@ -68,12 +71,18 @@ public class LineUpdateActivity extends AppCompatActivity {
    * @param texts                  The texts.
    * @param file                   The file name.
    * @param position               The item position.
+   * @param nbLines                The number of lines.
    * @param change                 A change is detected?
    */
-  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final byte[] texts, final String file, final int position, final boolean change) {
+  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher,
+                                   final byte[] texts, final String file,
+                                   final int position,
+                                   final int nbLines,
+                                   final boolean change) {
     Intent intent = new Intent(c, LineUpdateActivity.class);
     intent.putExtra(ACTIVITY_EXTRA_TEXTS, texts);
     intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
+    intent.putExtra(ACTIVITY_EXTRA_NB_LINES, nbLines);
     intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
     intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
     activityResultLauncher.launch(intent);
@@ -131,6 +140,7 @@ public class LineUpdateActivity extends AppCompatActivity {
       Bundle extras = getIntent().getExtras();
       List<LineData<Line>> li = SysHelper.formatBuffer(extras.getByteArray(ACTIVITY_EXTRA_TEXTS), null, SysHelper.MAX_BY_ROW_8);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
+      mNbLines = extras.getInt(ACTIVITY_EXTRA_NB_LINES);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
       mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
       for (LineData<Line> ld : li) {
@@ -214,6 +224,7 @@ public class LineUpdateActivity extends AppCompatActivity {
       }
       Intent i = new Intent();
       i.putExtra(RESULT_POSITION, mPosition);
+      i.putExtra(RESULT_NB_LINES, mNbLines);
       i.putExtra(RESULT_REFERENCE_STRING, mHex.replaceAll(" ", ""));
       i.putExtra(RESULT_NEW_STRING, validate);
       setResult(RESULT_OK, i);

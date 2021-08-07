@@ -460,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     for (Byte b : e.getValue().getRaw())
       byteArrayOutputStream.write(b);
-    mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position);
+    mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position, 1);
   }
 
   /**
@@ -564,6 +564,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public LauncherOpen getLauncherOpen() {
     return mLauncherOpen;
+  }
+
+  /**
+   * Returns the LauncherLineUpdate
+   *
+   * @return LauncherLineUpdate
+   */
+  public LauncherLineUpdate getLauncherLineUpdate() {
+    return mLauncherLineUpdate;
   }
 
   /**
