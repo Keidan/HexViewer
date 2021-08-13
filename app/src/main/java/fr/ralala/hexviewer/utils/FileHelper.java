@@ -11,6 +11,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,9 +24,9 @@ import fr.ralala.hexviewer.ApplicationCtx;
  * </p>
  *
  * @author Keidan
- *
+ * <p>
  * License: GPLv3
- *
+ * </p>
  * ******************************************************************************
  */
 public class FileHelper {
@@ -168,7 +169,7 @@ public class FileHelper {
    *
    * @param cr  ContentResolver
    * @param uri Uri
-   * @return long
+   * @return long (-1 = FileNotFoundException, -2 = other errors)
    */
   public static long getFileSize(ContentResolver cr, Uri uri) {
     ParcelFileDescriptor pfd = null;
@@ -179,8 +180,9 @@ public class FileHelper {
         size = pfd.getStatSize();
         pfd.close();
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+      size = e instanceof FileNotFoundException ? -1 : -2;
     } finally {
       if (pfd != null)
         try {

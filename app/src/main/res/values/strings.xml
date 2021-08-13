@@ -125,4 +125,6 @@
     <string name="error_no_line_selected">No line was selected</string>
     <string name="error_edition_search_in_progress">Line editing is not possible when a search is in progress.</string>
     <string name="error_edition_continuous_selection">Line editing is only possible with a continuous selection.</string>
+    <string name="error_no_file_access">No access to the file, open it from the menu</string>
+    <string name="error_no_file">File is missing (deleted or moved)</string>
 </resources>

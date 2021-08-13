@@ -86,4 +86,6 @@
   <string name="error_no_line_selected">Aucune ligne n\'a été sélectionnée</string>
   <string name="error_edition_search_in_progress">L\'édition de lignes n\'est pas possible lorsqu\'une recherche est en cours.</string>
   <string name="error_edition_continuous_selection">L\'édition de lignes n\'est possible qu\'avec une sélection continue.</string>
+  <string name="error_no_file">Le fichier est manquant (supprimé ou déplacé)</string>
+  <string name="error_no_file_access">Pas d\'accès au fichier, ouvrez-le à partir du menu</string>
 </resources>

@@ -103,13 +103,18 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       TextView index = viewHolder.index;
       TextView size = viewHolder.size;
       if (mListener != null) {
-        name.setOnClickListener((v) -> mListener.onClick(ud));
-        index.setOnClickListener((v) -> mListener.onClick(ud));
-        size.setOnClickListener((v) -> mListener.onClick(ud));
+        final View.OnClickListener l = (v) -> {
+          if (!ud.error)
+            mListener.onClick(ud);
+        };
+        name.setOnClickListener(l);
+        index.setOnClickListener(l);
+        size.setOnClickListener(l);
       }
       index.setText(String.format("%" + String.valueOf(ud.maxLength).length() + "s - ", ud.index));
       name.setText(ud.value);
       size.setText(ud.size);
+      size.setTextColor(ContextCompat.getColor(ud.ctx, ud.error ? R.color.colorResultError : R.color.textColor));
     }
   }
 
@@ -124,19 +129,29 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
   }
 
   public static class UriData {
+    public final Context ctx;
     public final String value;
     public final Uri uri;
     public final int index;
     public final int maxLength;
     public String size;
+    public boolean error;
 
     public UriData(final Context ctx, int index, int maxLength, String uri) {
+      this.ctx = ctx;
       this.maxLength = maxLength;
       this.index = index;
       this.uri = Uri.parse(uri);
       this.value = FileHelper.getFileName(this.uri);
       String label = ctx.getString(R.string.size) + ": ";
-      this.size = label + SysHelper.sizeToHuman(ctx, FileHelper.getFileSize(ctx.getContentResolver(), this.uri));
+      long size = FileHelper.getFileSize(ctx.getContentResolver(), this.uri);
+      if (size == -1) {
+        this.size = ctx.getString(R.string.error_no_file);
+      } else if (size == -2)
+        this.size = ctx.getString(R.string.error_no_file_access);
+      else
+        this.size = label + SysHelper.sizeToHuman(ctx, size);
+      error = size < 0;
     }
   }
 

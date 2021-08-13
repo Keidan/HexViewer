@@ -88,4 +88,6 @@
     <string name="error_no_line_selected">Es wurde keine Zeile ausgewählt</string>
     <string name="error_edition_search_in_progress">Das Bearbeiten von Zeilen ist nicht möglich, wenn gerade eine Suche läuft.</string>
     <string name="error_edition_continuous_selection">Das Bearbeiten von Zeilen ist nur bei einer fortlaufenden Auswahl möglich.</string>
+    <string name="error_no_file">Keine Datei (gelöscht oder verschoben)</string>
+    <string name="error_no_file_access">Kein Zugriff auf die Datei, öffnen Sie sie über das Menü</string>
 </resources>

@@ -86,4 +86,6 @@
     <string name="error_no_line_selected">Не выбрана ни одна линия</string>
     <string name="error_edition_search_in_progress">Редактирование строки невозможно, если идет поиск.</string>
     <string name="error_edition_continuous_selection">Редактирование строки возможно только при непрерывном выборе.</string>
+    <string name="error_no_file">Файл отсутствует (удален или перемещен)</string>
+    <string name="error_no_file_access">Нет доступа к файлу, откройте его через меню</string>
 </resources>
