@@ -1,6 +1,5 @@
 package fr.ralala.hexviewer.ui.utils;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -40,6 +38,22 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class UIHelper {
+
+  /**
+   * Displays an error dialog.
+   *
+   * @param context The Android context.
+   * @param title   The dialog title.
+   * @param message The dialog message.
+   */
+  public static void showErrorDialog(final Context context, CharSequence title, String message) {
+    new AlertDialog.Builder(context)
+        .setCancelable(false)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+  }
 
   /**
    * Returns the view associated with a position

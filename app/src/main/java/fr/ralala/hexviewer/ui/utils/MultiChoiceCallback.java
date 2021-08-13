@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
 import fr.ralala.hexviewer.models.LineData;
@@ -213,12 +212,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    * @param message The message.
    */
   private void displayError(@StringRes int message) {
-    new AlertDialog.Builder(mActivity)
-        .setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(R.string.error_title)
-        .setMessage(message)
-        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+    UIHelper.showErrorDialog(mActivity, mActivity.getString(R.string.error_title), mActivity.getString(message));
   }
 
   /**

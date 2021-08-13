@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -16,6 +15,7 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsLandscapeActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsPortraitActivity;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
  * ******************************************************************************
@@ -163,12 +163,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
         mActivity.finish();
         return true;
       } else {
-        new AlertDialog.Builder(mActivity)
-            .setCancelable(false)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle(preference.getTitle())
-            .setMessage(R.string.control_language_change)
-            .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_language_change));
       }
     } else if (preference.equals(mScreenOrientation)) {
       refreshUiAccordingToOrientation("" + newValue);
@@ -178,12 +173,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
         mApp.setNbBytesPerLine("" + newValue);
         return true;
       } else {
-        new AlertDialog.Builder(mActivity)
-            .setCancelable(false)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle(preference.getTitle())
-            .setMessage(R.string.error_file_open)
-            .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.error_file_open));
       }
     }
     return false;

@@ -88,4 +88,5 @@
   <string name="error_edition_continuous_selection">L\'édition de lignes n\'est possible qu\'avec une sélection continue.</string>
   <string name="error_no_file">Le fichier est manquant (supprimé ou déplacé)</string>
   <string name="error_no_file_access">Pas d\'accès au fichier, ouvrez-le à partir du menu</string>
+  <string name="error_cant_exceed_xxx">Il n\'est pas possible de dépasser %1$s</string>
 </resources>

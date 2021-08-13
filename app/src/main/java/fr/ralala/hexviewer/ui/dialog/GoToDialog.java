@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -47,6 +48,7 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
   private int mPosition = 0;
   private boolean mStarted = false;
   private Mode mMode;
+  private String mTitle;
 
   public enum Mode {
     ADDRESS,
@@ -83,7 +85,8 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
       title1 = mActivity.getString(R.string.action_go_to_line);
       title2 = mActivity.getString(R.string.decimal);
     }
-    mDialog.setTitle((title1 + " (" + title2 + ")"));
+    mTitle = title1 + " (" + title2 + ")";
+    mDialog.setTitle(mTitle);
     mDialog.show();
     mEt = mDialog.findViewById(R.id.tieValue);
     mLayout = mDialog.findViewById(R.id.tilValue);
@@ -122,20 +125,52 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
     if (text.isEmpty())
       return;
 
+    ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
+        mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
     int position;
+    int max = lv.getAdapter().getCount() - 1;
+    String s_max;
     if (mMode == Mode.ADDRESS) {
       if (!HEXADECIMAL_PATTERN.matcher(text).matches()) {
         if (mLayout != null)
           mLayout.setError(" "); /* only for the color */
         return;
       }
-      position = Integer.parseInt(text, 16) / ApplicationCtx.getInstance().getNbBytesPerLine();
-    } else
-      position = Integer.parseInt(text);
-    ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
-        mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+      int nbBytesPerLines = ApplicationCtx.getInstance().getNbBytesPerLine();
+      try {
+        position = Integer.parseInt(text, 16) / nbBytesPerLines;
+      } catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
+        position = -1;
+      }
+      final int maxLength = String.format("%X", max * nbBytesPerLines).length();
+      s_max = String.format("%0" + maxLength + "X", (max * nbBytesPerLines) + nbBytesPerLines - 1);
+    } else {
+      try {
+        position = Integer.parseInt(text) - 1;
+        if(position < 0)
+          position = 0;
+      } catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
+        position = -1;
+      }
+      s_max = String.valueOf(max + 1);
+      if(position <= max)
+        max++;
+    }
+    if (position == -1 || position > max) {
+      String err = String.format(mActivity.getString(R.string.error_cant_exceed_xxx), s_max);
+      if (mLayout != null) {
+        UIHelper.shakeError(mEt, null);
+        mLayout.setError(err);
+      } else {
+        mDialog.dismiss();
+        UIHelper.showErrorDialog(mActivity, mTitle, err);
+      }
+      return;
+    }
     lv.setOnScrollListener(this);
-    mPosition = Math.max(0, Math.min(position, lv.getAdapter().getCount() - 1));
+    mPosition = Math.max(0, position);
     lv.post(() -> {
       mStarted = true;
       lv.smoothScrollToPositionFromTop(mPosition, 0, 500);

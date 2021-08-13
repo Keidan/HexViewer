@@ -127,4 +127,5 @@
     <string name="error_edition_continuous_selection">Line editing is only possible with a continuous selection.</string>
     <string name="error_no_file_access">No access to the file, open it from the menu</string>
     <string name="error_no_file">File is missing (deleted or moved)</string>
+    <string name="error_cant_exceed_xxx">It is not possible to exceed %1$s</string>
 </resources>
