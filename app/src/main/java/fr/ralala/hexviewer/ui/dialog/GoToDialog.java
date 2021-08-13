@@ -127,14 +127,39 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
 
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
         mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+    if (!validatePosition(text, lv.getAdapter().getCount() - 1))
+      return;
+    lv.setOnScrollListener(this);
+    lv.post(() -> {
+      mStarted = true;
+      lv.smoothScrollToPositionFromTop(mPosition, 0, 500);
+    });
+    if (mMode == Mode.LINE_PLAIN)
+      mPreviousGoToValueLinePlain = text;
+    else if (mMode == Mode.LINE_HEX)
+      mPreviousGoToValueLineHex = text;
+    else
+      mPreviousGoToValueAddress = text;
+    mDialog.dismiss();
+  }
+
+  /**
+   * Validates the position of the cursor.
+   *
+   * @param text     The input value.
+   * @param maxLines The maximum number of lines.
+   * @return false on error.
+   */
+  private boolean validatePosition(String text, int maxLines) {
     int position;
-    int max = lv.getAdapter().getCount() - 1;
+    int max = maxLines;
     String s_max;
     if (mMode == Mode.ADDRESS) {
       if (!HEXADECIMAL_PATTERN.matcher(text).matches()) {
+        UIHelper.shakeError(mEt, null);
         if (mLayout != null)
           mLayout.setError(" "); /* only for the color */
-        return;
+        return false;
       }
       int nbBytesPerLines = ApplicationCtx.getInstance().getNbBytesPerLine();
       try {
@@ -148,14 +173,14 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
     } else {
       try {
         position = Integer.parseInt(text) - 1;
-        if(position < 0)
+        if (position < 0)
           position = 0;
       } catch (Exception e) {
         Log.e(getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
         position = -1;
       }
       s_max = String.valueOf(max + 1);
-      if(position <= max)
+      if (position <= max)
         max++;
     }
     if (position == -1 || position > max) {
@@ -167,21 +192,10 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
         mDialog.dismiss();
         UIHelper.showErrorDialog(mActivity, mTitle, err);
       }
-      return;
+      return false;
     }
-    lv.setOnScrollListener(this);
     mPosition = Math.max(0, position);
-    lv.post(() -> {
-      mStarted = true;
-      lv.smoothScrollToPositionFromTop(mPosition, 0, 500);
-    });
-    if (mMode == Mode.LINE_PLAIN)
-      mPreviousGoToValueLinePlain = text;
-    else if (mMode == Mode.LINE_HEX)
-      mPreviousGoToValueLineHex = text;
-    else
-      mPreviousGoToValueAddress = text;
-    mDialog.dismiss();
+    return true;
   }
 
   /**
