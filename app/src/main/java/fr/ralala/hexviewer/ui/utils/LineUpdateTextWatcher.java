@@ -131,7 +131,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private boolean processAfterTextChangeOverwrite(final String strNew) {
     boolean consumed = false;
-    if (!mRemove && !mApp.isSmartInput() && mApp.isOverwrite() && !mOldString.equals(strNew) && mLayout.getEditText() != null) {
+    if (!mRemove && !mApp.isSmartInput() && mApp.isOverwrite() && mLayout.getEditText() != null) {
       mIgnore = true; // prevent infinite loop
       final EditText et = mLayout.getEditText();
       mStart = et.getSelectionStart();
