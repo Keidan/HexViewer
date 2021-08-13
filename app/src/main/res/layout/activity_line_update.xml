@@ -178,6 +178,7 @@
       android:inputType="textVisiblePassword|textMultiLine"
       android:typeface="monospace"
       android:gravity="top"
-      android:layout_marginBottom="20dp"/>
+      android:layout_marginBottom="20dp"
+      android:scrollbars="vertical"/>
   </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
