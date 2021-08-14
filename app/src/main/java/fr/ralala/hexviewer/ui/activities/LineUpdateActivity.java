@@ -72,6 +72,8 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private ImageView mIvVisibilityResult;
   private LinearLayout mLlSource;
   private LinearLayout mLlResult;
+  private LineUpdateHexArrayAdapter mAdapterSource;
+  private LineUpdateHexArrayAdapter mAdapterResult;
 
   /**
    * Starts an activity.
@@ -177,10 +179,10 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
         sbHex.append(s.substring(0, 23).trim()).append(" ");
       }
     }
-    LineUpdateHexArrayAdapter adapterSource = new LineUpdateHexArrayAdapter(this, lvSource, titleSource, list);
-    LineUpdateHexArrayAdapter adapterResult = new LineUpdateHexArrayAdapter(this, lvResult, titleResult, new ArrayList<>(list));
-    lvSource.setAdapter(adapterSource);
-    lvResult.setAdapter(adapterResult);
+    mAdapterSource = new LineUpdateHexArrayAdapter(this, lvSource, titleSource, list);
+    mAdapterResult = new LineUpdateHexArrayAdapter(this, lvResult, titleResult, new ArrayList<>(list));
+    lvSource.setAdapter(mAdapterSource);
+    lvResult.setAdapter(mAdapterResult);
 
     chkSmartInput.setChecked(mApp.isSmartInput());
     chkSmartInput.setOnCheckedChangeListener((comp, isChecked) -> mApp.setSmartInput(isChecked));
@@ -198,7 +200,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     if (mHex.endsWith(" "))
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
-    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(adapterResult, mTilInputHex, mApp));
+    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(mAdapterResult, mTilInputHex, mApp));
   }
 
   /**
@@ -209,10 +211,17 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-
+    mAdapterSource.notifyDataSetChanged();
+    mAdapterResult.notifyDataSetChanged();
     // Checks the orientation of the screen
     if (mFile != null && !mFile.isEmpty()) {
       UIHelper.setTitle(this, newConfig.orientation, false, mFile, mChange);
+    }
+
+    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      mEtInputHex.setTextSize(mApp.getListSettingsLineEditLandscape().getFontSize());
+    } else {
+      mEtInputHex.setTextSize(mApp.getListSettingsLineEditPortrait().getFontSize());
     }
   }
 

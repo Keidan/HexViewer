@@ -76,4 +76,24 @@
       android:summary="@string/settings_pref_summary_font_size" />
   </androidx.preference.PreferenceCategory>
 
+  <androidx.preference.PreferenceCategory
+    app:iconSpaceReserved="false"
+    android:title="@string/settings_category_line_edit">
+    <androidx.preference.CheckBoxPreference
+      app:iconSpaceReserved="false"
+      android:key="lineEditRowHeightAuto"
+      android:title="@string/settings_pref_title_row_height_auto"
+      android:summary="@string/settings_pref_summary_row_height_auto" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="lineEditRowHeight"
+      android:title="@string/settings_pref_title_row_height"
+      android:summary="@string/settings_pref_summary_row_height" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
+      android:key="lineEditFontSize"
+      android:title="@string/settings_pref_title_font_size"
+      android:summary="@string/settings_pref_summary_font_size" />
+  </androidx.preference.PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

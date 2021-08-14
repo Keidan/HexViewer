@@ -49,6 +49,7 @@
   <string name="settings_category_hex">Texte en hexadécimal (sans numéros de ligne)</string>
   <string name="settings_category_hex_line_numbers">Texte en hexadécimal (avec numéros de ligne)</string>
   <string name="settings_category_plain">Texte en clair</string>
+  <string name="settings_category_line_edit">Vue d\'édition des lignes</string>
   <string name="settings_pref_title_display_data">Affichage de la colonne des données</string>
   <string name="settings_pref_summary_display_data">Afficher la colonne des données lors de l\'affichage du texte en hexadécimal.</string>
   <string name="settings_pref_title_row_height_auto">Hauteur automatique</string>

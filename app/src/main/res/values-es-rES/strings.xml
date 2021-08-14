@@ -49,6 +49,7 @@
   <string name="settings_category_hex">Texto en hexadecimal (sin números de línea)</string>
   <string name="settings_category_hex_line_numbers">Texto en hexadecimal (con números de línea)</string>
   <string name="settings_category_plain">Texto plano</string>
+  <string name="settings_category_line_edit">Vista de edición de líneas</string>
   <string name="settings_pref_title_display_data">Visualización de la columna de datos</string>
   <string name="settings_pref_summary_display_data">Mostrar la columna de datos cuando se muestra el texto en hexadecimal.</string>
   <string name="settings_pref_title_row_height_auto">Ancho automático</string>

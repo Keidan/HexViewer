@@ -1,19 +1,23 @@
 package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -46,6 +50,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
 
   /**
    * Returns the list view.
+   *
    * @return ListView
    */
   public ListView getListView() {
@@ -150,6 +155,10 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
         mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
       }
       holder.content.setText(string);
+      applyUserConfig(mTitle.titleContent);
+      applyUserConfig(mTitle.titleLineNumbers);
+      applyUserConfig(holder.lineNumbers);
+      applyUserConfig(holder.content);
     }
   }
 
@@ -175,5 +184,29 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       }
     }
     return v == null ? new View(getContext()) : v;
+  }
+
+
+  /**
+   * Applies the user config.
+   *
+   * @param tv TextView
+   */
+  private void applyUserConfig(final TextView tv) {
+    Configuration cfg = getContext().getResources().getConfiguration();
+    ApplicationCtx app = ApplicationCtx.getInstance();
+    ListSettings landscape = app.getListSettingsLineEditLandscape();
+    ListSettings portrait = app.getListSettingsLineEditPortrait();
+    if (landscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      tv.setTextSize(landscape.getFontSize());
+      ViewGroup.LayoutParams lp = tv.getLayoutParams();
+      lp.height = landscape.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : landscape.getRowHeight();
+      tv.setLayoutParams(lp);
+    } else if (portrait != null) {
+      tv.setTextSize(portrait.getFontSize());
+      ViewGroup.LayoutParams lp = tv.getLayoutParams();
+      lp.height = portrait.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : portrait.getRowHeight();
+      tv.setLayoutParams(lp);
+    }
   }
 }

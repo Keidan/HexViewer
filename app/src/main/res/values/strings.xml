@@ -67,9 +67,14 @@
     <string name="title_content" translatable="false">00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F</string>
     <string name="title_content8" translatable="false">00 01 02 03 04 05 06 07</string>
     <string name="default_nb_bytes_per_line" translatable="false">16</string>
-
     <string name="default_overwrite" translatable="false">false</string>
     <string name="default_screen_orientation" translatable="false">SCREEN_ORIENTATION_UNSPECIFIED</string>
+    <string name="default_line_edit_row_height_auto_portrait" translatable="false">true</string>
+    <string name="default_line_edit_row_height_portrait" translatable="false">100</string>
+    <string name="default_line_edit_font_size_portrait" translatable="false">14</string>
+    <string name="default_line_edit_row_height_auto_landscape" translatable="false">true</string>
+    <string name="default_line_edit_row_height_landscape" translatable="false">100</string>
+    <string name="default_line_edit_font_size_landscape" translatable="false">16</string>
 
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>
@@ -87,6 +92,7 @@
     <string name="settings_category_hex">Text in hexadecimal (without line numbers)</string>
     <string name="settings_category_hex_line_numbers">Text in hexadecimal (with line numbers)</string>
     <string name="settings_category_plain">Plain text</string>
+    <string name="settings_category_line_edit">Line editing view</string>
     <string name="settings_pref_title_display_data">Display of data column</string>
     <string name="settings_pref_summary_display_data">Display the data column when displaying text in hexadecimal.</string>
     <string name="settings_pref_title_row_height_auto">Automatic height</string>

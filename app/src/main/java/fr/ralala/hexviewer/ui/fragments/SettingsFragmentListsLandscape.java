@@ -31,6 +31,9 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
   protected CheckBoxPreference mPlainRowHeightAutoLandscape;
   protected Preference mPlainRowHeightLandscape;
   protected Preference mPlainFontSizeLandscape;
+  protected CheckBoxPreference mLineEditRowHeightAutoLandscape;
+  protected Preference mLineEditRowHeightLandscape;
+  protected Preference mLineEditFontSizeLandscape;
 
   public SettingsFragmentListsLandscape(AppCompatActivity owner) {
     super(owner);
@@ -60,8 +63,10 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
     mHexFontSizeLineNumbersLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS);
     mPlainRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO);
     mPlainRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT);
-    mPlainFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_FONT_SIZE);
-
+    mPlainRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO);
+    mLineEditRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT);
+    mLineEditFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
+    mLineEditFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
 
     mHexRowHeightAutoLandscape.setOnPreferenceClickListener(this);
     mHexRowHeightLandscape.setOnPreferenceClickListener(this);
@@ -72,6 +77,9 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
     mPlainRowHeightAutoLandscape.setOnPreferenceClickListener(this);
     mPlainRowHeightLandscape.setOnPreferenceClickListener(this);
     mPlainFontSizeLandscape.setOnPreferenceClickListener(this);
+    mLineEditRowHeightAutoLandscape.setOnPreferenceClickListener(this);
+    mLineEditRowHeightLandscape.setOnPreferenceClickListener(this);
+    mLineEditFontSizeLandscape.setOnPreferenceClickListener(this);
 
     if (hexDisplayDataLandscape != null)
       hexDisplayDataLandscape.setChecked(mApp.getListSettingsHexLandscape().isDisplayDataColumn());
@@ -85,6 +93,9 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
 
     mPlainRowHeightAutoLandscape.setChecked(mApp.getListSettingsPlainLandscape().isRowHeightAuto());
     mPlainRowHeightLandscape.setEnabled(!mApp.getListSettingsPlainLandscape().isRowHeightAuto());
+
+    mLineEditRowHeightAutoLandscape.setChecked(mApp.getListSettingsLineEditLandscape().isRowHeightAuto());
+    mLineEditRowHeightLandscape.setEnabled(!mApp.getListSettingsLineEditLandscape().isRowHeightAuto());
   }
 
 
@@ -138,6 +149,20 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
           (n) -> mApp.getListSettingsPlainLandscape().setFontSize(n), true);
+    } else if (preference.equals(mLineEditRowHeightAutoLandscape)) {
+      mLineEditRowHeightLandscape.setEnabled(!mLineEditRowHeightAutoLandscape.isChecked());
+    } else if (preference.equals(mLineEditRowHeightLandscape)) {
+      displayDialog(mLineEditRowHeightLandscape.getTitle(),
+          mApp.getListSettingsLineEditLandscape().getRowHeight(),
+          MIN_PLAIN_ROW_HEIGHT,
+          MAX_PLAIN_ROW_HEIGHT,
+          (n) -> mApp.getListSettingsLineEditLandscape().setRowHeight(n));
+    } else if (preference.equals(mLineEditFontSizeLandscape)) {
+      displayDialog(mLineEditFontSizeLandscape.getTitle(),
+          mApp.getListSettingsLineEditLandscape().getFontSize(),
+          MIN_PLAIN_FONT_SIZE,
+          MAX_PLAIN_FONT_SIZE,
+          (n) -> mApp.getListSettingsLineEditLandscape().setFontSize(n), true);
     }
     return false;
   }

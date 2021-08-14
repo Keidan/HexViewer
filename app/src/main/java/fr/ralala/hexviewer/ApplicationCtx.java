@@ -56,6 +56,12 @@ public class ApplicationCtx extends Application {
   public static final String CFG_LANDSCAPE_PLAIN_ROW_HEIGHT = "plainRowHeightLandscape";
   public static final String CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAutoLandscape";
   public static final String CFG_LANDSCAPE_PLAIN_FONT_SIZE = "plainFontSizeLandscape";
+  public static final String CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT = "lineEditRowHeight";
+  public static final String CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO = "lineEditRowHeightAuto";
+  public static final String CFG_PORTRAIT_LINE_EDIT_FONT_SIZE = "lineEditFontSize";
+  public static final String CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT = "lineEditRowHeightLandscape";
+  public static final String CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO = "lineEditRowHeightAutoLandscape";
+  public static final String CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE = "lineEditFontSizeLandscape";
   public static final String CFG_SMART_INPUT = "smartInput";
   public static final String CFG_RECENTLY_OPEN = "recentlyOpen";
   public static final String CFG_VERSION = "version";
@@ -82,6 +88,8 @@ public class ApplicationCtx extends Application {
   private ListSettings mListSettingsHexLineNumbersLandscape;
   private ListSettings mListSettingsPlainPortrait;
   private ListSettings mListSettingsPlainLandscape;
+  private ListSettings mListSettingsLineEditPortrait;
+  private ListSettings mListSettingsLineEditLandscape;
   private String mDefaultScreenOrientation;
   private String mDefaultNbBytesPerLine;
 
@@ -139,6 +147,17 @@ public class ApplicationCtx extends Application {
         CFG_LANDSCAPE_PLAIN_ROW_HEIGHT, CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_PLAIN_FONT_SIZE,
         0, R.string.default_plain_row_height_landscape, R.string.default_plain_row_height_auto_landscape,
         R.string.default_plain_font_size_landscape);
+
+    mListSettingsLineEditPortrait = new ListSettings(this,
+        null,
+        CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT, CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO, CFG_PORTRAIT_LINE_EDIT_FONT_SIZE,
+        0, R.string.default_line_edit_row_height_portrait, R.string.default_line_edit_row_height_auto_portrait,
+        R.string.default_line_edit_font_size_portrait);
+    mListSettingsLineEditLandscape = new ListSettings(this,
+        null,
+        CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT, CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE,
+        0, R.string.default_line_edit_row_height_landscape, R.string.default_line_edit_row_height_auto_landscape,
+        R.string.default_line_edit_font_size_landscape);
     /* EmojiCompat */
     EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
     EmojiCompat.init(config);
@@ -470,6 +489,24 @@ public class ApplicationCtx extends Application {
    */
   public ListSettings getListSettingsPlainLandscape() {
     return mListSettingsPlainLandscape;
+  }
+
+  /**
+   * Returns the list settings for the LineEdit view list(portrait).
+   *
+   * @return ListSettings
+   */
+  public ListSettings getListSettingsLineEditPortrait() {
+    return mListSettingsLineEditPortrait;
+  }
+
+  /**
+   * Returns the list settings for the LineEdit view list(landscape).
+   *
+   * @return ListSettings
+   */
+  public ListSettings getListSettingsLineEditLandscape() {
+    return mListSettingsLineEditLandscape;
   }
   /*-------------------- LOCALE --------------------*/
 

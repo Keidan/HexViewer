@@ -31,6 +31,9 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
   protected CheckBoxPreference mPlainRowHeightAutoPortrait;
   protected Preference mPlainRowHeightPortrait;
   protected Preference mPlainFontSizePortrait;
+  protected CheckBoxPreference mLineEditRowHeightAutoPortrait;
+  protected Preference mLineEditRowHeightPortrait;
+  protected Preference mLineEditFontSizePortrait;
 
   public SettingsFragmentListsPortrait(AppCompatActivity owner) {
     super(owner);
@@ -61,6 +64,9 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
     mPlainRowHeightAutoPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO);
     mPlainRowHeightPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_ROW_HEIGHT);
     mPlainFontSizePortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_FONT_SIZE);
+    mLineEditRowHeightAutoPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO);
+    mLineEditRowHeightPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT);
+    mLineEditFontSizePortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_LINE_EDIT_FONT_SIZE);
 
     mHexRowHeightAutoPortrait.setOnPreferenceClickListener(this);
     mHexRowHeightPortrait.setOnPreferenceClickListener(this);
@@ -71,6 +77,9 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
     mPlainRowHeightAutoPortrait.setOnPreferenceClickListener(this);
     mPlainRowHeightPortrait.setOnPreferenceClickListener(this);
     mPlainFontSizePortrait.setOnPreferenceClickListener(this);
+    mLineEditRowHeightAutoPortrait.setOnPreferenceClickListener(this);
+    mLineEditRowHeightPortrait.setOnPreferenceClickListener(this);
+    mLineEditFontSizePortrait.setOnPreferenceClickListener(this);
 
     if (hexDisplayDataPortrait != null)
       hexDisplayDataPortrait.setChecked(mApp.getListSettingsHexPortrait().isDisplayDataColumn());
@@ -84,6 +93,9 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
 
     mPlainRowHeightAutoPortrait.setChecked(mApp.getListSettingsPlainPortrait().isRowHeightAuto());
     mPlainRowHeightPortrait.setEnabled(!mApp.getListSettingsPlainPortrait().isRowHeightAuto());
+
+    mLineEditRowHeightAutoPortrait.setChecked(mApp.getListSettingsLineEditPortrait().isRowHeightAuto());
+    mLineEditRowHeightPortrait.setEnabled(!mApp.getListSettingsLineEditPortrait().isRowHeightAuto());
   }
 
 
@@ -137,6 +149,20 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
           (n) -> mApp.getListSettingsPlainPortrait().setFontSize(n), true);
+    } else if (preference.equals(mLineEditRowHeightAutoPortrait)) {
+      mLineEditRowHeightPortrait.setEnabled(!mLineEditRowHeightAutoPortrait.isChecked());
+    } else if (preference.equals(mLineEditRowHeightPortrait)) {
+      displayDialog(mLineEditRowHeightPortrait.getTitle(),
+          mApp.getListSettingsLineEditPortrait().getRowHeight(),
+          MIN_PLAIN_ROW_HEIGHT,
+          MAX_PLAIN_ROW_HEIGHT,
+          (n) -> mApp.getListSettingsLineEditPortrait().setRowHeight(n));
+    } else if (preference.equals(mLineEditFontSizePortrait)) {
+      displayDialog(mLineEditFontSizePortrait.getTitle(),
+          mApp.getListSettingsLineEditPortrait().getFontSize(),
+          MIN_PLAIN_FONT_SIZE,
+          MAX_PLAIN_FONT_SIZE,
+          (n) -> mApp.getListSettingsLineEditPortrait().setFontSize(n), true);
     }
     return false;
   }
