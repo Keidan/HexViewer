@@ -65,6 +65,8 @@ public class ApplicationCtx extends Application {
   public static final String CFG_OVERWRITE = "overwrite";
   public static final String CFG_SCREEN_ORIENTATION = "screenOrientation";
   public static final String CFG_NB_BYTES_PER_LINE = "nbBytesPerLine";
+  public static final String CFG_LINE_EDIT_SRC_EXPAND = "lineEditSrcExpanded";
+  public static final String CFG_LINE_EDIT_RST_EXPAND = "lineEditRstExpanded";
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
@@ -151,6 +153,46 @@ public class ApplicationCtx extends Application {
   }
 
   /* ---------- Settings ---------- */
+
+  /**
+   * Changes the default state specifying whether the source section (LineEdit) is expanded or collapsed.
+   *
+   * @param expanded The new value.
+   */
+  public void setLineEditSrcExpanded(boolean expanded) {
+    SharedPreferences.Editor e = getPref(this).edit();
+    e.putBoolean(CFG_LINE_EDIT_SRC_EXPAND, expanded);
+    e.apply();
+  }
+
+  /**
+   * Returns the default state specifying whether the source section (LineEdit) is expanded or collapsed.
+   *
+   * @return boolean
+   */
+  public boolean isLineEditSrcExpanded() {
+    return getPref(this).getBoolean(CFG_LINE_EDIT_SRC_EXPAND, true);
+  }
+
+  /**
+   * Changes the default state specifying whether the result section (LineEdit) is expanded or collapsed.
+   *
+   * @param expanded The new value.
+   */
+  public void setLineEditRstExpanded(boolean expanded) {
+    SharedPreferences.Editor e = getPref(this).edit();
+    e.putBoolean(CFG_LINE_EDIT_RST_EXPAND, expanded);
+    e.apply();
+  }
+
+  /**
+   * Returns the default state specifying whether the result section (LineEdit) is expanded or collapsed.
+   *
+   * @return boolean
+   */
+  public boolean isLineEditRstExpanded() {
+    return getPref(this).getBoolean(CFG_LINE_EDIT_RST_EXPAND, true);
+  }
 
   /**
    * Sets the number of bytes per line.

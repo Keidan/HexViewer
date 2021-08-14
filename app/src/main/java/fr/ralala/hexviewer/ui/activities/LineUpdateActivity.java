@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.Line;
@@ -43,7 +49,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public class LineUpdateActivity extends AppCompatActivity {
+public class LineUpdateActivity extends AppCompatActivity implements View.OnClickListener {
   private static final String ACTIVITY_EXTRA_TEXTS = "ACTIVITY_EXTRA_TEXTS";
   private static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
   private static final String ACTIVITY_EXTRA_NB_LINES = "ACTIVITY_EXTRA_NB_LINES";
@@ -62,6 +68,10 @@ public class LineUpdateActivity extends AppCompatActivity {
   private String mFile;
   private boolean mChange;
   private String mHex;
+  private ImageView mIvVisibilitySource;
+  private ImageView mIvVisibilityResult;
+  private LinearLayout mLlSource;
+  private LinearLayout mLlResult;
 
   /**
    * Starts an activity.
@@ -114,6 +124,13 @@ public class LineUpdateActivity extends AppCompatActivity {
 
     ListView lvSource = findViewById(R.id.lvSource);
     ListView lvResult = findViewById(R.id.lvResult);
+    mLlSource = findViewById(R.id.llSource);
+    mLlResult = findViewById(R.id.llResult);
+    mIvVisibilitySource = findViewById(R.id.ivVisibilitySource);
+    mIvVisibilityResult = findViewById(R.id.ivVisibilityResult);
+    TextView tvLabelSource = findViewById(R.id.tvLabelSource);
+    TextView tvLabelResult = findViewById(R.id.tvLabelResult);
+
     HexTextArrayAdapter.LineNumbersTitle titleSource = new HexTextArrayAdapter.LineNumbersTitle();
     titleSource.titleContent = findViewById(R.id.titleContentSource);
     titleSource.titleLineNumbers = findViewById(R.id.titleLineNumbersSource);
@@ -123,8 +140,19 @@ public class LineUpdateActivity extends AppCompatActivity {
     AppCompatCheckBox chkSmartInput = findViewById(R.id.chkSmartInput);
     AppCompatCheckBox chkOverwrite = findViewById(R.id.chkOverwrite);
 
+
     mEtInputHex = findViewById(R.id.etInputHex);
     mTilInputHex = findViewById(R.id.tilInputHex);
+
+    mIvVisibilitySource.setOnClickListener(this);
+    mIvVisibilityResult.setOnClickListener(this);
+    tvLabelSource.setOnClickListener(this);
+    tvLabelResult.setOnClickListener(this);
+
+    if (!mApp.isLineEditSrcExpanded())
+      animateVisibility(mIvVisibilitySource, mLlSource);
+    if (!mApp.isLineEditRstExpanded())
+      animateVisibility(mIvVisibilityResult, mLlResult);
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
@@ -232,5 +260,37 @@ public class LineUpdateActivity extends AppCompatActivity {
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  /**
+   * Called when a view has been clicked.
+   *
+   * @param v The view that was clicked.
+   */
+  @Override
+  public void onClick(View v) {
+    if (v.getId() == R.id.ivVisibilitySource || v.getId() == R.id.tvLabelSource) {
+      animateVisibility(mIvVisibilitySource, mLlSource);
+      mApp.setLineEditSrcExpanded(mLlSource.getVisibility() == View.VISIBLE);
+    } else if (v.getId() == R.id.ivVisibilityResult || v.getId() == R.id.tvLabelResult) {
+      animateVisibility(mIvVisibilityResult, mLlResult);
+      mApp.setLineEditRstExpanded(mLlResult.getVisibility() == View.VISIBLE);
+    }
+  }
+
+  private void animateVisibility(ImageView iv, View v) {
+    if (v.getVisibility() == View.VISIBLE) {
+      TransitionManager.beginDelayedTransition(findViewById(R.id.base_view),
+          new AutoTransition());
+      v.setVisibility(View.GONE);
+      if (iv != null)
+        iv.setImageResource(R.drawable.ic_expand_more);
+    } else {
+      TransitionManager.beginDelayedTransition(findViewById(R.id.base_view),
+          new AutoTransition());
+      v.setVisibility(View.VISIBLE);
+      if (iv != null)
+        iv.setImageResource(R.drawable.ic_expand_less);
+    }
   }
 }
