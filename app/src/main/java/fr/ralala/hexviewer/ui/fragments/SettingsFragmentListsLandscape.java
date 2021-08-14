@@ -63,9 +63,9 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
     mHexFontSizeLineNumbersLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS);
     mPlainRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO);
     mPlainRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT);
-    mPlainRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO);
+    mPlainFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_FONT_SIZE);
+    mLineEditRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO);
     mLineEditRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT);
-    mLineEditFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
     mLineEditFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
 
     mHexRowHeightAutoLandscape.setOnPreferenceClickListener(this);
@@ -88,6 +88,7 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
 
     mHexRowHeightAutoLandscape.setChecked(mApp.getListSettingsHexLandscape().isRowHeightAuto());
     mHexRowHeightLandscape.setEnabled(!mApp.getListSettingsHexLandscape().isRowHeightAuto());
+
     mHexRowHeightAutoLineNumbersLandscape.setChecked(mApp.getListSettingsHexLineNumbersLandscape().isRowHeightAuto());
     mHexRowHeightLineNumbersLandscape.setEnabled(!mApp.getListSettingsHexLineNumbersLandscape().isRowHeightAuto());
 
