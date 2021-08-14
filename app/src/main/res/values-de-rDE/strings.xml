@@ -91,5 +91,5 @@
     <string name="error_edition_continuous_selection">Das Bearbeiten von Zeilen ist nur bei einer fortlaufenden Auswahl möglich.</string>
     <string name="error_no_file">Keine Datei (gelöscht oder verschoben)</string>
     <string name="error_no_file_access">Kein Zugriff auf die Datei, öffnen Sie sie über das Menü</string>
-  <string name="error_cant_exceed_xxx">Es ist nicht möglich, mehr als %1$s</string>
+    <string name="error_cant_exceed_xxx">Es ist nicht möglich, mehr als %1$s</string>
 </resources>

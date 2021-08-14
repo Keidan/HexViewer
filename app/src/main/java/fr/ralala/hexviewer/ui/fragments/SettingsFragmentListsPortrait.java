@@ -88,7 +88,7 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
 
     mHexRowHeightAutoPortrait.setChecked(mApp.getListSettingsHexPortrait().isRowHeightAuto());
     mHexRowHeightPortrait.setEnabled(!mApp.getListSettingsHexPortrait().isRowHeightAuto());
-    
+
     mHexRowHeightAutoLineNumbersPortrait.setChecked(mApp.getListSettingsHexLineNumbersPortrait().isRowHeightAuto());
     mHexRowHeightLineNumbersPortrait.setEnabled(!mApp.getListSettingsHexLineNumbersPortrait().isRowHeightAuto());
 
