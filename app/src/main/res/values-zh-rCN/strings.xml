@@ -112,7 +112,7 @@
   <string name="settings_pref_title_screen_orientation">屏幕方向</string>
   <string name="settings_pref_summary_screen_orientation">配置默认屏幕方向(仅限主屏幕)。</string>
   <string name="settings_pref_title_nb_bytes">在一行中显示的字节数</string>
-  <string name="settings_pref_summary_nb_bytes">行显示的字节数 (8 或 16)。 注意显示 8 字节会大大增加内存消耗。</string>
+  <string name="settings_pref_summary_nb_bytes">每行显示的字节数 (8 或 16)。 注意，显示 8 字节会大大增加内存消耗。</string>
   <string name="error_file_open">文件打开时，不可能改变模式。</string>
   <string name="smart_input">纯文本输入</string>
   <string name="error_file_not_found">未找到文件 %1$s</string>
