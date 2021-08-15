@@ -1,5 +1,5 @@
 <resources>
-    
+
   <string name="search_title">搜索</string>
   <string name="search_hint">搜索&#8230;</string>
   <string name="action_open_title">打开</string>
@@ -9,9 +9,9 @@
   <string name="action_save_as_title">另存为 &#8230;</string>
   <string name="action_close_title">关闭</string>
   <string name="action_settings_title">设置</string>
+  <string name="action_recently_open_title">最近打开</string>
   <string name="action_go_to_address">转到地址&#8230;</string>
   <string name="action_go_to_line">转到行&#8230;</string>
-  <string name="action_recently_open_title">最近打开</string>
   <string name="loading">正加载&#8230;</string>
   <string name="saving">正保存&#8230;</string>
   <string name="yes">是</string>
@@ -34,7 +34,7 @@
   <string name="uri_exception">Uri 异常</string>
   <string name="source">来源：</string>
   <string name="result">结果：</string>
-    
+  
   
   
   
@@ -79,45 +79,44 @@
   <string name="new_value">新值</string>
   <string name="error_less_than">该值不能小于</string>
   <string name="error_greater_than">该值不能大于</string>
-  <string name="settings_pref_category_landscape">横向模式</string>
+  <string name="settings_pref_category_portrait">竖屏模式</string>
+  <string name="settings_pref_title_abbreviate_portrait">缩略语</string>
+  <string name="settings_pref_summary_abbreviate_portrait">竖屏模式下显示的文件名字符数。</string>
+  <string name="settings_pref_title_lists_portrait">高度、字体大小 &#8230;</string>
+  <string name="settings_pref_summary_lists_portrait">点击编辑</string>
+  <string name="settings_pref_category_landscape">横屏模式</string>
   <string name="settings_pref_title_abbreviate_landscape">缩略语</string>
-  <string name="settings_pref_summary_abbreviate_landscape">横向模式下文件名的显示字符数。</string>
-  <string name="settings_pref_title_lists_landscape">高度、字体大小 &#8230;</string>
-  <string name="settings_pref_summary_lists_landscape">点击编辑</string>
-  <string name="settings_pref_category_landscape">横向模式</string>
-  <string name="settings_pref_title_abbreviate_landscape">缩略语</string>
-  <string name="settings_pref_summary_abbreviate_landscape">横屏模式下文件名显示的字符数。</string>
-  <string name="settings_pref_title_lists_landscape">高度、字体大小 &#8230;</string>
+  <string name="settings_pref_summary_abbreviate_landscape">横屏模式下显示的文件名字符数。</string>
+  <string name="settings_pref_title_lists_landscape">高度、字体大小 &#8230;</string>>
   <string name="settings_pref_summary_lists_landscape">点击编辑</string>
   <string name="settings_category_hex">16 进制文本 (不含行号)</string>
   <string name="settings_category_hex_line_numbers">16 进制文本 (有行号)</string>
   <string name="settings_category_plain">纯文本</string>
   <string name="settings_category_line_edit">行编辑视图</string>
   <string name="settings_pref_title_display_data">数据列显示</string>
-  <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
-  <string name="settings_pref_summary_display_data">以 16 进制显示文本时显示数据列。</string>
-  <string name="settings_pref_title_plain_row_height_auto">自动高度</string>
-  <string name="settings_pref_summary_plain_row_height_auto">根据字体大小自动确定高度。</string>
-  <string name="settings_pref_title_plain_row_height">高度</string>
-  <string name="settings_pref_summary_plain_row_height">列表中行的高度。</string>
-  <string name="settings_pref_title_plain_font_size">字体大小</string>
-  <string name="settings_pref_summary_plain_font_size">列表中文本的字体大小。</string>
+  <string name="settings_pref_summary_display_data">以十六进制显示文本时，显示数据列。</string>
+  <string name="settings_pref_title_row_height_auto">自动高度</string>
+  <string name="settings_pref_summary_row_height_auto">根据字体大小自动确定高度。</string>
+  <string name="settings_pref_title_row_height">高度</string>
+  <string name="settings_pref_summary_row_height">列表中行的高度。</string>
+  <string name="settings_pref_title_font_size">字体大小</string>
+  <string name="settings_pref_summary_font_size">列表中文本的字体大小。</string>
   <string name="settings_category_about">关于</string>
   <string name="settings_pref_title_version">版本号</string>
   <string name="settings_pref_title_license">授权许可</string>
-    
+  
   <string name="settings_category_general">常规</string>
   <string name="settings_pref_title_language">语言</string>
   <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
   <string name="settings_pref_title_screen_orientation">屏幕方向</string>
-  <string name="settings_pref_summary_screen_orientation">配置默认屏幕方向(仅限主屏幕)。</string>
-  <string name="settings_pref_title_nb_bytes">在一行中显示的字节数</string>
-  <string name="settings_pref_summary_nb_bytes">每行显示的字节数 (8 或 16)。 注意，显示 8 字节会大大增加内存消耗。</string>
-  <string name="error_file_open">文件打开时，不可能改变模式。</string>
+  <string name="settings_pref_summary_screen_orientation">配置默认的屏幕方向 (仅主界面)。</string>
+  <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
+  <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
+  <string name="error_file_open">当一个文件打开时，不可能改变模式。</string>
   <string name="smart_input">纯文本输入</string>
   <string name="error_file_not_found">未找到文件 %1$s</string>
   <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
-  <string name="items_selected">选中了 %1$d 行</string>
+  <string name="items_selected">选中了 %1$d 项</string>
   <string name="confirm_save">保存文件 "%1$s"？</string>
   <string name="control_language_change">请先保存你的工作。</string>
   <string name="overwrite">插入模式</string>
@@ -126,12 +125,13 @@
   <string name="unit_kbyte">kB</string>
   <string name="unit_mbyte">MB</string>
   <string name="unit_gbyte">GB</string>
-  <string name="hexadecimal">16 进制</string>
-  <string name="decimal">10 进制</string>
+  <string name="hexadecimal">十六进制</string>
+  <string name="decimal">十进制</string>
   <string name="error_title">错误</string>
-  <string name="error_no_line_selected">未选中任何一行</string>
-  <string name="error_edition_search_in_progress">搜索过程中不可能进行行编辑。</string>
-  <string name="error_edition_continuous_selection">行编辑只有在所选部分不间断的情况下才有可能。</string>
-  <string name="error_no_file_access">无法访问文件，从菜单打开它</string>
-  <string name="error_no_file">文件丢失（被删除或移动）</string>
+  <string name="error_no_line_selected">未选择任何一行</string>
+  <string name="error_edition_search_in_progress">在搜索过程中，不可能进行行编辑。</string>
+  <string name="error_edition_continuous_selection">只有在选择不间断的情况下才可能进行行编辑。</string>
+  <string name="error_no_file_access">无法访问该文件，从菜单中打开它</string>
+  <string name="error_no_file">文件丢失（被删除或移动）。</string>
+  <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
 </resources>
