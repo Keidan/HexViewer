@@ -1,0 +1,20 @@
+* Fix Russian translations.
+* Fix Chinese translations.
+* Fix a crash related to permissions via the recently opened files view and added information about the file.
+* Fix a crash when entering an address or an important line number and added an error message if the number exceeds the maximum number of lines.
+* The scroll bar of the text area in the line editing view is now visible.
+* Fix a bug when inserting the same text in overwrite mode.
+* It's now possible to expand/collapse parts of the line editing view.
+* It's now possible to customize the font size and line height of lists used in the line editing view.
+    * Note: The text box font uses the same configuration as the lists.
+* Fix a bug that forced the use of a hexadecimal file name when clicking on "save as".
+
+Please note that new text additions are mostly translated via DeepL.
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
