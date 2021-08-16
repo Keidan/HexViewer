@@ -89,10 +89,10 @@
   <string name="settings_pref_summary_abbreviate_landscape">横屏模式下显示的文件名字符数。</string>
   <string name="settings_pref_title_lists_landscape">高度、字体大小 &#8230;</string>>
   <string name="settings_pref_summary_lists_landscape">点击编辑</string>
-  <string name="settings_category_hex">16 进制文本 (不含行号)</string>
-  <string name="settings_category_hex_line_numbers">16 进制文本 (有行号)</string>
-  <string name="settings_category_plain">纯文本</string>
-  <string name="settings_category_line_edit">行编辑视图</string>
+  <string name="settings_category_hex">以 16 进制查看文本 (不含行号)</string>
+  <string name="settings_category_hex_line_numbers">以 16 进制查看文本 (有行号)</string>
+  <string name="settings_category_plain">查看纯文本</string>
+  <string name="settings_category_line_edit">编辑模式下的文本</string>
   <string name="settings_pref_title_display_data">数据列显示</string>
   <string name="settings_pref_summary_display_data">以十六进制显示文本时，显示数据列。</string>
   <string name="settings_pref_title_row_height_auto">自动高度</string>
