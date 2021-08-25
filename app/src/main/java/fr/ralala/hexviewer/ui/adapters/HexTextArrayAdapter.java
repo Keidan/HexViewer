@@ -81,11 +81,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    */
   @Override
   protected void extraFilter(final LineData<Line> line, int index, String query, final ArrayList<LineFilter<Line>> tempList, Locale loc) {
-    final int maxLength = String.format("%X", getItemsCount()).length();
-    final String s = String.format("%0" + maxLength + "X", index);
-    if (s.toLowerCase(loc).contains(query)) {
-      tempList.add(new LineFilter<>(line, index));
-    }
+    /* nothing */
   }
 
   /**
