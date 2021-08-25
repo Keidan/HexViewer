@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -36,7 +35,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * </p>
  * ******************************************************************************
  */
-public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollListener {
+public class GoToDialog implements View.OnClickListener {
   private static final Pattern HEXADECIMAL_PATTERN = Pattern.compile("\\p{XDigit}+");
   private String mPreviousGoToValueAddress = "0";
   private String mPreviousGoToValueLineHex = "0";
@@ -46,7 +45,6 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
   private TextInputLayout mLayout;
   private final MainActivity mActivity;
   private int mPosition = 0;
-  private boolean mStarted = false;
   private Mode mMode;
   private String mTitle;
 
@@ -129,10 +127,9 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
         mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
     if (!validatePosition(text, lv.getAdapter().getCount() - 1))
       return;
-    lv.setOnScrollListener(this);
     lv.post(() -> {
-      mStarted = true;
-      lv.smoothScrollToPositionFromTop(mPosition, 0, 500);
+      lv.setSelectionFromTop(mPosition, 0);
+      lv.post(this::blinkBackground);
     });
     if (mMode == Mode.LINE_PLAIN)
       mPreviousGoToValueLinePlain = text;
@@ -199,41 +196,9 @@ public class GoToDialog implements View.OnClickListener, AbsListView.OnScrollLis
   }
 
   /**
-   * Callback method to be invoked while the list view or grid view is being scrolled.
-   *
-   * @param view        The view whose scroll state is being reported.
-   * @param scrollState The current scroll state.
-   */
-  @Override
-  public void onScrollStateChanged(AbsListView view, int scrollState) {
-    if (scrollState == SCROLL_STATE_IDLE) {
-      //we reached the target position
-      blinkBackground();
-    }
-  }
-
-  /**
-   * Callback method to be invoked when the list or grid has been scrolled.
-   *
-   * @param view             The view whose scroll state is being reported.
-   * @param firstVisibleItem the index of the first visible cell (ignore if
-   *                         visibleItemCount == 0).
-   * @param visibleItemCount the number of visible cells.
-   * @param totalItemCount   the number of items in the list adapter.
-   */
-  @Override
-  public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-    if (mStarted && mPosition >= firstVisibleItem && mPosition <= visibleItemCount) {
-      blinkBackground();
-    }
-    /* nothing to do */
-  }
-
-  /**
    * Blinks the background of the selected view
    */
   private void blinkBackground() {
-    mStarted = false;
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
         mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
     View v = UIHelper.getViewByPosition(mPosition, lv);
