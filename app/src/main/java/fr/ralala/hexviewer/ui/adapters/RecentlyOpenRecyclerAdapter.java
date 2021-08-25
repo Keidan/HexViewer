@@ -13,6 +13,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.ralala.hexviewer.R;
@@ -144,14 +145,20 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       this.uri = Uri.parse(uri);
       this.value = FileHelper.getFileName(this.uri);
       String label = ctx.getString(R.string.size) + ": ";
-      long size = FileHelper.getFileSize(ctx.getContentResolver(), this.uri);
-      if (size == -1) {
+      DocumentFile sourceFile = DocumentFile.fromSingleUri(ctx, this.uri);
+      if(sourceFile == null || !sourceFile.exists()) {
         this.size = ctx.getString(R.string.error_no_file);
-      } else if (size == -2)
-        this.size = ctx.getString(R.string.error_no_file_access);
-      else
-        this.size = label + SysHelper.sizeToHuman(ctx, size);
-      error = size < 0;
+        error = true;
+      } else {
+        long size = FileHelper.getFileSize(ctx.getContentResolver(), this.uri);
+        if (size == -1) {
+          this.size = ctx.getString(R.string.error_no_file);
+        } else if (size == -2)
+          this.size = ctx.getString(R.string.error_no_file_access);
+        else
+          this.size = label + SysHelper.sizeToHuman(ctx, size);
+        error = size < 0;
+      }
     }
   }
 
