@@ -13,4 +13,11 @@
   <dimen name="progress_dialog_layout_marginStart">10dp</dimen>
   <dimen name="progress_dialog_layout_marginEnd">10dp</dimen>
   <dimen name="progress_dialog_layout_marginBottom">10dp</dimen>
+
+  <!-- InputLabel -->
+  <dimen name="input_label_text_size">12sp</dimen>
+  <dimen name="input_label_paddingTop">3dp</dimen>
+  <dimen name="input_label_paddingBottom">2dp</dimen>
+  <dimen name="input_label_paddingStart">4dp</dimen>
+  <dimen name="input_label_paddingEnd">4dp</dimen>
 </resources>

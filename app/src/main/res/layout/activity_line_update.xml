@@ -19,7 +19,8 @@
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"
       android:layout_toStartOf="@+id/ivVisibilitySource"
-      android:text="@string/source" />
+      android:text="@string/source"
+      style="@style/AppTheme.InputLabelLineUpdate"/>
     <ImageView
       android:id="@+id/ivVisibilitySource"
       android:layout_width="wrap_content"
@@ -79,7 +80,8 @@
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"
       android:layout_toStartOf="@+id/ivVisibilityResult"
-      android:text="@string/result" />
+      android:text="@string/result"
+      style="@style/AppTheme.InputLabelLineUpdate" />
     <ImageView
       android:id="@+id/ivVisibilityResult"
       android:layout_width="wrap_content"
@@ -145,7 +147,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       android:layout_width="match_parent"
-      android:layout_height="10dp"/>
+      android:layout_height="5dp"/>
 
     <androidx.appcompat.widget.AppCompatCheckBox
       android:id="@+id/chkSmartInput"
@@ -163,14 +165,15 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="@string/overwrite"/>
+
     <TextView
       android:id="@+id/tvLabel"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="10dp"
       android:text="@string/update_hint_hex"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/chkSmartInput" />
+      app:layout_constraintTop_toBottomOf="@id/chkSmartInput"
+      style="@style/AppTheme.InputLabelLineUpdate"  />
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/tilInputHex"
@@ -180,19 +183,19 @@
       app:errorTextAppearance="@style/AppTheme.ErrorTextAppearance"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/tvLabel"
-      app:layout_constraintBottom_toBottomOf="parent">
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:hintEnabled="false">
 
       <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etInputHex"
+        android:hint="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@null"
         android:textSize="@dimen/activity_line_update_lv_font_size"
         android:importantForAutofill="no"
         android:inputType="textVisiblePassword|textMultiLine"
         android:typeface="monospace"
         android:gravity="top"
-        android:layout_marginBottom="20dp"
         android:scrollbars="vertical"/>
     </com.google.android.material.textfield.TextInputLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
