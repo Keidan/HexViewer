@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,8 +146,12 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       this.uri = Uri.parse(uri);
       this.value = FileHelper.getFileName(this.uri);
       String label = ctx.getString(R.string.size) + ": ";
-      DocumentFile sourceFile = DocumentFile.fromSingleUri(ctx, this.uri);
-      if(sourceFile == null || !sourceFile.exists()) {
+      boolean fileNotFound = false;
+      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+        DocumentFile sourceFile = DocumentFile.fromSingleUri(ctx, this.uri);
+        fileNotFound = (sourceFile == null || !sourceFile.exists());
+      }
+      if(fileNotFound) {
         this.size = ctx.getString(R.string.error_no_file);
         error = true;
       } else {
