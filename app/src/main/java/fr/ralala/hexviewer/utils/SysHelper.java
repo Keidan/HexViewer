@@ -38,7 +38,6 @@ public class SysHelper {
   private static final float SIZE_1GB = 0x40000000;
   public static final int MAX_BY_ROW_16 = 16;
   public static final int MAX_BY_ROW_8 = 8;
-  public static final int MAX_BY_LINE = ((MAX_BY_ROW_16 * 2) + MAX_BY_ROW_16) + 19; /* 19 = nb spaces */
 
   /**
    * Sorts keys.

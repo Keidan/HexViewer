@@ -372,9 +372,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    if (mPayloadPlainSwipe.isVisible())
-      mPayloadPlainSwipe.getAdapter().notifyDataSetChanged();
-    else if (mPayloadHexHelper.isVisible())
+    if (mPayloadPlainSwipe.isVisible()) {
+      mPayloadPlainSwipe.refresh();
+    } else if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.getAdapter().notifyDataSetChanged();
     // Checks the orientation of the screen
     if (!FileData.isEmpty(mFileData)) {

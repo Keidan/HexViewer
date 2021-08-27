@@ -1,8 +1,15 @@
 package fr.ralala.hexviewer.ui.payload;
 
+import android.content.res.Configuration;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +23,6 @@ import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -36,6 +42,8 @@ public class PayloadPlainSwipe {
   private PlainTextListArrayAdapter mAdapterPlain = null;
   private SwipeRefreshLayout mPayloadPlainSwipeRefreshLayout;
   private final AtomicBoolean mCancelPayloadPlainSwipeRefresh = new AtomicBoolean(false);
+  private UserConfigPortrait mUserConfigPortrait;
+  private UserConfigLandscape mUserConfigLandscape;
 
   /**
    * Called when the activity is created.
@@ -57,8 +65,8 @@ public class PayloadPlainSwipe {
 
     mAdapterPlain = new PlainTextListArrayAdapter(activity,
         new ArrayList<>(),
-        new UserConfigPortrait(false),
-        new UserConfigLandscape(false));
+        mUserConfigPortrait = new UserConfigPortrait(false),
+        mUserConfigLandscape = new UserConfigLandscape(false));
     mPayloadPlain.setAdapter(mAdapterPlain);
   }
 
@@ -66,6 +74,7 @@ public class PayloadPlainSwipe {
    * Called to refresh the adapter.
    */
   public void refreshAdapter() {
+    refresh();
     mAdapterPlain.refresh();
   }
 
@@ -106,7 +115,7 @@ public class PayloadPlainSwipe {
   /**
    * Functions called to refresh the list.
    */
-  private void refresh() {
+  public void refresh() {
     mCancelPayloadPlainSwipeRefresh.set(true);
     new Handler().postDelayed(() -> {
       mCancelPayloadPlainSwipeRefresh.set(false);
@@ -130,6 +139,8 @@ public class PayloadPlainSwipe {
    * @return List<ListData < String>>
    */
   private List<LineData<String>> refreshPlain(final AtomicBoolean cancel) {
+    int width = getTextWidth();
+    int maxByLine = width == 0 ? 70 : (getScreenWidth() / width) - 2;
     final List<Byte> payload = new ArrayList<>();
     for (LineData<Line> le : mActivity.getPayloadHex().getAdapter().getItems())
       payload.addAll(le.getValue().getRaw());
@@ -137,13 +148,12 @@ public class PayloadPlainSwipe {
     int nbPerLine = 0;
     final List<LineData<String>> list = new ArrayList<>();
     for (int i = 0; i < payload.size() && (cancel == null || !cancel.get()); i++) {
-      if (nbPerLine != 0 && (nbPerLine % SysHelper.MAX_BY_LINE) == 0) {
-        sb.append((char) payload.get(i).byteValue());
+      sb.append((char) payload.get(i).byteValue());
+      if (nbPerLine != 0 && (nbPerLine % maxByLine) == 0) {
         list.add(new LineData<>(sb.toString()));
         nbPerLine = 0;
         sb.setLength(0);
       } else {
-        sb.append((char) payload.get(i).byteValue());
         nbPerLine++;
       }
     }
@@ -160,5 +170,63 @@ public class PayloadPlainSwipe {
    */
   public ListView getListView() {
     return mPayloadPlain;
+  }
+
+
+  /**
+   * Gets the width of the text according to the font size and family (monospace).
+   *
+   * @return The width.
+   */
+  private int getTextWidth() {
+    final Typeface monospace = Typeface.MONOSPACE;
+    final String text = "a";
+    float fontSize = 12.0f;
+    /* Solution 1: We get the width of the text. */
+    TextView tv = new TextView(mActivity);
+    tv.setText(text);
+    tv.setTypeface(monospace);
+    Configuration cfg = mActivity.getResources().getConfiguration();
+    if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      fontSize = mUserConfigLandscape.getFontSize();
+    } else if (mUserConfigPortrait != null) {
+      fontSize = mUserConfigPortrait.getFontSize();
+    }
+    tv.setTextSize(fontSize);
+    tv.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+    int width = tv.getMeasuredWidth();
+    /* Solution 2: If we can't get the width, then we try another method (obviously less accurate) */
+    if (width < 1) {
+      Paint paint = new Paint();
+      paint.setTypeface(monospace);
+      float scaledSizeInPixels = getSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+      paint.setTextSize(scaledSizeInPixels);
+      Rect bounds = new Rect();
+      paint.getTextBounds(text, 0, text.length(), bounds);
+      width = bounds.width();
+    }
+    return width;
+  }
+
+  /**
+   * Gets the size according to the display metrics.
+   *
+   * @param unit  The unit to convert from.
+   * @param value The value to apply the unit to.
+   * @return The new value.
+   */
+  private float getSize(int unit, float value) {
+    return TypedValue.applyDimension(unit, value, mActivity.getResources().getDisplayMetrics());
+  }
+
+  /**
+   * Gets the width of the screen.
+   *
+   * @return The width.
+   */
+  private int getScreenWidth() {
+    DisplayMetrics displayMetrics = mActivity.getResources().getDisplayMetrics();
+    /* The current view has a padding of 1dp */
+    return (int) ((float) displayMetrics.widthPixels - getSize(TypedValue.COMPLEX_UNIT_DIP, 1.0f));
   }
 }
