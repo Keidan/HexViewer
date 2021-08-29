@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineEntries;
+import fr.ralala.hexviewer.models.LineEntry;
 
 /**
  * ******************************************************************************
@@ -29,12 +29,11 @@ import fr.ralala.hexviewer.models.LineFilter;
  * </p>
  * ******************************************************************************
  */
-public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineData<T>> {
+public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry> {
   private final EntryFilter mEntryFilter;
-  private final List<LineData<T>> mEntryList;
   protected final UserConfig mUserConfigPortrait;
   protected final UserConfig mUserConfigLandscape;
-  private List<LineFilter<T>> mFilteredList;
+  private LineEntries mLineEntries;
 
   public interface UserConfig {
     float getFontSize();
@@ -48,42 +47,23 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
 
   public SearchableListArrayAdapter(final Context context,
                                     final int layoutId,
-                                    final List<LineData<T>> objects,
+                                    final List<LineEntry> objects,
                                     UserConfig userConfigPortrait,
                                     UserConfig userConfigLandscape) {
     super(context, layoutId, objects);
     mEntryFilter = new EntryFilter();
-    mEntryList = objects;
-    mFilteredList = new ArrayList<>();
+    mLineEntries = new LineEntries(objects);
     mUserConfigPortrait = userConfigPortrait;
     mUserConfigLandscape = userConfigLandscape;
   }
 
   /**
-   * Returns the list of items.
+   * Returns the line entries.
    *
-   * @return List<ListData < T>>
+   * @return LineEntries
    */
-  public List<LineData<T>> getItems() {
-    return mEntryList;
-  }
-
-  /**
-   * Returns the number of items.
-   *
-   * @return int
-   */
-  public int getItemsCount() {
-    return mEntryList.size();
-  }
-
-  /**
-   * Returns the list of filtered items.
-   *
-   * @return List<FilterData < T>>
-   */
-  public List<LineFilter<T>> getFilteredList() {
-    return mFilteredList;
+  public LineEntries getEntries() {
+    return mLineEntries;
   }
 
   /**
@@ -93,10 +73,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @return This value may be null.
    */
   @Override
-  public LineData<T> getItem(final int position) {
-    if (mFilteredList != null)
-      return mFilteredList.get(position).getData();
-    return null;
+  public LineEntry getItem(final int position) {
+    return mLineEntries.getItem(position);
   }
 
   /**
@@ -106,7 +84,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @return The position of the specified item.
    */
   @Override
-  public int getPosition(LineData<T> item) {
+  public int getPosition(LineEntry item) {
     return super.getPosition(item);
   }
 
@@ -117,9 +95,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    */
   @Override
   public int getCount() {
-    if (mFilteredList != null)
-      return mFilteredList.size();
-    return 0;
+    return mLineEntries.getCount();
   }
 
   /**
@@ -130,9 +106,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    */
   @Override
   public long getItemId(int position) {
-    if (mFilteredList != null)
-      return mFilteredList.get(position).getData().getValue().hashCode();
-    return 0;
+    return mLineEntries.getItemId(position);
   }
 
   /**
@@ -140,8 +114,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    */
   @Override
   public void clear() {
-    mFilteredList.clear();
-    mEntryList.clear();
+    mLineEntries.clear();
     notifyDataSetChanged();
   }
 
@@ -157,13 +130,8 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    *
    * @param collection The items to be added.
    */
-  public void addAll(@NonNull Collection<? extends LineData<T>> collection) {
-    /* Here the list is already empty */
-    int i = 0;
-    for (LineData<T> t : collection) {
-      mEntryList.add(t);
-      mFilteredList.add(new LineFilter<>(t, i++));
-    }
+  public void addAll(@NonNull Collection<? extends LineEntry> collection) {
+    mLineEntries.addAll(collection);
     notifyDataSetChanged();
   }
 
@@ -238,7 +206,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @param tempList The output list.
    * @param loc      The locale.
    */
-  protected abstract void extraFilter(final LineData<T> line, int index, String query, final ArrayList<LineFilter<T>> tempList, Locale loc);
+  protected abstract void extraFilter(final LineEntry line, int index, String query, final List<Integer> tempList, Locale loc);
 
   // Filter part
 
@@ -258,9 +226,9 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    * @param constraint The constraint.
    */
   public void manualFilterUpdate(CharSequence constraint) {
-    final ArrayList<LineFilter<T>> tempList = new ArrayList<>();
+    final List<Integer> tempList = new ArrayList<>();
     mEntryFilter.apply(constraint, tempList);
-    mFilteredList = tempList;
+    mLineEntries.setFilteredList(tempList);
   }
 
   /**
@@ -268,18 +236,19 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
    */
   private class EntryFilter extends Filter {
 
-    protected void apply(CharSequence constraint, final ArrayList<LineFilter<T>> tempList) {
+    protected void apply(CharSequence constraint, final List<Integer> tempList) {
       boolean clear = (constraint == null || constraint.length() == 0);
       String query = "";
       final Locale loc = Locale.getDefault();
       if (!clear)
         query = constraint.toString().toLowerCase(loc);
-      for (int i = 0; i < mEntryList.size(); i++) {
-        LineData<T> s = mEntryList.get(i);
+      List<LineEntry> items = mLineEntries.getItems();
+      for (int i = 0; i < items.size(); i++) {
+        LineEntry s = items.get(i);
         if (clear)
-          tempList.add(new LineFilter<>(s, i));
+          tempList.add(i);
         else if (s.toString().toLowerCase(loc).contains(query))
-          tempList.add(new LineFilter<>(s, i));
+          tempList.add(i);
         else
           extraFilter(s, i, query, tempList, loc);
       }
@@ -288,7 +257,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
       final FilterResults filterResults = new FilterResults();
-      final ArrayList<LineFilter<T>> tempList = new ArrayList<>();
+      final List<Integer> tempList = new ArrayList<>();
       apply(constraint, tempList);
       filterResults.count = tempList.size();
       filterResults.values = tempList;
@@ -304,7 +273,7 @@ public abstract class SearchableListArrayAdapter<T> extends ArrayAdapter<LineDat
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-      mFilteredList = (ArrayList<LineFilter<T>>) results.values;
+      mLineEntries.setFilteredList((List<Integer>) results.values);
       notifyDataSetChanged();
     }
   }

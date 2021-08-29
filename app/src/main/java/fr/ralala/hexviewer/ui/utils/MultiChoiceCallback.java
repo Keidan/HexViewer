@@ -23,9 +23,7 @@ import java.util.Map;
 
 import androidx.annotation.StringRes;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 
@@ -140,13 +138,12 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   private void actionClear(MenuItem item, ActionMode mode) {
     setActionView(item, mRefreshActionViewDelete, () -> {
       final List<Integer> selected = mAdapter.getSelectedIds();
-      Map<Integer, LineFilter<Line>> map = new HashMap<>();
-      List<LineFilter<Line>> filteredList = mAdapter.getFilteredList();
+      Map<Integer, LineEntry> map = new HashMap<>();
       // Captures all selected ids with a loop
       for (int i = selected.size() - 1; i >= 0; i--) {
         int position = selected.get(i);
-        LineFilter<Line> lf = filteredList.get(position);
-        map.put(lf.getOrigin(), lf);
+        LineEntry lf = mAdapter.getItem(position);
+        map.put(position, lf);
       }
       mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
       mActivity.setTitle(mActivity.getResources().getConfiguration());
@@ -187,7 +184,6 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     }
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-    List<LineData<Line>> items = mAdapter.getItems();
     int previous = selected.get(0);
     for (Integer i : selected) {
       if (previous != i && previous + 1 != i) {
@@ -195,8 +191,8 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         return false;
       }
       previous = i;
-      LineData<Line> ld = items.get(i);
-      for (Byte b : ld.getValue().getRaw())
+      LineEntry ld = mAdapter.getItem(i);
+      for (Byte b : ld.getRaw())
         byteArrayOutputStream.write(b);
     }
     mActivity.getLauncherLineUpdate().startActivity(byteArrayOutputStream.toByteArray(),

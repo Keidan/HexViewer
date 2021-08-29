@@ -17,8 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
@@ -119,7 +118,7 @@ public class PayloadPlainSwipe {
     mCancelPayloadPlainSwipeRefresh.set(true);
     new Handler().postDelayed(() -> {
       mCancelPayloadPlainSwipeRefresh.set(false);
-      final List<LineData<String>> list = refreshPlain(mCancelPayloadPlainSwipeRefresh);
+      final List<LineEntry> list = refreshPlain(mCancelPayloadPlainSwipeRefresh);
       if (!mCancelPayloadPlainSwipeRefresh.get()) {
         mActivity.runOnUiThread(() -> {
           mAdapterPlain.clear();
@@ -138,19 +137,19 @@ public class PayloadPlainSwipe {
    * @param cancel Used to cancel this method.
    * @return List<ListData < String>>
    */
-  private List<LineData<String>> refreshPlain(final AtomicBoolean cancel) {
+  private List<LineEntry> refreshPlain(final AtomicBoolean cancel) {
     int width = getTextWidth();
     int maxByLine = width == 0 ? 70 : (getScreenWidth() / width) - 2;
     final List<Byte> payload = new ArrayList<>();
-    for (LineData<Line> le : mActivity.getPayloadHex().getAdapter().getItems())
-      payload.addAll(le.getValue().getRaw());
+    for (LineEntry le : mActivity.getPayloadHex().getAdapter().getEntries().getItems())
+      payload.addAll(le.getRaw());
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;
-    final List<LineData<String>> list = new ArrayList<>();
+    final List<LineEntry> list = new ArrayList<>();
     for (int i = 0; i < payload.size() && (cancel == null || !cancel.get()); i++) {
       sb.append((char) payload.get(i).byteValue());
       if (nbPerLine != 0 && (nbPerLine % maxByLine) == 0) {
-        list.add(new LineData<>(sb.toString()));
+        list.add(new LineEntry(sb.toString(), null));
         nbPerLine = 0;
         sb.setLength(0);
       } else {
@@ -158,7 +157,7 @@ public class PayloadPlainSwipe {
       }
     }
     if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
-      list.add(new LineData<>(sb.toString()));
+      list.add(new LineEntry(sb.toString(), null));
     }
     return list;
   }

@@ -29,8 +29,7 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
@@ -168,12 +167,12 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     StringBuilder sbHex = new StringBuilder();
     if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
-      List<LineData<Line>> li = SysHelper.formatBuffer(extras.getByteArray(ACTIVITY_EXTRA_TEXTS), null, SysHelper.MAX_BY_ROW_8);
+      List<LineEntry> li = SysHelper.formatBuffer(extras.getByteArray(ACTIVITY_EXTRA_TEXTS), null, SysHelper.MAX_BY_ROW_8);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
       mNbLines = extras.getInt(ACTIVITY_EXTRA_NB_LINES);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
       mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
-      for (LineData<Line> ld : li) {
+      for (LineEntry ld : li) {
         String s = ld.toString();
         list.add(s);
         sbHex.append(s.substring(0, 23).trim()).append(" ");

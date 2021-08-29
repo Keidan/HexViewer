@@ -13,9 +13,7 @@ import java.util.Map;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import fr.ralala.hexviewer.ApplicationCtx;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
@@ -75,23 +73,20 @@ public class LauncherLineUpdate {
                 /* nothing to do */
                 return;
               }
-              List<LineData<Line>> li = SysHelper.formatBuffer(buf, null, ApplicationCtx.getInstance().getNbBytesPerLine());
+              List<LineEntry> li = SysHelper.formatBuffer(buf, null, ApplicationCtx.getInstance().getNbBytesPerLine());
               HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-              List<LineFilter<Line>> filteredList = adapter.getFilteredList();
               if (li.isEmpty()) {
-                Map<Integer, LineFilter<Line>> map = new HashMap<>();
+                Map<Integer, LineEntry> map = new HashMap<>();
                 for (int i = position; i < position + nbLines; i++) {
-                  LineFilter<Line> lf = filteredList.get(i);
-                  map.put(lf.getOrigin(), lf);
+                  map.put(adapter.getEntries().getItemIndex(position), adapter.getItem(position));
                 }
                 mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
               } else if (li.size() >= nbLines) {
                 mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, nbLines, li).execute();
               } else {
-                Map<Integer, LineFilter<Line>> map = new HashMap<>();
+                Map<Integer, LineEntry> map = new HashMap<>();
                 for (int i = position + li.size(); i < position + nbLines; i++) {
-                  LineFilter<Line> lf = filteredList.get(i);
-                  map.put(lf.getOrigin(), lf);
+                  map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
                 }
                 mActivity.getUnDoRedo().insertInUnDoRedoForUpdateAndDelete(mActivity, position, li, map).execute();
               }

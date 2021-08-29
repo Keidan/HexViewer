@@ -21,9 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -38,7 +36,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
+public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   private static final int ID = R.layout.listview_hex_row;
   private Set<Integer> mSelectedItemsIds;
   private final ApplicationCtx mApp;
@@ -49,7 +47,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
     public TextView titleContent;
   }
 
-  public HexTextArrayAdapter(final Context activity, final List<LineData<Line>> objects,
+  public HexTextArrayAdapter(final Context activity, final List<LineEntry> objects,
                              LineNumbersTitle title,
                              UserConfig userConfigPortrait,
                              UserConfig userConfigLandscape) {
@@ -80,7 +78,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    * @param loc      The locale.
    */
   @Override
-  protected void extraFilter(final LineData<Line> line, int index, String query, final ArrayList<LineFilter<Line>> tempList, Locale loc) {
+  protected void extraFilter(final LineEntry line, int index, String query, final List<Integer> tempList, Locale loc) {
     /* nothing */
   }
 
@@ -148,9 +146,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
    * @param tv TextView
    * @param fd FilterData
    */
-  private void applyUpdated(final TextView tv, final LineFilter<Line> fd) {
-    String str = getTextAccordingToUserConfig(fd.getData().getValue().getPlain());
-    if (fd.getData().isUpdated()) {
+  private void applyUpdated(final TextView tv, final LineEntry fd) {
+    String str = getTextAccordingToUserConfig(fd.getPlain());
+    if (fd.isUpdated()) {
       SpannableString spanString = new SpannableString(str);
       spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
       tv.setText(spanString);
@@ -187,12 +185,12 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
   protected void fillView(final @NonNull View v, final int position) {
     if (v.getTag() != null) {
       final Holder holder = (Holder) v.getTag();
-      LineFilter<Line> fd = getFilteredList().get(position);
+      LineEntry fd = getItem(position);
 
       if (mApp.isLineNumber()) {
         final int nbBytesPerLines = mApp.getNbBytesPerLine();
-        final int maxLength = String.format("%X", getItemsCount() * nbBytesPerLines).length();
-        final String s = String.format("%0" + maxLength + "X", fd.getOrigin() * nbBytesPerLines);
+        final int maxLength = String.format("%X", getEntries().getItemsCount() * nbBytesPerLines).length();
+        final String s = String.format("%0" + maxLength + "X", position * nbBytesPerLines);
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
@@ -214,7 +212,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter<Line> {
       }
       applyUpdated(holder.content, fd);
       holder.content.setTextColor(ContextCompat.getColor(getContext(),
-          fd.getData().isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
+          fd.isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
       applyUserConfig(holder.content);
       v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
     }

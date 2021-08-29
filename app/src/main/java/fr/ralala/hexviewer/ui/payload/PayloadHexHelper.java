@@ -7,13 +7,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
@@ -83,12 +79,7 @@ public class PayloadHexHelper {
     String query = mActivity.getSearchQuery();
     if (!query.isEmpty())
       mAdapterHex.manualFilterUpdate(""); /* reset filter */
-
-    List<LineData<Line>> items = mAdapterHex.getItems();
-    for (LineFilter<Line> line : mAdapterHex.getFilteredList()) {
-      line.getData().setUpdated(false);
-      items.get(line.getOrigin()).setUpdated(false);
-    }
+    mAdapterHex.getEntries().clearFilteredUpdated();
     if (!query.isEmpty())
       mAdapterHex.manualFilterUpdate(query);
     mAdapterHex.notifyDataSetChanged();

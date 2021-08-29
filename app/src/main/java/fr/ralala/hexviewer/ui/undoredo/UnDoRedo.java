@@ -9,9 +9,7 @@ import java.util.Stack;
 
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateAndDeleteCommand;
@@ -91,7 +89,7 @@ public class UnDoRedo {
    * @param entries       The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, final int refNbLines, List<LineData<Line>> entries) {
+  public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, final int refNbLines, List<LineEntry> entries) {
     ICommand cmd = new UpdateCommand(this, activity, firstPosition, refNbLines, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
@@ -113,8 +111,8 @@ public class UnDoRedo {
    */
   public ICommand insertInUnDoRedoForUpdateAndDelete(final MainActivity activity,
                                                      final int firstPosition,
-                                                     List<LineData<Line>> entriesUpdated,
-                                                     final Map<Integer, LineFilter<Line>> entriesDeleted) {
+                                                     List<LineEntry> entriesUpdated,
+                                                     final Map<Integer, LineEntry> entriesDeleted) {
     ICommand cmd = new UpdateAndDeleteCommand(this, activity, firstPosition, entriesUpdated, entriesDeleted);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
@@ -132,7 +130,7 @@ public class UnDoRedo {
    * @param entries  The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForDelete(final MainActivity activity, final Map<Integer, LineFilter<Line>> entries) {
+  public ICommand insertInUnDoRedoForDelete(final MainActivity activity, final Map<Integer, LineEntry> entries) {
     ICommand cmd = new DeleteCommand(activity, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);

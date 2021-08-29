@@ -18,8 +18,7 @@ import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.EmojiSpan;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -83,9 +82,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
       mLayout.setError(" "); /* only for the color */
     } else {
       byte[] bytes = SysHelper.hex2bin(validate);
-      List<LineData<Line>> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+      List<LineEntry> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
       mResultAdapter.clear();
-      for (LineData<Line> ld : li)
+      for (LineEntry ld : li)
         mResultAdapter.add(ld.toString());
       mResultAdapter.getListView().post(() -> {
         // Select the last row so it will scroll into view...
@@ -233,10 +232,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private String formatText(String text) {
     final byte[] buf = SysHelper.hexStringToByteArray(text);
-    List<LineData<Line>> li = SysHelper.formatBuffer(buf, null, SysHelper.MAX_BY_ROW_8);
+    List<LineEntry> li = SysHelper.formatBuffer(buf, null, SysHelper.MAX_BY_ROW_8);
     StringBuilder sb = new StringBuilder();
-    for (LineData<Line> line : li) {
-      sb.append(line.getValue().getPlain().substring(0, 23).trim()).append(" ");
+    for (LineEntry line : li) {
+      sb.append(line.getPlain().substring(0, 23).trim()).append(" ");
     }
     return sb.toString().trim();
   }
@@ -278,9 +277,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
     StringBuilder newChangeHex = new StringBuilder();
     byte[] newChangeBytes = newChange.toString().getBytes();
-    List<LineData<Line>> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null, SysHelper.MAX_BY_ROW_8);
-    for (LineData<Line> str : list)
-      newChangeHex.append(str.getValue().getPlain().substring(0, 23).trim());
+    List<LineEntry> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null, SysHelper.MAX_BY_ROW_8);
+    for (LineEntry str : list)
+      newChangeHex.append(str.getPlain().substring(0, 23).trim());
 
     String str;
     if (!mApp.isOverwrite()) {

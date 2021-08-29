@@ -29,8 +29,7 @@ import androidx.core.view.MenuCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.dialog.GoToDialog;
@@ -201,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
             UIHelper.confirmFileChanged(this, mFileData, r,
                 () -> new TaskSave(this, this).execute(
-                    new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
+                    new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
           } else {
             r.run();
           }
@@ -273,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void doSearch(String queryStr) {
     mSearchQuery = queryStr;
-    final SearchableListArrayAdapter<?> laa = ((mPayloadPlainSwipe.isVisible()) ?
+    final SearchableListArrayAdapter laa = ((mPayloadPlainSwipe.isVisible()) ?
         mPayloadPlainSwipe.getAdapter() : mPayloadHexHelper.getAdapter());
     laa.getFilter().filter(queryStr);
   }
@@ -450,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    LineData<Line> e = mPayloadHexHelper.getAdapter().getItem(position);
+    LineEntry e = mPayloadHexHelper.getAdapter().getItem(position);
     if (e == null)
       return;
     if (mPayloadPlainSwipe.isVisible()) {
@@ -458,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return;
     }
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    for (Byte b : e.getValue().getRaw())
+    for (Byte b : e.getRaw())
       byteArrayOutputStream.write(b);
     mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position, 1);
   }
@@ -479,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           };
           UIHelper.confirmFileChanged(this, mFileData, r,
               () -> new TaskSave(this, this).execute(
-                  new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
+                  new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
         } else {
           super.onBackPressed();
           finish();
@@ -594,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
+              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else
       r.run();
   }
@@ -608,7 +607,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       return;
     }
     new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(),
-        mPayloadHexHelper.getAdapter().getItems(), null));
+        mPayloadHexHelper.getAdapter().getEntries().getItems(), null));
     setTitle(getResources().getConfiguration());
   }
 
@@ -696,7 +695,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getItems(), r)));
+              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else
       r.run();
   }

@@ -13,8 +13,7 @@ import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
@@ -43,7 +42,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
   private final Context mContext;
 
   public static class Result {
-    private List<LineData<Line>> listHex = null;
+    private List<LineEntry> listHex = null;
     private String exception = null;
   }
 
@@ -130,7 +129,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
   public Result doInBackground(ContentResolver contentResolver, Uri uri) {
     //final Activity activity = mActivityRef.get();
     final Result result = new Result();
-    final List<LineData<Line>> list = new ArrayList<>();
+    final List<LineEntry> list = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
       /* Size + stream */

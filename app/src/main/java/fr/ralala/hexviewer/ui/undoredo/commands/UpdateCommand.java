@@ -5,9 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
-import fr.ralala.hexviewer.models.LineFilter;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
@@ -26,19 +24,19 @@ import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
  * ******************************************************************************
  */
 public class UpdateCommand implements ICommand {
-  private final List<LineData<Line>> mList;
+  private final List<LineEntry> mList;
   private final MainActivity mActivity;
   private final int mFirstPosition;
   private final int mRefNbLines;
-  private final List<LineFilter<Line>> mPrevLines;
+  private final List<LineEntry> mPrevLines;
   private final UnDoRedo mUnDoRedo;
 
 
-  public UpdateCommand(final UnDoRedo undoRedo, final MainActivity activity, final int firstPosition, final int refNbLines, List<LineData<Line>> entries) {
+  public UpdateCommand(final UnDoRedo undoRedo, final MainActivity activity, final int firstPosition, final int refNbLines, List<LineEntry> entries) {
     mUnDoRedo = undoRedo;
     mList = entries;
     mActivity = activity;
-    mFirstPosition = activity.getPayloadHex().getAdapter().getFilteredList().get(firstPosition).getOrigin();
+    mFirstPosition = activity.getPayloadHex().getAdapter().getEntries().getItemIndex(firstPosition);
     mRefNbLines = refNbLines;
     mPrevLines = new ArrayList<>();
   }
@@ -52,48 +50,39 @@ public class UpdateCommand implements ICommand {
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
 
-    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
-    List<LineData<Line>> items = adapter.getItems();
     mPrevLines.clear();
     int size = mList.size();
     /* only existing elements  */
     if (size == mRefNbLines) {
       Log.i(getClass().getName(), "execute -> only existing elements");
-      updateExistingElements(filteredList, items);
+      updateExistingElements(adapter);
     } else {
       Log.i(getClass().getName(), "execute -> multiple elements");
       int diff = Math.abs(size - mRefNbLines);
 
       /* First we modify the existing elements */
-      updateExistingElements(filteredList, items);
+      updateExistingElements(adapter);
 
       /* Then we add the elements */
-      LineFilter<Line> prevLine = mPrevLines.get(mPrevLines.size() - 1);
+      LineEntry prevLine = mPrevLines.get(mPrevLines.size() - 1);
       for (int i = mRefNbLines, j = 1; i < size; i++, j++) {
-        LineData<Line> value = mList.get(i);
+        LineEntry value = mList.get(i);
+        value.setIndex(prevLine.getIndex() + j);
         value.setUpdated(mUnDoRedo.isChanged());
-        LineFilter<Line> lf = new LineFilter<>(value, prevLine.getOrigin() + j);
-        if (prevLine.getOrigin() + j < adapter.getItems().size()) {
-          items.add(prevLine.getOrigin() + j, mList.get(i));
+        if (value.getIndex() < adapter.getEntries().getItems().size()) {
+          adapter.getEntries().addItem(value.getIndex(), mList.get(i));
         } else {
-          items.add(mList.get(i));
-        }
-        if (mFirstPosition + i < filteredList.size()) {
-          filteredList.add(mFirstPosition + i, lf);
-        } else {
-          filteredList.add(lf);
+          adapter.getEntries().addItem(mList.get(i));
         }
       }
 
-      /* Finally we move the existing indexes - filtered */
-      for (int i = (mFirstPosition + size); i < filteredList.size(); i++) {
-        LineFilter<Line> lf = filteredList.get(i);
-        lf.setOrigin(lf.getOrigin() + diff);
-      }
+      /* Finally we move the existing indexes */
+      if ((mFirstPosition + size) < adapter.getEntries().getItems().size())
+        adapter.getEntries().moveIndexes((mFirstPosition + size), diff, true);
     }
     if (!query.isEmpty())
       adapter.manualFilterUpdate(query); /* restore filter */
-    adapter.notifyDataSetChanged();
+    adapter.refresh();
   }
 
   /**
@@ -105,9 +94,6 @@ public class UpdateCommand implements ICommand {
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
 
-    List<LineFilter<Line>> filteredList = adapter.getFilteredList();
-    List<LineData<Line>> items = adapter.getItems();
-
     int size = mList.size();
 
     /* only existing elements  */
@@ -116,43 +102,38 @@ public class UpdateCommand implements ICommand {
     } else {
       Log.i(getClass().getName(), "unExecute -> multiple elements");
       int diff = Math.abs(size - mRefNbLines);
-      LineFilter<Line> prevLine = mPrevLines.get(mPrevLines.size() - 1);
+      LineEntry prevLine = mPrevLines.get(mPrevLines.size() - 1);
 
       /* First, we delete the elements */
-      for (int i = (prevLine.getOrigin() + diff); i > prevLine.getOrigin(); i--) {
-        items.remove(i);
-        if (i < filteredList.size())
-          filteredList.remove(i);
+      for (int i = (prevLine.getIndex() + diff); i > prevLine.getIndex(); i--) {
+        adapter.getEntries().removeItem(i);
       }
 
       /* Then we move the existing indexes - filtered */
-      for (int i = prevLine.getOrigin() + 1; i < filteredList.size(); i++) {
-        LineFilter<Line> lf = filteredList.get(i);
-        lf.setOrigin(lf.getOrigin() - diff);
-      }
+      adapter.getEntries().moveIndexes(prevLine.getIndex() + 1, diff, false);
     }
     /* Finally we restores the existing elements */
-    restoreExistingElements(filteredList, items);
+    restoreExistingElements(adapter);
 
     if (!query.isEmpty())
       adapter.manualFilterUpdate(query); /* restore filter */
-    adapter.notifyDataSetChanged();
+    adapter.refresh();
   }
 
   /**
    * Restores the existing elements.
-   * @param filteredList List<LineFilter<Line>>
-   * @param items List<LineData<Line>>
+   *
+   * @param adapter HexTextArrayAdapter
    */
-  private void restoreExistingElements(final List<LineFilter<Line>> filteredList, final List<LineData<Line>> items) {
-    for(int i = 0; i < mRefNbLines; i++) {
-      final LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-      final LineData<Line> oldVal = new LineData<>(mPrevLines.get(i).getData());
-      if (!lf.getData().toString().equals(oldVal.toString())) {
+  private void restoreExistingElements(HexTextArrayAdapter adapter) {
+    for (int i = 0; i < mRefNbLines; i++) {
+      final LineEntry le = adapter.getItem(mFirstPosition + i);
+      final LineEntry oldVal = new LineEntry(mPrevLines.get(i));
+      if (!le.toString().equals(oldVal.toString())) {
         oldVal.setUpdated(false);
-        lf.setData(oldVal);
-        LineData<Line> ld = items.get(lf.getOrigin());
-        ld.setValue(oldVal.getValue());
+        le.setValues(oldVal.getPlain(), oldVal.getRaw());
+        LineEntry ld = adapter.getItem(le.getIndex());
+        ld.setValues(oldVal.getPlain(), oldVal.getRaw());
         ld.setUpdated(oldVal.isUpdated());
       }
     }
@@ -160,19 +141,19 @@ public class UpdateCommand implements ICommand {
 
   /**
    * Restores the existing elements.
-   * @param filteredList List<LineFilter<Line>>
-   * @param items List<LineData<Line>>
+   *
+   * @param adapter HexTextArrayAdapter
    */
-  private void updateExistingElements(final List<LineFilter<Line>> filteredList, final List<LineData<Line>> items) {
-    for(int i = 0; i < mRefNbLines; i++) {
-      LineFilter<Line> lf = filteredList.get(mFirstPosition + i);
-      mPrevLines.add(new LineFilter<>(lf));
-      final LineData<Line> newVal = new LineData<>(mList.get(i));
-      if (!lf.getData().toString().equals(newVal.toString())) {
+  private void updateExistingElements(HexTextArrayAdapter adapter) {
+    for (int i = 0; i < mRefNbLines; i++) {
+      final LineEntry le = adapter.getItem(mFirstPosition + i);
+      mPrevLines.add(new LineEntry(le));
+      final LineEntry newVal = new LineEntry(mList.get(i));
+      if (!le.toString().equals(newVal.toString())) {
         newVal.setUpdated(mUnDoRedo.isChanged());
-        lf.setData(newVal);
-        LineData<Line> ld = items.get(lf.getOrigin());
-        ld.setValue(lf.getData().getValue());
+        le.setValues(newVal.getPlain(), newVal.getRaw());
+        LineEntry ld = adapter.getItem(le.getIndex());
+        ld.setValues(le.getPlain(), le.getRaw());
         ld.setUpdated(newVal.isUpdated());
       }
     }

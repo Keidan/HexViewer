@@ -13,8 +13,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.Line;
-import fr.ralala.hexviewer.models.LineData;
+import fr.ralala.hexviewer.models.LineEntry;
 
 /**
  * ******************************************************************************
@@ -128,9 +127,9 @@ public class SysHelper {
    * @param maxByRow Max bytes by row.
    * @return List<LineEntry>
    */
-  public static List<LineData<Line>> formatBuffer(final byte[] buffer, AtomicBoolean cancel,
-                                                  final int maxByRow) {
-    List<LineData<Line>> lines;
+  public static List<LineEntry> formatBuffer(final byte[] buffer, AtomicBoolean cancel,
+                                             final int maxByRow) {
+    List<LineEntry> lines;
     try {
       lines = formatBuffer(buffer, buffer.length, cancel, maxByRow);
     } catch (IllegalArgumentException iae) {
@@ -148,16 +147,16 @@ public class SysHelper {
    * @param maxByRow Max bytes by row.
    * @return List<String>
    */
-  public static List<LineData<Line>> formatBuffer(final byte[] buffer,
-                                                  final int length,
-                                                  AtomicBoolean cancel,
-                                                  final int maxByRow) throws IllegalArgumentException {
+  public static List<LineEntry> formatBuffer(final byte[] buffer,
+                                             final int length,
+                                             AtomicBoolean cancel,
+                                             final int maxByRow) throws IllegalArgumentException {
     int len = length;
     if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
     StringBuilder currentLine = new StringBuilder();
     StringBuilder currentEndLine = new StringBuilder();
-    final List<LineData<Line>> lines = new ArrayList<>();
+    final List<LineEntry> lines = new ArrayList<>();
     final List<Byte> currentLineRaw = new ArrayList<>();
     int currentIndex = 0;
     int bufferIndex = 0;
@@ -228,15 +227,15 @@ public class SysHelper {
    * @param maxByRow       Max bytes by row.
    * @return The nex index.
    */
-  private static int formatBufferPrepareLineComplete(final List<LineData<Line>> lines,
+  private static int formatBufferPrepareLineComplete(final List<LineEntry> lines,
                                                      final int currentIndex,
                                                      final StringBuilder currentLine,
                                                      final StringBuilder currentEndLine,
                                                      final List<Byte> currentLineRaw,
                                                      final int maxByRow) {
     if (currentIndex == maxByRow - 1) {
-      lines.add(new LineData<>(new Line(currentLine + " " + currentEndLine,
-          new ArrayList<>(currentLineRaw))));
+      lines.add(new LineEntry(currentLine + " " + currentEndLine,
+          new ArrayList<>(currentLineRaw)));
       currentEndLine.setLength(0);
       currentLine.setLength(0);
       currentLineRaw.clear();
@@ -255,7 +254,7 @@ public class SysHelper {
    * @param currentEndLine The end of the current line.
    * @param maxByRow       Max bytes by row.
    */
-  private static void formatBufferAlign(final List<LineData<Line>> lines,
+  private static void formatBufferAlign(final List<LineEntry> lines,
                                         int currentIndex,
                                         final String currentLine,
                                         final String currentEndLine,
@@ -269,7 +268,7 @@ public class SysHelper {
         off.append("   "); /* 3 spaces ex: "00 " */
       off.append("  "); /* 1 or 2 spaces separator */
       String s = currentLine.trim();
-      lines.add(new LineData<>(new Line(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw))));
+      lines.add(new LineEntry(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw)));
     }
   }
 
