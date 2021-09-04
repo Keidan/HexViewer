@@ -388,10 +388,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param id The view id.
    */
   public void onPopupItemClick(int id) {
-    if (id == R.id.action_open) {
-      popupActionOpen(false);
-    } else if (id == R.id.action_open_sequential) {
-      popupActionOpen(true);
+    if (id == R.id.action_open || id == R.id.action_open_sequential) {
+      popupActionOpen(id == R.id.action_open_sequential);
     } else if (id == R.id.action_recently_open) {
       mLauncherRecentlyOpen.startActivity();
     } else if (id == R.id.action_save) {

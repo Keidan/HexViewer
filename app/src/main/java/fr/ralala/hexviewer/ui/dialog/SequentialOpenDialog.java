@@ -157,34 +157,13 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
    * @return False on error.
    */
   private boolean checkValues() {
-    boolean valid = true;
     String s_start = mTietStart == null || mTietStart.getText() == null ? "" : mTietStart.getText().toString();
     String s_end = mTietEnd == null || mTietEnd.getText() == null ? "" : mTietEnd.getText().toString();
-    if (s_start.isEmpty()) {
-      if (mTilStart != null)
-        mTilStart.setError(mActivity.getString(R.string.error_less_than) + " 0");
-      valid = false;
-    }
-    if (s_end.isEmpty()) {
-      if (mTilEnd != null)
-        mTilEnd.setError(mActivity.getString(R.string.error_less_than) + " 0");
-      valid = false;
-    }
+    boolean valid = checkEmpty(s_start, s_end);
     if (valid) {
       long start = getValue(s_start);
       long end = getValue(s_end);
-      if (start > mFd.getRealSize()) {
-        valid = false;
-        if (mTilStart != null)
-          mTilStart.setError(mActivity.getString(R.string.error_greater_than) + " " +
-              SysHelper.sizeToHuman(mActivity, mFd.getRealSize()));
-      }
-      if (end > mFd.getRealSize()) {
-        valid = false;
-        if (mTilEnd != null)
-          mTilEnd.setError(mActivity.getString(R.string.error_greater_than) + " " +
-              SysHelper.sizeToHuman(mActivity, mFd.getRealSize()));
-      }
+      valid = checkForSize(start, end);
       if (valid) {
         if (end <= start) {
           valid = false;
@@ -319,7 +298,6 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
     /* nothing */
   }
 
-
   /**
    * This method is called to notify you that, somewhere within s, the text has been changed.
    * It is legitimate to make further changes to s from this callback, but be careful not to get
@@ -335,5 +313,49 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
   @Override
   public void afterTextChanged(Editable s) {
     evaluateSize();
+  }
+
+  /**
+   * Checks if the fields are empty or not.
+   * @param start String value for the start field.
+   * @param end String value for the end field.
+   * @return boolean
+   */
+  private boolean checkEmpty(String start, String end) {
+    boolean valid = true;
+    if (start.isEmpty()) {
+      if (mTilStart != null)
+        mTilStart.setError(mActivity.getString(R.string.error_less_than) + " 0");
+      valid = false;
+    }
+    if (end.isEmpty()) {
+      if (mTilEnd != null)
+        mTilEnd.setError(mActivity.getString(R.string.error_less_than) + " 0");
+      valid = false;
+    }
+    return valid;
+  }
+
+  /**
+   * Checks if the fields are not larger than the file size.
+   * @param start Long value for the start field.
+   * @param end Long value for the end field.
+   * @return boolean
+   */
+  private boolean checkForSize(long start, long end) {
+    boolean valid = true;
+    if (start > mFd.getRealSize()) {
+      valid = false;
+      if (mTilStart != null)
+        mTilStart.setError(mActivity.getString(R.string.error_greater_than) + " " +
+            SysHelper.sizeToHuman(mActivity, mFd.getRealSize()));
+    }
+    if (end > mFd.getRealSize()) {
+      valid = false;
+      if (mTilEnd != null)
+        mTilEnd.setError(mActivity.getString(R.string.error_greater_than) + " " +
+            SysHelper.sizeToHuman(mActivity, mFd.getRealSize()));
+    }
+    return valid;
   }
 }
