@@ -407,11 +407,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     } else if (id == R.id.action_go_to) {
       popupActionGoTo();
     } else if (mPopup != null) {
-      if (mPopup.getPlainText() != null && mPopup.getPlainText().containsId(id, false)) {
-        popupActionPlainText(id, mPopup.getPlainText(), mPopup.getLineNumbers());
-      } else if (mPopup.getLineNumbers() != null && mPopup.getLineNumbers().containsId(id, false)) {
-        popupActionLineNumbers(id, mPopup.getLineNumbers());
-      }
+      specialPopupActions(id);
+    }
+  }
+
+  /**
+   * Handles the click on the popup menu item.
+   *
+   * @param id The view id.
+   */
+  private void specialPopupActions(int id) {
+    if (mPopup.getPlainText() != null && mPopup.getPlainText().containsId(id, false)) {
+      popupActionPlainText(id, mPopup.getPlainText(), mPopup.getLineNumbers());
+    } else if (mPopup.getLineNumbers() != null && mPopup.getLineNumbers().containsId(id, false)) {
+      popupActionLineNumbers(id, mPopup.getLineNumbers());
     }
   }
 
