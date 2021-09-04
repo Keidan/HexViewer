@@ -48,7 +48,8 @@ public class LauncherLineUpdate {
    */
   public void startActivity(final byte[] texts, final int position, final int nbLines) {
     LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, texts,
-        mActivity.getFileData().getName(), position, nbLines, mActivity.getUnDoRedo().isChanged());
+        mActivity.getFileData().getName(), position, nbLines, mActivity.getUnDoRedo().isChanged(),
+        mActivity.getFileData().isSequential());
   }
 
   /**

@@ -2,7 +2,8 @@
 
   <string name="search_title">搜索</string>
   <string name="search_hint">搜索&#8230;</string>
-  <string name="action_open_title">打开</string>
+  <string name="action_open_title">打开&#8230;</string>
+  <string name="action_open_title_button">打开</string>
   <string name="action_plain_text_title">纯文本</string>
   <string name="action_line_numbers_title">行号</string>
   <string name="action_save_title">保存</string>
@@ -34,48 +35,6 @@
   <string name="uri_exception">Uri 异常</string>
   <string name="source">来源：</string>
   <string name="result">结果：</string>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <string name="new_value">新值</string>
   <string name="error_less_than">该值不能小于</string>
   <string name="error_greater_than">该值不能大于</string>
@@ -121,6 +80,7 @@
   <string name="control_language_change">请先保存你的工作。</string>
   <string name="overwrite">插入模式</string>
   <string name="size">大小</string>
+  <string name="unit_byte_full">Byte</string>
   <string name="unit_byte">B</string>
   <string name="unit_kbyte">kB</string>
   <string name="unit_mbyte">MB</string>
@@ -134,4 +94,9 @@
   <string name="error_no_file_access">无法访问该文件，从菜单中打开它</string>
   <string name="error_no_file">文件丢失（被删除或移动）。</string>
   <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
+  <string name="action_open_sequential_title">循序打开&#8230;</string>
+  <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除新数据</string>
+  <string name="start_offset">初始值</string>
+  <string name="end_offset">终值</string>
+  <string name="unit">单位。</string>
 </resources>

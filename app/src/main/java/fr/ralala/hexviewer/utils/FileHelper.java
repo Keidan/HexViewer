@@ -181,14 +181,14 @@ public class FileHelper {
         pfd.close();
       }
     } catch (Exception e) {
-      Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+      Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);
       size = e instanceof FileNotFoundException ? -1 : -2;
     } finally {
       if (pfd != null)
         try {
           pfd.close();
         } catch (IOException e) {
-          Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+          Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);
         }
     }
     return size;
@@ -208,7 +208,7 @@ public class FileHelper {
           result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
         }
       } catch (Exception e) {
-        Log.e(FileHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+        Log.e(FileHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);
       }
     }
     if (result == null) {

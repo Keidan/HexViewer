@@ -33,6 +33,7 @@ import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.dialog.GoToDialog;
+import fr.ralala.hexviewer.ui.dialog.SequentialOpenDialog;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private MainPopupWindow mPopup = null;
   private PayloadHexHelper mPayloadHexHelper = null;
   private GoToDialog mGoToDialog = null;
+  private SequentialOpenDialog mSequentialOpenDialog = null;
 
   /**
    * Set the base context for this ContextWrapper.
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         onPopupItemClick(R.id.action_open));
     findViewById(R.id.buttonRecentlyOpen).setOnClickListener((v) ->
         onPopupItemClick(R.id.action_recently_open));
-    findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().isEmpty());
+    findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
     mPayloadHexHelper = new PayloadHexHelper();
     mPayloadHexHelper.onCreate(this);
 
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
 
     mGoToDialog = new GoToDialog(this);
+    mSequentialOpenDialog = new SequentialOpenDialog(this);
 
     if (savedInstanceState == null)
       handleIntent(getIntent());
@@ -196,11 +199,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             addRecent = false;
           } else
             addRecent = FileHelper.takeUriPermissions(this, uri, false);
-          final Runnable r = () -> mLauncherOpen.processFileOpen(uri, true, addRecent);
+          FileData fd = new FileData(this, uri, true);
+          mApp.setSequential(true);
+          final Runnable r = () -> mLauncherOpen.processFileOpen(fd, addRecent);
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
             UIHelper.confirmFileChanged(this, mFileData, r,
                 () -> new TaskSave(this, this).execute(
-                    new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+                    new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
           } else {
             r.run();
           }
@@ -280,28 +285,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   /**
    * Method called when the file is saved.
    *
-   * @param uri          The new Uri.
+   * @param fd           The new FileData.
    * @param success      The result.
    * @param userRunnable User runnable (can be null).
    */
   @Override
-  public void onSaveResult(Uri uri, boolean success, final Runnable userRunnable) {
+  public void onSaveResult(FileData fd, boolean success, final Runnable userRunnable) {
     if (success) {
       mUnDoRedo.refreshChange();
       if (mFileData.isOpenFromAppIntent()) {
-        mFileData = new FileData(uri, false);
-        if (mFileData.isOpenFromAppIntent())
-          mFileData.clearOpenFromAppIntent();
         if (mPopup != null)
           mPopup.setSaveMenuEnable(true);
-        setTitle(getResources().getConfiguration());
-      } else {
-        mFileData = new FileData(uri, false);
-        setTitle(getResources().getConfiguration());
       }
+      mFileData = fd;
+      mFileData.clearOpenFromAppIntent();
+      setTitle(getResources().getConfiguration());
       mPayloadHexHelper.resetUpdateStatus();
     } else
-      mApp.removeRecentlyOpened(uri.toString());
+      mApp.getRecentlyOpened().remove(fd);
     if (userRunnable != null)
       userRunnable.run();
   }
@@ -388,7 +389,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void onPopupItemClick(int id) {
     if (id == R.id.action_open) {
-      popupActionOpen();
+      popupActionOpen(false);
+    } else if (id == R.id.action_open_sequential) {
+      popupActionOpen(true);
     } else if (id == R.id.action_recently_open) {
       mLauncherRecentlyOpen.startActivity();
     } else if (id == R.id.action_save) {
@@ -478,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
           };
           UIHelper.confirmFileChanged(this, mFileData, r,
               () -> new TaskSave(this, this).execute(
-                  new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+                  new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
         } else {
           super.onBackPressed();
           finish();
@@ -508,6 +511,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * @param orphan The dialog.
    */
   public void setOrphanDialog(AlertDialog orphan) {
+    if (mOrphanDialog != null && mOrphanDialog.isShowing()) {
+      mOrphanDialog.dismiss();
+    }
     mOrphanDialog = orphan;
   }
 
@@ -583,17 +589,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     return mUnDoRedo;
   }
 
+  /**
+   * Returns the SequentialOpenDialog.
+   *
+   * @return SequentialOpenDialog
+   */
+  public SequentialOpenDialog getSequentialOpenDialog() {
+    return mSequentialOpenDialog;
+  }
+
   /* ------------ POPUP ACTIONS ------------ */
 
   /**
-   * Action when the user clicks on the "open" menu.
+   * Action when the user clicks on the "open" or "sequential opening" menu.
    */
-  private void popupActionOpen() {
+  private void popupActionOpen(boolean sequential) {
+    mApp.setSequential(sequential);
     final Runnable r = () -> mLauncherOpen.startActivity();
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+              new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else
       r.run();
   }
@@ -606,7 +622,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       UIHelper.toast(this, getString(R.string.open_a_file_before));
       return;
     }
-    new TaskSave(this, this).execute(new TaskSave.Request(mFileData.getUri(),
+    new TaskSave(this, this).execute(new TaskSave.Request(mFileData,
         mPayloadHexHelper.getAdapter().getEntries().getItems(), null));
     setTitle(getResources().getConfiguration());
   }
@@ -690,12 +706,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       mPayloadPlainSwipe.getAdapter().clear();
       mPayloadHexHelper.getAdapter().clear();
       cancelSearch();
-      findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().isEmpty());
+      findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData.getUri(), mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+              new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else
       r.run();
   }
@@ -705,11 +721,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   private void popupActionGoTo() {
     if (mPopup.getPlainText().isChecked())
-      mGoToDialog.show(GoToDialog.Mode.LINE_PLAIN);
+      setOrphanDialog(mGoToDialog.show(GoToDialog.Mode.LINE_PLAIN));
     else if (mPopup.getLineNumbers().isChecked())
-      mGoToDialog.show(GoToDialog.Mode.ADDRESS);
+      setOrphanDialog(mGoToDialog.show(GoToDialog.Mode.ADDRESS));
     else
-      mGoToDialog.show(GoToDialog.Mode.LINE_HEX);
+      setOrphanDialog(mGoToDialog.show(GoToDialog.Mode.LINE_HEX));
   }
 
 }

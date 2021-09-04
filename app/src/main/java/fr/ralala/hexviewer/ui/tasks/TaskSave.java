@@ -4,7 +4,6 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
@@ -16,6 +15,7 @@ import java.util.List;
 
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -43,16 +43,16 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
   public static class Result {
     private Runnable runnable;
     private String exception = null;
-    private Uri uri = null;
+    private FileData fd = null;
   }
 
   public static class Request {
-    private final Uri mUri;
+    private final FileData mFd;
     private final List<LineEntry> mEntries;
     private final Runnable mRunnable;
 
-    public Request(Uri uri, List<LineEntry> entries, final Runnable runnable) {
-      mUri = uri;
+    public Request(FileData fd, List<LineEntry> entries, final Runnable runnable) {
+      mFd = fd;
       mEntries = entries;
       mRunnable = runnable;
     }
@@ -60,7 +60,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
   }
 
   public interface SaveResultListener {
-    void onSaveResult(Uri uri, boolean success, final Runnable userRunnable);
+    void onSaveResult(FileData fd, boolean success, final Runnable userRunnable);
   }
 
   public TaskSave(final Activity activity, final SaveResultListener listener) {
@@ -90,8 +90,8 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
   public void onPostExecute(final Result result) {
     super.onPostExecute(result);
     if (isCancelled()) {
-      if (result.uri != null) {
-        final DocumentFile dfile = DocumentFile.fromSingleUri(mContext, result.uri);
+      if (result.fd != null) {
+        final DocumentFile dfile = DocumentFile.fromSingleUri(mContext, result.fd.getUri());
         if (dfile != null && dfile.exists() && !dfile.delete()) {
           Log.e(this.getClass().getSimpleName(), "File delete error");
         }
@@ -102,7 +102,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     else
       UIHelper.toast(mContext, mContext.getString(R.string.exception) + ": " + result.exception);
     if (mListener != null)
-      mListener.onSaveResult(result.uri, result.exception == null && !isCancelled(), result.runnable);
+      mListener.onSaveResult(result.fd, result.exception == null && !isCancelled(), result.runnable);
   }
 
   /**
@@ -153,26 +153,36 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
       result.exception = "Invalid param!";
       return result;
     }
-    result.uri = request.mUri;
+    result.fd = request.mFd;
     result.runnable = request.mRunnable;
     publishProgress(0L);
     try {
-      mParcelFileDescriptor = contentResolver.openFileDescriptor(result.uri, "wt");
+      String mode = "w";
+      if (!result.fd.isSequential())
+        mode += "t";
+      mParcelFileDescriptor = contentResolver.openFileDescriptor(result.fd.getUri(), mode);
       List<Byte> bytes = new ArrayList<>();
       for (LineEntry entry : request.mEntries)
         bytes.addAll(entry.getRaw());
       final byte[] data = SysHelper.toByteArray(bytes, mCancel);
       if (!isCancelled()) {
-        mOutputStream = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());
+        FileOutputStream fos = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());
+        mOutputStream = fos;
+
         mTotalSize = data.length;
-        final long count = mTotalSize / MAX_LENGTH;
-        final long remain = mTotalSize - (count * MAX_LENGTH);
+        int maxLength = MAX_LENGTH;
+        if (result.fd.isSequential()) {
+          fos.getChannel().position(result.fd.getStartOffset());
+          maxLength = result.fd.getSize() < MAX_LENGTH ? (int) result.fd.getSize() : MAX_LENGTH;
+        }
+        final long count = mTotalSize / maxLength;
+        final long remain = mTotalSize - (count * maxLength);
 
         long offset = 0;
         for (long i = 0; i < count && !isCancelled(); i++) {
-          mOutputStream.write(data, (int) offset, MAX_LENGTH);
-          publishProgress((long) MAX_LENGTH);
-          offset += MAX_LENGTH;
+          mOutputStream.write(data, (int) offset, maxLength);
+          publishProgress((long) maxLength);
+          offset += maxLength;
         }
         if (!isCancelled() && remain > 0) {
           mOutputStream.write(data, (int) offset, (int) remain);

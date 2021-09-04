@@ -2,12 +2,12 @@ package fr.ralala.hexviewer.ui.launchers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -56,7 +56,7 @@ public class LauncherOpen {
             Intent data = result.getData();
             if (data != null) {
               if (FileHelper.takeUriPermissions(mActivity, data.getData(), false)) {
-                processFileOpen(data);
+                processFileOpen(new FileData(mActivity, data.getData(), false, 0L, 0L));
               } else
                 UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
             } else
@@ -67,25 +67,28 @@ public class LauncherOpen {
 
   /**
    * Process the opening of the file
-   *
-   * @param data Intent data.
    */
-  private void processFileOpen(final Intent data) {
-    Uri uri = data.getData();
-    processFileOpen(uri, false, true);
+  private void processFileOpen(final FileData fd) {
+    processFileOpen(fd, true);
   }
 
 
   /**
    * Process the opening of the file
    *
-   * @param uri Uri data.
+   * @param fd FileData.
    */
-  public void processFileOpen(final Uri uri, final boolean openFromAppIntent, final boolean addRecent) {
-    if (uri != null && uri.getPath() != null) {
-      mActivity.setFileData(new FileData(uri, openFromAppIntent));
-      mActivity.getUnDoRedo().clear();
-      new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, addRecent).execute(uri);
+  public void processFileOpen(final FileData fd, final boolean addRecent) {
+    if (fd != null && fd.getUri() != null && fd.getUri().getPath() != null) {
+      mActivity.setFileData(fd);
+      Runnable r = () -> {
+        mActivity.getUnDoRedo().clear();
+        new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, addRecent).execute(mActivity.getFileData());
+      };
+      if (ApplicationCtx.getInstance().isSequential())
+        mActivity.getSequentialOpenDialog().show(fd, r::run);
+      else
+        r.run();
     } else {
       UIHelper.toast(mActivity, mActivity.getString(R.string.error_filename));
     }

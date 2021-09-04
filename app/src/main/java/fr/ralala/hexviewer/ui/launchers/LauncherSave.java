@@ -98,6 +98,7 @@ public class LauncherSave {
       Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uri + "'");
       return;
     }
+
     DocumentFile file = null;
     for (DocumentFile f : sourceDir.listFiles()) {
       if (f.getName() != null && f.getName().endsWith(filename)) {
@@ -105,13 +106,13 @@ public class LauncherSave {
         break;
       }
     }
-    final DocumentFile f_file = file;
 
     if (file != null) {
       UIHelper.showConfirmDialog(mActivity, mActivity.getString(R.string.action_save_title),
           mActivity.getString(R.string.confirm_overwrite),
           (view) -> {
-            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(f_file.getUri(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
+            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
+                mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
             mActivity.setTitle(mActivity.getResources().getConfiguration());
           });
     } else {
@@ -120,7 +121,8 @@ public class LauncherSave {
         UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
-        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(d_file.getUri(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
+        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
+            mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
         mActivity.setTitle(mActivity.getResources().getConfiguration());
       }
     }

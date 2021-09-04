@@ -3,8 +3,7 @@ package fr.ralala.hexviewer.ui.adapters;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,10 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -103,7 +101,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       // Set item views based on the views and data model
       TextView name = viewHolder.name;
       TextView index = viewHolder.index;
-      TextView size = viewHolder.size;
+      TextView detail = viewHolder.detail;
       if (mListener != null) {
         final View.OnClickListener l = (v) -> {
           if (!ud.error)
@@ -111,12 +109,12 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
         };
         name.setOnClickListener(l);
         index.setOnClickListener(l);
-        size.setOnClickListener(l);
+        detail.setOnClickListener(l);
       }
-      index.setText(String.format("%" + String.valueOf(ud.maxLength).length() + "s - ", ud.index));
-      name.setText(ud.value);
-      size.setText(ud.size);
-      size.setTextColor(ContextCompat.getColor(ud.ctx, ud.error ? R.color.colorResultError : R.color.textColor));
+      index.setText(String.format("%0" + (String.valueOf(ud.maxLength).length() + 1) + "d - ", ud.index));
+      name.setText(ud.fd.getName());
+      detail.setText(ud.detail);
+      detail.setTextColor(ContextCompat.getColor(ud.ctx, ud.error ? R.color.colorResultError : R.color.textColor));
     }
   }
 
@@ -132,37 +130,38 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
   public static class UriData {
     public final Context ctx;
-    public final String value;
-    public final Uri uri;
+    public final FileData fd;
     public final int index;
     public final int maxLength;
-    public String size;
+    public String detail;
     public boolean error;
 
-    public UriData(final Context ctx, int index, int maxLength, String uri) {
+    public UriData(final Context ctx, int index, int maxLength, FileData fd) {
       this.ctx = ctx;
       this.maxLength = maxLength;
       this.index = index;
-      this.uri = Uri.parse(uri);
-      this.value = FileHelper.getFileName(this.uri);
-      String label = ctx.getString(R.string.size) + ": ";
-      boolean fileNotFound = false;
-      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-        DocumentFile sourceFile = DocumentFile.fromSingleUri(ctx, this.uri);
-        fileNotFound = (sourceFile == null || !sourceFile.exists());
-      }
-      if(fileNotFound) {
-        this.size = ctx.getString(R.string.error_no_file);
+      this.fd = fd;
+      Log.e("exc", fd.toString());
+      String labelSize = ctx.getString(R.string.size) + ": ";
+      String labelStart = ctx.getString(R.string.start_offset) + " ";
+      String labelEnd = ctx.getString(R.string.end_offset) + " ";
+      if (fd.isNotFound()) {
+        this.detail = ctx.getString(R.string.error_no_file);
+        error = true;
+      } else if (fd.isAccessError()) {
+        this.detail = ctx.getString(R.string.error_no_file_access);
         error = true;
       } else {
-        long size = FileHelper.getFileSize(ctx.getContentResolver(), this.uri);
-        if (size == -1) {
-          this.size = ctx.getString(R.string.error_no_file);
-        } else if (size == -2)
-          this.size = ctx.getString(R.string.error_no_file_access);
-        else
-          this.size = label + SysHelper.sizeToHuman(ctx, size);
-        error = size < 0;
+        long size = fd.getSize();
+        String detail;
+        if (fd.isSequential()) {
+          detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset()) + ", ";
+          detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset()) + ", ";
+          detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));
+        } else
+          detail = labelSize + SysHelper.sizeToHuman(ctx, size);
+        this.detail = detail;
+        error = false;
       }
     }
   }
@@ -170,13 +169,13 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
 
   static class ViewHolder extends RecyclerView.ViewHolder {
     TextView index;
-    TextView size;
+    TextView detail;
     TextView name;
 
     ViewHolder(View view) {
       super(view);
       index = view.findViewById(R.id.index);
-      size = view.findViewById(R.id.size);
+      detail = view.findViewById(R.id.detail);
       name = view.findViewById(R.id.name);
     }
   }

@@ -23,7 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
   <TextView
-    android:id="@+id/size"
+    android:id="@+id/detail"
     android:layout_toEndOf="@id/index"
     android:layout_below="@id/name"
     android:layout_width="match_parent"

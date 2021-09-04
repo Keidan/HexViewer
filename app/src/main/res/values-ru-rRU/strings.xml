@@ -1,7 +1,8 @@
 <resources>
     <string name="search_title">Поиск</string>
     <string name="search_hint">Искать&#8230;</string>
-    <string name="action_open_title">Открыть</string>
+    <string name="action_open_title">Открыть&#8230;</string>
+    <string name="action_open_title_button">Открыть</string>
     <string name="action_plain_text_title">Простой текст</string>
     <string name="action_line_numbers_title">Номера строк</string>
     <string name="action_save_title">Сохранить</string>
@@ -77,6 +78,7 @@
     <string name="control_language_change">Пожалуйста, сначала сохраните свою работу.</string>
     <string name="overwrite">Pежим вставки</string>
     <string name="size">Размер</string>
+    <string name="unit_byte_full">Байт</string>
     <string name="unit_byte">Б</string>
     <string name="unit_kbyte">KБ</string>
     <string name="unit_mbyte">MБ</string>
@@ -90,4 +92,9 @@
     <string name="error_no_file">Файл отсутствует (удален или перемещен)</string>
     <string name="error_no_file_access">Нет доступа к файлу, откройте его через меню</string>
     <string name="error_cant_exceed_xxx">Невозможно превысить %1$s</string>
+    <string name="action_open_sequential_title">Последовательное открытие&#8230;</string>
+    <string name="error_open_sequential_add_or_delete_data">В этом режиме невозможно добавить новые данные</string>
+    <string name="start_offset">Начало</string>
+    <string name="end_offset">Конец</string>
+    <string name="unit">Единица:</string>
 </resources>

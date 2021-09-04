@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter;
 
 import static fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter.UriData;
@@ -35,6 +36,8 @@ import static fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter.UriDat
  */
 public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyOpenRecyclerAdapter.OnEventListener {
   private ApplicationCtx mApp = null;
+  public static final String RESULT_START_OFFSET = "startOffset";
+  public static final String RESULT_END_OFFSET = "endOffset";
 
   /**
    * Starts an activity.
@@ -80,7 +83,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     // Lookup the recyclerview in activity layout
     RecyclerView recyclerView = findViewById(R.id.recyclerView);
     List<UriData> list = new ArrayList<>();
-    final List<String> li = mApp.getRecentlyOpened();
+    final List<FileData> li = mApp.getRecentlyOpened().list();
     int index = 0;
     int max = li.size();
     int m = String.valueOf(max).length();
@@ -120,7 +123,9 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
   @Override
   public void onClick(@NonNull UriData ud) {
     Intent i = new Intent();
-    i.setData(ud.uri);
+    i.setData(ud.fd.getUri());
+    i.putExtra(RESULT_START_OFFSET, ud.fd.getStartOffset());
+    i.putExtra(RESULT_END_OFFSET, ud.fd.getEndOffset());
     setResult(RESULT_OK, i);
     finish();
   }
@@ -132,8 +137,8 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
    */
   @Override
   public void onDelete(@NonNull UriData ud) {
-    mApp.removeRecentlyOpened(ud.uri.toString());
-    if (mApp.getRecentlyOpened().isEmpty()) {
+    mApp.getRecentlyOpened().remove(ud.fd);
+    if (mApp.getRecentlyOpened().list().isEmpty()) {
       Intent i = new Intent();
       i.setData(null);
       setResult(RESULT_OK, i);

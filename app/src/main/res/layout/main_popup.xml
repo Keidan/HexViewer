@@ -59,9 +59,22 @@
       android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
       android:paddingStart="?android:attr/listPreferredItemPaddingStart"
       android:textAppearance="?android:attr/textAppearanceListItemSmall"  />
+
+    <TextView
+      android:id="@+id/action_open_sequential"
+      android:layout_below="@id/action_open"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/action_open_sequential_title"
+      android:background="?attr/selectableItemBackground"
+      android:gravity="center_vertical"
+      android:minHeight="?android:attr/listPreferredItemHeightSmall"
+      android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+      android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+      android:textAppearance="?android:attr/textAppearanceListItemSmall"  />
     <TextView
       android:id="@+id/action_recently_open"
-      android:layout_below="@id/action_open"
+      android:layout_below="@id/action_open_sequential"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/action_recently_open_title"

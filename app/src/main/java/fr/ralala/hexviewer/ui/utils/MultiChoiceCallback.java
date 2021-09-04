@@ -93,6 +93,11 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
+      if(mActivity.getFileData().isSequential()) {
+        UIHelper.showErrorDialog(mActivity, mActivity.getFileData().getName(),
+            mActivity.getString(R.string.error_open_sequential_add_or_delete_data));
+        return false;
+      }
       actionClear(item, mode);
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {

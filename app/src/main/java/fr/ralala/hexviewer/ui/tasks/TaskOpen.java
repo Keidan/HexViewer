@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import java.io.IOException;
@@ -13,10 +12,10 @@ import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -31,7 +30,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result> {
+public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.Result> {
   private static final String TAG = TaskOpen.class.getSimpleName();
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 20000;
   private final HexTextArrayAdapter mAdapter;
@@ -122,40 +121,58 @@ public class TaskOpen extends ProgressTask<ContentResolver, Uri, TaskOpen.Result
    * Performs a computation on a background thread.
    *
    * @param contentResolver ContentResolver.
-   * @param uri             Uri.
+   * @param fd              FileData.
    * @return The result.
    */
   @Override
-  public Result doInBackground(ContentResolver contentResolver, Uri uri) {
+  public Result doInBackground(ContentResolver contentResolver, FileData fd) {
     //final Activity activity = mActivityRef.get();
     final Result result = new Result();
     final List<LineEntry> list = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
+      Log.e("exc", "fd: " + fd.toString());
       /* Size + stream */
-      mTotalSize = FileHelper.getFileSize(contentResolver, uri);
+      mTotalSize = fd.getSize();
       publishProgress(0L);
-      mInputStream = contentResolver.openInputStream(uri);
+      mInputStream = contentResolver.openInputStream(fd.getUri());
+
       if (mInputStream != null) {
-        /* prepare buffer */
-        final byte[] data = new byte[MAX_LENGTH];
-        int reads;
-        /* read data */
-        while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
-          try {
-            list.addAll(SysHelper.formatBuffer(data, reads, mCancel,
-                ApplicationCtx.getInstance().getNbBytesPerLine()));
-          } catch (IllegalArgumentException iae) {
-            result.exception = iae.getMessage();
-            break;
+        int maxLength = MAX_LENGTH;
+        if (fd.isSequential()) {
+          if (mInputStream.skip(fd.getStartOffset()) != fd.getStartOffset()) {
+            result.exception = "Unable to skip file data!";
           }
-          publishProgress((long) reads);
+          maxLength = fd.getSize() < MAX_LENGTH ? (int) fd.getSize() : MAX_LENGTH;
         }
-        /* prepare result */
+
         if (result.exception == null) {
-          result.listHex = list;
-          if (mAddRecent)
-            app.addRecentlyOpened(uri.toString());
+          /* prepare buffer */
+          final byte[] data = new byte[maxLength];
+          int reads;
+          long totalSequential = fd.getStartOffset();
+          /* read data */
+          while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
+            try {
+              SysHelper.formatBuffer(list, data, reads, mCancel,
+                  ApplicationCtx.getInstance().getNbBytesPerLine());
+            } catch (IllegalArgumentException iae) {
+              result.exception = iae.getMessage();
+              break;
+            }
+            publishProgress((long) reads);
+            if (fd.isSequential()) {
+              totalSequential += reads;
+              if (totalSequential >= fd.getEndOffset())
+                break;
+            }
+          }
+          /* prepare result */
+          if (result.exception == null) {
+            result.listHex = list;
+            if (mAddRecent && !mCancel.get())
+              app.getRecentlyOpened().add(fd);
+          }
         }
       }
     } catch (final Exception e) {

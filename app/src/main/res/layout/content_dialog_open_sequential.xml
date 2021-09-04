@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+      android:id="@+id/labelSize"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/size"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="10dp"
+      style="@style/AppTheme.InputLabel"/>
+
+    <TextView
+      android:id="@+id/textSize"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toEndOf="@id/labelSize"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="10dp"
+      style="@style/AppTheme.InputLabel"/>
+
+    <TextView
+      android:id="@+id/labelUnit"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/labelSize"
+      app:layout_constraintStart_toStartOf="parent"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="15dp"
+      android:text="@string/unit"
+      style="@style/AppTheme.InputLabel"/>
+    <androidx.appcompat.widget.AppCompatSpinner
+      android:id="@+id/spUnit"
+      android:layout_marginTop="15dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/textSize"
+      app:layout_constraintStart_toEndOf="@id/labelUnit" />
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/tilStart"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:errorEnabled="true"
+      app:layout_constraintTop_toBottomOf="@id/labelUnit"
+      app:layout_constraintStart_toStartOf="parent">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tietStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/start_offset"
+        android:text="@string/zero"
+        android:inputType="number"
+        android:digits="1234567890."
+        android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/tilEnd"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="15dp"
+      app:errorEnabled="true"
+      app:layout_constraintTop_toBottomOf="@id/tilStart"
+      app:layout_constraintStart_toStartOf="parent">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tietEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/end_offset"
+        android:text="@string/zero"
+        android:inputType="number"
+        android:digits="1234567890."
+        android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

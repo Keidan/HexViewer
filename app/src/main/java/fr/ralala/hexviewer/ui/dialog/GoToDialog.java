@@ -71,7 +71,7 @@ public class GoToDialog implements View.OnClickListener {
   /**
    * Displays the dialog
    */
-  public void show(Mode mode) {
+  public AlertDialog show(Mode mode) {
     mMode = mode;
     mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
         WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -105,6 +105,7 @@ public class GoToDialog implements View.OnClickListener {
       mEt.requestFocus();
     }
     mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this);
+    return mDialog;
   }
 
   /**
@@ -138,6 +139,7 @@ public class GoToDialog implements View.OnClickListener {
     else
       mPreviousGoToValueAddress = text;
     mDialog.dismiss();
+    mActivity.setOrphanDialog(null);
   }
 
   /**

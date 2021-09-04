@@ -32,9 +32,9 @@ public class SysHelper {
   private static final String HEX_UPPERCASE = "0123456789ABCDEF";
   @SuppressWarnings("SpellCheckingInspection")
   private static final String HEX_LOWERCASE = "0123456789abcdef";
-  private static final float SIZE_1KB = 0x400;
-  private static final float SIZE_1MB = 0x100000;
-  private static final float SIZE_1GB = 0x40000000;
+  public static final float SIZE_1KB = 0x400;
+  public static final float SIZE_1MB = 0x100000;
+  public static final float SIZE_1GB = 0x40000000;
   public static final int MAX_BY_ROW_16 = 16;
   public static final int MAX_BY_ROW_8 = 8;
 
@@ -104,18 +104,29 @@ public class SysHelper {
    * @return The String.
    */
   public static String sizeToHuman(Context ctx, float f) {
+    return sizeToHuman(ctx, f, true);
+  }
+
+  /**
+   * Converts a size into a humanly understandable string.
+   *
+   * @param ctx Android context.
+   * @param f   The size.
+   * @return The String.
+   */
+  public static String sizeToHuman(Context ctx, float f, boolean addUnit) {
     DecimalFormat df = new DecimalFormat("#.##");
     df.setRoundingMode(RoundingMode.FLOOR);
     df.setMinimumFractionDigits(2);
     String sf;
     if (f < 1000) {
-      sf = String.format(Locale.US, "%d %s", (int) f, ctx.getString(R.string.unit_byte));
+      sf = String.format(Locale.US, "%d %s", (int) f, !addUnit ? "" : ctx.getString(R.string.unit_byte));
     } else if (f < 1000000)
-      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1KB)), ctx.getString(R.string.unit_kbyte));
+      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1KB)), !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
     else if (f < 1000000000)
-      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1MB)), ctx.getString(R.string.unit_mbyte));
+      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1MB)), !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
     else
-      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1GB)), ctx.getString(R.string.unit_gbyte));
+      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1GB)), !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
     return sf;
   }
 
@@ -138,16 +149,17 @@ public class SysHelper {
     return lines;
   }
 
+
   /**
    * Formats a buffer (wireshark like).
    *
+   * @param lines    The lines.
    * @param buffer   The input buffer.
    * @param length   The input buffer length.
    * @param cancel   Used to cancel this method.
    * @param maxByRow Max bytes by row.
-   * @return List<String>
    */
-  public static List<LineEntry> formatBuffer(final byte[] buffer,
+  public static void formatBuffer(final List<LineEntry> lines, final byte[] buffer,
                                              final int length,
                                              AtomicBoolean cancel,
                                              final int maxByRow) throws IllegalArgumentException {
@@ -156,7 +168,6 @@ public class SysHelper {
       throw new IllegalArgumentException("length > buffer.length");
     StringBuilder currentLine = new StringBuilder();
     StringBuilder currentEndLine = new StringBuilder();
-    final List<LineEntry> lines = new ArrayList<>();
     final List<Byte> currentLineRaw = new ArrayList<>();
     int currentIndex = 0;
     int bufferIndex = 0;
@@ -175,9 +186,26 @@ public class SysHelper {
       len--;
     }
     if (cancel != null && cancel.get())
-      return lines;
+      return;
     formatBufferAlign(lines, currentIndex, currentLine.toString(),
         currentEndLine.toString(), currentLineRaw, maxByRow);
+  }
+
+  /**
+   * Formats a buffer (wireshark like).
+   *
+   * @param buffer   The input buffer.
+   * @param length   The input buffer length.
+   * @param cancel   Used to cancel this method.
+   * @param maxByRow Max bytes by row.
+   * @return List<String>
+   */
+  public static List<LineEntry> formatBuffer(final byte[] buffer,
+                                             final int length,
+                                             AtomicBoolean cancel,
+                                             final int maxByRow) throws IllegalArgumentException {
+    final List<LineEntry> lines = new ArrayList<>();
+    formatBuffer(lines, buffer, length, cancel, maxByRow);
     return lines;
   }
 

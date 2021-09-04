@@ -7,15 +7,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
 import fr.ralala.hexviewer.models.ListSettings;
+import fr.ralala.hexviewer.models.RecentlyOpened;
 
 /**
  * ******************************************************************************
@@ -78,7 +76,6 @@ public class ApplicationCtx extends Application {
   private String mDefaultAbbreviateLandscape;
   private boolean mDefaultSmartInput;
   private boolean mDefaultOverwrite;
-  private List<String> mRecentlyOpened;
   private static ApplicationCtx instance;
   private String mLanguage = null;
   private boolean mDefaultLinesNumber;
@@ -92,6 +89,8 @@ public class ApplicationCtx extends Application {
   private ListSettings mListSettingsLineEditLandscape;
   private String mDefaultScreenOrientation;
   private String mDefaultNbBytesPerLine;
+  private RecentlyOpened mRecentlyOpened;
+  private boolean mSequential = false;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -105,7 +104,7 @@ public class ApplicationCtx extends Application {
     mDefaultAbbreviatePortrait = getString(R.string.default_abbreviate_portrait);
     mDefaultAbbreviateLandscape = getString(R.string.default_abbreviate_landscape);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
-    mRecentlyOpened = getRecentlyOpened();
+    mRecentlyOpened = new RecentlyOpened(this);
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
     mDefaultOverwrite = Boolean.parseBoolean(getString(R.string.default_overwrite));
     mDefaultScreenOrientation = getString(R.string.default_screen_orientation);
@@ -169,6 +168,24 @@ public class ApplicationCtx extends Application {
     if (mSharedPreferences == null)
       mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     return mSharedPreferences;
+  }
+
+  /**
+   * Changes the sequential flag.
+   *
+   * @param seq The new value
+   */
+  public void setSequential(boolean seq) {
+    mSequential = seq;
+  }
+
+  /**
+   * Test the sequential flag.
+   *
+   * @return boolean
+   */
+  public boolean isSequential() {
+    return mSequential;
   }
 
   /* ---------- Settings ---------- */
@@ -290,55 +307,12 @@ public class ApplicationCtx extends Application {
   }
 
   /**
-   * Adds a new element to the list.
-   *
-   * @param recent The new element
-   */
-  public void addRecentlyOpened(String recent) {
-    mRecentlyOpened.remove(recent);
-    mRecentlyOpened.add(recent);
-    setRecentlyOpened(mRecentlyOpened);
-  }
-
-  /**
-   * Removes an existing element from the list.
-   *
-   * @param recent The new element
-   */
-  public void removeRecentlyOpened(String recent) {
-    mRecentlyOpened.remove(recent);
-    setRecentlyOpened(mRecentlyOpened);
-  }
-
-  /**
    * Returns the list of recently opened files.
    *
-   * @return Set<String>
+   * @return RecentlyOpened
    */
-  public List<String> getRecentlyOpened() {
-    final List<String> uris = new ArrayList<>();
-    final String content = getPref(this).getString(CFG_RECENTLY_OPEN, "");
-    final String[] split = content.split("\\|");
-    if (split.length != 0 && !split[0].equals(""))
-      Collections.addAll(uris, split);
-    return uris;
-  }
-
-  /**
-   * Sets the list of recently opened files.
-   *
-   * @param list The list
-   */
-  private void setRecentlyOpened(List<String> list) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < list.size(); i++) {
-      sb.append(list.get(i));
-      if (i != list.size() - 1)
-        sb.append("|");
-    }
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_RECENTLY_OPEN, sb.toString());
-    e.apply();
+  public RecentlyOpened getRecentlyOpened() {
+    return mRecentlyOpened;
   }
 
   /**

@@ -81,6 +81,7 @@ public class MainPopupWindow {
         clickListener.onClick(v.getId());
     };
     popupView.findViewById(R.id.action_open).setOnClickListener(click);
+    popupView.findViewById(R.id.action_open_sequential).setOnClickListener(click);
     popupView.findViewById(R.id.action_settings).setOnClickListener(click);
     mPlainText.setOnClickListener(click);
     mLineNumbers.setOnClickListener(click);
@@ -136,7 +137,7 @@ public class MainPopupWindow {
     setMenuEnabled(mGoTo, en);
     setMenuEnabled(mSaveAsMenu, en);
     setMenuEnabled(mCloseMenu, en);
-    setMenuEnabled(mRecentlyOpen, !ApplicationCtx.getInstance().getRecentlyOpened().isEmpty());
+    setMenuEnabled(mRecentlyOpen, !ApplicationCtx.getInstance().getRecentlyOpened().list().isEmpty());
     if (mLineNumbers != null)
       mLineNumbers.setEnable(en);
     if (!en && mPlainText != null) {
@@ -150,7 +151,7 @@ public class MainPopupWindow {
    */
   public void refreshGoToName() {
     if (mGoTo != null) {
-      if(mLineNumbers != null && mLineNumbers.isChecked())
+      if (mLineNumbers != null && mLineNumbers.isChecked())
         mGoTo.setText(R.string.action_go_to_address);
       else
         mGoTo.setText(R.string.action_go_to_line);

@@ -36,7 +36,7 @@
         android:id="@+id/buttonOpenFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_open_title" />
+        android:text="@string/action_open_title_button" />
 
       <Button
         android:id="@+id/buttonRecentlyOpen"

@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.activities.RecentlyOpenActivity;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
@@ -56,24 +57,27 @@ public class LauncherRecentlyOpen {
             Intent data = result.getData();
             if (data != null && data.getData() != null) {
               Uri uri = data.getData();
+              long startOffset = data.getLongExtra(RecentlyOpenActivity.RESULT_START_OFFSET, 0L);
+              long endOffset = data.getLongExtra(RecentlyOpenActivity.RESULT_END_OFFSET, 0L);
+              FileData fd = new FileData(mActivity, uri, false, startOffset, endOffset);
               if (FileHelper.isFileExists(mActivity.getContentResolver(), uri)) {
                 if (FileHelper.hasUriPermission(mActivity, uri, true)) {
-                  final Runnable r = () -> mActivity.getLauncherOpen().processFileOpen(uri, false, true);
+                  final Runnable r = () -> mActivity.getLauncherOpen().processFileOpen(fd, true);
                   if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
                     UIHelper.confirmFileChanged(mActivity, mActivity.getFileData(), r, () -> new TaskSave(mActivity, mActivity).execute(
-                        new TaskSave.Request(mActivity.getFileData().getUri(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), r)));
+                        new TaskSave.Request(mActivity.getFileData(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), r)));
                   } else
                     r.run();
                 } else {
                   UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(uri)));
-                  mApp.removeRecentlyOpened(uri.toString());
+                  mApp.getRecentlyOpened().remove(fd);
                 }
               } else {
                 UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_not_found), FileHelper.getFileName(uri)));
-                mApp.removeRecentlyOpened(uri.toString());
+                mApp.getRecentlyOpened().remove(fd);
                 FileHelper.releaseUriPermissions(mActivity, uri);
               }
-            } else if (mApp.getRecentlyOpened().isEmpty())
+            } else if (mApp.getRecentlyOpened().list().isEmpty())
               mActivity.getMenuRecentlyOpen().setEnabled(false);
           }
         });

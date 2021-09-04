@@ -54,6 +54,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private static final String ACTIVITY_EXTRA_NB_LINES = "ACTIVITY_EXTRA_NB_LINES";
   private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
   private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
+  private static final String ACTIVITY_EXTRA_SEQUENTIAL = "ACTIVITY_EXTRA_SEQUENTIAL";
   public static final String RESULT_REFERENCE_STRING = "RESULT_REFERENCE_STRING";
   public static final String RESULT_NEW_STRING = "RESULT_NEW_STRING";
   public static final String RESULT_POSITION = "RESULT_POSITION";
@@ -64,8 +65,10 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private TextInputLayout mTilInputHex;
   private int mPosition = -1;
   private int mNbLines = 0;
+  private int mRefLength = 0;
   private String mFile;
   private boolean mChange;
+  private boolean mSequential;
   private String mHex;
   private ImageView mIvVisibilitySource;
   private ImageView mIvVisibilityResult;
@@ -89,13 +92,15 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
                                    final byte[] texts, final String file,
                                    final int position,
                                    final int nbLines,
-                                   final boolean change) {
+                                   final boolean change,
+                                   final boolean sequential) {
     Intent intent = new Intent(c, LineUpdateActivity.class);
     intent.putExtra(ACTIVITY_EXTRA_TEXTS, texts);
     intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
     intent.putExtra(ACTIVITY_EXTRA_NB_LINES, nbLines);
     intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
     intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
+    intent.putExtra(ACTIVITY_EXTRA_SEQUENTIAL, sequential);
     activityResultLauncher.launch(intent);
   }
 
@@ -167,11 +172,14 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     StringBuilder sbHex = new StringBuilder();
     if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
-      List<LineEntry> li = SysHelper.formatBuffer(extras.getByteArray(ACTIVITY_EXTRA_TEXTS), null, SysHelper.MAX_BY_ROW_8);
+      byte[] array = extras.getByteArray(ACTIVITY_EXTRA_TEXTS);
+      mRefLength = array.length;
+      List<LineEntry> li = SysHelper.formatBuffer(array, null, SysHelper.MAX_BY_ROW_8);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
       mNbLines = extras.getInt(ACTIVITY_EXTRA_NB_LINES);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
       mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
+      mSequential = extras.getBoolean(ACTIVITY_EXTRA_SEQUENTIAL);
       for (LineEntry ld : li) {
         String s = ld.toString();
         list.add(s);
@@ -257,6 +265,14 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       if (!SysHelper.isValidHexLine(validate)) {
         mTilInputHex.setError(" "); /* only for the color */
         return false;
+      }
+      if (mSequential) {
+        final byte[] buf = SysHelper.hexStringToByteArray(validate);
+        if (mRefLength != buf.length) {
+          UIHelper.showErrorDialog(this, getTitle(),
+              getString(R.string.error_open_sequential_add_or_delete_data));
+          return super.onOptionsItemSelected(item);
+        }
       }
       Intent i = new Intent();
       i.putExtra(RESULT_POSITION, mPosition);

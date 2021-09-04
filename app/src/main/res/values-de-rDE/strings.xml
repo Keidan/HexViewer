@@ -2,7 +2,8 @@
 <resources>
     <string name="search_title">Suchen</string>
     <string name="search_hint">Suchen&#8230;</string>
-    <string name="action_open_title">Öffnen</string>
+    <string name="action_open_title">Öffnen&#8230;</string>
+    <string name="action_open_title_button">Öffnen</string>
     <string name="action_plain_text_title">Einfacher Text</string>
     <string name="action_line_numbers_title">Zeilennummern</string>
     <string name="action_save_title">Speichern</string>
@@ -79,6 +80,7 @@
     <string name="control_language_change">Bitte speichern Sie Ihre Arbeit zuerst.</string>
     <string name="overwrite">Einfügemodus</string>
     <string name="size">Größe</string>
+    <string name="unit_byte_full">Byte</string>
     <string name="unit_byte">B</string>
     <string name="unit_kbyte">kB</string>
     <string name="unit_mbyte">MB</string>
@@ -92,4 +94,9 @@
     <string name="error_no_file">Keine Datei (gelöscht oder verschoben)</string>
     <string name="error_no_file_access">Kein Zugriff auf die Datei, öffnen Sie sie über das Menü</string>
     <string name="error_cant_exceed_xxx">Es ist nicht möglich, mehr als %1$s</string>
+    <string name="action_open_sequential_title">Sequentielles Öffnen&#8230;</string>
+    <string name="error_open_sequential_add_or_delete_data">In diesem Modus ist es nicht möglich, Daten hinzuzufügen oder zu löschen.</string>
+    <string name="start_offset">Start</string>
+    <string name="end_offset">Ende</string>
+    <string name="unit">Einheit:</string>
 </resources>
