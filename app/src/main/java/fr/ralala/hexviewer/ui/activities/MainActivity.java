@@ -350,6 +350,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void setTitle(Configuration cfg) {
     UIHelper.setTitle(this, cfg.orientation, true, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
+    if((!FileData.isEmpty(mFileData) && !mFileData.isOpenFromAppIntent()))
+      mPopup.setSaveMenuEnable(mUnDoRedo.isChanged());
   }
 
   /**
