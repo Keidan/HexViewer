@@ -1,10 +1,7 @@
 package fr.ralala.hexviewer.ui.activities;
 
-import android.Manifest;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -14,19 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -60,17 +51,12 @@ import fr.ralala.hexviewer.utils.FileHelper;
  * </p>
  * ******************************************************************************
  */
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
-  private static final int BACK_TIME_DELAY = 2000;
-  private static long mLastBackPressed = -1;
-  private ApplicationCtx mApp = null;
+public class MainActivity extends AbstractBaseMainActivity implements AdapterView.OnItemClickListener, TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
   private FileData mFileData = null;
   private ConstraintLayout mIdleView = null;
   private MenuItem mSearchMenu = null;
-  private SearchView mSearchView = null;
   private String mSearchQuery = "";
   private PayloadPlainSwipe mPayloadPlainSwipe = null;
-  private AlertDialog mOrphanDialog = null;
   private LauncherLineUpdate mLauncherLineUpdate = null;
   private LauncherSave mLauncherSave = null;
   private LauncherOpen mLauncherOpen = null;
@@ -82,18 +68,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   private SequentialOpenDialog mSequentialOpenDialog = null;
 
   /**
-   * Set the base context for this ContextWrapper.
-   * All calls will then be delegated to the base context.
-   * Throws IllegalStateException if a base context has already been set.
-   *
-   * @param base The new base context for this wrapper.
-   */
-  @Override
-  protected void attachBaseContext(Context base) {
-    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
-  }
-
-  /**
    * Called when the activity is created.
    *
    * @param savedInstanceState Bundle
@@ -103,20 +77,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_main);
-    mApp = ApplicationCtx.getInstance();
-
-    /* sanity check */
-    String[] languages = getResources().getStringArray(R.array.languages_values);
-    boolean found = false;
-    for (String language : languages)
-      if (language.equals(mApp.getApplicationLanguage(this))) {
-        found = true;
-        break;
-      }
-    if (!found) {
-      mApp.setApplicationLanguage("en-US");
-      recreate();
-    }
 
     mUnDoRedo = new UnDoRedo(this);
 
@@ -136,20 +96,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     mPayloadPlainSwipe = new PayloadPlainSwipe();
     mPayloadPlainSwipe.onCreate(this);
-
-    /* permissions */
-    boolean requestPermissions = true;
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-      if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-          ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-        requestPermissions = false;
-      }
-    }
-    if (requestPermissions)
-      ActivityCompat.requestPermissions(this, new String[]{
-          Manifest.permission.WRITE_EXTERNAL_STORAGE,
-          Manifest.permission.READ_EXTERNAL_STORAGE
-      }, 1);
 
     mLauncherOpen = new LauncherOpen(this, mainLayout);
     mLauncherSave = new LauncherSave(this);
@@ -214,14 +160,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
   }
 
-  private void closeOrphanDialog() {
-    if (mOrphanDialog != null) {
-      if (mOrphanDialog.isShowing())
-        mOrphanDialog.dismiss();
-      mOrphanDialog = null;
-    }
-  }
-
   /**
    * Called to create the option menu.
    *
@@ -232,28 +170,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   public boolean onCreateOptionsMenu(final Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     MenuCompat.setGroupDividerEnabled(menu, true);
-
     mSearchMenu = menu.findItem(R.id.action_search);
     mSearchMenu.setVisible(false);
-    // Searchable configuration
-    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-    if (searchManager != null) {
-      mSearchView = (SearchView) mSearchMenu.getActionView();
-      mSearchView.setSearchableInfo(searchManager
-          .getSearchableInfo(getComponentName()));
-      mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String s) {
-          return true;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String s) {
-          doSearch(s);
-          return true;
-        }
-      });
-    }
+    setSearchView(mSearchMenu);
     return true;
   }
 
@@ -275,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    *
    * @param queryStr The query string.
    */
+  @Override
   public void doSearch(String queryStr) {
     mSearchQuery = queryStr;
     final SearchableListArrayAdapter laa = ((mPayloadPlainSwipe.isVisible()) ?
@@ -350,19 +270,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public void setTitle(Configuration cfg) {
     UIHelper.setTitle(this, cfg.orientation, true, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
-    if((!FileData.isEmpty(mFileData) && !mFileData.isOpenFromAppIntent()))
+    if ((!FileData.isEmpty(mFileData) && !mFileData.isOpenFromAppIntent()))
       mPopup.setSaveMenuEnable(mUnDoRedo.isChanged());
-  }
-
-  /**
-   * Sets the visibility of the menu item.
-   *
-   * @param menu    MenuItem
-   * @param visible If true then the item will be visible; if false it is hidden.
-   */
-  private void setMenuVisible(final MenuItem menu, final boolean visible) {
-    if (menu != null)
-      menu.setVisible(visible);
   }
 
 
@@ -442,16 +351,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
   }
 
   /**
-   * Cancels search.
-   */
-  private void cancelSearch() {
-    if (mSearchView != null && !mSearchView.isIconified()) {
-      doSearch("");
-      mSearchView.setIconified(true);
-    }
-  }
-
-  /**
    * Callback method to be invoked when an item in this AdapterView has been clicked.
    *
    * @param parent   The AdapterView where the click happened.
@@ -478,28 +377,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    * Called to handle the click on the back button.
    */
   @Override
-  public void onBackPressed() {
-    if (mSearchView != null && !mSearchView.isIconified()) {
-      cancelSearch();
+  public void onExit() {
+    if (mUnDoRedo.isChanged()) {// a save operation is pending?
+      Runnable r = () -> {
+        super.onBackPressed();
+        finish();
+      };
+      UIHelper.confirmFileChanged(this, mFileData, r,
+          () -> new TaskSave(this, this).execute(
+              new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else {
-      if (mLastBackPressed + BACK_TIME_DELAY > System.currentTimeMillis()) {
-        if (mUnDoRedo.isChanged()) {// a save operation is pending?
-          Runnable r = () -> {
-            super.onBackPressed();
-            finish();
-          };
-          UIHelper.confirmFileChanged(this, mFileData, r,
-              () -> new TaskSave(this, this).execute(
-                  new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
-        } else {
-          super.onBackPressed();
-          finish();
-        }
-        return;
-      } else {
-        UIHelper.toast(this, getString(R.string.on_double_back_exit_text));
-      }
-      mLastBackPressed = System.currentTimeMillis();
+      super.onBackPressed();
+      finish();
     }
   }
 
@@ -512,18 +401,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
    */
   public TextView getMenuRecentlyOpen() {
     return mPopup == null ? null : mPopup.getMenuRecentlyOpen();
-  }
-
-  /**
-   * Sets the orphan dialog.
-   *
-   * @param orphan The dialog.
-   */
-  public void setOrphanDialog(AlertDialog orphan) {
-    if (mOrphanDialog != null && mOrphanDialog.isShowing()) {
-      mOrphanDialog.dismiss();
-    }
-    mOrphanDialog = orphan;
   }
 
   /**
