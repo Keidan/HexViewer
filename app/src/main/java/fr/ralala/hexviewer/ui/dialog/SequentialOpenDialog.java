@@ -104,7 +104,7 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
       units.add(mActivity.getString(R.string.unit_kbyte));
       units.add(mActivity.getString(R.string.unit_mbyte));
       units.add(mActivity.getString(R.string.unit_gbyte));
-      ArrayAdapter<String> adapter = new ArrayAdapter<String>(mActivity,
+      ArrayAdapter<String> adapter = new ArrayAdapter<>(mActivity,
           android.R.layout.simple_spinner_item,
           units);
       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
