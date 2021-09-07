@@ -131,7 +131,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     final List<LineEntry> list = new ArrayList<>();
     try {
       final ApplicationCtx app = ApplicationCtx.getInstance();
-      Log.e("exc", "fd: " + fd.toString());
       /* Size + stream */
       mTotalSize = fd.getSize();
       publishProgress(0L);

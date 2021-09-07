@@ -140,7 +140,7 @@ public class FileData {
    * @return boolean
    */
   public boolean isSequential() {
-    return mStartOffset != 0L && mEndOffset != 0L;
+    return mStartOffset != 0L || mEndOffset != 0L;
   }
 
   /**

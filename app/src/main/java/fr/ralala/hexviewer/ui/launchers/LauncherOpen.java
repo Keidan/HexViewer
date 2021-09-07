@@ -86,7 +86,7 @@ public class LauncherOpen {
         new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, addRecent).execute(mActivity.getFileData());
       };
       if (ApplicationCtx.getInstance().isSequential())
-        mActivity.getSequentialOpenDialog().show(fd, r::run);
+        mActivity.getSequentialOpenDialog().show(mActivity.getFileData(), r::run);
       else
         r.run();
     } else {
