@@ -1,0 +1,15 @@
+* The "Go To" function to the desired address/line is now instantaneous.
+* Removal of unnecessary spaces and components in the line editing view.
+* Fix wrong test in the list of recently opened files when the file has been moved or deleted on Android < 11.
+* Fix a bug when searching for a text sequence.
+* Improvement of the display of the plain text view by taking into account the screen size, font size and orientation of the screen.
+* It's now possible to open a file sequentially.
+* The status of the save button is now consistent with the file update status.
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
