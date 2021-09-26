@@ -24,6 +24,8 @@ This application offers the following features:
 
 _Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices._
 
+**WARNING:** This application cannot open files larger than 20 MB on recent smartphones and less for older smartphones.
+
 ## Instructions
 Download the software :
 
