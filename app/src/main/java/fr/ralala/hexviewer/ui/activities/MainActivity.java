@@ -379,15 +379,11 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   @Override
   public void onExit() {
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
-      Runnable r = () -> {
-        super.onBackPressed();
-        finish();
-      };
+      Runnable r = this::finish;
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
               new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else {
-      super.onBackPressed();
       finish();
     }
   }
