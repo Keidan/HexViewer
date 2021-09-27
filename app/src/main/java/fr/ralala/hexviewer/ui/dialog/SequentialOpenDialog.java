@@ -54,6 +54,8 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
 
   public interface SequentialOpenListener {
     void onSequentialOpen();
+
+    void onSequentialCancel();
   }
 
 
@@ -61,7 +63,7 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
   public SequentialOpenDialog(MainActivity activity) {
     mActivity = activity;
     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-    builder.setCancelable(true)
+    builder.setCancelable(false)
         .setTitle(R.string.action_open_sequential_title)
         .setPositiveButton(android.R.string.yes, null)
         .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
@@ -129,6 +131,11 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
     }
     if (mTextSize != null)
       mTextSize.setText(SysHelper.sizeToHuman(mActivity, max));
+    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> {
+      if (mSequentialOpenListener != null)
+        mSequentialOpenListener.onSequentialCancel();
+      mDialog.dismiss();
+    });
     mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this);
     evaluateSize();
     return mDialog;
@@ -317,8 +324,9 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
 
   /**
    * Checks if the fields are empty or not.
+   *
    * @param start String value for the start field.
-   * @param end String value for the end field.
+   * @param end   String value for the end field.
    * @return boolean
    */
   private boolean checkEmpty(String start, String end) {
@@ -338,8 +346,9 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
 
   /**
    * Checks if the fields are not larger than the file size.
+   *
    * @param start Long value for the start field.
-   * @param end Long value for the end field.
+   * @param end   Long value for the end field.
    * @return boolean
    */
   private boolean checkForSize(long start, long end) {

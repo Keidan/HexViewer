@@ -11,6 +11,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.dialog.SequentialOpenDialog;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
@@ -59,9 +60,12 @@ public class LauncherOpen {
                 processFileOpen(new FileData(mActivity, data.getData(), false, 0L, 0L));
               } else
                 UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
-            } else
+            } else {
               Log.e(getClass().getSimpleName(), "Null data!!!");
-          }
+              ApplicationCtx.getInstance().setSequential(false);
+            }
+          } else
+            ApplicationCtx.getInstance().setSequential(false);
         });
   }
 
@@ -80,13 +84,30 @@ public class LauncherOpen {
    */
   public void processFileOpen(final FileData fd, final boolean addRecent) {
     if (fd != null && fd.getUri() != null && fd.getUri().getPath() != null) {
+      final FileData previous = mActivity.getFileData();
       mActivity.setFileData(fd);
       Runnable r = () -> {
         mActivity.getUnDoRedo().clear();
         new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, addRecent).execute(mActivity.getFileData());
       };
       if (ApplicationCtx.getInstance().isSequential())
-        mActivity.getSequentialOpenDialog().show(mActivity.getFileData(), r::run);
+        mActivity.getSequentialOpenDialog().show(mActivity.getFileData(), new SequentialOpenDialog.SequentialOpenListener() {
+          @Override
+          public void onSequentialOpen() {
+            r.run();
+          }
+
+          @Override
+          public void onSequentialCancel() {
+            ApplicationCtx.getInstance().setSequential(false);
+            if (previous == null) {
+              mActivity.onOpenResult(false, false);
+            } else {
+              mActivity.setFileData(previous);
+              mActivity.setTitle(mActivity.getResources().getConfiguration());
+            }
+          }
+        });
       else
         r.run();
     } else {
