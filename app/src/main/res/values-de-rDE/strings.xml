@@ -94,7 +94,8 @@
     <string name="error_no_file">Keine Datei (gelöscht oder verschoben)</string>
     <string name="error_no_file_access">Kein Zugriff auf die Datei, öffnen Sie sie über das Menü</string>
     <string name="error_cant_exceed_xxx">Es ist nicht möglich, mehr als %1$s</string>
-    <string name="action_open_sequential_title">Sequentielles Öffnen&#8230;</string>
+    <string name="action_open_sequential_title">Teilweise Öffnung der Datei&#8230;</string>
+    <string name="action_open_sequential_title_button">Teilweise Öffnung der Datei</string>
     <string name="error_open_sequential_add_or_delete_data">In diesem Modus ist es nicht möglich, Daten hinzuzufügen oder zu löschen.</string>
     <string name="start_offset">Start</string>
     <string name="end_offset">Ende</string>

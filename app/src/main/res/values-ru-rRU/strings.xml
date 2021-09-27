@@ -92,7 +92,8 @@
     <string name="error_no_file">Файл отсутствует (удален или перемещен)</string>
     <string name="error_no_file_access">Нет доступа к файлу, откройте его через меню</string>
     <string name="error_cant_exceed_xxx">Невозможно превысить %1$s</string>
-    <string name="action_open_sequential_title">Последовательное открытие&#8230;</string>
+    <string name="action_open_sequential_title">Открыть часть файла&#8230;</string>
+    <string name="action_open_sequential_title_button">Открыть часть файла</string>
     <string name="error_open_sequential_add_or_delete_data">В этом режиме невозможно добавить новые данные</string>
     <string name="start_offset">Начало</string>
     <string name="end_offset">Конец</string>

@@ -88,6 +88,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
 
     findViewById(R.id.buttonOpenFile).setOnClickListener((v) ->
         onPopupItemClick(R.id.action_open));
+    findViewById(R.id.buttonPartialOpenFile).setOnClickListener((v) ->
+        onPopupItemClick(R.id.action_open_sequential));
     findViewById(R.id.buttonRecentlyOpen).setOnClickListener((v) ->
         onPopupItemClick(R.id.action_recently_open));
     findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
