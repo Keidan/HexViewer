@@ -43,6 +43,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   public static class Result {
     private List<LineEntry> listHex = null;
     private String exception = null;
+    private long startOffset = 0;
   }
 
   public interface OpenResultListener {
@@ -85,8 +86,10 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     else if (result.exception != null)
       UIHelper.toast(mContext, mContext.getString(R.string.exception) + ": " + result.exception);
     else {
-      if (result.listHex != null)
+      if (result.listHex != null) {
+        mAdapter.setStartOffset(result.startOffset);
         mAdapter.addAll(result.listHex);
+      }
     }
     if (mListener != null)
       mListener.onOpenResult(result.exception == null && !isCancelled(), true);
@@ -130,6 +133,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     final Result result = new Result();
     final List<LineEntry> list = new ArrayList<>();
     try {
+      result.startOffset = fd.getStartOffset();
       final ApplicationCtx app = ApplicationCtx.getInstance();
       /* Size + stream */
       mTotalSize = fd.getSize();
@@ -150,11 +154,19 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
           final byte[] data = new byte[maxLength];
           int reads;
           long totalSequential = fd.getStartOffset();
+          if(totalSequential != 0) {
+            final int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
+            final long count = totalSequential / nbBytesPerLine;
+            final long remain = totalSequential - (count * nbBytesPerLine);
+            fd.setShiftOffset((int)remain);
+          }
+          boolean first = true;
           /* read data */
           while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
             try {
               SysHelper.formatBuffer(list, data, reads, mCancel,
-                  ApplicationCtx.getInstance().getNbBytesPerLine());
+                  ApplicationCtx.getInstance().getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
+              first = false;
             } catch (IllegalArgumentException iae) {
               result.exception = iae.getMessage();
               break;

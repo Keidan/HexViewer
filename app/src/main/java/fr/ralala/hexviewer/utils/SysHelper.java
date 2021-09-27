@@ -149,7 +149,6 @@ public class SysHelper {
     return lines;
   }
 
-
   /**
    * Formats a buffer (wireshark like).
    *
@@ -160,9 +159,26 @@ public class SysHelper {
    * @param maxByRow Max bytes by row.
    */
   public static void formatBuffer(final List<LineEntry> lines, final byte[] buffer,
+                                  final int length,
+                                  AtomicBoolean cancel,
+                                  final int maxByRow) throws IllegalArgumentException {
+    formatBuffer(lines, buffer, length, cancel, maxByRow, 0);
+  }
+
+  /**
+   * Formats a buffer (wireshark like).
+   *
+   * @param lines    The lines.
+   * @param buffer   The input buffer.
+   * @param length   The input buffer length.
+   * @param cancel   Used to cancel this method.
+   * @param maxByRow Max bytes by row.
+   * @param shiftOffset Offset used to shift the text to the end of the line.
+   */
+  public static void formatBuffer(final List<LineEntry> lines, final byte[] buffer,
                                              final int length,
                                              AtomicBoolean cancel,
-                                             final int maxByRow) throws IllegalArgumentException {
+                                             final int maxByRow, final int shiftOffset) throws IllegalArgumentException {
     int len = length;
     if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
@@ -171,6 +187,14 @@ public class SysHelper {
     final List<Byte> currentLineRaw = new ArrayList<>();
     int currentIndex = 0;
     int bufferIndex = 0;
+    if(shiftOffset != 0) {
+      currentIndex = shiftOffset;
+      int n = shiftOffset;
+      while(n > 0) {
+        currentLine.append("   ");
+        n--;
+      }
+    }
     while (len > 0) {
       if (cancel != null && cancel.get())
         break;

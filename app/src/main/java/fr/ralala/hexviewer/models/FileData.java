@@ -31,12 +31,14 @@ public class FileData {
   private long mRealSize;
   private boolean mIsNotFound;
   private final boolean mIsAccessError;
+  private int mShiftOffset;
 
   public FileData(final Context ctx, final Uri uri, boolean openFromAppIntent) {
     this(ctx, uri, openFromAppIntent, 0L, 0L);
   }
 
   public FileData(final Context ctx, final Uri uri, boolean openFromAppIntent, long startOffset, long endOffset) {
+    mShiftOffset = 0;
     mUri = uri;
     mName = FileHelper.getFileName(uri);
     mStartOffset = startOffset;
@@ -72,6 +74,24 @@ public class FileData {
         mIsNotFound = false;
       }
     }
+  }
+
+  /**
+   * Sets the offset used to shift the text to the end of the line.
+   *
+   * @param shiftOffset The new value.
+   */
+  public void setShiftOffset(int shiftOffset) {
+    mShiftOffset = shiftOffset;
+  }
+
+  /**
+   * Returns the offset used to shift the text to the end of the line.
+   *
+   * @return int
+   */
+  public int getShiftOffset() {
+    return mShiftOffset;
   }
 
   /**

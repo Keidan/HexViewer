@@ -367,6 +367,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
       return;
     }
+
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     for (Byte b : e.getRaw())
       byteArrayOutputStream.write(b);

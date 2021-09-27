@@ -2,6 +2,7 @@ package fr.ralala.hexviewer;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.ralala.hexviewer.models.LineEntry;
@@ -250,6 +251,94 @@ public class ExampleUnitTest {
     assertEquals(2, list.size());
     assertEquals("00 01 02 03 04 05 06 07  ........", list.get(0).getPlain());
     assertEquals("08                       .", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer27() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 0);
+
+    assertEquals(2, list.size());
+    assertEquals("00 01 02 03 04 05 06 07  ........", list.get(0).getPlain());
+    assertEquals("08                       .", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer28() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 1);
+
+    assertEquals(2, list.size());
+    assertEquals("   00 01 02 03 04 05 06  .......", list.get(0).getPlain());
+    assertEquals("07 08                    ..", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer29() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 2);
+
+    assertEquals(2, list.size());
+    assertEquals("      00 01 02 03 04 05  ......", list.get(0).getPlain());
+    assertEquals("06 07 08                 ...", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer30() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 3);
+
+    assertEquals(2, list.size());
+    assertEquals("         00 01 02 03 04  .....", list.get(0).getPlain());
+    assertEquals("05 06 07 08              ....", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer31() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 4);
+
+    assertEquals(2, list.size());
+    assertEquals("            00 01 02 03  ....", list.get(0).getPlain());
+    assertEquals("04 05 06 07 08           .....", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer32() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 5);
+
+    assertEquals(2, list.size());
+    assertEquals("               00 01 02  ...", list.get(0).getPlain());
+    assertEquals("03 04 05 06 07 08        ......", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer33() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 6);
+
+    assertEquals(2, list.size());
+    assertEquals("                  00 01  ..", list.get(0).getPlain());
+    assertEquals("02 03 04 05 06 07 08     .......", list.get(1).getPlain());
+  }
+
+  @Test
+  public void testFormatBuffer34() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 7);
+
+    assertEquals(2, list.size());
+    assertEquals("                     00  .", list.get(0).getPlain());
+    assertEquals("01 02 03 04 05 06 07 08  ........", list.get(1).getPlain());
   }
 
 

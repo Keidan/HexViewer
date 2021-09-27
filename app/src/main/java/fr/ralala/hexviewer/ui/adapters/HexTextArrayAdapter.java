@@ -41,6 +41,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   private Set<Integer> mSelectedItemsIds;
   private final ApplicationCtx mApp;
   private final LineNumbersTitle mTitle;
+  private long mStartOffset;
 
   public static class LineNumbersTitle {
     public TextView titleLineNumbers;
@@ -52,9 +53,14 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
                              UserConfig userConfigPortrait,
                              UserConfig userConfigLandscape) {
     super(activity, ID, objects, userConfigPortrait, userConfigLandscape);
+    mStartOffset = 0;
     mTitle = title;
     mSelectedItemsIds = new HashSet<>();
     mApp = ApplicationCtx.getInstance();
+  }
+
+  public void setStartOffset(final long startOffset) {
+    mStartOffset = startOffset;
   }
 
   /**
@@ -189,8 +195,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
 
       if (mApp.isLineNumber()) {
         final int nbBytesPerLines = mApp.getNbBytesPerLine();
-        final int maxLength = String.format("%X", getEntries().getItemsCount() * nbBytesPerLines).length();
-        final String s = String.format("%0" + maxLength + "X", position * nbBytesPerLines);
+        final long startOffset = mStartOffset == 0 ? 0 : (mStartOffset / nbBytesPerLines);
+        final int maxLength = String.format("%X", (startOffset + getEntries().getItemsCount()) * nbBytesPerLines).length();
+        final String s = String.format("%0" + maxLength + "X", (startOffset + position) * nbBytesPerLines);
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);

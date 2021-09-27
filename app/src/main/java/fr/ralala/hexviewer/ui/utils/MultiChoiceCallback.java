@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.StringRes;
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -188,7 +189,6 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       return false;
     }
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
     int previous = selected.get(0);
     for (Integer i : selected) {
       if (previous != i && previous + 1 != i) {
