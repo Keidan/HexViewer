@@ -141,25 +141,14 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       mInputStream = contentResolver.openInputStream(fd.getUri());
 
       if (mInputStream != null) {
-        int maxLength = MAX_LENGTH;
-        if (fd.isSequential()) {
-          if (mInputStream.skip(fd.getStartOffset()) != fd.getStartOffset()) {
-            result.exception = "Unable to skip file data!";
-          }
-          maxLength = fd.getSize() < MAX_LENGTH ? (int) fd.getSize() : MAX_LENGTH;
-        }
+        int maxLength = moveCursorIfSequential(fd, result);
 
         if (result.exception == null) {
           /* prepare buffer */
           final byte[] data = new byte[maxLength];
           int reads;
           long totalSequential = fd.getStartOffset();
-          if(totalSequential != 0) {
-            final int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
-            final long count = totalSequential / nbBytesPerLine;
-            final long remain = totalSequential - (count * nbBytesPerLine);
-            fd.setShiftOffset((int)remain);
-          }
+          evaluateShiftOffset(fd, totalSequential);
           boolean first = true;
           /* read data */
           while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
@@ -192,5 +181,25 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       close();
     }
     return result;
+  }
+
+  private int moveCursorIfSequential(FileData fd, Result result) throws IOException {
+    int maxLength = MAX_LENGTH;
+    if (fd.isSequential()) {
+      if (mInputStream.skip(fd.getStartOffset()) != fd.getStartOffset()) {
+        result.exception = "Unable to skip file data!";
+      }
+      maxLength = fd.getSize() < MAX_LENGTH ? (int) fd.getSize() : MAX_LENGTH;
+    }
+    return maxLength;
+  }
+
+  private void evaluateShiftOffset(FileData fd, long totalSequential) {
+    if(totalSequential != 0) {
+      final int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
+      final long count = totalSequential / nbBytesPerLine;
+      final long remain = totalSequential - (count * nbBytesPerLine);
+      fd.setShiftOffset((int)remain);
+    }
   }
 }
