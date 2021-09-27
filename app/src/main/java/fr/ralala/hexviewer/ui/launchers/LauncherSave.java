@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.dialog.SaveDialog;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
@@ -121,6 +122,8 @@ public class LauncherSave {
         UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
+        FileData fd = new FileData(mActivity, d_file.getUri(), false);
+        mActivity.setFileData(fd);
         new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
             mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
         mActivity.setTitle(mActivity.getResources().getConfiguration());
