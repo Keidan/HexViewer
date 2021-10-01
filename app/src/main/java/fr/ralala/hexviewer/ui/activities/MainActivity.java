@@ -38,6 +38,7 @@ import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.MemoryMonitor;
 
 /**
  * ******************************************************************************
@@ -592,6 +593,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPayloadHexHelper.getAdapter().clear();
       cancelSearch();
       findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
+      MemoryMonitor.forceGC(); /* force GC before */
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,

@@ -62,17 +62,22 @@ public class MemoryMonitor implements Runnable {
 
     // Check for & and handle low memory state
     float percentUsed = 100f * (1f - ((float) used / available));
-    if (percentUsed <= mThreshold && mMemoryListener != null) {
-      mMemoryListener.onLowAppMemory();
+    if (percentUsed <= mThreshold) {
+      if(mMemoryListener != null)
+        mMemoryListener.onLowAppMemory();
       if (mAutoStop)
         stop();
-      /* force cleanup */
-      System.runFinalization();
-      System.gc();
+      forceGC();
     }
 
     // Repeat after a delay
     if (mMemoryHandler != null)
       mMemoryHandler.postDelayed(this, mCheckFrequencyMs);
+  }
+
+  public static void forceGC() {
+    /* force cleanup */
+    System.runFinalization();
+    System.gc();
   }
 }

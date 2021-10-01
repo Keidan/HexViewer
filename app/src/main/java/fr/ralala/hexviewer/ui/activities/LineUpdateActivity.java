@@ -34,6 +34,7 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.MemoryMonitor;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -76,6 +77,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private LinearLayout mLlResult;
   private LineUpdateHexArrayAdapter mAdapterSource;
   private LineUpdateHexArrayAdapter mAdapterResult;
+  private MemoryMonitor mMemoryMonitor;
 
   /**
    * Starts an activity.
@@ -127,7 +129,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
 
     setContentView(R.layout.activity_line_update);
     mApp = ApplicationCtx.getInstance();
-
+    mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
     ListView lvSource = findViewById(R.id.lvSource);
     ListView lvResult = findViewById(R.id.lvResult);
     mLlSource = findViewById(R.id.llSource);
@@ -208,6 +210,22 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
     mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(mAdapterResult, mTilInputHex, mApp));
+  }
+
+  /**
+   * Called when the activity is resumed.
+   */
+  public void onResume() {
+    super.onResume();
+    mMemoryMonitor.start(null, false);
+  }
+
+  /**
+   * Called when the activity is destroyed.
+   */
+  public void onDestroy() {
+    super.onDestroy();
+    mMemoryMonitor.stop();
   }
 
   /**

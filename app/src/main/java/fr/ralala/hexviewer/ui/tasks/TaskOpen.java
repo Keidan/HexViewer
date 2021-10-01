@@ -154,8 +154,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         int maxLength = moveCursorIfSequential(fd, result);
 
         if (result.exception == null) {
-          System.runFinalization();
-          System.gc(); /* force GC before */
+          MemoryMonitor.forceGC(); /* force GC before */
           /* prepare buffer */
           final byte[] data = new byte[maxLength];
           int reads;
