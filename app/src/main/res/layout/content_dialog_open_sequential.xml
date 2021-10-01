@@ -10,12 +10,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dp">
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/gl05V"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.05" />
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/gl75V"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.75" />
 
     <TextView
       android:id="@+id/labelSize"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/size"
+      android:text="@string/file_size"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       android:layout_marginStart="5dp"
@@ -34,10 +46,32 @@
       style="@style/AppTheme.InputLabel"/>
 
     <TextView
+      android:id="@+id/labelSizePart"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/size_opening_part"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/textSize"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="10dp"
+      style="@style/AppTheme.InputLabel"/>
+
+    <TextView
+      android:id="@+id/textSizePart"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/textSize"
+      app:layout_constraintStart_toEndOf="@id/labelSizePart"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="10dp"
+      style="@style/AppTheme.InputLabel"/>
+
+    <TextView
       android:id="@+id/labelUnit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:layout_constraintTop_toBottomOf="@id/labelSize"
+      app:layout_constraintTop_toBottomOf="@id/labelSizePart"
       app:layout_constraintStart_toStartOf="parent"
       android:layout_marginStart="5dp"
       android:layout_marginEnd="5dp"
@@ -49,9 +83,22 @@
       android:layout_marginTop="15dp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:layout_constraintTop_toBottomOf="@id/textSize"
+      app:layout_constraintTop_toBottomOf="@id/textSizePart"
       app:layout_constraintStart_toEndOf="@id/labelUnit" />
 
+    <TextView
+      android:id="@+id/labelDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/labelUnit"
+      app:layout_constraintStart_toEndOf="@id/gl05V"
+      app:layout_constraintEnd_toStartOf="@id/gl75V"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="15dp"
+      android:singleLine="false"
+      android:text="@string/partial_file_opening_description"
+      style="@style/AppTheme.InputLabel"/>
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/tilStart"
       android:layout_marginStart="5dp"
@@ -60,7 +107,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:errorEnabled="true"
-      app:layout_constraintTop_toBottomOf="@id/labelUnit"
+      app:layout_constraintTop_toBottomOf="@id/labelDescription"
       app:layout_constraintStart_toStartOf="parent">
 
       <com.google.android.material.textfield.TextInputEditText

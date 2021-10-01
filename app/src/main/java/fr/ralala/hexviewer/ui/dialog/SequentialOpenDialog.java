@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.ui.dialog;
 import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,7 +42,7 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
   private static final int IDX_G_BYTES = 3;
   private final AlertDialog mDialog;
   private final MainActivity mActivity;
-  private TextView mTextSize;
+  private TextView mTextSizePart;
   private AppCompatSpinner mSpUnit;
   private TextInputLayout mTilStart;
   private TextInputEditText mTietStart;
@@ -80,7 +79,8 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
     mFd = fd;
     mSequentialOpenListener = listener;
     mDialog.show();
-    mTextSize = mDialog.findViewById(R.id.textSize);
+    TextView textFileSize = mDialog.findViewById(R.id.textSize);
+    mTextSizePart = mDialog.findViewById(R.id.textSizePart);
     mSpUnit = mDialog.findViewById(R.id.spUnit);
     mTilStart = mDialog.findViewById(R.id.tilStart);
     TextInputEditText tietStart = mDialog.findViewById(R.id.tietStart);
@@ -90,16 +90,17 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
     long max;
     long start;
     long end;
+    long real = fd == null ? 0 : fd.getRealSize();
     if (fd != null && fd.isSequential()) {
       start = fd.getStartOffset();
       end = fd.getEndOffset();
       max = fd.getSize();
+      real = fd.getRealSize();
     } else {
       start = 0;
       end = fd == null ? 0 : fd.getRealSize();
       max = end;
     }
-    Log.e("exc", "start: " + start + ", end: " + end + ", max: " + max);
     if (mSpUnit != null) {
       List<String> units = new ArrayList<>();
       units.add(mActivity.getString(R.string.unit_byte_full));
@@ -129,8 +130,10 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
       tietEnd.addTextChangedListener(this);
       mTietEnd = tietEnd;
     }
-    if (mTextSize != null)
-      mTextSize.setText(SysHelper.sizeToHuman(mActivity, max));
+    if (textFileSize != null)
+      textFileSize.setText(SysHelper.sizeToHuman(mActivity, real));
+    if (mTextSizePart != null)
+      mTextSizePart.setText(SysHelper.sizeToHuman(mActivity, max));
     mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> {
       if (mSequentialOpenListener != null)
         mSequentialOpenListener.onSequentialCancel();
@@ -145,7 +148,7 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
    * Evaluates the size.
    */
   private void evaluateSize() {
-    mTextSize.setText("0");
+    mTextSizePart.setText("0");
     if (!checkValues())
       return;
     String s_start = Objects.requireNonNull(mTietStart.getText()).toString();
@@ -154,7 +157,7 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
       long start = getValue(s_start);
       long end = getValue(s_end);
       long size = Math.abs(end - start);
-      mTextSize.setText(SysHelper.sizeToHuman(mActivity, size));
+      mTextSizePart.setText(SysHelper.sizeToHuman(mActivity, size));
     }
   }
 

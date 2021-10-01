@@ -97,5 +97,8 @@
   <string name="error_open_sequential_add_or_delete_data">Dans ce mode, il n\'est pas possible d\'ajouter ou de supprimer des données</string>
   <string name="start_offset">Début</string>
   <string name="end_offset">Fin</string>
-  <string name="unit">Unité :</string>
+  <string name="unit">Unité</string>
+  <string name="file_size">Taille du fichier</string>
+  <string name="size_opening_part">Taille de la partie à ouvrir</string>
+  <string name="partial_file_opening_description">Saisissez le début et la fin de la zone que vous souhaitez ouvrir.</string>
 </resources>
