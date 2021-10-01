@@ -101,4 +101,7 @@
   <string name="file_size">Taille du fichier</string>
   <string name="size_opening_part">Taille de la partie à ouvrir</string>
   <string name="partial_file_opening_description">Saisissez le début et la fin de la zone que vous souhaitez ouvrir.</string>
+  <string name="not_enough_memory">Impossible d\'exécuter la commande car il n\'y a pas assez de mémoire pour cette application.</string>
+  <string name="memory_threshold_title">Seuil de mémoire</string>
+  <string name="memory_threshold_description">Valeur seuil de la limite de mémoire avant que l\'ouverture d\'un fichier ne soit interrompue.</string>
 </resources>

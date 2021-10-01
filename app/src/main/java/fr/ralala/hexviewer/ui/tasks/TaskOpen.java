@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -16,6 +17,7 @@ import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.MemoryMonitor;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -30,15 +32,17 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.Result> {
+public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.Result> implements MemoryMonitor.MemoryListener {
   private static final String TAG = TaskOpen.class.getSimpleName();
+  private final Context mContext;
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 20000;
   private final HexTextArrayAdapter mAdapter;
   private final OpenResultListener mListener;
   private InputStream mInputStream = null;
   private final boolean mAddRecent;
   private final ContentResolver mContentResolver;
-  private final Context mContext;
+  private final MemoryMonitor mMemoryMonitor;
+  private final AtomicBoolean mLowMemory = new AtomicBoolean(false);
 
   public static class Result {
     private List<LineEntry> listHex = null;
@@ -54,6 +58,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
                   final HexTextArrayAdapter adapter,
                   final OpenResultListener listener, final boolean addRecent) {
     super(activity, true);
+    mMemoryMonitor = new MemoryMonitor(ApplicationCtx.getInstance().getMemoryThreshold(), 2000);
     mContext = activity;
     mContentResolver = activity.getContentResolver();
     mAdapter = adapter;
@@ -69,6 +74,8 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   @Override
   public ContentResolver onPreExecute() {
     super.onPreExecute();
+    mLowMemory.set(false);
+    mMemoryMonitor.start(this, true);
     mAdapter.clear();
     return mContentResolver;
   }
@@ -81,7 +88,10 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   @Override
   public void onPostExecute(final Result result) {
     super.onPostExecute(result);
-    if (isCancelled())
+    mMemoryMonitor.stop();
+    if (mLowMemory.get())
+      UIHelper.toast(mContext, mContext.getString(R.string.not_enough_memory));
+    else if (isCancelled())
       UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
     else if (result.exception != null)
       UIHelper.toast(mContext, mContext.getString(R.string.exception) + ": " + result.exception);
@@ -92,7 +102,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       }
     }
     if (mListener != null)
-      mListener.onOpenResult(result.exception == null && !isCancelled(), true);
+      mListener.onOpenResult(result.exception == null && !isCancelled() && !mLowMemory.get(), true);
     super.onPostExecute(result);
   }
 
@@ -144,6 +154,8 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         int maxLength = moveCursorIfSequential(fd, result);
 
         if (result.exception == null) {
+          System.runFinalization();
+          System.gc(); /* force GC before */
           /* prepare buffer */
           final byte[] data = new byte[maxLength];
           int reads;
@@ -195,11 +207,16 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   }
 
   private void evaluateShiftOffset(FileData fd, long totalSequential) {
-    if(totalSequential != 0) {
+    if (totalSequential != 0) {
       final int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
       final long count = totalSequential / nbBytesPerLine;
       final long remain = totalSequential - (count * nbBytesPerLine);
-      fd.setShiftOffset((int)remain);
+      fd.setShiftOffset((int) remain);
     }
+  }
+
+  public void onLowAppMemory() {
+    mLowMemory.set(true);
+    mCancel.set(true);
   }
 }

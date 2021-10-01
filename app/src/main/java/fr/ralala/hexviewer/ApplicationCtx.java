@@ -14,6 +14,7 @@ import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.models.RecentlyOpened;
+import fr.ralala.hexviewer.models.SettingsKeys;
 
 /**
  * ******************************************************************************
@@ -27,50 +28,7 @@ import fr.ralala.hexviewer.models.RecentlyOpened;
  * </p>
  * ******************************************************************************
  */
-public class ApplicationCtx extends Application {
-  public static final String CFG_ABBREVIATE_PORTRAIT = "abbreviatePortrait";
-  public static final String CFG_ABBREVIATE_LANDSCAPE = "abbreviateLandscape";
-  public static final String CFG_LISTS_PORTRAIT = "listsPortrait";
-  public static final String CFG_LISTS_LANDSCAPE = "listsLandscape";
-  public static final String CFG_PORTRAIT_HEX_DISPLAY_DATA = "hexDisplayData";
-  public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT = "hexRowHeight";
-  public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO = "hexRowHeightAuto";
-  public static final String CFG_PORTRAIT_HEX_FONT_SIZE = "hexFontSize";
-  public static final String CFG_LANDSCAPE_HEX_DISPLAY_DATA = "hexDisplayDataLandscape";
-  public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT = "hexRowHeightLandscape";
-  public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO = "hexRowHeightAutoLandscape";
-  public static final String CFG_LANDSCAPE_HEX_FONT_SIZE = "hexFontSizeLandscape";
-  public static final String CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS = "hexDisplayDataLineNumbers";
-  public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS = "hexRowHeightLineNumbers";
-  public static final String CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS = "hexRowHeightAutoLineNumbers";
-  public static final String CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS = "hexFontSizeLineNumbers";
-  public static final String CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS = "hexDisplayDataLineNumbersLandscape";
-  public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS = "hexRowHeightLineNumbersLandscape";
-  public static final String CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS = "hexRowHeightAutoLineNumbersLandscape";
-  public static final String CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS = "hexFontSizeLineNumbersLandscape";
-  public static final String CFG_PORTRAIT_PLAIN_ROW_HEIGHT = "plainRowHeight";
-  public static final String CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAuto";
-  public static final String CFG_PORTRAIT_PLAIN_FONT_SIZE = "plainFontSize";
-  public static final String CFG_LANDSCAPE_PLAIN_ROW_HEIGHT = "plainRowHeightLandscape";
-  public static final String CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO = "plainRowHeightAutoLandscape";
-  public static final String CFG_LANDSCAPE_PLAIN_FONT_SIZE = "plainFontSizeLandscape";
-  public static final String CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT = "lineEditRowHeight";
-  public static final String CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO = "lineEditRowHeightAuto";
-  public static final String CFG_PORTRAIT_LINE_EDIT_FONT_SIZE = "lineEditFontSize";
-  public static final String CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT = "lineEditRowHeightLandscape";
-  public static final String CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO = "lineEditRowHeightAutoLandscape";
-  public static final String CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE = "lineEditFontSizeLandscape";
-  public static final String CFG_SMART_INPUT = "smartInput";
-  public static final String CFG_RECENTLY_OPEN = "recentlyOpen";
-  public static final String CFG_VERSION = "version";
-  public static final String CFG_LICENSE = "license";
-  public static final String CFG_LANGUAGE = "language";
-  public static final String CFG_LINES_NUMBER = "linesNumber";
-  public static final String CFG_OVERWRITE = "overwrite";
-  public static final String CFG_SCREEN_ORIENTATION = "screenOrientation";
-  public static final String CFG_NB_BYTES_PER_LINE = "nbBytesPerLine";
-  public static final String CFG_LINE_EDIT_SRC_EXPAND = "lineEditSrcExpanded";
-  public static final String CFG_LINE_EDIT_RST_EXPAND = "lineEditRstExpanded";
+public class ApplicationCtx extends Application implements SettingsKeys {
   private SharedPreferences mSharedPreferences;
   private String mDefaultAbbreviatePortrait;
   private String mDefaultAbbreviateLandscape;
@@ -91,6 +49,7 @@ public class ApplicationCtx extends Application {
   private String mDefaultNbBytesPerLine;
   private RecentlyOpened mRecentlyOpened;
   private boolean mSequential = false;
+  private String mDefaultMemoryThreshold;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -109,6 +68,7 @@ public class ApplicationCtx extends Application {
     mDefaultOverwrite = Boolean.parseBoolean(getString(R.string.default_overwrite));
     mDefaultScreenOrientation = getString(R.string.default_screen_orientation);
     mDefaultNbBytesPerLine = getString(R.string.default_nb_bytes_per_line);
+    mDefaultMemoryThreshold = getString(R.string.default_memory_threshold);
 
     mListSettingsHexPortrait = new ListSettings(this,
         CFG_PORTRAIT_HEX_DISPLAY_DATA,
@@ -189,6 +149,22 @@ public class ApplicationCtx extends Application {
   }
 
   /* ---------- Settings ---------- */
+
+  /**
+   * Returns the memory threshold.
+   *
+   * @return int
+   */
+  public int getMemoryThreshold() {
+    try {
+      String s = getPref(this).getString(CFG_MEMORY_THRESHOLD, mDefaultMemoryThreshold);
+      if (s.endsWith("%"))
+        s = s.substring(0, s.length() - 1);
+      return Integer.parseInt(s);
+    } catch (Exception ignore) {
+      return Integer.parseInt(mDefaultMemoryThreshold);
+    }
+  }
 
   /**
    * Changes the default state specifying whether the source section (LineEdit) is expanded or collapsed.

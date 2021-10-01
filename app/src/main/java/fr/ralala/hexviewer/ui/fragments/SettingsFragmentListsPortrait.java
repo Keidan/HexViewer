@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.SettingsKeys;
 
 /**
  * ******************************************************************************
@@ -53,20 +53,20 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.preferences_lists_portrait, rootKey);
 
-    CheckBoxPreference hexDisplayDataPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_DISPLAY_DATA);
-    CheckBoxPreference hexDisplayDataLineNumbersPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS);
-    mHexRowHeightAutoPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO);
-    mHexRowHeightPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT);
-    mHexFontSizePortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_FONT_SIZE);
-    mHexRowHeightAutoLineNumbersPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS);
-    mHexRowHeightLineNumbersPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS);
-    mHexFontSizeLineNumbersPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS);
-    mPlainRowHeightAutoPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO);
-    mPlainRowHeightPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_ROW_HEIGHT);
-    mPlainFontSizePortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_PLAIN_FONT_SIZE);
-    mLineEditRowHeightAutoPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO);
-    mLineEditRowHeightPortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT);
-    mLineEditFontSizePortrait = findPreference(ApplicationCtx.CFG_PORTRAIT_LINE_EDIT_FONT_SIZE);
+    CheckBoxPreference hexDisplayDataPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA);
+    CheckBoxPreference hexDisplayDataLineNumbersPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS);
+    mHexRowHeightAutoPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO);
+    mHexRowHeightPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT);
+    mHexFontSizePortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE);
+    mHexRowHeightAutoLineNumbersPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS);
+    mHexRowHeightLineNumbersPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS);
+    mHexFontSizeLineNumbersPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS);
+    mPlainRowHeightAutoPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO);
+    mPlainRowHeightPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_PLAIN_ROW_HEIGHT);
+    mPlainFontSizePortrait = findPreference(SettingsKeys.CFG_PORTRAIT_PLAIN_FONT_SIZE);
+    mLineEditRowHeightAutoPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO);
+    mLineEditRowHeightPortrait = findPreference(SettingsKeys.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT);
+    mLineEditFontSizePortrait = findPreference(SettingsKeys.CFG_PORTRAIT_LINE_EDIT_FONT_SIZE);
 
     mHexRowHeightAutoPortrait.setOnPreferenceClickListener(this);
     mHexRowHeightPortrait.setOnPreferenceClickListener(this);

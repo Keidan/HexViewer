@@ -17,6 +17,14 @@
       android:summary="@string/settings_pref_summary_language" />
     <androidx.preference.ListPreference
       app:iconSpaceReserved="false"
+      android:entries="@array/memory_thresholds"
+      android:entryValues="@array/memory_thresholds"
+      android:key="memoryThreshold"
+      android:title="@string/memory_threshold_title"
+      android:summary="@string/memory_threshold_description"
+      android:defaultValue="@string/default_memory_threshold"/>
+    <androidx.preference.ListPreference
+      app:iconSpaceReserved="false"
       android:entries="@array/screen_orientation_entries"
       android:entryValues="@array/screen_orientation_values"
       android:key="screenOrientation"

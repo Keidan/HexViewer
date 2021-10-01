@@ -101,4 +101,7 @@
     <string name="file_size">Размер файла</string>
     <string name="size_opening_part">Размер открываемой части</string>
     <string name="partial_file_opening_description">Введите начало и конец области, которую нужно открыть.</string>
+    <string name="not_enough_memory">Невозможно выполнить команду из-за недостатка памяти.</string>
+    <string name="memory_threshold_title">Memory threshold</string>
+    <string name="memory_threshold_description">Threshold value for the memory limit before the opening of a file is aborted.</string>
 </resources>

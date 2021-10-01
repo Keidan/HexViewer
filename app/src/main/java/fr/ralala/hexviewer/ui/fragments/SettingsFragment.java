@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.BuildConfig;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.SettingsKeys;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsLandscapeActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsPortraitActivity;
@@ -58,15 +58,15 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.preferences, rootKey);
 
-    mAbbreviatePortrait = findPreference(ApplicationCtx.CFG_ABBREVIATE_PORTRAIT);
-    mAbbreviateLandscape = findPreference(ApplicationCtx.CFG_ABBREVIATE_LANDSCAPE);
-    mSettingsListsPortrait = findPreference(ApplicationCtx.CFG_LISTS_PORTRAIT);
-    mSettingsListsLandscape = findPreference(ApplicationCtx.CFG_LISTS_LANDSCAPE);
-    mLicense = findPreference(ApplicationCtx.CFG_LICENSE);
-    mVersion = findPreference(ApplicationCtx.CFG_VERSION);
-    mLanguage = findPreference(ApplicationCtx.CFG_LANGUAGE);
-    mScreenOrientation = findPreference(ApplicationCtx.CFG_SCREEN_ORIENTATION);
-    mNbBytesPerLine = findPreference(ApplicationCtx.CFG_NB_BYTES_PER_LINE);
+    mAbbreviatePortrait = findPreference(SettingsKeys.CFG_ABBREVIATE_PORTRAIT);
+    mAbbreviateLandscape = findPreference(SettingsKeys.CFG_ABBREVIATE_LANDSCAPE);
+    mSettingsListsPortrait = findPreference(SettingsKeys.CFG_LISTS_PORTRAIT);
+    mSettingsListsLandscape = findPreference(SettingsKeys.CFG_LISTS_LANDSCAPE);
+    mLicense = findPreference(SettingsKeys.CFG_LICENSE);
+    mVersion = findPreference(SettingsKeys.CFG_VERSION);
+    mLanguage = findPreference(SettingsKeys.CFG_LANGUAGE);
+    mScreenOrientation = findPreference(SettingsKeys.CFG_SCREEN_ORIENTATION);
+    mNbBytesPerLine = findPreference(SettingsKeys.CFG_NB_BYTES_PER_LINE);
 
     mAbbreviatePortrait.setOnPreferenceClickListener(this);
     mAbbreviateLandscape.setOnPreferenceClickListener(this);
@@ -81,11 +81,11 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
     mLanguage.setDefaultValue(mApp.getApplicationLanguage(getContext()));
-
     mScreenOrientation.setDefaultValue(mApp.getScreenOrientationStr());
+    mNbBytesPerLine.setDefaultValue("" + mApp.getNbBytesPerLine());
+
     refreshUiAccordingToOrientation(null);
 
-    mNbBytesPerLine.setDefaultValue("" + mApp.getNbBytesPerLine());
   }
 
   /**

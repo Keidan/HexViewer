@@ -76,6 +76,7 @@
     <string name="default_line_edit_row_height_auto_landscape" translatable="false">true</string>
     <string name="default_line_edit_row_height_landscape" translatable="false">100</string>
     <string name="default_line_edit_font_size_landscape" translatable="false">16</string>
+    <string name="default_memory_threshold" translatable="false">5%</string>
 
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>
@@ -145,4 +146,7 @@
     <string name="file_size">File size</string>
     <string name="size_opening_part">Size opening part</string>
     <string name="partial_file_opening_description">Enter the beginning and end of the area you want to open.</string>
+    <string name="not_enough_memory">Unable to execute the command because there\'s not enough memory for this application.</string>
+    <string name="memory_threshold_title">Memory threshold</string>
+    <string name="memory_threshold_description">Threshold value for the memory limit before the opening of a file is aborted.</string>
 </resources>

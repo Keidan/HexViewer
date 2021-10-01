@@ -103,4 +103,7 @@
     <string name="file_size">Größe der Datei</string>
     <string name="size_opening_part">Größe des zu öffnenden Bereichs</string>
     <string name="partial_file_opening_description">Geben Sie den Anfang und das Ende des Bereichs ein, den Sie öffnen möchten.</string>
+    <string name="not_enough_memory">Der Befehl kann nicht ausgeführt werden, weil nicht genügend Speicher für diese Anwendung vorhanden ist.</string>
+    <string name="memory_threshold_title">Schwellenwert für den Speicher</string>
+    <string name="memory_threshold_description">Schwellenwert für die Speichergrenze, bevor das Öffnen einer Datei abgebrochen wird.</string>
 </resources>

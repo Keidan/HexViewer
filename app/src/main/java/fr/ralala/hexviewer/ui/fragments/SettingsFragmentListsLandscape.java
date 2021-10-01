@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.SettingsKeys;
 
 /**
  * ******************************************************************************
@@ -53,20 +53,20 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.preferences_lists_landscape, rootKey);
 
-    CheckBoxPreference hexDisplayDataLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_DISPLAY_DATA);
-    CheckBoxPreference hexDisplayDataLineNumbersLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS);
-    mHexRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO);
-    mHexRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_ROW_HEIGHT);
-    mHexFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_FONT_SIZE);
-    mHexRowHeightAutoLineNumbersLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS);
-    mHexRowHeightLineNumbersLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS);
-    mHexFontSizeLineNumbersLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS);
-    mPlainRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO);
-    mPlainRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT);
-    mPlainFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_PLAIN_FONT_SIZE);
-    mLineEditRowHeightAutoLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO);
-    mLineEditRowHeightLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT);
-    mLineEditFontSizeLandscape = findPreference(ApplicationCtx.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
+    CheckBoxPreference hexDisplayDataLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_DISPLAY_DATA);
+    CheckBoxPreference hexDisplayDataLineNumbersLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS);
+    mHexRowHeightAutoLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO);
+    mHexRowHeightLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT);
+    mHexFontSizeLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE);
+    mHexRowHeightAutoLineNumbersLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS);
+    mHexRowHeightLineNumbersLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS);
+    mHexFontSizeLineNumbersLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS);
+    mPlainRowHeightAutoLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO);
+    mPlainRowHeightLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT);
+    mPlainFontSizeLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_PLAIN_FONT_SIZE);
+    mLineEditRowHeightAutoLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO);
+    mLineEditRowHeightLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT);
+    mLineEditFontSizeLandscape = findPreference(SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
 
     mHexRowHeightAutoLandscape.setOnPreferenceClickListener(this);
     mHexRowHeightLandscape.setOnPreferenceClickListener(this);
