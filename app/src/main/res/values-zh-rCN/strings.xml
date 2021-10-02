@@ -103,8 +103,8 @@
   <string name="file_size">文件大小</string>
   <string name="size_opening_part">要打开部分大小</string>
   <string name="partial_file_opening_description">输入要打开部分的初值和终值。</string>
-  <string name="not_enough_memory">不能完成命令，因为没有足够内存。</string>
-  <string name="memory_threshold_title">Memory threshold</string>
-  <string name="memory_threshold_description">Threshold value for the memory limit before the opening of a file is aborted.</string>
+  <string name="not_enough_memory">无法执行命令，因可供此程序使用的内存不足。</string>
+  <string name="memory_threshold_title">内存阈值</string>
+  <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
 
 </resources>
