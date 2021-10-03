@@ -1,0 +1,17 @@
+* Fix a crash when closing the application.
+* Now the lines are indexed according to the position in the file (in the partial opening mode).
+* Fix a bug with the partial file opening context.
+* Changing the name of the "Sequential opening" menu to "Partial file opening" and adding a shortcut button on the main page.
+* Fix a bug that overwrites the source file and creates an empty file when the user uses the "Save As" menu.
+* Modification of the display of the dialog box used for the partial opening of files.
+* Added a test on the amount of memory still available for the application when opening a file.
+
+Please note that new text additions are mostly translated via DeepL (German+Spanish).
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
