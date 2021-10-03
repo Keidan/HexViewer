@@ -158,6 +158,8 @@ public class ApplicationCtx extends Application implements SettingsKeys {
   public int getMemoryThreshold() {
     try {
       String s = getPref(this).getString(CFG_MEMORY_THRESHOLD, mDefaultMemoryThreshold);
+      if (s.startsWith("~"))
+        s = s.substring(1);
       if (s.endsWith("%"))
         s = s.substring(0, s.length() - 1);
       return Integer.parseInt(s);

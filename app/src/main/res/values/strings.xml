@@ -76,7 +76,7 @@
     <string name="default_line_edit_row_height_auto_landscape" translatable="false">true</string>
     <string name="default_line_edit_row_height_landscape" translatable="false">100</string>
     <string name="default_line_edit_font_size_landscape" translatable="false">16</string>
-    <string name="default_memory_threshold" translatable="false">5%</string>
+    <string name="default_memory_threshold" translatable="false">~5%</string>
 
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>
