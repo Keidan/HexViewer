@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -50,6 +51,7 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
   private TextInputEditText mTietEnd;
   private FileData mFd;
   private SequentialOpenListener mSequentialOpenListener;
+  private boolean mIgnore = false;
 
   public interface SequentialOpenListener {
     void onSequentialOpen();
@@ -153,12 +155,10 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
       return;
     String s_start = Objects.requireNonNull(mTietStart.getText()).toString();
     String s_end = Objects.requireNonNull(mTietEnd.getText()).toString();
-    if (mSpUnit.getSelectedItemId() == IDX_BYTES) {
-      long start = getValue(s_start);
-      long end = getValue(s_end);
-      long size = Math.abs(end - start);
-      mTextSizePart.setText(SysHelper.sizeToHuman(mActivity, size));
-    }
+    long start = getValue(s_start, mTietStart);
+    long end = getValue(s_end, mTietEnd);
+    long size = Math.abs(end - start);
+    mTextSizePart.setText(SysHelper.sizeToHuman(mActivity, size));
   }
 
   /**
@@ -171,8 +171,8 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
     String s_end = mTietEnd == null || mTietEnd.getText() == null ? "" : mTietEnd.getText().toString();
     boolean valid = checkEmpty(s_start, s_end);
     if (valid) {
-      long start = getValue(s_start);
-      long end = getValue(s_end);
+      long start = getValue(s_start, null);
+      long end = getValue(s_end, null);
       valid = checkForSize(start, end);
       if (valid) {
         if (end <= start) {
@@ -198,9 +198,10 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
    * Gets the value according to the unit.
    *
    * @param s_value The string value.
+   * @param edit The EditText.
    * @return The long value.
    */
-  private long getValue(String s_value) {
+  private long getValue(String s_value, EditText edit) {
     if (mSpUnit.getSelectedItemId() == IDX_K_BYTES) {
       try {
         return (long) (Float.parseFloat(s_value) * SysHelper.SIZE_1KB);
@@ -221,7 +222,23 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
       }
     } else {
       try {
-        return (long) Float.parseFloat(s_value);
+        String copy = s_value;
+        int idx;
+        if((idx = s_value.indexOf('.')) != -1) {
+          copy = copy.substring(0, idx);
+          if(edit != null) {
+            edit.setText(copy);
+            edit.setSelection(copy.length());
+          }
+        }
+        if((idx = s_value.indexOf(',')) != -1) {
+          copy = copy.substring(0, idx);
+          if(edit != null) {
+            edit.setText(copy);
+            edit.setSelection(copy.length());
+          }
+        }
+        return Long.parseLong(copy);
       } catch (Exception e) {
         return 0;
       }
@@ -245,8 +262,8 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
   @Override
   public void onClick(View v) {
     if (checkValues()) {
-      mFd.setOffsets(getValue(Objects.requireNonNull(mTietStart.getText()).toString()),
-          getValue(Objects.requireNonNull(mTietEnd.getText()).toString()));
+      mFd.setOffsets(getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null),
+          getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null));
       mDialog.dismiss();
       mActivity.setOrphanDialog(null);
       if (mSequentialOpenListener != null)
@@ -322,7 +339,11 @@ public class SequentialOpenDialog implements View.OnClickListener, AdapterView.O
    */
   @Override
   public void afterTextChanged(Editable s) {
+    if(mIgnore)
+      return;
+    mIgnore = true; // prevent infinite loop
     evaluateSize();
+    mIgnore = false; // release, so the TextWatcher start to listen again.
   }
 
   /**
