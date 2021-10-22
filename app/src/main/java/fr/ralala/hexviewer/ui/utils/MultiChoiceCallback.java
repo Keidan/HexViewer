@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.StringRes;
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -94,7 +93,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   @Override
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     if (item.getItemId() == R.id.action_clear) {
-      if(mActivity.getFileData().isSequential()) {
+      if (mActivity.getFileData().isSequential()) {
         UIHelper.showErrorDialog(mActivity, mActivity.getFileData().getName(),
             mActivity.getString(R.string.error_open_sequential_add_or_delete_data));
         return false;
@@ -201,7 +200,8 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         byteArrayOutputStream.write(b);
     }
     mActivity.getLauncherLineUpdate().startActivity(byteArrayOutputStream.toByteArray(),
-        selected.get(0), selected.size());
+        selected.get(0), selected.size(),
+        mActivity.getFileData().getShiftOffset(), mAdapter.getCurrentLine(selected.get(0)));
     // Close CAB
     new Handler().postDelayed(mode::finish, 500);
     return true;

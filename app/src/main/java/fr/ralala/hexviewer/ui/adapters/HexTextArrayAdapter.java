@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -61,6 +62,10 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
 
   public void setStartOffset(final long startOffset) {
     mStartOffset = startOffset;
+  }
+
+  public long getStartOffset() {
+    return mStartOffset;
   }
 
   /**
@@ -173,12 +178,16 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     String txt;
     Configuration cfg = getContext().getResources().getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE && mUserConfigLandscape.isDataColumnNotDisplayed())
-      txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? 48 : 24);
+      txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8);
     else if (mUserConfigPortrait != null && cfg.orientation == Configuration.ORIENTATION_PORTRAIT && mUserConfigPortrait.isDataColumnNotDisplayed())
-      txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? 48 : 24);
+      txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8);
     else
       txt = text;
     return txt;
+  }
+
+  public long getCurrentLine(int position) {
+    return UIHelper.getCurrentLine(position, mStartOffset, mApp.getNbBytesPerLine());
   }
 
   /**
@@ -194,10 +203,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       LineEntry fd = getItem(position);
 
       if (mApp.isLineNumber()) {
-        final int nbBytesPerLines = mApp.getNbBytesPerLine();
-        final long startOffset = mStartOffset == 0 ? 0 : (mStartOffset / nbBytesPerLines);
-        final int maxLength = String.format("%X", (startOffset + getEntries().getItemsCount()) * nbBytesPerLines).length();
-        final String s = String.format("%0" + maxLength + "X", (startOffset + position) * nbBytesPerLines);
+        final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
+        final String s = String.format("%0" + maxLength + "X", getCurrentLine(position));
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);

@@ -40,6 +40,19 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class UIHelper {
 
   /**
+   * Calculates the current line number from the file view.
+   *
+   * @param position    The position in the list adapter.
+   * @param startOffset The start offset in the file (in case of partial opening).
+   * @param maxByRow    Max bytes by row (see SysHelper.MAX_BY_ROW_xx).
+   * @return The current actual line number.
+   */
+  public static long getCurrentLine(int position, long startOffset, int maxByRow) {
+    final long so = startOffset == 0 ? 0 : (startOffset / maxByRow);
+    return (so + position) * maxByRow;
+  }
+
+  /**
    * Displays an error dialog.
    *
    * @param context The Android context.

@@ -56,17 +56,20 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
   private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
   private static final String ACTIVITY_EXTRA_SEQUENTIAL = "ACTIVITY_EXTRA_SEQUENTIAL";
+  private static final String ACTIVITY_EXTRA_SHIFT_OFFSET = "ACTIVITY_EXTRA_SHIFT_OFFSET";
+  private static final String ACTIVITY_EXTRA_START_OFFSET = "ACTIVITY_EXTRA_START_OFFSET";
   public static final String RESULT_REFERENCE_STRING = "RESULT_REFERENCE_STRING";
   public static final String RESULT_NEW_STRING = "RESULT_NEW_STRING";
   public static final String RESULT_POSITION = "RESULT_POSITION";
   public static final String RESULT_NB_LINES = "RESULT_NB_LINES";
-
   private ApplicationCtx mApp = null;
   private TextInputEditText mEtInputHex;
   private TextInputLayout mTilInputHex;
   private int mPosition = -1;
   private int mNbLines = 0;
   private int mRefLength = 0;
+  private int mShiftOffset = 0;
+  private long mStartOffset = 0;
   private String mFile;
   private boolean mChange;
   private boolean mSequential;
@@ -95,7 +98,9 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
                                    final int position,
                                    final int nbLines,
                                    final boolean change,
-                                   final boolean sequential) {
+                                   final boolean sequential,
+                                   final int shiftOffset,
+                                   final long startOffset) {
     Intent intent = new Intent(c, LineUpdateActivity.class);
     intent.putExtra(ACTIVITY_EXTRA_TEXTS, texts);
     intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
@@ -103,6 +108,8 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
     intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
     intent.putExtra(ACTIVITY_EXTRA_SEQUENTIAL, sequential);
+    intent.putExtra(ACTIVITY_EXTRA_SHIFT_OFFSET, shiftOffset);
+    intent.putExtra(ACTIVITY_EXTRA_START_OFFSET, startOffset);
     activityResultLauncher.launch(intent);
   }
 
@@ -176,8 +183,16 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       Bundle extras = getIntent().getExtras();
       byte[] array = extras.getByteArray(ACTIVITY_EXTRA_TEXTS);
       mRefLength = array.length;
-      List<LineEntry> li = SysHelper.formatBuffer(array, null, SysHelper.MAX_BY_ROW_8);
+      mShiftOffset = extras.getInt(ACTIVITY_EXTRA_SHIFT_OFFSET);
+      mStartOffset = extras.getLong(ACTIVITY_EXTRA_START_OFFSET);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
+      if (mPosition != 0)
+        mShiftOffset = 0;
+      if (mShiftOffset > SysHelper.MAX_BY_ROW_8) {
+        mStartOffset++;
+        mShiftOffset -= SysHelper.MAX_BY_ROW_8;
+      }
+      List<LineEntry> li = SysHelper.formatBuffer(array, null, SysHelper.MAX_BY_ROW_8, mShiftOffset);
       mNbLines = extras.getInt(ACTIVITY_EXTRA_NB_LINES);
       mFile = extras.getString(ACTIVITY_EXTRA_FILENAME);
       mChange = extras.getBoolean(ACTIVITY_EXTRA_CHANGE);
@@ -190,6 +205,8 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     }
     mAdapterSource = new LineUpdateHexArrayAdapter(this, lvSource, titleSource, list);
     mAdapterResult = new LineUpdateHexArrayAdapter(this, lvResult, titleResult, new ArrayList<>(list));
+    mAdapterSource.setStartOffset(mStartOffset);
+    mAdapterResult.setStartOffset(mStartOffset);
     lvSource.setAdapter(mAdapterSource);
     lvResult.setAdapter(mAdapterResult);
 
@@ -209,7 +226,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     if (mHex.endsWith(" "))
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
-    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(mAdapterResult, mTilInputHex, mApp));
+    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(mAdapterResult, mTilInputHex, mApp, mShiftOffset));
   }
 
   /**

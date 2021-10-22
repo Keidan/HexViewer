@@ -374,7 +374,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     for (Byte b : e.getRaw())
       byteArrayOutputStream.write(b);
-    mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position, 1);
+    mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position, 1,
+        mFileData.getShiftOffset(), mPayloadHexHelper.getAdapter().getCurrentLine(position));
   }
 
   /**

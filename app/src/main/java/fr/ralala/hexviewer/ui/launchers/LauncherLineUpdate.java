@@ -47,10 +47,11 @@ public class LauncherLineUpdate {
    * @param texts    The hex texts.
    * @param position The position in the list view.
    */
-  public void startActivity(final byte[] texts, final int position, final int nbLines) {
+  public void startActivity(final byte[] texts, final int position, final int nbLines, final int shiftOffset, final long startRow) {
     LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, texts,
         mActivity.getFileData().getName(), position, nbLines, mActivity.getUnDoRedo().isChanged(),
-        mActivity.getFileData().isSequential());
+        mActivity.getFileData().isSequential(),
+        shiftOffset, startRow);
   }
 
   /**
@@ -78,7 +79,7 @@ public class LauncherLineUpdate {
 
               final List<LineEntry> li = new ArrayList<>();
               int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
-              if(mActivity.getFileData().getShiftOffset() != 0) {
+              if (mActivity.getFileData().getShiftOffset() != 0) {
                 byte[] b = new byte[nbBytesPerLine - mActivity.getFileData().getShiftOffset()];
                 System.arraycopy(buf, 0, b, 0, b.length);
                 SysHelper.formatBuffer(li, b, b.length, null, nbBytesPerLine, mActivity.getFileData().getShiftOffset());

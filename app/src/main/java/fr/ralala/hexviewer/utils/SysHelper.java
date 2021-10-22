@@ -37,6 +37,8 @@ public class SysHelper {
   public static final float SIZE_1GB = 0x40000000;
   public static final int MAX_BY_ROW_16 = 16;
   public static final int MAX_BY_ROW_8 = 8;
+  public static final int MAX_BYTES_ROW_16 = 48;
+  public static final int MAX_BYTES_ROW_8 = MAX_BYTES_ROW_16 / 2;
 
   /**
    * Sorts keys.
@@ -152,6 +154,25 @@ public class SysHelper {
   /**
    * Formats a buffer (wireshark like).
    *
+   * @param buffer      The input buffer.
+   * @param cancel      Used to cancel this method.
+   * @param maxByRow    Max bytes by row.
+   * @param shiftOffset Offset used to shift the text to the end of the line.
+   * @return List<LineEntry>
+   */
+  public static List<LineEntry> formatBuffer(final byte[] buffer, AtomicBoolean cancel,
+                                             final int maxByRow, final int shiftOffset) {
+    List<LineEntry> lines = new ArrayList<>();
+    try {
+      formatBuffer(lines, buffer, buffer.length, cancel, maxByRow, shiftOffset);
+    } catch (IllegalArgumentException ignored) {
+    }
+    return lines;
+  }
+
+  /**
+   * Formats a buffer (wireshark like).
+   *
    * @param lines    The lines.
    * @param buffer   The input buffer.
    * @param length   The input buffer length.
@@ -168,17 +189,17 @@ public class SysHelper {
   /**
    * Formats a buffer (wireshark like).
    *
-   * @param lines    The lines.
-   * @param buffer   The input buffer.
-   * @param length   The input buffer length.
-   * @param cancel   Used to cancel this method.
-   * @param maxByRow Max bytes by row.
+   * @param lines       The lines.
+   * @param buffer      The input buffer.
+   * @param length      The input buffer length.
+   * @param cancel      Used to cancel this method.
+   * @param maxByRow    Max bytes by row.
    * @param shiftOffset Offset used to shift the text to the end of the line.
    */
   public static void formatBuffer(final List<LineEntry> lines, final byte[] buffer,
-                                             final int length,
-                                             AtomicBoolean cancel,
-                                             final int maxByRow, final int shiftOffset) throws IllegalArgumentException {
+                                  final int length,
+                                  AtomicBoolean cancel,
+                                  final int maxByRow, final int shiftOffset) throws IllegalArgumentException {
     int len = length;
     if (len > buffer.length)
       throw new IllegalArgumentException("length > buffer.length");
@@ -187,10 +208,10 @@ public class SysHelper {
     final List<Byte> currentLineRaw = new ArrayList<>();
     int currentIndex = 0;
     int bufferIndex = 0;
-    if(shiftOffset != 0) {
+    if (shiftOffset != 0) {
       currentIndex = shiftOffset;
       int n = shiftOffset;
-      while(n > 0) {
+      while (n > 0) {
         currentLine.append("   ");
         n--;
       }
@@ -319,7 +340,9 @@ public class SysHelper {
       while (i++ <= maxByRow - 1)
         off.append("   "); /* 3 spaces ex: "00 " */
       off.append("  "); /* 1 or 2 spaces separator */
-      String s = currentLine.trim();
+      String s = currentLine;
+      if (s.endsWith(" "))
+        s = s.substring(0, s.length() - 1);
       lines.add(new LineEntry(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw)));
     }
   }
@@ -345,6 +368,4 @@ public class SysHelper {
   public static boolean isEven(final int num) {
     return (num % 2) == 0;
   }
-
-
 }

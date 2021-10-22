@@ -342,4 +342,14 @@ public class ExampleUnitTest {
   }
 
 
+  @Test
+  public void testFormatBuffer35() {
+    byte[] bytes = {0, 1, 2, 3};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 1);
+
+    assertEquals(1, list.size());
+    assertEquals("   00 01 02 03           ....", list.get(0).getPlain());
+  }
+
 }

@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.ui.utils;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,12 +46,16 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private boolean mIgnore = false;// indicates if the change was made by the TextWatcher itself.
   private boolean mRemove = false;
   private int mStartOffsetForOverwrite = 0;
+  private int mShiftOffset;
 
   public LineUpdateTextWatcher(LineUpdateHexArrayAdapter resultAdapter,
-                               TextInputLayout layout, ApplicationCtx app) {
+                               TextInputLayout layout, ApplicationCtx app, final int shiftOffset) {
     mResultAdapter = resultAdapter;
+    mShiftOffset = shiftOffset;
     mLayout = layout;
     mApp = app;
+    if (mShiftOffset > SysHelper.MAX_BY_ROW_8)
+      mShiftOffset -= SysHelper.MAX_BY_ROW_8;
   }
 
   /**
@@ -82,7 +85,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       mLayout.setError(" "); /* only for the color */
     } else {
       byte[] bytes = SysHelper.hex2bin(validate);
-      List<LineEntry> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8);
+      List<LineEntry> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8, mShiftOffset);
       mResultAdapter.clear();
       for (LineEntry ld : li)
         mResultAdapter.add(ld.toString());
@@ -173,7 +176,6 @@ public class LineUpdateTextWatcher implements TextWatcher {
     mAfterSpace = s.length() > 0 && s.charAt(Math.max(0, start - 1)) == ' ';
     boolean beforeSpace = s.length() > 0 && s.charAt(Math.max(0, Math.min(start, s.length() - 1))) == ' ';
     mBetweenDigits = start != s.length() && !mAfterSpace && !beforeSpace;
-    Log.i(getClass().getName(), "afterSpace: " + mAfterSpace + ", beforeSpace: " + beforeSpace + ", betweenDigits: " + mBetweenDigits);
     mOldString = s.toString();
   }
 

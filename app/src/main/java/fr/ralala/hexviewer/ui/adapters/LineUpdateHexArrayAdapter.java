@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.ListSettings;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -37,15 +38,21 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
   private final List<String> mEntryList;
   private final HexTextArrayAdapter.LineNumbersTitle mTitle;
   private final ListView mListView;
+  private long mStartOffset;
 
   public LineUpdateHexArrayAdapter(final Context context,
                                    ListView listView,
                                    HexTextArrayAdapter.LineNumbersTitle title,
                                    final List<String> objects) {
     super(context, ID, objects);
+    mStartOffset = 0;
     mListView = listView;
     mEntryList = objects;
     mTitle = title;
+  }
+
+  public void setStartOffset(final long startOffset) {
+    mStartOffset = startOffset;
   }
 
   /**
@@ -143,8 +150,8 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       final HexTextArrayAdapter.Holder holder = (HexTextArrayAdapter.Holder) v.getTag();
       String string = mEntryList.get(position);
 
-      final int maxLength = String.format("%X", mEntryList.size() * SysHelper.MAX_BY_ROW_8).length();
-      final String s = String.format("%0" + maxLength + "X", position * SysHelper.MAX_BY_ROW_8);
+      final int maxLength = String.format("%X", UIHelper.getCurrentLine(mEntryList.size(), mStartOffset, SysHelper.MAX_BY_ROW_8)).length();
+      final String s = String.format("%0" + maxLength + "X", UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
       final @ColorInt int color = ContextCompat.getColor(getContext(),
           R.color.colorLineNumbers);
       holder.lineNumbers.setText(s);
