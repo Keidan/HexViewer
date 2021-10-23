@@ -143,8 +143,9 @@
     <string name="start_offset">Start</string>
     <string name="end_offset">End</string>
     <string name="unit">Unit</string>
+    <string name="input_type">Input type</string>
     <string name="file_size">File size</string>
-    <string name="size_opening_part">Size of the part to be opened</string>
+    <string name="size_opening_part">Size of the part to open</string>
     <string name="partial_file_opening_description">Enter the beginning and end of the area you want to open.</string>
     <string name="not_enough_memory">Unable to execute the command because there\'s not enough memory for this application.</string>
     <string name="memory_threshold_title">Memory threshold</string>

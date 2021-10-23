@@ -17,11 +17,11 @@
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.05" />
     <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/gl75V"
+      android:id="@+id/gl95V"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="vertical"
-      app:layout_constraintGuide_percent="0.75" />
+      app:layout_constraintGuide_percent="0.95" />
 
     <TextView
       android:id="@+id/labelSize"
@@ -71,7 +71,7 @@
       android:id="@+id/labelUnit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:layout_constraintTop_toBottomOf="@id/labelSizePart"
+      app:layout_constraintTop_toBottomOf="@id/textSizePart"
       app:layout_constraintStart_toStartOf="parent"
       android:layout_marginStart="5dp"
       android:layout_marginEnd="5dp"
@@ -87,12 +87,31 @@
       app:layout_constraintStart_toEndOf="@id/labelUnit" />
 
     <TextView
+      android:id="@+id/labelInputType"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/labelUnit"
+      app:layout_constraintStart_toStartOf="parent"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginTop="15dp"
+      android:text="@string/input_type"
+      style="@style/AppTheme.InputLabel"/>
+    <androidx.appcompat.widget.AppCompatSpinner
+      android:id="@+id/spInputType"
+      android:layout_marginTop="15dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/labelUnit"
+      app:layout_constraintStart_toEndOf="@id/labelInputType" />
+
+    <TextView
       android:id="@+id/labelDescription"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintTop_toBottomOf="@id/labelUnit"
+      app:layout_constraintTop_toBottomOf="@id/labelInputType"
       app:layout_constraintStart_toEndOf="@id/gl05V"
-      app:layout_constraintEnd_toStartOf="@id/gl75V"
+      app:layout_constraintEnd_toStartOf="@id/gl95V"
       android:layout_marginStart="5dp"
       android:layout_marginEnd="5dp"
       android:layout_marginTop="15dp"
@@ -117,7 +136,7 @@
         android:hint="@string/start_offset"
         android:text="@string/zero"
         android:inputType="number"
-        android:digits="1234567890."
+        android:digits=" 0123456789."
         android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,7 +158,7 @@
         android:hint="@string/end_offset"
         android:text="@string/zero"
         android:inputType="number"
-        android:digits="1234567890."
+        android:digits=" 0123456789."
         android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 

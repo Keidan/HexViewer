@@ -24,9 +24,9 @@ import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.dialog.GoToDialog;
-import fr.ralala.hexviewer.ui.dialog.SequentialOpenDialog;
 import fr.ralala.hexviewer.ui.launchers.LauncherLineUpdate;
 import fr.ralala.hexviewer.ui.launchers.LauncherOpen;
+import fr.ralala.hexviewer.ui.launchers.LauncherPartialOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherRecentlyOpen;
 import fr.ralala.hexviewer.ui.launchers.LauncherSave;
 import fr.ralala.hexviewer.ui.payload.PayloadHexHelper;
@@ -62,11 +62,11 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   private LauncherSave mLauncherSave = null;
   private LauncherOpen mLauncherOpen = null;
   private LauncherRecentlyOpen mLauncherRecentlyOpen = null;
+  private LauncherPartialOpen mLauncherPartialOpen;
   private UnDoRedo mUnDoRedo = null;
   private MainPopupWindow mPopup = null;
   private PayloadHexHelper mPayloadHexHelper = null;
   private GoToDialog mGoToDialog = null;
-  private SequentialOpenDialog mSequentialOpenDialog = null;
 
   /**
    * Called when the activity is created.
@@ -104,9 +104,9 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     mLauncherSave = new LauncherSave(this);
     mLauncherLineUpdate = new LauncherLineUpdate(this);
     mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
+    mLauncherPartialOpen = new LauncherPartialOpen(this);
 
     mGoToDialog = new GoToDialog(this);
-    mSequentialOpenDialog = new SequentialOpenDialog(this);
 
     if (savedInstanceState == null)
       handleIntent(getIntent());
@@ -396,6 +396,15 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   /* ------------ EXPORTED METHODS ------------ */
 
   /**
+   * Returns the launcher used with the partial open
+   *
+   * @return LauncherPartialOpen
+   */
+  public LauncherPartialOpen getLauncherPartialOpen() {
+    return mLauncherPartialOpen;
+  }
+
+  /**
    * Returns the menu RecentlyOpen
    *
    * @return MenuItem
@@ -474,15 +483,6 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
    */
   public UnDoRedo getUnDoRedo() {
     return mUnDoRedo;
-  }
-
-  /**
-   * Returns the SequentialOpenDialog.
-   *
-   * @return SequentialOpenDialog
-   */
-  public SequentialOpenDialog getSequentialOpenDialog() {
-    return mSequentialOpenDialog;
   }
 
   /* ------------ POPUP ACTIONS ------------ */

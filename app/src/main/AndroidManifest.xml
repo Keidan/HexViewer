@@ -63,6 +63,16 @@
         </activity>
 
         <activity
+          android:name=".ui.activities.PartialOpenActivity"
+          android:configChanges="locale|orientation|screenSize"
+          android:launchMode="singleTask">
+
+            <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".ui.activities.MainActivity"/>
+        </activity>
+
+        <activity
           android:name=".ui.activities.settings.SettingsActivity"
           android:configChanges="locale|orientation|screenSize"
           android:launchMode="singleTask">

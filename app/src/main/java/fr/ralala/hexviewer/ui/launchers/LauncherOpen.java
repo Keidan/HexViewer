@@ -11,7 +11,6 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
-import fr.ralala.hexviewer.ui.dialog.SequentialOpenDialog;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.FileHelper;
@@ -91,23 +90,7 @@ public class LauncherOpen {
         new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, addRecent).execute(mActivity.getFileData());
       };
       if (ApplicationCtx.getInstance().isSequential())
-        mActivity.getSequentialOpenDialog().show(mActivity.getFileData(), new SequentialOpenDialog.SequentialOpenListener() {
-          @Override
-          public void onSequentialOpen() {
-            r.run();
-          }
-
-          @Override
-          public void onSequentialCancel() {
-            ApplicationCtx.getInstance().setSequential(false);
-            if (previous == null) {
-              mActivity.onOpenResult(false, false);
-            } else {
-              mActivity.setFileData(previous);
-              mActivity.setTitle(mActivity.getResources().getConfiguration());
-            }
-          }
-        });
+        mActivity.getLauncherPartialOpen().startActivity(previous, addRecent);
       else
         r.run();
     } else {

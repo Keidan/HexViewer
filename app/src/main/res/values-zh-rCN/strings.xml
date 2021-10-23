@@ -100,6 +100,7 @@
   <string name="start_offset">初始值</string>
   <string name="end_offset">终值</string>
   <string name="unit"> 单位</string>
+  <string name="input_type">输入类型</string>
   <string name="file_size">文件大小</string>
   <string name="size_opening_part">要打开部分大小</string>
   <string name="partial_file_opening_description">输入要打开部分的初值和终值。</string>
