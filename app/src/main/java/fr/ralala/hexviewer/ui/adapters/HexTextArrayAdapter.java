@@ -203,7 +203,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
 
       if (mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
-        final String s = String.format("%0" + maxLength + "X", getCurrentLine(position));
+        final String s = String.format("%0" + maxLength + "X", getCurrentLine(fd.getIndex()));
         final @ColorInt int color = ContextCompat.getColor(getContext(),
             R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
