@@ -80,17 +80,16 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Performs a hexadecimal search in a plain text string.
+   * Performs a search.
    *
-   * @param line     The current line.
-   * @param index    The line index.
-   * @param query    The query.
-   * @param tempList The output list.
-   * @param loc      The locale.
+   * @param line  The current line.
+   * @param query The query.
+   * @param loc   The locale.
+   * @return The index of the query
    */
   @Override
-  protected void extraFilter(final LineEntry line, int index, String query, final List<Integer> tempList, Locale loc) {
-    /* nothing */
+  protected int performsSearch(final LineEntry line, String query, Locale loc) {
+    return line.toString().toLowerCase(loc).indexOf(query);
   }
 
   /**

@@ -2,12 +2,15 @@ package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -33,7 +37,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   private final EntryFilter mEntryFilter;
   protected final UserConfig mUserConfigPortrait;
   protected final UserConfig mUserConfigLandscape;
-  private LineEntries mLineEntries;
+  private final LineEntries mLineEntries;
 
   public interface UserConfig {
     float getFontSize();
@@ -198,15 +202,14 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   protected abstract boolean isSelected(int position);
 
   /**
-   * Performs a hexadecimal search in a plain text string.
+   * Performs a search.
    *
-   * @param line     The current line.
-   * @param index    The line index.
-   * @param query    The query.
-   * @param tempList The output list.
-   * @param loc      The locale.
+   * @param line  The current line.
+   * @param query The query.
+   * @param loc   The locale.
+   * @return The index of the query
    */
-  protected abstract void extraFilter(final LineEntry line, int index, String query, final List<Integer> tempList, Locale loc);
+  protected abstract int performsSearch(final LineEntry line, String query, Locale loc);
 
   // Filter part
 
@@ -231,6 +234,20 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     mLineEntries.setFilteredList(tempList);
   }
 
+  private int insertByteList(ByteArrayOutputStream byteArrayStream, LineEntry s) {
+    if (s.getRaw() != null) {
+      final List<Byte> bytes = s.getRaw();
+      for (Byte b : bytes)
+        byteArrayStream.write(b);
+      return bytes.size();
+    } else {
+      final char[] plain = s.getPlain().toCharArray();
+      for (char c : plain)
+        byteArrayStream.write((byte) c);
+      return plain.length;
+    }
+  }
+
   /**
    * Custom filter
    */
@@ -243,14 +260,61 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       if (!clear)
         query = constraint.toString().toLowerCase(loc);
       List<LineEntry> items = mLineEntries.getItems();
-      for (int i = 0; i < items.size(); i++) {
-        LineEntry s = items.get(i);
+      final int length = items.size();
+      for (int i = 0; i < length; i++) {
+        LineEntry lineEntry = items.get(i);
         if (clear)
           tempList.add(i);
-        else if (s.toString().toLowerCase(loc).contains(query))
-          tempList.add(i);
-        else
-          extraFilter(s, i, query, tempList, loc);
+        else {
+          /* Is the word on the current line? */
+          if (performsSearch(lineEntry, query, loc) == -1 && query.length() > 1) {
+            /* The word fits on 2 or more lines */
+            final long count = query.length() / lineEntry.getPlain().length();
+            final long remain = query.length() - (count * lineEntry.getPlain().length());
+            ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+            final int firstLineLength = insertByteList(byteArrayStream, lineEntry);
+            int k = i;
+            /* The lines are complete? */
+            if (count != 0) {
+              for (int j = i; j < count && k < (i + count); j++, k++) {
+                LineEntry lineEntry2 = items.get(j);
+                insertByteList(byteArrayStream, lineEntry2);
+              }
+            } else k++;
+            /* We overflow on another line not complete. */
+            if (remain != 0 && k < length) {
+              LineEntry lineEntry2 = items.get(k++);
+              insertByteList(byteArrayStream, lineEntry2);
+            }
+
+            /* Preparation of an entry with all the lines concerned. */
+            byte[] bytes = byteArrayStream.toByteArray();
+            List<LineEntry> lle = SysHelper.formatBuffer(bytes, null, bytes.length);
+            if (!lle.isEmpty()) {
+              LineEntry le = lle.get(0);
+              int idx = performsSearch(new LineEntry(le.toString(), le.getRaw()), query, loc);
+              if (idx != -1) {
+                /* the word we are looking for straddles line N and lines N+N? */
+                int offset = 0;
+                if (idx > firstLineLength)
+                  offset++;
+                /* We add all occurrences. */
+                for (int j = i + offset; j < k; j++)
+                  if (!tempList.contains(j))
+                    tempList.add(j);
+                i = k;
+              }
+            }
+
+            try {
+              byteArrayStream.close();
+            } catch (IOException e) {
+              Log.e(getClass().getSimpleName(), "Close exception: " + e.getMessage(), e);
+            }
+          } else {
+            tempList.add(i);
+          }
+        }
       }
     }
 

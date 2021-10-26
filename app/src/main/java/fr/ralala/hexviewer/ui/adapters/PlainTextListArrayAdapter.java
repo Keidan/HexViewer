@@ -48,26 +48,29 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Performs a hexadecimal search in a plain text string.
+   * Performs a search.
    *
-   * @param line     The current line.
-   * @param index    The line index.
-   * @param query    The query.
-   * @param tempList The output list.
-   * @param loc      The locale.
+   * @param line  The current line.
+   * @param query The query.
+   * @param loc   The locale.
+   * @return The index of the query
    */
   @Override
-  protected void extraFilter(final LineEntry line, int index, String query, final List<Integer> tempList, Locale loc) {
-    StringBuilder sbNoSpaces = new StringBuilder();
-    StringBuilder sbSpaces = new StringBuilder();
-    for (char c : line.getPlain().toCharArray()) {
-      final String str = SysHelper.formatHex(c, true);
-      sbNoSpaces.append(str);
-      sbSpaces.append(str).append(" ");
+  protected int performsSearch(final LineEntry line, String query, Locale loc) {
+    int idx = line.toString().toLowerCase(loc).indexOf(query);
+    if (idx == -1) {
+      StringBuilder sbNoSpaces = new StringBuilder();
+      StringBuilder sbSpaces = new StringBuilder();
+      for (char c : line.getPlain().toCharArray()) {
+        final String str = SysHelper.formatHex(c, true);
+        sbNoSpaces.append(str);
+        sbSpaces.append(str).append(" ");
+      }
+      idx = sbNoSpaces.toString().toLowerCase(loc).indexOf(query);
+      if (idx == -1)
+        idx = sbSpaces.toString().toLowerCase(loc).indexOf(query);
     }
-    if (sbNoSpaces.toString().toLowerCase(loc).contains(query) || sbSpaces.toString().trim().toLowerCase(loc).contains(query)) {
-      tempList.add(index);
-    }
+    return idx;
   }
 
   /**
