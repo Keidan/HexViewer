@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
@@ -93,6 +94,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
       mSearchView = (SearchView) si.getActionView();
       mSearchView.setSearchableInfo(searchManager
           .getSearchableInfo(getComponentName()));
+      mSearchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
       mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String s) {
