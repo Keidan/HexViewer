@@ -246,7 +246,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       final List<Byte> bytes = s.getRaw();
       for (Byte b : bytes)
         byteArrayStream.write(b);
-      return bytes.size();
+      return ApplicationCtx.getInstance().getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8;
     } else {
       final char[] plain = s.getPlain().toCharArray();
       for (char c : plain)
