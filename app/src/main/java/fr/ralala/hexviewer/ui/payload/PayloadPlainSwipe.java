@@ -123,6 +123,8 @@ public class PayloadPlainSwipe {
         mActivity.runOnUiThread(() -> {
           mAdapterPlain.clear();
           mAdapterPlain.addAll(list);
+          if (!mActivity.getSearchQuery().isEmpty())
+            mAdapterPlain.manualFilterUpdate(mActivity.getSearchQuery());
         });
       }
       mPayloadPlainSwipeRefreshLayout.setRefreshing(false);
