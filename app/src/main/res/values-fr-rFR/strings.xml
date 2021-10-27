@@ -105,4 +105,5 @@
   <string name="not_enough_memory">Impossible d\'exécuter la commande car il n\'y a pas assez de mémoire pour cette application.</string>
   <string name="memory_threshold_title">Seuil de mémoire</string>
   <string name="memory_threshold_description">Valeur seuil de la limite de mémoire avant que l\'ouverture d\'un fichier ne soit interrompue.</string>
+  <string name="error_not_available">Non disponible</string>
 </resources>

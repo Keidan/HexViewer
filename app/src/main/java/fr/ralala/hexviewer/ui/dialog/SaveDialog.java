@@ -25,24 +25,16 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public class SaveDialog {
-  private final AlertDialog mDialog;
+  private final MainActivity mActivity;
+  private final String mTitle;
 
   public interface DialogPositiveClick {
     void onClick(AlertDialog dialog, EditText editText, TextInputLayout editTextLayout);
   }
 
-  @SuppressLint("InflateParams")
   public SaveDialog(MainActivity activity, String title) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-    builder.setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(title)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
-        });
-    LayoutInflater factory = LayoutInflater.from(activity);
-    builder.setView(factory.inflate(R.layout.content_dialog_save, null));
-    mDialog = builder.create();
+    mActivity = activity;
+    mTitle = title;
   }
 
 
@@ -53,19 +45,30 @@ public class SaveDialog {
    * @param positiveClick Listener called when clicking on the validation button.
    * @return AlertDialog
    */
+  @SuppressLint("InflateParams")
   public AlertDialog show(String defaultValue, DialogPositiveClick positiveClick) {
-    mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    builder.setCancelable(false)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(mTitle)
+        .setPositiveButton(android.R.string.yes, null)
+        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        });
+    LayoutInflater factory = LayoutInflater.from(mActivity);
+    builder.setView(factory.inflate(R.layout.content_dialog_save, null));
+    AlertDialog dialog = builder.create();
+    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
         WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    mDialog.show();
-    EditText et = mDialog.findViewById(R.id.editText);
-    TextInputLayout layout = mDialog.findViewById(R.id.tilEditText);
+    dialog.show();
+    EditText et = dialog.findViewById(R.id.editText);
+    TextInputLayout layout = dialog.findViewById(R.id.tilEditText);
     if (et != null && layout != null) {
       et.setText(defaultValue);
       et.addTextChangedListener(UIHelper.getResetLayoutWatcher(layout, false));
     }
-    mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) ->
-        positiveClick.onClick(mDialog, et, layout));
-    return mDialog;
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) ->
+        positiveClick.onClick(dialog, et, layout));
+    return dialog;
   }
 
 }

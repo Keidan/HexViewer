@@ -105,4 +105,5 @@
     <string name="not_enough_memory">Не удалось выполнить команду, потому что для этого приложения недостаточно памяти.</string>
     <string name="memory_threshold_title">Порог памяти</string>
     <string name="memory_threshold_description">Пороговое значение для ограничения памяти до прерывания открытия файла.</string>
+    <string name="error_not_available">Не доступно</string>
 </resources>

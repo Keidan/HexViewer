@@ -107,4 +107,5 @@
     <string name="not_enough_memory">Der Befehl kann nicht ausgeführt werden, weil nicht genügend Speicher für diese Anwendung vorhanden ist.</string>
     <string name="memory_threshold_title">Schwellenwert für den Speicher</string>
     <string name="memory_threshold_description">Schwellenwert für die Speichergrenze, bevor das Öffnen einer Datei abgebrochen wird.</string>
+    <string name="error_not_available">Nicht verfügbar</string>
 </resources>

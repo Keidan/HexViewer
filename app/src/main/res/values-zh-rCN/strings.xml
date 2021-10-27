@@ -107,5 +107,6 @@
   <string name="not_enough_memory">无法执行命令，因可供此程序使用的内存不足。</string>
   <string name="memory_threshold_title">内存阈值</string>
   <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
+  <string name="error_not_available">不提供</string>
 
 </resources>

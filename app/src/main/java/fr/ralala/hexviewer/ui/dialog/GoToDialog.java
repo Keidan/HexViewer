@@ -20,7 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
@@ -40,7 +42,7 @@ public class GoToDialog implements View.OnClickListener {
   private String mPreviousGoToValueAddress = "0";
   private String mPreviousGoToValueLineHex = "0";
   private String mPreviousGoToValueLinePlain = "0";
-  private final AlertDialog mDialog;
+  private AlertDialog mDialog;
   private EditText mEt;
   private TextInputLayout mLayout;
   private final MainActivity mActivity;
@@ -54,24 +56,26 @@ public class GoToDialog implements View.OnClickListener {
     LINE_PLAIN
   }
 
-  @SuppressLint("InflateParams")
   public GoToDialog(MainActivity activity) {
     mActivity = activity;
-    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-    builder.setCancelable(true)
-        .setTitle(R.string.action_go_to_address)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
-        });
-    LayoutInflater factory = LayoutInflater.from(activity);
-    builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));
-    mDialog = builder.create();
   }
 
   /**
    * Displays the dialog
    */
+  @SuppressLint("InflateParams")
   public AlertDialog show(Mode mode) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    builder.setCancelable(true)
+        .setTitle(R.string.action_go_to_address)
+        .setPositiveButton(android.R.string.yes, null)
+        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        });
+    LayoutInflater factory = LayoutInflater.from(mActivity);
+    builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));
+    mDialog = builder.create();
+    if(mDialog.isShowing())
+      mDialog.dismiss();
     mMode = mode;
     mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
         WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -105,6 +109,7 @@ public class GoToDialog implements View.OnClickListener {
       mEt.requestFocus();
     }
     mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this);
+    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> mDialog.dismiss());
     return mDialog;
   }
 
@@ -126,11 +131,24 @@ public class GoToDialog implements View.OnClickListener {
 
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
         mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
-    if (!validatePosition(text, lv.getAdapter().getCount() - 1))
-      return;
+    SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter)lv.getAdapter());
+    int position;
+    if(mMode == Mode.ADDRESS) {
+      if (validatePosition(text, adapter.getEntries().getItemsCount() - 1))
+        return;
+      position = evaluatePosition(adapter, adapter.getCount());
+      if (position == -1) {
+        displayError(mActivity.getString(R.string.error_not_available));
+        return;
+      }
+    } else {
+      if (validatePosition(text, lv.getAdapter().getCount() - 1))
+        return;
+      position = mPosition;
+    }
     lv.post(() -> {
-      lv.setSelectionFromTop(mPosition, 0);
-      lv.post(this::blinkBackground);
+      lv.setSelectionFromTop(position, 0);
+      lv.post(() -> blinkBackground(position));
     });
     if (mMode == Mode.LINE_PLAIN)
       mPreviousGoToValueLinePlain = text;
@@ -143,11 +161,53 @@ public class GoToDialog implements View.OnClickListener {
   }
 
   /**
+   * Evaluates the position in the list.
+   * @param adapter SearchableListArrayAdapter
+   * @param count Nb of elements.
+   * @return The position.
+   */
+  private int evaluatePosition(SearchableListArrayAdapter adapter, int count) {
+    LineEntries entries = adapter.getEntries();
+    int position;
+    if(count <= 500) {
+      position = getAddressPosition(entries, 0, count);
+    } else {
+      int middle = count / 2;
+      if(mPosition == middle)
+        position = middle;
+      else if(mPosition < middle) {
+        position = getAddressPosition(entries, 0, middle);
+      } else {
+        position = getAddressPosition(entries, middle, count);
+      }
+    }
+    return position;
+  }
+
+  /**
+   * Gets the position of the address in the list.
+   * @param entries LineEntries
+   * @param start Start index.
+   * @param end End index.
+   * @return The position.
+   */
+  private int getAddressPosition(LineEntries entries, int start, int end) {
+    int position = -1;
+    for(int i = start; i < end; i++) {
+      if(entries.getItemIndex(i) == mPosition) {
+        position = i;
+        break;
+      }
+    }
+    return position;
+  }
+
+  /**
    * Validates the position of the cursor.
    *
    * @param text     The input value.
    * @param maxLines The maximum number of lines.
-   * @return false on error.
+   * @return true on error.
    */
   private boolean validatePosition(String text, int maxLines) {
     int position;
@@ -158,7 +218,7 @@ public class GoToDialog implements View.OnClickListener {
         UIHelper.shakeError(mEt, null);
         if (mLayout != null)
           mLayout.setError(" "); /* only for the color */
-        return false;
+        return true;
       }
       int nbBytesPerLines = ApplicationCtx.getInstance().getNbBytesPerLine();
       try {
@@ -184,26 +244,34 @@ public class GoToDialog implements View.OnClickListener {
     }
     if (position == -1 || position > max) {
       String err = String.format(mActivity.getString(R.string.error_cant_exceed_xxx), s_max);
-      if (mLayout != null) {
-        UIHelper.shakeError(mEt, null);
-        mLayout.setError(err);
-      } else {
-        mDialog.dismiss();
-        UIHelper.showErrorDialog(mActivity, mTitle, err);
-      }
-      return false;
+      displayError(err);
+      return true;
     }
     mPosition = Math.max(0, position);
-    return true;
+    return false;
+  }
+
+  /**
+   * Displays an error message
+   * @param err The message.
+   */
+  private void displayError(String err) {
+    if (mLayout != null) {
+      UIHelper.shakeError(mEt, null);
+      mLayout.setError(err);
+    } else {
+      mDialog.dismiss();
+      UIHelper.showErrorDialog(mActivity, mTitle, err);
+    }
   }
 
   /**
    * Blinks the background of the selected view
    */
-  private void blinkBackground() {
+  private void blinkBackground(int position) {
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
         mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
-    View v = UIHelper.getViewByPosition(mPosition, lv);
+    View v = UIHelper.getViewByPosition(position, lv);
     lv.setOnScrollListener(null);
     int windowBackground = ContextCompat.getColor(mActivity, R.color.windowBackground);
     int colorAccent = ContextCompat.getColor(mActivity, R.color.colorAccent);

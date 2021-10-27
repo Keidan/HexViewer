@@ -150,4 +150,5 @@
     <string name="not_enough_memory">Unable to execute the command because there\'s not enough memory for this application.</string>
     <string name="memory_threshold_title">Memory threshold</string>
     <string name="memory_threshold_description">Threshold value for the memory limit before the opening of a file is aborted.</string>
+    <string name="error_not_available">Not available</string>
 </resources>
