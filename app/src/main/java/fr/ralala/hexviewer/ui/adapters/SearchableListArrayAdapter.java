@@ -302,7 +302,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       if (idx != -1) {
         /* the word we are looking for straddles line N and lines N+N? */
         int offset = 0;
-        if (idx > firstLineLength)
+        if (idx >= firstLineLength)
           offset++;
         /* We add all occurrences. */
         for (int j = i + offset; j < k; j++)
