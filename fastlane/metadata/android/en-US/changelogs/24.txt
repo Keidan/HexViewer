@@ -1,0 +1,18 @@
+* Fix a bug in the partial opening dialog box, where the field "Size of the part to be opened" was not updated when the unit was different from "bytes".
+* Now in the line editing view the row (and column) numbers correspond to the actual numbers in the editor.
+* In the partial opening of the files, it is now possible to directly enter the value of the offsets in hexadecimal format.
+* The partial open view is no longer presented as a dialog box.
+* Modification of the search to find words that are on several lines.
+* Fix a bug that did not take into account the search (plain text) after a change of screen orientation.
+* Fix a bug that did not respect the initial line number during a search.
+* Addition of numeric keys on the search keyboard.
+ 
+Please note that new text additions are mostly translated via DeepL (German+Spanish).
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
