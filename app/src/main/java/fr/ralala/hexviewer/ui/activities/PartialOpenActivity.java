@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -406,6 +407,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       mTietEnd.setFilters(new InputFilter[]{mInputFilterTextHex});
       mTietEnd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
+    mTietStart.setTypeface(Typeface.MONOSPACE);
+    mTietEnd.setTypeface(Typeface.MONOSPACE);
   }
 
   /**

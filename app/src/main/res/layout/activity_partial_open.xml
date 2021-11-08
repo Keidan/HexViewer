@@ -136,6 +136,7 @@
         android:hint="@string/start_offset"
         android:text="@string/zero"
         android:inputType="number"
+        android:typeface="monospace"
         android:digits=" 0123456789."
         android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -157,6 +158,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/end_offset"
         android:text="@string/zero"
+        android:typeface="monospace"
         android:inputType="number"
         android:digits=" 0123456789."
         android:singleLine="true" />
