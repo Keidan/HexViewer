@@ -263,6 +263,13 @@ public class LineUpdateTextWatcher implements TextWatcher {
     et.setSelection(Math.max(0, Math.min(pos, newLen)));
   }
 
+  private int evaluateLocalStart(int start) {
+    int localStart = start;
+    if (mBetweenDigits)
+      localStart = mApp.isOverwrite() ? Math.max(0, localStart - 1) :
+          (start == 0 ? 0 : localStart);
+    return localStart;
+  }
   /**
    * Management of the addition of text with the SmartInput option.
    *
@@ -270,11 +277,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param count int
    */
   private void processAddWithSmartInput(int start, int count) {
-    int localStart = start;
-    if (mBetweenDigits)
-      localStart = mApp.isOverwrite() ? Math.max(0, localStart - 1) :
-          (start == 0 ? 0 :
-              (mBetweenDigits ? localStart : localStart + 1));
+    int localStart = evaluateLocalStart(start);
     mStart = localStart < 0 ? 0 : localStart + 1;
     final String notChangedStart = localStart == 0 ? "" : mNewString.substring(0, localStart);
     final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
