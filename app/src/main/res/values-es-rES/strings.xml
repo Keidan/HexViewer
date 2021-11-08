@@ -37,6 +37,7 @@
   <string name="new_value">Nuevo valor</string>
   <string name="error_less_than">El valor es menor que</string>
   <string name="error_greater_than">El valor es mayor que</string>
+  <string name="error_invalid_value">Ungültiger Wert</string>
   <string name="settings_pref_category_portrait">Modo retrato</string>
   <string name="settings_pref_title_abbreviate_portrait">Abreviado</string>
   <string name="settings_pref_summary_abbreviate_portrait">El número de caracteres a mostrar para el archivo en vertical.</string>

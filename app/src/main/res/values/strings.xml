@@ -81,6 +81,7 @@
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be less than</string>
     <string name="error_greater_than">The value cannot be greater than</string>
+    <string name="error_invalid_value">Invalid value</string>
     <string name="settings_pref_category_portrait">Portrait mode</string>
     <string name="settings_pref_title_abbreviate_portrait">Abbreviate</string>
     <string name="settings_pref_summary_abbreviate_portrait">The number of characters to display for the file name in portrait mode.</string>

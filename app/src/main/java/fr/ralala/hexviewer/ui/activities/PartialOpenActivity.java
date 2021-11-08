@@ -8,7 +8,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import android.text.method.TextKeyListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,6 +31,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
@@ -63,6 +63,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   private static final int IDX_K_BYTES = 1;
   private static final int IDX_M_BYTES = 2;
   private static final int IDX_G_BYTES = 3;
+  private static final int ERROR_START = 1;
+  private static final int ERROR_END = 2;
   private TextView mTextSizePart;
   private AppCompatSpinner mSpUnit;
   private AppCompatSpinner mSpInputType;
@@ -73,7 +75,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   private boolean mIgnore = false;
   private long mRealSize = 0L;
   /* https://stackoverflow.com/questions/10648449/how-do-i-set-a-edittext-to-the-input-of-only-hexadecimal-numbers/17355026 */
-  private InputFilter mInputFilterTextHex = (source, start, end, dest, dstart, dend) -> {
+  private final InputFilter mInputFilterTextHex = (source, start, end, dest, dstart, dend) -> {
     Pattern pattern = Pattern.compile("^\\p{XDigit}+$");
     StringBuilder sb = new StringBuilder();
     for (int i = start; i < end; i++) {
@@ -86,7 +88,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       }
       sb.append(source.charAt(i));
     }
-    return  sb.toString();
+    return sb.toString();
   };
 
   /**
@@ -289,20 +291,24 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     if (valid) {
       long start = getValue(s_start, null);
       long end = getValue(s_end, null);
-      valid = checkForSize(start, end);
-      if (valid) {
-        if (end <= start) {
+      int ret = checkForSize(start, end);
+      if (ret == 0) {
+        if (start == -1 || end == -1) {
           valid = false;
-          if (mTilStart != null)
-            setErrorMessage(mTilStart, R.string.error_less_than, end);
-          if (mTilEnd != null)
-            setErrorMessage(mTilEnd, R.string.error_less_than, start);
+        } else if (end <= start) {
+          valid = false;
+          setErrorMessage(mTilStart, R.string.error_less_than, end);
+          setErrorMessage(mTilEnd, R.string.error_less_than, start);
         } else {
-          if (mTilStart != null)
-            mTilStart.setError(null);
-          if (mTilEnd != null)
-            mTilEnd.setError(null);
+          setErrorMessage(mTilStart, null);
+          setErrorMessage(mTilEnd, null);
         }
+      } else {
+        valid = false;
+        if ((ret & ERROR_START) != ERROR_START)
+          setErrorMessage(mTilStart, null);
+        if ((ret & ERROR_END) != ERROR_END)
+          setErrorMessage(mTilEnd, null);
       }
     }
     return valid;
@@ -395,9 +401,9 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       mTietStart.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
       mTietEnd.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
     } else {
-      mTietStart.setFilters(new InputFilter[] { mInputFilterTextHex });
+      mTietStart.setFilters(new InputFilter[]{mInputFilterTextHex});
       mTietStart.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-      mTietEnd.setFilters(new InputFilter[] { mInputFilterTextHex });
+      mTietEnd.setFilters(new InputFilter[]{mInputFilterTextHex});
       mTietEnd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
   }
@@ -473,17 +479,16 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   private boolean checkEmpty(String start, String end) {
     boolean valid = true;
     if (start.isEmpty()) {
-      if (mTilStart != null)
-        mTilStart.setError(getString(R.string.error_less_than) + " 0");
+      setErrorMessage(mTilStart, getString(R.string.error_less_than) + " 0");
       valid = false;
     }
     if (end.isEmpty()) {
-      if (mTilEnd != null)
-        mTilEnd.setError(getString(R.string.error_less_than) + " 0");
+      setErrorMessage(mTilEnd, getString(R.string.error_less_than) + " 0");
       valid = false;
     }
     return valid;
   }
+
 
   /**
    * Checks if the fields are not larger than the file size.
@@ -492,23 +497,33 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    * @param end   Long value for the end field.
    * @return boolean
    */
-  private boolean checkForSize(long start, long end) {
-    boolean valid = true;
+  private int checkForSize(long start, long end) {
+    int valid = 0;
     if (start > mRealSize) {
-      valid = false;
-      if (mTilStart != null)
-        setErrorMessage(mTilStart, R.string.error_greater_than, mRealSize);
+      valid |= ERROR_START;
+      setErrorMessage(mTilStart, R.string.error_greater_than, mRealSize);
+    } else if (start < 0) {
+      valid |= ERROR_START;
+      setErrorMessage(mTilStart, getString(R.string.error_invalid_value));
     }
+
     if (end > mRealSize) {
-      valid = false;
-      if (mTilEnd != null)
-        setErrorMessage(mTilEnd, R.string.error_greater_than, mRealSize);
+      valid |= ERROR_END;
+      setErrorMessage(mTilEnd, R.string.error_greater_than, mRealSize);
+    } else if (end < 0) {
+      valid |= ERROR_END;
+      setErrorMessage(mTilEnd, getString(R.string.error_invalid_value));
     }
     return valid;
   }
 
   private void setErrorMessage(TextInputLayout til, @StringRes int textId, long size) {
-    til.setError(getString(textId) + " " +
+    setErrorMessage(til, getString(textId) + " " +
         SysHelper.sizeToHuman(this, size) + " (" + Long.toHexString(size).toUpperCase() + ")");
+  }
+
+  private void setErrorMessage(TextInputLayout til, String message) {
+    if (til != null)
+      til.setError(message);
   }
 }

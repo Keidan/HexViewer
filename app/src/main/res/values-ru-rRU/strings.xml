@@ -37,6 +37,7 @@
     <string name="new_value">Новое значение</string>
     <string name="error_less_than">Значение не может быть меньше чем</string>
     <string name="error_greater_than">Значение не может быть больше, чем</string>
+    <string name="error_invalid_value">Недопустимое значение</string>
     <string name="settings_pref_category_portrait">Портретный режим</string>
     <string name="settings_pref_title_abbreviate_portrait">Сокращать имя файла</string>
     <string name="settings_pref_summary_abbreviate_portrait">Количество символов, отображаемых для имени файла в портретном режиме.</string>
