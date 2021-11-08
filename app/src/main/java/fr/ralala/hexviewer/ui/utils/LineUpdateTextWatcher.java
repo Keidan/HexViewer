@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import androidx.annotation.NonNull;
 import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.EmojiSpan;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -237,7 +238,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     List<LineEntry> li = SysHelper.formatBuffer(buf, null, SysHelper.MAX_BY_ROW_8);
     StringBuilder sb = new StringBuilder();
     for (LineEntry line : li) {
-      sb.append(line.getPlain().substring(0, 23).trim()).append(" ");
+      sb.append(line.getPlain().substring(0, SysHelper.MAX_BYTES_ROW_8).trim()).append(" ");
     }
     return sb.toString().trim();
   }
@@ -271,17 +272,20 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private void processAddWithSmartInput(int start, int count) {
     int localStart = start;
     if (mBetweenDigits)
-      localStart = mApp.isOverwrite() ? localStart - 1 : localStart + 1;
+      localStart = mApp.isOverwrite() ? Math.max(0, localStart - 1) :
+          (start == 0 ? 0 :
+              (mBetweenDigits ? localStart : localStart + 1));
     mStart = localStart < 0 ? 0 : localStart + 1;
-    final String notChangedStart = mNewString.substring(0, localStart);
+    final String notChangedStart = localStart == 0 ? "" : mNewString.substring(0, localStart);
     final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
-    CharSequence newChange = normalizeForEmoji(mNewString.substring(Math.max(0, localStart), Math.min(localStart + count, mNewString.length())));
+    CharSequence newChange = normalizeForEmoji(mNewString.substring(Math.max(0, localStart),
+        Math.min(localStart + count, mNewString.length())));
 
     StringBuilder newChangeHex = new StringBuilder();
     byte[] newChangeBytes = newChange.toString().getBytes();
     List<LineEntry> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null, SysHelper.MAX_BY_ROW_8);
     for (LineEntry str : list)
-      newChangeHex.append(str.getPlain().substring(0, 23).trim());
+      newChangeHex.append(str.getPlain().substring(0, SysHelper.MAX_BYTES_ROW_8).trim());
 
     String str;
     if (!mApp.isOverwrite()) {
