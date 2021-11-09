@@ -4,7 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 [![Tests](https://keidan.testspace.com/spaces/154614/badge?token=1703ccc98e9b749c34f17b691e15d58ce0789f38)][tests]
-[![Issues](https://keidan.testspace.com/spaces/154614/badge?token=1703ccc98e9b749c34f17b691e15d58ce0789f38)][issues]
+[![Issues](https://keidan.testspace.com/spaces/154614/metrics/192721/badge?token=5f710af9a9e6285910122d933e899b47c31eeb22)][issues]
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
