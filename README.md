@@ -1,8 +1,10 @@
 # HexViewer
-[![Build Status](https://github.com/Keidan/HexViewer/actions/workflows/build.yml/badge.svg)][travis]
+[![Build Status](https://github.com/Keidan/HexViewer/actions/workflows/build.yml/badge.svg)][build]
 [![CodeFactor](https://www.codefactor.io/repository/github/keidan/hexviewer/badge)][codefactor]
 [![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
+[![Tests](https://keidan.testspace.com/spaces/154614/badge?token=1703ccc98e9b749c34f17b691e15d58ce0789f38)][tests]
+[![Issues](https://keidan.testspace.com/spaces/154614/badge?token=1703ccc98e9b749c34f17b691e15d58ce0789f38)][issues]
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
@@ -64,7 +66,9 @@ Note: In the settings, the list of languages is sorted as follows:
 ## License
 [GPLv3](https://github.com/Keidan/HexViewer/blob/master/license.txt)
 
-[travis]: https://github.com/Keidan/HexViewer/actions
+[build]: https://github.com/Keidan/HexViewer/actions
 [releases]: https://github.com/Keidan/HexViewer/releases
 [codefactor]: https://www.codefactor.io/repository/github/keidan/hexviewer
 [license]: https://github.com/Keidan/HexViewer/blob/master/license.txt
+[tests]: https://keidan.testspace.com/spaces/154614?utm_campaign=badge&utm_medium=referral&utm_source=test
+[issues]: https://keidan.testspace.com/spaces/154614/current/Issues?utm_campaign=badge&utm_medium=referral&utm_source=issues
