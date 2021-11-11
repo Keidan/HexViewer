@@ -416,7 +416,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
           index += lineEntry.getShiftOffset();
         }
       }
-      if (index > nbPerLines)
+      if (index >= nbPerLines)
         start++;
       else if ((index + query.length()) <= nbPerLines)
         end--;
