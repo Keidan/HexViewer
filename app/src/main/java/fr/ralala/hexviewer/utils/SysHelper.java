@@ -213,6 +213,7 @@ public class SysHelper {
       int n = shiftOffset;
       while (n > 0) {
         currentLine.append("   ");
+        currentEndLine.append(" ");
         n--;
       }
     }
