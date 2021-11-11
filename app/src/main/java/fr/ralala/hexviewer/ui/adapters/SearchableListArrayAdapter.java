@@ -345,7 +345,9 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     insertByteList(byteArrayStream, lineEntry);
     if (findInByteArrayOutputStream(byteArrayStream, query, loc).index != -1) {
       tempList.add(i);
-      //return i;
+      /* If query contains only 1 character there is no need to go further. */
+      if(query.length() == 1)
+        return;
     }
     int k = i;
     /* The lines are complete? */
