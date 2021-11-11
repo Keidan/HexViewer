@@ -20,10 +20,12 @@ public class LineEntry {
   private List<Byte> mRaw;
   private int mIndex;
   private boolean mUpdated;
+  private int mShiftOffset;
 
-  public LineEntry(final String plain, List<Byte> raw) {
+  public LineEntry(final String plain, final List<Byte> raw) {
     mPlain = plain;
     mRaw = raw;
+    mShiftOffset = 0;
   }
 
   public LineEntry(LineEntry le) {
@@ -31,6 +33,25 @@ public class LineEntry {
     mRaw = new ArrayList<>(le.mRaw);
     mIndex = le.mIndex;
     mUpdated = le.mUpdated;
+    mShiftOffset = le.mShiftOffset;
+  }
+
+  /**
+   * Sets the offset used to shift the text to the end of the line.
+   *
+   * @param shiftOffset The new value.
+   */
+  public void setShiftOffset(int shiftOffset) {
+    mShiftOffset = shiftOffset;
+  }
+
+  /**
+   * Returns the offset used to shift the text to the end of the line.
+   *
+   * @return int
+   */
+  public int getShiftOffset() {
+    return mShiftOffset;
   }
 
   /**

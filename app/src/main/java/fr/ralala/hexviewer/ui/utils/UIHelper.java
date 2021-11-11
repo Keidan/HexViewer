@@ -4,14 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -19,9 +25,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
+import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.utils.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -38,6 +46,81 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class UIHelper {
+
+  /**
+   * Gets the number of chars by lines
+   *
+   * @param context   The Android context.
+   * @param landscape UserConfigLandscape.
+   * @param portrait  UserConfigPortrait.
+   * @return The width.
+   */
+  public static int getMaxByLine(final Context context, final SearchableListArrayAdapter.UserConfig landscape, final SearchableListArrayAdapter.UserConfig portrait) {
+    int width = getTextWidth(context, landscape, portrait);
+    return width == 0 ? 70 : (getScreenWidth(context) / width) - 2;
+  }
+
+  /**
+   * Gets the width of the screen.
+   *
+   * @param context The Android context.
+   * @return The width.
+   */
+  public static int getScreenWidth(final Context context) {
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    /* The current view has a padding of 1dp */
+    return (int) ((float) displayMetrics.widthPixels - getSize(context, TypedValue.COMPLEX_UNIT_DIP, 1.0f));
+  }
+
+  /**
+   * Gets the width of the text according to the font size and family (monospace).
+   *
+   * @param context   The Android context.
+   * @param landscape UserConfigLandscape.
+   * @param portrait  UserConfigPortrait.
+   * @return The width.
+   */
+  public static int getTextWidth(final Context context, final SearchableListArrayAdapter.UserConfig landscape, final SearchableListArrayAdapter.UserConfig portrait) {
+    final Typeface monospace = Typeface.MONOSPACE;
+    final String text = "a";
+    float fontSize = 12.0f;
+    /* Solution 1: We get the width of the text. */
+    TextView tv = new TextView(context);
+    tv.setText(text);
+    tv.setTypeface(monospace);
+    Configuration cfg = context.getResources().getConfiguration();
+    if (landscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      fontSize = landscape.getFontSize();
+    } else if (portrait != null) {
+      fontSize = portrait.getFontSize();
+    }
+    tv.setTextSize(fontSize);
+    tv.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+    int width = tv.getMeasuredWidth();
+    /* Solution 2: If we can't get the width, then we try another method (obviously less accurate) */
+    if (width < 1) {
+      Paint paint = new Paint();
+      paint.setTypeface(monospace);
+      float scaledSizeInPixels = getSize(context, TypedValue.COMPLEX_UNIT_SP, fontSize);
+      paint.setTextSize(scaledSizeInPixels);
+      Rect bounds = new Rect();
+      paint.getTextBounds(text, 0, text.length(), bounds);
+      width = bounds.width();
+    }
+    return width;
+  }
+
+  /**
+   * Gets the size according to the display metrics.
+   *
+   * @param context The Android context.
+   * @param unit    The unit to convert from.
+   * @param value   The value to apply the unit to.
+   * @return The new value.
+   */
+  private static float getSize(final Context context, int unit, float value) {
+    return TypedValue.applyDimension(unit, value, context.getResources().getDisplayMetrics());
+  }
 
   /**
    * Calculates the current line number from the file view.

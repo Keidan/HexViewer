@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -80,16 +80,12 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Performs a search.
+   * Test if we are from the hex view or the plain view.
    *
-   * @param line  The current line.
-   * @param query The query.
-   * @param loc   The locale.
-   * @return The index of the query
+   * @return boolean
    */
-  @Override
-  protected int performsSearch(final LineEntry line, String query, Locale loc) {
-    return line.toString().toLowerCase(loc).indexOf(query);
+  protected boolean isSearchFromHewView() {
+    return true;
   }
 
   /**

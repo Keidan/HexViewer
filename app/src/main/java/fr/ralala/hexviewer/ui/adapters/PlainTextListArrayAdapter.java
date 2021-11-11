@@ -6,13 +6,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -48,29 +47,13 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Performs a search.
+   * Test if we are from the hex view or the plain view.
    *
-   * @param line  The current line.
-   * @param query The query.
-   * @param loc   The locale.
-   * @return The index of the query
+   * @return boolean
    */
   @Override
-  protected int performsSearch(final LineEntry line, String query, Locale loc) {
-    int idx = line.toString().toLowerCase(loc).indexOf(query);
-    if (idx == -1) {
-      StringBuilder sbNoSpaces = new StringBuilder();
-      StringBuilder sbSpaces = new StringBuilder();
-      for (char c : line.getPlain().toCharArray()) {
-        final String str = SysHelper.formatHex(c, true);
-        sbNoSpaces.append(str);
-        sbSpaces.append(str).append(" ");
-      }
-      idx = sbNoSpaces.toString().toLowerCase(loc).indexOf(query);
-      if (idx == -1)
-        idx = sbSpaces.toString().toLowerCase(loc).indexOf(query);
-    }
-    return idx;
+  protected boolean isSearchFromHewView() {
+    return false;
   }
 
   /**

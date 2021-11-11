@@ -235,6 +235,8 @@ public class SysHelper {
       return;
     formatBufferAlign(lines, currentIndex, currentLine.toString(),
         currentEndLine.toString(), currentLineRaw, maxByRow);
+    if(!lines.isEmpty())
+      lines.get(0).setShiftOffset(shiftOffset);
   }
 
   /**
