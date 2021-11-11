@@ -363,6 +363,16 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
 
     /* Preparation of an entry with all the lines concerned. */
     SearchResult sr = findInByteArrayOutputStream(byteArrayStream, query, loc);
+    evaluateResult(lineEntry, i, k, sr, query, tempList);
+    try {
+      byteArrayStream.close();
+    } catch (IOException e) {
+      Log.e(getClass().getSimpleName(), "Close exception: " + e.getMessage(), e);
+    }
+  }
+
+  private void evaluateResult(final LineEntry lineEntry, int i, int k, SearchResult sr,
+                               final String query, final Set<Integer> tempList) {
     int index = sr.index;
     if (index != -1) {
       int start = 0;
@@ -393,11 +403,6 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       /* We add all occurrences. */
       for (int j = i + start; j < end; j++)
         tempList.add(j);
-    }
-    try {
-      byteArrayStream.close();
-    } catch (IOException e) {
-      Log.e(getClass().getSimpleName(), "Close exception: " + e.getMessage(), e);
     }
   }
 
