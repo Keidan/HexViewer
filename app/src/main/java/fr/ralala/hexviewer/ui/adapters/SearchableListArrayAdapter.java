@@ -307,6 +307,14 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     }
   }
 
+  /**
+   * Performs a search in the ByteArrayOutputStream
+   *
+   * @param byteArrayStream ByteArrayOutputStream
+   * @param query           The query.
+   * @param loc             Locale
+   * @return SearchResult
+   */
   private SearchResult findInByteArrayOutputStream(ByteArrayOutputStream byteArrayStream,
                                                    final String query,
                                                    final Locale loc) {
@@ -346,7 +354,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     if (findInByteArrayOutputStream(byteArrayStream, query, loc).index != -1) {
       tempList.add(i);
       /* If query contains only 1 character there is no need to go further. */
-      if(query.length() == 1)
+      if (query.length() == 1)
         return;
     }
     int k = i;
@@ -373,8 +381,18 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     }
   }
 
+  /**
+   * Evaluates the result of the research.
+   *
+   * @param lineEntry LineEntry
+   * @param i         Current index.
+   * @param k         Max Index.
+   * @param sr        SearchResult
+   * @param query     The query.
+   * @param tempList  The output list.
+   */
   private void evaluateResult(final LineEntry lineEntry, int i, int k, SearchResult sr,
-                               final String query, final Set<Integer> tempList) {
+                              final String query, final Set<Integer> tempList) {
     int index = sr.index;
     if (index != -1) {
       int start = 0;
