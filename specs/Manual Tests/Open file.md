@@ -24,7 +24,7 @@ Open a file.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
 
-# Open when a file is already open (no change)
+## Open when a file is already open (no change)
 - Open a file by clicking on the `Open...` menu in the contextual menu OR by clicking on the `OPEN` button in the home view.
 - The main view disappears.
 - A file picker appears.
@@ -38,7 +38,7 @@ Open a file.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
 
-# Open when a file is already open (With changes (Cancel))
+## Open when a file is already open (With changes (Cancel))
 - Open a file by clicking on the `Open...` menu in the contextual menu OR by clicking on the `OPEN` button in the home view.
 - The main view disappears.
 - A file picker appears.
@@ -53,7 +53,7 @@ Open a file.
 - Click on `Cancel`.
 - The dialog box disappears and nothing changes.
 
-# Open when a file is already open (With changes (No))
+## Open when a file is already open (With changes (No))
 - Open a file by clicking on the `Open...` menu in the contextual menu OR by clicking on the `OPEN` button in the home view.
 - The main view disappears.
 - A file picker appears.
@@ -72,7 +72,7 @@ Open a file.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
 
-# Open when a file is already open (With changes (No))
+## Open when a file is already open (With changes (No))
 - Open a file by clicking on the `Open...` menu in the contextual menu OR by clicking on the `OPEN` button in the home view.
 - The main view disappears.
 - A file picker appears.

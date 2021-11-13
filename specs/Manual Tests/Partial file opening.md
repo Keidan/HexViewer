@@ -26,8 +26,6 @@ Open a file using the partial opening feature.
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
 
-
-
 ## Menu
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu.
 - The main view disappears.
@@ -46,8 +44,7 @@ Open a file using the partial opening feature.
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
    
-   
-# Open when a file is already open (no change)
+## Open when a file is already open (no change)
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu OR by clicking on the `PARTIAL FILE OPENING` button in the home view.
 - The main view disappears.
 - A file picker appears.
@@ -71,7 +68,7 @@ Open a file using the partial opening feature.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
 
-# Open when a file is already open (With changes (Cancel))
+## Open when a file is already open (With changes (Cancel))
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu OR by clicking on the `PARTIAL FILE OPENING` button in the home view.
 - The main view disappears.
 - A file picker appears.
@@ -102,7 +99,7 @@ Open a file using the partial opening feature.
 - Click on `Cancel`.
 - The dialog box disappears and nothing changes.
 
-# Open when a file is already open (With changes (No))
+## Open when a file is already open (With changes (No))
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu OR by clicking on the `PARTIAL FILE OPENING` button in the home view.
 - The main view disappears.
 - A file picker appears.
@@ -137,7 +134,7 @@ Open a file using the partial opening feature.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
 
-# Open when a file is already open (With changes (Yes))
+## Open when a file is already open (With changes (Yes))
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu OR by clicking on the `PARTIAL FILE OPENING` button in the home view.
 - The main view disappears.
 - A file picker appears.

@@ -35,8 +35,7 @@ Close an open file
    - `Recently opened...`
    - `Settings`
    - All other menus must be disabled.
-   
-   
+
 ## With changes (Yes)
 - Click on the `Close` menu.
 - A dialog box appears, prompting the user to save the changes.
