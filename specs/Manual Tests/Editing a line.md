@@ -19,7 +19,7 @@ Editing a line.
 - The `Result` list is updated with the inserted text (in hexadecimal).
 - Validate the changes by clicking on the ticker at the top of the window.
 - If the file is opened in partial mode, an error message will appear, otherwise the window will close.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 
 Note: If you validate an empty text line, the line(s) will be deleted.
 
@@ -39,7 +39,7 @@ Note: If you validate an empty text line, the line(s) will be deleted.
 - The `Result` list is updated with the inserted text (in hexadecimal).
 - Validate the changes by clicking on the ticker at the top of the window.
 - If the file is opened in partial mode, and you perform the steps that consist in inserting one or more characters at the end of a line, an error message will appear, otherwise the window will close.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 
 Note: If you validate an empty text line, the line(s) will be deleted.
 
@@ -54,7 +54,7 @@ Note: If you validate an empty text line, the line(s) will be deleted.
 - The `Result` list is updated with the inserted text (in hexadecimal).
 - Validate the changes by clicking on the ticker at the top of the window.
 - If the file is opened in partial mode, an error message will appear, otherwise the window will close.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 
 Note: If you validate an empty text line, the line(s) will be deleted.
 
@@ -74,6 +74,6 @@ Note: If you validate an empty text line, the line(s) will be deleted.
 - The `Result` list is updated with the inserted text (in hexadecimal).
 - Validate the changes by clicking on the ticker at the top of the window.
 - If the file is opened in partial mode, and you perform the steps that consist in inserting one or more characters at the end of a line, an error message will appear, otherwise the window will close.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 
 Note: If you validate an empty text line, the line(s) will be deleted.

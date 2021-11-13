@@ -93,7 +93,7 @@ Open a file using the partial opening feature.
 - Place the cursor at the beginning of the line and insert one character.
 - The new character(s) will replace the old one(s).
 - Validate the changes by clicking on the ticker at the top of the window.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 - Open a file by clicking on the `Open...` menu in the contextual menu.
 - A dialog box appears, prompting the user to save the changes.
 - Click on `Cancel`.
@@ -124,7 +124,7 @@ Open a file using the partial opening feature.
 - Place the cursor at the beginning of the line and insert one character.
 - The new character(s) will replace the old one(s).
 - Validate the changes by clicking on the ticker at the top of the window.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 - Open a file by clicking on the `Open...` menu in the contextual menu.
 - A dialog box appears, prompting the user to save the changes.
 - Click on `No`.
@@ -159,7 +159,7 @@ Open a file using the partial opening feature.
 - Place the cursor at the beginning of the line and insert one character.
 - The new character(s) will replace the old one(s).
 - Validate the changes by clicking on the ticker at the top of the window.
-- In the hexadecimal view, the modified line(s) will appear in red.
+- In the `Hex view`, the modified line(s) will appear in red.
 - Open a file by clicking on the `Open...` menu in the contextual menu.
 - A dialog box appears, prompting the user to save the changes.
 - Click on `Yes`.

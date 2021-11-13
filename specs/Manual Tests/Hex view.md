@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Hexadecimal view
+title: Hex view
 ---
 
 {% if page %} {% assign spec = page %} {% endif %}
