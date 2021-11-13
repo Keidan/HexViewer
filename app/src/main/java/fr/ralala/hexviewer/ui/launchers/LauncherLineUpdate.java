@@ -80,7 +80,7 @@ public class LauncherLineUpdate {
               final List<LineEntry> li = new ArrayList<>();
               int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
               if (mActivity.getFileData().getShiftOffset() != 0) {
-                byte[] b = new byte[nbBytesPerLine - mActivity.getFileData().getShiftOffset()];
+                byte[] b = new byte[Math.min(buf.length, nbBytesPerLine - mActivity.getFileData().getShiftOffset())];
                 System.arraycopy(buf, 0, b, 0, b.length);
                 SysHelper.formatBuffer(li, b, b.length, null, nbBytesPerLine, mActivity.getFileData().getShiftOffset());
                 byte[] buff2 = new byte[buf.length - b.length];
