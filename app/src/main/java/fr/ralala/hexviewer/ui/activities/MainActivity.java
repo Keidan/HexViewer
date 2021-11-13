@@ -492,7 +492,10 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
    */
   private void popupActionOpen(boolean sequential) {
     mApp.setSequential(sequential);
-    final Runnable r = () -> mLauncherOpen.startActivity();
+    final Runnable r = () -> {
+      mLauncherOpen.startActivity();
+      onOpenResult(false, false);
+    };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
           () -> new TaskSave(this, this).execute(
