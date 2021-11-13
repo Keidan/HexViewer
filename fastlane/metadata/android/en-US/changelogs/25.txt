@@ -1,0 +1,19 @@
+* Fix a bug with the change of the input type when opening a file partially.
+* Fix a bug with the validation of the selection when opening a file partially and the input is not valid.
+* Fix a bug with the font when changing the input type in the partial opening view of a file (Android < 11).
+* Fix bugs when editing lines.
+* Fix a bug with partial opening where the offset of the plain text part (hexadecimal view) is not positioned correctly.
+* Fix bugs with multi-line search.
+* Fix crash when modifying the last line (1 byte) while the file is partially open.
+* Fix invalid offset when editing a line while the file is partially open and the first line is offset.
+* Fix a bug where the interface was not restored after a modification without saving and an undone opening.
+ 
+Please note that new text additions are mostly translated via DeepL (German+Spanish).
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
