@@ -82,7 +82,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
     final boolean validated = SysHelper.isValidHexLine(validate);
     if (!validated) {
-      mLayout.setErrorTextAppearance(SysHelper.isEven(validate.length()) ? R.style.AppTheme_ErrorTextAppearance : R.style.AppTheme_WarningTextAppearance);
+      mLayout.setErrorTextAppearance(R.style.AppTheme_ErrorTextAppearance);
       mLayout.setError(" "); /* only for the color */
     } else {
       byte[] bytes = SysHelper.hex2bin(validate);
