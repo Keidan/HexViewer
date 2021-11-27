@@ -73,8 +73,12 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   private TextInputEditText mTietStart;
   private TextInputLayout mTilEnd;
   private TextInputEditText mTietEnd;
+  private boolean mCurrentIsHex = false;
+  private boolean mIgnoreInputEvent = true;
   private boolean mIgnore = false;
   private long mRealSize = 0L;
+  private InputFilter[] mDefaultStartInputFiler = new InputFilter[0];
+  private InputFilter[] mDefaultEndInputFiler = new InputFilter[0];
   /* https://stackoverflow.com/questions/10648449/how-do-i-set-a-edittext-to-the-input-of-only-hexadecimal-numbers/17355026 */
   private final InputFilter mInputFilterTextHex = (source, start, end, dest, dstart, dend) -> {
     Pattern pattern = Pattern.compile("^\\p{XDigit}+$");
@@ -209,6 +213,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
         mTietStart.removeTextChangedListener(this);
       tietStart.addTextChangedListener(this);
       mTietStart = tietStart;
+      mDefaultStartInputFiler = mTietStart.getFilters();
     }
     if (tietEnd != null) {
       tietEnd.setText(String.valueOf(end));
@@ -216,6 +221,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
         mTietEnd.removeTextChangedListener(this);
       tietEnd.addTextChangedListener(this);
       mTietEnd = tietEnd;
+      mDefaultEndInputFiler = mTietEnd.getFilters();
     }
     if (textFileSize != null)
       textFileSize.setText(SysHelper.sizeToHuman(this, real));
@@ -332,6 +338,17 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       }
     } else
       val = s_value;
+    return convert(val, edit);
+  }
+
+  /**
+   * Convert the value according to the unit.
+   *
+   * @param val  The string value.
+   * @param edit The EditText.
+   * @return The long value.
+   */
+  private long convert(String val, EditText edit) {
     if (mSpUnit.getSelectedItemId() == IDX_K_BYTES) {
       try {
         return (long) (Float.parseFloat(val) * SysHelper.SIZE_1KB);
@@ -376,6 +393,35 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   }
 
   /**
+   * Converts the value according to the unit.
+   *
+   * @param val The string value.
+   * @return The String value.
+   */
+  private String convertValueTo(String val) {
+    if (mCurrentIsHex) {
+      /* hex to long */
+      try {
+        return String.valueOf(Long.parseLong(val, 16));
+      } catch (Exception ignored) {
+      }
+    } else {
+      /* long to hex */
+      long value;
+      if (val.indexOf('.') == -1)
+        value = Long.parseLong(val);
+      else
+        value = convert(val, null);
+      if (value != -1)
+        try {
+          return Long.toHexString(Long.parseLong(val)).toUpperCase();
+        } catch (Exception ignored) {
+        }
+    }
+    return "";
+  }
+
+  /**
    * <p>Callback method to be invoked when an item in this view has been
    * selected.</p>
    *
@@ -390,6 +436,20 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       evaluateSize();
       changeInputType();
     } else if (parent.equals(mSpInputType)) {
+      if (!mIgnoreInputEvent) {
+        if (mTietStart != null) {
+          String s = convertValueTo(Objects.requireNonNull(mTietStart.getText()).toString());
+          if (!s.isEmpty())
+            mTietStart.setText(s);
+        }
+        if (mTietEnd != null) {
+          String s = convertValueTo(Objects.requireNonNull(mTietEnd.getText()).toString());
+          if (!s.isEmpty())
+            mTietEnd.setText(s);
+        }
+        mCurrentIsHex = !mCurrentIsHex;
+      } else
+        mIgnoreInputEvent = false;
       evaluateSize();
       changeInputType();
     }
@@ -397,6 +457,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
 
   private void changeInputType() {
     if (mSpInputType.getSelectedItemId() == IDX_DECIMAL) {
+      mTietStart.setFilters(mDefaultStartInputFiler);
+      mTietEnd.setFilters(mDefaultEndInputFiler);
       mTietStart.setInputType(InputType.TYPE_CLASS_NUMBER);
       mTietEnd.setInputType(InputType.TYPE_CLASS_NUMBER);
       mTietStart.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
