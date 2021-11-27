@@ -109,10 +109,12 @@ public class LauncherSave {
     }
 
     if (file != null) {
+      final DocumentFile f = file;
       UIHelper.showConfirmDialog(mActivity, mActivity.getString(R.string.action_save_title),
           mActivity.getString(R.string.confirm_overwrite),
           (view) -> {
-            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
+            FileData fd = new FileData(mActivity, f.getUri(), false);
+            new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(fd,
                 mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
             mActivity.setTitle(mActivity.getResources().getConfiguration());
           });
