@@ -8,10 +8,17 @@ title: Plain text search
 # {{ spec.title }}
 Searching for text in the plain text view.
 
-## Test
+## Test (1)
 - Follow the instructions specified in the `Plain view` test.
 - Click on the magnifying glass icon at the top of the application.
 - Enter a text that appears on a single line.
 - The list is updated with only those lines that contain the word you are looking for.
-- Enter text that has a word that overlaps multiple lines.
+- Enter a text where a word overlaps several lines.
+- The list is updated with only those lines that contain the word you are looking for.
+## Test (2)
+- Follow the instructions specified in the `Plain view` test.
+- Click on the magnifying glass icon at the top of the application.
+- Enter a text that appears on a single line.
+- The list is updated with only those lines that contain the word you are looking for.
+- Enter a text where a word overlaps at least 3 or 4 lines.
 - The list is updated with only those lines that contain the word you are looking for.
