@@ -8,13 +8,14 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.documentfile.provider.DocumentFile;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.dialog.SaveDialog;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.io.FileHelper;
 
 /**
  * ******************************************************************************

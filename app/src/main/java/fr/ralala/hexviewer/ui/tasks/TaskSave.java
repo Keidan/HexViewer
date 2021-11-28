@@ -4,20 +4,19 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import androidx.documentfile.provider.DocumentFile;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -34,8 +33,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, TaskSave.Result> {
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 10000;
-  private OutputStream mOutputStream = null;
-  private ParcelFileDescriptor mParcelFileDescriptor = null;
+  private RandomAccessFileChannel mRandomAccessFileChannel = null;
   private final SaveResultListener mListener;
   private final ContentResolver mContentResolver;
   private final Context mContext;
@@ -109,23 +107,14 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    * Closes the stream.
    */
   private void close() {
-    if (mOutputStream != null) {
+    if (mRandomAccessFileChannel != null) {
       try {
-        mOutputStream.close();
+        mRandomAccessFileChannel.close();
       } catch (final IOException e) {
         Log.e(this.getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
       }
-      mOutputStream = null;
+      mRandomAccessFileChannel = null;
     }
-    if (mParcelFileDescriptor != null) {
-      try {
-        mParcelFileDescriptor.close();
-      } catch (final IOException e) {
-        Log.e(this.getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
-      }
-      mParcelFileDescriptor = null;
-    }
-
   }
 
   /**
@@ -157,22 +146,17 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     result.runnable = request.mRunnable;
     publishProgress(0L);
     try {
-      String mode = "w";
-      if (!result.fd.isSequential())
-        mode += "t";
-      mParcelFileDescriptor = contentResolver.openFileDescriptor(result.fd.getUri(), mode);
+      mRandomAccessFileChannel = new RandomAccessFileChannel(contentResolver, result.fd.getUri(), !result.fd.isSequential());
       List<Byte> bytes = new ArrayList<>();
       for (LineEntry entry : request.mEntries)
         bytes.addAll(entry.getRaw());
       final byte[] data = SysHelper.toByteArray(bytes, mCancel);
       if (!isCancelled()) {
-        FileOutputStream fos = new FileOutputStream(mParcelFileDescriptor.getFileDescriptor());
-        mOutputStream = fos;
-
         mTotalSize = data.length;
         int maxLength = MAX_LENGTH;
+        AtomicLong position = new AtomicLong(result.fd.getStartOffset());
+        mRandomAccessFileChannel.setPosition(position.get());
         if (result.fd.isSequential()) {
-          fos.getChannel().position(result.fd.getStartOffset());
           maxLength = result.fd.getSize() < MAX_LENGTH ? (int) result.fd.getSize() : MAX_LENGTH;
         }
         final long count = mTotalSize / maxLength;
@@ -180,15 +164,14 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
 
         long offset = 0;
         for (long i = 0; i < count && !isCancelled(); i++) {
-          mOutputStream.write(data, (int) offset, maxLength);
+          mRandomAccessFileChannel.write(data, (int)offset, maxLength);
           publishProgress((long) maxLength);
           offset += maxLength;
         }
         if (!isCancelled() && remain > 0) {
-          mOutputStream.write(data, (int) offset, (int) remain);
+          mRandomAccessFileChannel.write(data, (int)offset, (int) remain);
           publishProgress(remain);
         }
-        mOutputStream.flush();
       }
     } catch (final Exception e) {
       result.exception = e.getMessage();

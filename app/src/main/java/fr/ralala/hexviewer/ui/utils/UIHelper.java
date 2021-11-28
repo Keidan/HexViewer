@@ -30,7 +30,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
-import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.io.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**

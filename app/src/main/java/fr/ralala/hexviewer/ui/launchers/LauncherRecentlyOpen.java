@@ -13,7 +13,7 @@ import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.activities.RecentlyOpenActivity;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.io.FileHelper;
 
 /**
  * ******************************************************************************

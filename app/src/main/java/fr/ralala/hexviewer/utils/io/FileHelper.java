@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.utils;
+package fr.ralala.hexviewer.utils.io;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************

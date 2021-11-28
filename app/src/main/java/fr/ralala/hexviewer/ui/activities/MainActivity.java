@@ -37,7 +37,7 @@ import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.io.FileHelper;
 import fr.ralala.hexviewer.utils.MemoryMonitor;
 
 /**

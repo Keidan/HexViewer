@@ -6,7 +6,7 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
-import fr.ralala.hexviewer.utils.FileHelper;
+import fr.ralala.hexviewer.utils.io.FileHelper;
 
 /**
  * ******************************************************************************

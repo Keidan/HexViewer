@@ -6,7 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,6 +18,7 @@ import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.MemoryMonitor;
+import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -38,7 +39,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 20000;
   private final HexTextArrayAdapter mAdapter;
   private final OpenResultListener mListener;
-  private InputStream mInputStream = null;
+  private RandomAccessFileChannel mRandomAccessFileChannel = null;
   private final boolean mAddRecent;
   private final ContentResolver mContentResolver;
   private final MemoryMonitor mMemoryMonitor;
@@ -110,13 +111,13 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
    * Closes the stream.
    */
   private void close() {
-    if (mInputStream != null) {
+    if (mRandomAccessFileChannel != null) {
       try {
-        mInputStream.close();
+        mRandomAccessFileChannel.close();
       } catch (final IOException e) {
         Log.e(TAG, "Exception: " + e.getMessage(), e);
       }
-      mInputStream = null;
+      mRandomAccessFileChannel = null;
     }
   }
 
@@ -148,42 +149,40 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       /* Size + stream */
       mTotalSize = fd.getSize();
       publishProgress(0L);
-      mInputStream = contentResolver.openInputStream(fd.getUri());
+      mRandomAccessFileChannel = new RandomAccessFileChannel(contentResolver, fd.getUri());
 
-      if (mInputStream != null) {
-        int maxLength = moveCursorIfSequential(fd, result);
+      int maxLength = moveCursorIfSequential(fd, result);
 
-        if (result.exception == null) {
-          MemoryMonitor.forceGC(); /* force GC before */
-          /* prepare buffer */
-          final byte[] data = new byte[maxLength];
-          int reads;
-          long totalSequential = fd.getStartOffset();
-          evaluateShiftOffset(fd, totalSequential);
-          boolean first = true;
-          /* read data */
-          while (!isCancelled() && (reads = mInputStream.read(data)) != -1) {
-            try {
-              SysHelper.formatBuffer(list, data, reads, mCancel,
-                  ApplicationCtx.getInstance().getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
-              first = false;
-            } catch (IllegalArgumentException iae) {
-              result.exception = iae.getMessage();
+      if (result.exception == null) {
+        MemoryMonitor.forceGC(); /* force GC before */
+        /* prepare buffer */
+        int reads;
+        long totalSequential = fd.getStartOffset();
+        evaluateShiftOffset(fd, totalSequential);
+        boolean first = true;
+        /* read data */
+        ByteBuffer buffer = ByteBuffer.allocate(maxLength);
+        while (!isCancelled() && (reads = mRandomAccessFileChannel.read(buffer)) != -1) {
+          try {
+            SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
+                ApplicationCtx.getInstance().getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
+            first = false;
+          } catch (IllegalArgumentException iae) {
+            result.exception = iae.getMessage();
+            break;
+          }
+          publishProgress((long) reads);
+          if (fd.isSequential()) {
+            totalSequential += reads;
+            if (totalSequential >= fd.getEndOffset())
               break;
-            }
-            publishProgress((long) reads);
-            if (fd.isSequential()) {
-              totalSequential += reads;
-              if (totalSequential >= fd.getEndOffset())
-                break;
-            }
           }
-          /* prepare result */
-          if (result.exception == null) {
-            result.listHex = list;
-            if (mAddRecent && !mCancel.get())
-              app.getRecentlyOpened().add(fd);
-          }
+        }
+        /* prepare result */
+        if (result.exception == null) {
+          result.listHex = list;
+          if (mAddRecent && !mCancel.get())
+            app.getRecentlyOpened().add(fd);
         }
       }
     } catch (final Exception e) {
@@ -194,10 +193,11 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     return result;
   }
 
-  private int moveCursorIfSequential(FileData fd, Result result) throws IOException {
+  private int moveCursorIfSequential(FileData fd, Result result) {
     int maxLength = MAX_LENGTH;
     if (fd.isSequential()) {
-      if (mInputStream.skip(fd.getStartOffset()) != fd.getStartOffset()) {
+      mRandomAccessFileChannel.setPosition(fd.getStartOffset());
+      if (mRandomAccessFileChannel.getPosition() != fd.getStartOffset()) {
         result.exception = "Unable to skip file data!";
       }
       maxLength = fd.getSize() < MAX_LENGTH ? (int) fd.getSize() : MAX_LENGTH;
