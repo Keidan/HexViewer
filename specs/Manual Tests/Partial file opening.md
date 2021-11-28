@@ -18,7 +18,7 @@ Open a file using the partial opening feature.
    - `Size of the part to open`: The part of the file to open, this field is calculated dynamically (depends on the `Start` and `End` values).
    - `Unit`: The unit to use as a representation of the `Start` and `End` fields.
    - `Input type`: The type of input to use as a representation of the `Start` and `End` fields.
-      - When you change this value, the `Start` and `End` fields will not be changed.
+      - When you change this value, the `Start` and `End` fields are modified.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
@@ -36,7 +36,7 @@ Open a file using the partial opening feature.
    - `Size of the part to open`: The part of the file to open, this field is calculated dynamically (depends on the `Start` and `End` values).
    - `Unit`: The unit to use as a representation of the `Start` and `End` fields.
    - `Input type`: The type of input to use as a representation of the `Start` and `End` fields.
-      - When you change this value, the `Start` and `End` fields will not be changed.
+      - When you change this value, the `Start` and `End` fields are modified.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
@@ -54,7 +54,7 @@ Open a file using the partial opening feature.
    - `Size of the part to open`: The part of the file to open, this field is calculated dynamically (depends on the `Start` and `End` values).
    - `Unit`: The unit to use as a representation of the `Start` and `End` fields.
    - `Input type`: The type of input to use as a representation of the `Start` and `End` fields.
-      - When you change this value, the `Start` and `End` fields will not be changed.
+      - When you change this value, the `Start` and `End` fields are modified.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
@@ -78,7 +78,7 @@ Open a file using the partial opening feature.
    - `Size of the part to open`: The part of the file to open, this field is calculated dynamically (depends on the `Start` and `End` values).
    - `Unit`: The unit to use as a representation of the `Start` and `End` fields.
    - `Input type`: The type of input to use as a representation of the `Start` and `End` fields.
-      - When you change this value, the `Start` and `End` fields will not be changed.
+      - When you change this value, the `Start` and `End` fields are modified.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
@@ -109,7 +109,7 @@ Open a file using the partial opening feature.
    - `Size of the part to open`: The part of the file to open, this field is calculated dynamically (depends on the `Start` and `End` values).
    - `Unit`: The unit to use as a representation of the `Start` and `End` fields.
    - `Input type`: The type of input to use as a representation of the `Start` and `End` fields.
-      - When you change this value, the `Start` and `End` fields will not be changed.
+      - When you change this value, the `Start` and `End` fields are modified.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
@@ -144,7 +144,7 @@ Open a file using the partial opening feature.
    - `Size of the part to open`: The part of the file to open, this field is calculated dynamically (depends on the `Start` and `End` values).
    - `Unit`: The unit to use as a representation of the `Start` and `End` fields.
    - `Input type`: The type of input to use as a representation of the `Start` and `End` fields.
-      - When you change this value, the `Start` and `End` fields will not be changed.
+      - When you change this value, the `Start` and `End` fields are modified.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
