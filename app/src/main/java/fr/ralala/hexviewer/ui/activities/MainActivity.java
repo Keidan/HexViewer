@@ -18,6 +18,8 @@ import java.io.ByteArrayOutputStream;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuCompat;
+
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -122,6 +124,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
+    findViewById(R.id.buttonRecentlyOpen).setEnabled(!ApplicationCtx.getInstance().getRecentlyOpened().list().isEmpty());
     onOpenResult(!FileData.isEmpty(mFileData), false);
     if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.refreshAdapter();
