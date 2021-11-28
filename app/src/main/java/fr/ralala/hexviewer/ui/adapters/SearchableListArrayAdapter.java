@@ -333,7 +333,6 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    *
    * @param lineEntry LineEntry
    * @param items     List<LineEntry>
-   * @param length    Items length.
    * @param i         Current index.
    * @param query     The query.
    * @param loc       Locale
@@ -341,14 +340,17 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    */
   private void multilineSearch(final LineEntry lineEntry,
                                final List<LineEntry> items,
-                               final int length,
                                final int i,
                                final String query,
                                final Locale loc,
                                final Set<Integer> tempList) {
     /* The word fits on 2 or more lines */
-    final long count = query.length() / lineEntry.getPlain().length();
-    final long remain = query.length() - (count * lineEntry.getPlain().length());
+    final int lineWidth = ApplicationCtx.getInstance().getNbBytesPerLine();
+    int count = (query.length() / lineWidth);
+    int rest = (query.length() % lineWidth);
+    if (rest != 0)
+      count++;
+    int possibleLines = count + 1;
     ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
     insertByteList(byteArrayStream, lineEntry);
     if (findInByteArrayOutputStream(byteArrayStream, query, loc).index != -1) {
@@ -357,23 +359,19 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       if (query.length() == 1)
         return;
     }
-    int k = i;
-    /* The lines are complete? */
-    if (count != 0) {
-      for (int j = i; j < count && k < (i + count) && j < items.size(); j++, k++) {
-        LineEntry lineEntry2 = items.get(j);
-        insertByteList(byteArrayStream, lineEntry2);
-      }
-    } else k++;
-    /* We overflow on another line not complete. */
-    if (remain != 0 && k < length) {
-      LineEntry lineEntry2 = items.get(k++);
-      insertByteList(byteArrayStream, lineEntry2);
+    if (query.length() == 1)
+      return;
+
+    int idx = i + 1;
+    int k = idx;
+    for (int j = idx; j <= possibleLines && k < (i + possibleLines) && j < items.size(); j++, k++) {
+      LineEntry le = items.get(j);
+      insertByteList(byteArrayStream, le);
     }
 
     /* Preparation of an entry with all the lines concerned. */
     SearchResult sr = findInByteArrayOutputStream(byteArrayStream, query, loc);
-    evaluateResult(lineEntry, i, k, sr, query, tempList);
+    evaluateResult(lineEntry, i, sr, query, tempList);
     try {
       byteArrayStream.close();
     } catch (IOException e) {
@@ -386,17 +384,15 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    *
    * @param lineEntry LineEntry
    * @param i         Current index.
-   * @param k         Max Index.
    * @param sr        SearchResult
    * @param query     The query.
    * @param tempList  The output list.
    */
-  private void evaluateResult(final LineEntry lineEntry, int i, int k, SearchResult sr,
+  private void evaluateResult(final LineEntry lineEntry, int i, SearchResult sr,
                               final String query, final Set<Integer> tempList) {
     int index = sr.index;
     if (index != -1) {
       int start = 0;
-      int end = k;
       int nbPerLines;
       if (sr.hexPart) {
         final int cfgNbPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
@@ -416,6 +412,10 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
           index += lineEntry.getShiftOffset();
         }
       }
+      final int real = index + query.length();
+      int nbLines = real / nbPerLines;
+      int remain = real % nbPerLines;
+      int end = nbLines + (remain != 0 ? 1 : 0);
       if (index >= nbPerLines)
         start++;
       else if ((index + query.length()) <= nbPerLines)
@@ -444,7 +444,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
         if (clear)
           tempList.add(i);
         else {
-          multilineSearch(lineEntry, items, length, i, query, loc, tempList);
+          multilineSearch(lineEntry, items, i, query, loc, tempList);
         }
       }
     }
