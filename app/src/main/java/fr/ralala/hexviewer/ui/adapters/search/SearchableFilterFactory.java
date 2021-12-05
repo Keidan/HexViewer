@@ -223,11 +223,10 @@ public class SearchableFilterFactory {
         if (full % nbPerLines == 0)
           end--;
         if (start == end) {
-          tempList.add(Math.min(i, start));
+          tempList.add((index < nbPerLines) ? i : start);
         } else {
-          for (int j = start; j <= end; j++) {
+          for (int j = start; j <= end; j++)
             tempList.add(j);
-          }
         }
       }
     }
