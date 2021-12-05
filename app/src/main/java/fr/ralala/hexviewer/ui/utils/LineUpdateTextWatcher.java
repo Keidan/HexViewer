@@ -270,6 +270,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
           (start == 0 ? 0 : localStart);
     return localStart;
   }
+
   /**
    * Management of the addition of text with the SmartInput option.
    *

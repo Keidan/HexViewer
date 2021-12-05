@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntries;
@@ -74,7 +75,7 @@ public class GoToDialog implements View.OnClickListener {
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));
     mDialog = builder.create();
-    if(mDialog.isShowing())
+    if (mDialog.isShowing())
       mDialog.dismiss();
     mMode = mode;
     mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
@@ -131,9 +132,9 @@ public class GoToDialog implements View.OnClickListener {
 
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
         mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
-    SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter)lv.getAdapter());
+    SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter) lv.getAdapter());
     int position;
-    if(mMode == Mode.ADDRESS) {
+    if (mMode == Mode.ADDRESS) {
       if (validatePosition(text, adapter.getEntries().getItemsCount() - 1))
         return;
       position = evaluatePosition(adapter, adapter.getCount());
@@ -162,20 +163,21 @@ public class GoToDialog implements View.OnClickListener {
 
   /**
    * Evaluates the position in the list.
+   *
    * @param adapter SearchableListArrayAdapter
-   * @param count Nb of elements.
+   * @param count   Nb of elements.
    * @return The position.
    */
   private int evaluatePosition(SearchableListArrayAdapter adapter, int count) {
     LineEntries entries = adapter.getEntries();
     int position;
-    if(count <= 500) {
+    if (count <= 500) {
       position = getAddressPosition(entries, 0, count);
     } else {
       int middle = count / 2;
-      if(mPosition == middle)
+      if (mPosition == middle)
         position = middle;
-      else if(mPosition < middle) {
+      else if (mPosition < middle) {
         position = getAddressPosition(entries, 0, middle);
       } else {
         position = getAddressPosition(entries, middle, count);
@@ -186,15 +188,16 @@ public class GoToDialog implements View.OnClickListener {
 
   /**
    * Gets the position of the address in the list.
+   *
    * @param entries LineEntries
-   * @param start Start index.
-   * @param end End index.
+   * @param start   Start index.
+   * @param end     End index.
    * @return The position.
    */
   private int getAddressPosition(LineEntries entries, int start, int end) {
     int position = -1;
-    for(int i = start; i < end; i++) {
-      if(entries.getItemIndex(i) == mPosition) {
+    for (int i = start; i < end; i++) {
+      if (entries.getItemIndex(i) == mPosition) {
         position = i;
         break;
       }
@@ -253,6 +256,7 @@ public class GoToDialog implements View.OnClickListener {
 
   /**
    * Displays an error message
+   *
    * @param err The message.
    */
   private void displayError(String err) {

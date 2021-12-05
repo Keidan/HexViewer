@@ -175,7 +175,7 @@ public class SearchableFilterFactory {
     }
 
     /* Preparation of an entry with all the lines concerned. */
-      SearchResult sr = findInByteArrayOutputStream(byteArrayStream, query, loc);
+    SearchResult sr = findInByteArrayOutputStream(byteArrayStream, query, loc);
     evaluateResult(lineEntry.getShiftOffset(), i, sr, query, tempList);
     try {
       byteArrayStream.close();
@@ -220,9 +220,9 @@ public class SearchableFilterFactory {
         final int full = index + query.length();
         int start = i + (index / nbPerLines);
         int end = i + (full / nbPerLines);
-        if(full % nbPerLines == 0)
+        if (full % nbPerLines == 0)
           end--;
-        if(start == end) {
+        if (start == end) {
           tempList.add(Math.min(i, start));
         } else {
           for (int j = start; j <= end; j++) {

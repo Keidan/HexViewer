@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import androidx.documentfile.provider.DocumentFile;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -164,12 +165,12 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
 
         long offset = 0;
         for (long i = 0; i < count && !isCancelled(); i++) {
-          mRandomAccessFileChannel.write(data, (int)offset, maxLength);
+          mRandomAccessFileChannel.write(data, (int) offset, maxLength);
           publishProgress((long) maxLength);
           offset += maxLength;
         }
         if (!isCancelled() && remain > 0) {
-          mRandomAccessFileChannel.write(data, (int)offset, (int) remain);
+          mRandomAccessFileChannel.write(data, (int) offset, (int) remain);
           publishProgress(remain);
         }
       }

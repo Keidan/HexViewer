@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+
 import fr.ralala.hexviewer.BuildConfig;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.SettingsKeys;

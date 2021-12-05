@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.SettingsKeys;
 

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.SysHelper;
 

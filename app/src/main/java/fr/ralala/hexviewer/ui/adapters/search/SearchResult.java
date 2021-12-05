@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.adapters.search;
 
 import java.util.Set;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
@@ -30,6 +31,7 @@ public class SearchResult {
 
   /**
    * Returns the length.
+   *
    * @return int
    */
   public int getLength() {
@@ -38,6 +40,7 @@ public class SearchResult {
 
   /**
    * Returns the indexes.
+   *
    * @return Set<Integer>
    */
   public Set<Integer> getIndexes() {
@@ -46,6 +49,7 @@ public class SearchResult {
 
   /**
    * Tests if the indexes are in the hexadecimal part.
+   *
    * @return boolean
    */
   public boolean isHexPart() {
@@ -54,6 +58,7 @@ public class SearchResult {
 
   /**
    * Tests if the indexes are in a search with spaces or not (only if isHexPart == true).
+   *
    * @return boolean
    */
   public boolean isWithSpaces() {
@@ -62,6 +67,7 @@ public class SearchResult {
 
   /**
    * Tests if the indexes are in the hexadecimal part.
+   *
    * @return boolean
    */
   public boolean isFromHexView() {

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.StringRes;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;

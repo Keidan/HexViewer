@@ -12,6 +12,7 @@ import java.util.Locale;
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
+
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.models.RecentlyOpened;
 import fr.ralala.hexviewer.models.SettingsKeys;

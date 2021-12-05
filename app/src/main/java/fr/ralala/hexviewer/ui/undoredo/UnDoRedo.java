@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import androidx.core.content.ContextCompat;
+
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
