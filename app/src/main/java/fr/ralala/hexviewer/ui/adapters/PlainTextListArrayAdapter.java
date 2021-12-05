@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 
 /**
  * ******************************************************************************
@@ -52,7 +53,7 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
    * @return boolean
    */
   @Override
-  protected boolean isSearchFromHewView() {
+  public boolean isSearchFromHewView() {
     return false;
   }
 

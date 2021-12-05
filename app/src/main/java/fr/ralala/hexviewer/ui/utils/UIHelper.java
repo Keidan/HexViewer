@@ -29,7 +29,7 @@ import androidx.appcompat.app.AlertDialog;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
-import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 import fr.ralala.hexviewer.utils.io.FileHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -55,7 +55,7 @@ public class UIHelper {
    * @param portrait  UserConfigPortrait.
    * @return The width.
    */
-  public static int getMaxByLine(final Context context, final SearchableListArrayAdapter.UserConfig landscape, final SearchableListArrayAdapter.UserConfig portrait) {
+  public static int getMaxByLine(final Context context, final UserConfig landscape, final UserConfig portrait) {
     int width = getTextWidth(context, landscape, portrait);
     return width == 0 ? 70 : (getScreenWidth(context) / width) - 2;
   }
@@ -80,7 +80,7 @@ public class UIHelper {
    * @param portrait  UserConfigPortrait.
    * @return The width.
    */
-  public static int getTextWidth(final Context context, final SearchableListArrayAdapter.UserConfig landscape, final SearchableListArrayAdapter.UserConfig portrait) {
+  public static int getTextWidth(final Context context, final UserConfig landscape, final UserConfig portrait) {
     final Typeface monospace = Typeface.MONOSPACE;
     final String text = "a";
     float fontSize = 12.0f;

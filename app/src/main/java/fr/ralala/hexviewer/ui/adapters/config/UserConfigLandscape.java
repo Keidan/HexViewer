@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.adapters.config;
 
 import fr.ralala.hexviewer.ApplicationCtx;
-import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 
 /**
  * ******************************************************************************
@@ -15,7 +14,7 @@ import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
  * </p>
  * ******************************************************************************
  */
-public class UserConfigLandscape implements SearchableListArrayAdapter.UserConfig {
+public class UserConfigLandscape implements UserConfig {
   private final ApplicationCtx mApp;
   private final boolean mIsHexList;
 

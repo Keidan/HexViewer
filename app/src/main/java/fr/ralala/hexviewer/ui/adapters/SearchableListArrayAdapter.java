@@ -2,30 +2,26 @@ package fr.ralala.hexviewer.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
 
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
+import fr.ralala.hexviewer.ui.adapters.search.EntryFilter;
+import fr.ralala.hexviewer.ui.adapters.search.ISearchFrom;
 
 /**
  * ******************************************************************************
@@ -39,37 +35,11 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry> {
+public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry> implements ISearchFrom {
   private final EntryFilter mEntryFilter;
   protected final UserConfig mUserConfigPortrait;
   protected final UserConfig mUserConfigLandscape;
   private final LineEntries mLineEntries;
-
-  protected static class SearchResult {
-    protected final int length;
-    protected final int index;
-    protected final boolean hexPart;
-    protected final boolean withSpaces;
-    protected final boolean fromHexView;
-
-    protected SearchResult(int length, int index, boolean hexPart, boolean withSpaces, boolean fromHexView) {
-      this.length = length;
-      this.index = index;
-      this.hexPart = hexPart;
-      this.withSpaces = withSpaces;
-      this.fromHexView = fromHexView;
-    }
-  }
-
-  public interface UserConfig {
-    float getFontSize();
-
-    int getRowHeight();
-
-    boolean isRowHeightAuto();
-
-    boolean isDataColumnNotDisplayed();
-  }
 
   public SearchableListArrayAdapter(final Context context,
                                     final int layoutId,
@@ -77,10 +47,11 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
                                     UserConfig userConfigPortrait,
                                     UserConfig userConfigLandscape) {
     super(context, layoutId, objects);
-    mEntryFilter = new EntryFilter();
     mLineEntries = new LineEntries(objects);
     mUserConfigPortrait = userConfigPortrait;
     mUserConfigLandscape = userConfigLandscape;
+    mEntryFilter = new EntryFilter(context, this, this, mLineEntries,
+        userConfigPortrait, userConfigLandscape);
   }
 
   /**
@@ -223,47 +194,6 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    */
   protected abstract boolean isSelected(int position);
 
-  /**
-   * Test if we are from the hex view or the plain view.
-   *
-   * @return boolean
-   */
-  protected abstract boolean isSearchFromHewView();
-
-  /**
-   * Performs a search.
-   *
-   * @param line      The current line.
-   * @param query     The query.
-   * @param loc       The locale.
-   * @param hexLength The length of the hex part.
-   * @return The index of the query
-   */
-  protected SearchResult performsSearch(final LineEntry line, String query, Locale loc, int hexLength) {
-    String plain = line.toString();
-    /* hex part */
-    final String hex = plain.substring(0, hexLength);
-    int length = hex.length();
-    int index = hex.toLowerCase(loc).lastIndexOf(query);
-    boolean hexPart = true;
-    boolean withSpaces = true;
-    if (index == -1) {
-      /* hex no space */
-      final String hexNoSpaces = plain.substring(0, hexLength).replaceAll(" ", "");
-      index = hexNoSpaces.toLowerCase(loc).lastIndexOf(query);
-      if (index == -1) {
-        /* plain text */
-        hexPart = false;
-        plain = plain.substring(hexLength + 2);
-        index = plain.toLowerCase(loc).lastIndexOf(query);
-        length = plain.length();
-      } else {
-        length = hexNoSpaces.length();
-        withSpaces = false;
-      }
-    }
-    return new SearchResult(length, index, hexPart, withSpaces, isSearchFromHewView());
-  }
   // Filter part
 
   /**
@@ -287,192 +217,6 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     List<Integer> li = new ArrayList<>(tempList);
     Collections.sort(li);
     mLineEntries.setFilteredList(li);
-  }
-
-  /**
-   * Adds the current line to a byte stream.
-   *
-   * @param byteArrayStream ByteArrayOutputStream
-   * @param s               LineEntry
-   */
-  private void insertByteList(ByteArrayOutputStream byteArrayStream, LineEntry s) {
-    if (s.getRaw() != null) {
-      final List<Byte> bytes = s.getRaw();
-      for (Byte b : bytes)
-        byteArrayStream.write(b);
-    } else {
-      final char[] plain = s.getPlain().toCharArray();
-      for (char c : plain)
-        byteArrayStream.write((byte) c);
-    }
-  }
-
-  /**
-   * Performs a search in the ByteArrayOutputStream
-   *
-   * @param byteArrayStream ByteArrayOutputStream
-   * @param query           The query.
-   * @param loc             Locale
-   * @return SearchResult
-   */
-  private SearchResult findInByteArrayOutputStream(ByteArrayOutputStream byteArrayStream,
-                                                   final String query,
-                                                   final Locale loc) {
-    byte[] bytes = byteArrayStream.toByteArray();
-    List<LineEntry> lle = SysHelper.formatBuffer(bytes, null, bytes.length);
-    if (!lle.isEmpty()) {
-      LineEntry le = lle.get(0);
-      int hexLength = bytes.length * 3 - 1;
-      return performsSearch(new LineEntry(le.toString(), le.getRaw()), query, loc, hexLength);
-    }
-    return new SearchResult(0, -1, false, false, false);
-  }
-
-  /**
-   * Search on several lines
-   *
-   * @param lineEntry LineEntry
-   * @param items     List<LineEntry>
-   * @param i         Current index.
-   * @param query     The query.
-   * @param loc       Locale
-   * @param tempList  The output list.
-   */
-  private void multilineSearch(final LineEntry lineEntry,
-                               final List<LineEntry> items,
-                               final int i,
-                               final String query,
-                               final Locale loc,
-                               final Set<Integer> tempList) {
-    /* The word fits on 2 or more lines */
-    final int lineWidth = ApplicationCtx.getInstance().getNbBytesPerLine();
-    int count = (query.length() / lineWidth);
-    int rest = (query.length() % lineWidth);
-    if (rest != 0)
-      count++;
-    int possibleLines = count + 1;
-    ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-    insertByteList(byteArrayStream, lineEntry);
-    if (findInByteArrayOutputStream(byteArrayStream, query, loc).index != -1) {
-      tempList.add(i);
-      /* If query contains only 1 character there is no need to go further. */
-      if (query.length() == 1)
-        return;
-    }
-    if (query.length() == 1)
-      return;
-
-    int idx = i + 1;
-    int k = idx;
-    for (int j = idx; j <= possibleLines && k < (i + possibleLines) && j < items.size(); j++, k++) {
-      LineEntry le = items.get(j);
-      insertByteList(byteArrayStream, le);
-    }
-
-    /* Preparation of an entry with all the lines concerned. */
-    SearchResult sr = findInByteArrayOutputStream(byteArrayStream, query, loc);
-    evaluateResult(lineEntry, i, sr, query, tempList);
-    try {
-      byteArrayStream.close();
-    } catch (IOException e) {
-      Log.e(getClass().getSimpleName(), "Close exception: " + e.getMessage(), e);
-    }
-  }
-
-  /**
-   * Evaluates the result of the research.
-   *
-   * @param lineEntry LineEntry
-   * @param i         Current index.
-   * @param sr        SearchResult
-   * @param query     The query.
-   * @param tempList  The output list.
-   */
-  private void evaluateResult(final LineEntry lineEntry, int i, SearchResult sr,
-                              final String query, final Set<Integer> tempList) {
-    int index = sr.index;
-    if (index != -1) {
-      int start = 0;
-      int nbPerLines;
-      if (sr.hexPart) {
-        final int cfgNbPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
-        if (sr.withSpaces) {
-          nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8;
-          index += lineEntry.getShiftOffset() * 3;
-        } else {
-          nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 * 2 : SysHelper.MAX_BY_ROW_8 * 2;
-          index += lineEntry.getShiftOffset() * 2;
-        }
-      } else {
-        if (!sr.fromHexView)
-          nbPerLines = UIHelper.getMaxByLine(getContext(), mUserConfigLandscape, mUserConfigPortrait);
-        else {
-          final int cfgNbPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
-          nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 : SysHelper.MAX_BY_ROW_8;
-          index += lineEntry.getShiftOffset();
-        }
-      }
-      final int real = index + query.length();
-      int nbLines = real / nbPerLines;
-      int remain = real % nbPerLines;
-      int end = nbLines + (remain != 0 ? 1 : 0);
-      if (index >= nbPerLines)
-        start++;
-      else if ((index + query.length()) <= nbPerLines)
-        end--;
-      /* We add all occurrences. */
-      for (int j = i + start; j < end; j++)
-        tempList.add(j);
-    }
-  }
-
-  /**
-   * Custom filter
-   */
-  private class EntryFilter extends Filter {
-
-    protected void apply(CharSequence constraint, final Set<Integer> tempList) {
-      boolean clear = (constraint == null || constraint.length() == 0);
-      String query = "";
-      final Locale loc = Locale.getDefault();
-      if (!clear)
-        query = constraint.toString().toLowerCase(loc);
-      List<LineEntry> items = mLineEntries.getItems();
-      final int length = items.size();
-      for (int i = 0; i < length; i++) {
-        LineEntry lineEntry = items.get(i);
-        if (clear)
-          tempList.add(i);
-        else {
-          multilineSearch(lineEntry, items, i, query, loc, tempList);
-        }
-      }
-    }
-
-    @Override
-    protected FilterResults performFiltering(CharSequence constraint) {
-      final FilterResults filterResults = new FilterResults();
-      final Set<Integer> tempList = new HashSet<>();
-      apply(constraint, tempList);
-      filterResults.count = tempList.size();
-      filterResults.values = tempList;
-      return filterResults;
-    }
-
-    /**
-     * Notify about filtered list to ui
-     *
-     * @param constraint text
-     * @param results    filtered result
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void publishResults(CharSequence constraint, FilterResults results) {
-      List<Integer> li = new ArrayList<>((Set<Integer>) results.values);
-      Collections.sort(li);
-      mLineEntries.setFilteredList(li);
-      notifyDataSetChanged();
-    }
   }
 }
 
