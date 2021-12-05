@@ -49,6 +49,12 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private int mStartOffsetForOverwrite = 0;
   private int mShiftOffset;
 
+  private static class ProcessAddContext {
+    String notChangedStart;
+    String notChangedEnd;
+    CharSequence newChange;
+  }
+
   public LineUpdateTextWatcher(LineUpdateHexArrayAdapter resultAdapter,
                                TextInputLayout layout, ApplicationCtx app, final int shiftOffset) {
     mResultAdapter = resultAdapter;
@@ -175,7 +181,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     if (mIgnore) /* avoid unnecessary treatments */
       return;
     mAfterSpace = s.length() > 0 && s.charAt(Math.max(0, start - 1)) == ' ';
-    boolean beforeSpace = s.length() > 0 && s.charAt(Math.max(0, Math.min(start, s.length() - 1))) == ' ';
+    boolean beforeSpace = start == 0 || s.length() > 0 && s.charAt(Math.max(0, Math.min(start, s.length() - 1))) == ' ';
     mBetweenDigits = start != s.length() && !mAfterSpace && !beforeSpace;
     mOldString = s.toString();
   }
@@ -272,33 +278,75 @@ public class LineUpdateTextWatcher implements TextWatcher {
   }
 
   /**
+   * Management of the addition of text with the SmartInput option with overwrite and between chars.
+   *
+   * @param start int
+   * @param count int
+   */
+  private ProcessAddContext processAddWithSmartInputEvaluateStringsOverwriteBetweenChars(int start, int localStart, int count) {
+    ProcessAddContext pac = new ProcessAddContext();
+    pac.notChangedStart = localStart == 0 ? "" : mNewString.substring(0, localStart);
+    String strChange;
+    pac.notChangedEnd = mNewString.substring(Math.min(start + count + 1, mNewString.length()));
+    strChange = mNewString.substring(pac.notChangedStart.length() + 1);
+    int idxEnd = strChange.indexOf(pac.notChangedEnd);
+    if (idxEnd > 0)
+      strChange = strChange.substring(0, idxEnd - 1);
+    else
+      strChange = strChange.substring(0, count);
+    pac.newChange = normalizeForEmoji(strChange);
+    return pac;
+  }
+
+  /**
+   * Management of the addition of text with the SmartInput option with or witnout overwrite.
+   *
+   * @param start int
+   * @param count int
+   */
+  private ProcessAddContext processAddWithSmartInputEvaluateStrings(int start, int localStart, int count) {
+    ProcessAddContext pac = new ProcessAddContext();
+    pac.notChangedStart = localStart == 0 ? "" : mNewString.substring(0, localStart);
+    pac.notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
+    pac.newChange = normalizeForEmoji(mNewString.substring(Math.max(0, localStart),
+        Math.min(localStart + count, mNewString.length())));
+    return pac;
+  }
+
+  /**
    * Management of the addition of text with the SmartInput option.
    *
    * @param start int
    * @param count int
    */
   private void processAddWithSmartInput(int start, int count) {
+    ProcessAddContext pac;
     int localStart = evaluateLocalStart(start);
     mStart = localStart < 0 ? 0 : localStart + 1;
-    final String notChangedStart = localStart == 0 ? "" : mNewString.substring(0, localStart);
-    final String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
-    CharSequence newChange = normalizeForEmoji(mNewString.substring(Math.max(0, localStart),
-        Math.min(localStart + count, mNewString.length())));
+    if (mApp.isOverwrite()) {
+      if (mBetweenDigits) {
+        pac = processAddWithSmartInputEvaluateStringsOverwriteBetweenChars(start, localStart, count);
+      } else {
+        pac = processAddWithSmartInputEvaluateStrings(start, localStart, count);
+      }
+    } else {
+      pac = processAddWithSmartInputEvaluateStrings(start, localStart, count);
+    }
 
     StringBuilder newChangeHex = new StringBuilder();
-    byte[] newChangeBytes = newChange.toString().getBytes();
+    byte[] newChangeBytes = pac.newChange.toString().getBytes();
     List<LineEntry> list = SysHelper.formatBuffer(newChangeBytes, newChangeBytes.length, null, SysHelper.MAX_BY_ROW_8);
     for (LineEntry str : list)
       newChangeHex.append(str.getPlain().substring(0, SysHelper.MAX_BYTES_ROW_8).trim());
 
     String str;
     if (!mApp.isOverwrite()) {
-      str = (notChangedStart + newChangeHex.toString() + notChangedEnd).replaceAll(" ", "");
+      str = (pac.notChangedStart + newChangeHex.toString() + pac.notChangedEnd).replaceAll(" ", "");
       if (mAfterSpace)
         mStart--;
     } else {
-      String endStr = notChangedEnd.replaceAll(" ", "");
-      String startStr = notChangedStart.replaceAll(" ", "");
+      String endStr = pac.notChangedEnd.replaceAll(" ", "");
+      String startStr = pac.notChangedStart.replaceAll(" ", "");
       String ns = newChangeHex.toString().replaceAll(" ", "");
       boolean odd = !SysHelper.isEven(startStr.length());
       if (odd) {
@@ -308,11 +356,15 @@ public class LineUpdateTextWatcher implements TextWatcher {
       if (odd) {
         endStr = endStr.substring(1);
       }
-      str = startStr + ns;
-      if (!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
-        str += endStr.substring(ns.length());
-      } else if (ns.length() <= endStr.length())
-        str += endStr;
+      if(!mBetweenDigits) {
+        str = startStr + ns;
+        if (!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
+          str += endStr.substring(ns.length());
+        } else if (ns.length() <= endStr.length())
+          str += endStr;
+      }
+      else
+        str = startStr + ns + endStr;
       mStartOffsetForOverwrite = ns.length();
     }
     mNewString = formatText(str.replaceAll(" ", "").toLowerCase(Locale.US));
