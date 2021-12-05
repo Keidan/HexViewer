@@ -1,0 +1,18 @@
+* Fix a bug where after editing a line in a partially opened file, the line appears split into two lines.
+* Simplification of the color when the entry is not valid in the line editing view.
+* The start and end values in the partial opening view of a file are now automatically converted according to the selected base.
+* Fix a bug when the search word is on more than two lines.
+* Fix a bug when overwriting an existing file via the "Save as" menu.
+* Fix file corruption when editing a partially opened file (Android 9).
+* Fix a bug where the "Recently opened" button was not updated after clearing the list.
+* Fix a bug when inserting a new character between two existing characters (plain text checked and insertion mode checked).
+
+Please note that new text additions are mostly translated via DeepL (German+Spanish).
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
