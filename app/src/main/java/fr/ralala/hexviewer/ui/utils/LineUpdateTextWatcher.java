@@ -356,14 +356,13 @@ public class LineUpdateTextWatcher implements TextWatcher {
       if (odd) {
         endStr = endStr.substring(1);
       }
-      if(!mBetweenDigits) {
+      if (!mBetweenDigits) {
         str = startStr + ns;
         if (!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
           str += endStr.substring(ns.length());
         } else if (ns.length() <= endStr.length())
           str += endStr;
-      }
-      else
+      } else
         str = startStr + ns + endStr;
       mStartOffsetForOverwrite = ns.length();
     }
