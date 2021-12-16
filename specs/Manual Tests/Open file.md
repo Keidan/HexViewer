@@ -1,18 +1,21 @@
 ---
 testspace:
 title: Open file
+sizes: ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
 ---
 
 {% if page %} {% assign spec = page %} {% endif %}
 
 # {{ spec.title }}
-Open a file.
+Open a file.\
+**<ins>IMPORTANT:</ins> Do the opening test with sizes of {{ spec.sizes }}.**
 
 ## Button
 - Open a file by clicking on the `OPEN` button in the home view.
 - The main view disappears.
 - A file picker appears.
 - Select a file.
+   - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }}.**
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
 
@@ -20,6 +23,7 @@ Open a file.
 - Open a file by clicking on the `Open...` menu in the contextual menu.
 - The main view disappears.
 - A file picker appears.
+   - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }}.**
 - Select a file.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.

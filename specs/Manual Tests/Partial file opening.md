@@ -1,12 +1,14 @@
 ---
 testspace:
 title: Partial file opening
+sizes: ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
 ---
 
 {% if page %} {% assign spec = page %} {% endif %}
 
 # {{ spec.title }}
-Open a file using the partial opening feature.
+Open a file using the partial opening feature.\
+**<ins>IMPORTANT:</ins> Do the opening test with sizes of {{ spec.sizes }}.**
 
 ## Button
 - Open a file by clicking on the `PARTIAL FILE OPENING` button in the home view.
@@ -22,9 +24,11 @@ Open a file using the partial opening feature.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
+   - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }} (open the file with this size).**
 - After validation :
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
+   
 
 ## Menu
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu.
@@ -40,6 +44,7 @@ Open a file using the partial opening feature.
    - `Comment field`: A simple comment.
    - `Start`: The start offset.
    - `End`: The end offset.
+   - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }} (open the file with this size).**
 - After validation :
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
