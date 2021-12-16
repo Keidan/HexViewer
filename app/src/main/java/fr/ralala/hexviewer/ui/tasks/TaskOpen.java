@@ -167,6 +167,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
             SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
                 ApplicationCtx.getInstance().getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
             first = false;
+            buffer.clear();
           } catch (IllegalArgumentException iae) {
             result.exception = iae.getMessage();
             break;
