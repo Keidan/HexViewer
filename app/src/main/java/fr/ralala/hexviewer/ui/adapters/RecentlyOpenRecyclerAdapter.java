@@ -154,8 +154,8 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
         long size = fd.getSize();
         String detail;
         if (fd.isSequential()) {
-          detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset()) + ", ";
-          detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset()) + ", ";
+          detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset(), true, true) + ", ";
+          detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset(), true, true) + ", ";
           detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));
         } else
           detail = labelSize + SysHelper.sizeToHuman(ctx, size);

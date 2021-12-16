@@ -106,7 +106,7 @@ public class SysHelper {
    * @return The String.
    */
   public static String sizeToHuman(Context ctx, float f) {
-    return sizeToHuman(ctx, f, true);
+    return sizeToHuman(ctx, f, true, false);
   }
 
   /**
@@ -116,19 +116,25 @@ public class SysHelper {
    * @param f   The size.
    * @return The String.
    */
-  public static String sizeToHuman(Context ctx, float f, boolean addUnit) {
+  public static String sizeToHuman(Context ctx, float f, boolean addUnit, boolean addHex) {
     DecimalFormat df = new DecimalFormat("#.##");
     df.setRoundingMode(RoundingMode.FLOOR);
     df.setMinimumFractionDigits(2);
     String sf;
+    String hex = (!addHex ? "" : "(0x" + Long.toHexString((long)f).toUpperCase() + ") ");
     if (f < 1000) {
-      sf = String.format(Locale.US, "%d %s", (int) f, !addUnit ? "" : ctx.getString(R.string.unit_byte));
-    } else if (f < 1000000)
-      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1KB)), !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
-    else if (f < 1000000000)
-      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1MB)), !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
-    else
-      sf = String.format(Locale.US, "%s %s", df.format((f / SIZE_1GB)), !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
+      sf = String.format(Locale.US, "%d %s%s", (int) f,
+          hex, !addUnit ? "" : ctx.getString(R.string.unit_byte));
+    } else if (f < 1000000) {
+      sf = String.format(Locale.US, "%s %s%s", df.format((f / SIZE_1KB)),
+          hex, !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
+    } else if (f < 1000000000) {
+      sf = String.format(Locale.US, "%s %s%s", df.format((f / SIZE_1MB)),
+          hex, !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
+    } else {
+      sf = String.format(Locale.US, "%s %s%s", df.format((f / SIZE_1GB)),
+          hex, !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
+    }
     return sf;
   }
 
