@@ -93,7 +93,7 @@ public class LauncherLineUpdate {
               if (li.isEmpty()) {
                 Map<Integer, LineEntry> map = new HashMap<>();
                 for (int i = position; i < position + nbLines; i++) {
-                  map.put(adapter.getEntries().getItemIndex(position), adapter.getItem(position));
+                  map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
                 }
                 mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
               } else if (li.size() >= nbLines) {
