@@ -12,11 +12,13 @@ Recently opened.
 - Follow the instructions specified in the `Open a file` or `Partial file opening` test.
 - Open the recently opened files view by clicking on the `Recently opened` menu in the contextual menu.
 - The view will display the list of recently opened files.
+   - When opening with the `Partial file opening` function, the start and end sizes are also displayed in hexadecimal.
 
 ## Button (display)
 - Follow the instructions specified in the `Open a file` or `Partial file opening` test.
 - Open the recently opened files view by clicking on the `RECENTLY OPENED` button in the home view.
 - The view will display the list of recently opened files.
+   - When opening with the `Partial file opening` function, the start and end sizes are also displayed in hexadecimal.
 
 ## Open file
 - Follow the instructions specified in the `Open a file` or `Partial file opening` test.
