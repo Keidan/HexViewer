@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.utils.io;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
