@@ -40,6 +40,8 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
   private final HexTextArrayAdapter.LineNumbersTitle mTitle;
   private final ListView mListView;
   private long mStartOffset;
+  private int mMaxLength;
+  private int mPreviousSize = -1;
 
   public LineUpdateHexArrayAdapter(final Context context,
                                    ListView listView,
@@ -53,6 +55,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
   }
 
   public void setStartOffset(final long startOffset) {
+    mPreviousSize = -1;
     mStartOffset = startOffset;
   }
 
@@ -150,18 +153,19 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
     if (v.getTag() != null) {
       final HexTextArrayAdapter.Holder holder = (HexTextArrayAdapter.Holder) v.getTag();
       String string = mEntryList.get(position);
+      if (mPreviousSize != mEntryList.size()) {
+        mPreviousSize = mEntryList.size();
+        mMaxLength = Long.toHexString(UIHelper.getCurrentLine(mPreviousSize, mStartOffset, SysHelper.MAX_BY_ROW_8)).length();
+        mTitle.titleLineNumbers.setText(String.format("%" + mMaxLength + "s", " "));
+      }
+      final String s = String.format("%0" + mMaxLength + "X", UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
 
-      final int maxLength = String.format("%X", UIHelper.getCurrentLine(mEntryList.size(), mStartOffset, SysHelper.MAX_BY_ROW_8)).length();
-      final String s = String.format("%0" + maxLength + "X", UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
       final @ColorInt int color = ContextCompat.getColor(getContext(),
           R.color.colorLineNumbers);
       holder.lineNumbers.setText(s);
       holder.lineNumbers.setTextColor(color);
       holder.lineNumbers.setVisibility(View.VISIBLE);
 
-      if (position == 0) {
-        mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
-      }
       holder.content.setText(string);
       applyUserConfig(mTitle.titleContent);
       applyUserConfig(mTitle.titleLineNumbers);
