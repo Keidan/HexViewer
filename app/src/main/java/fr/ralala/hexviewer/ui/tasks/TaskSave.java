@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -90,8 +89,8 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     super.onPostExecute(result);
     if (isCancelled()) {
       if (result.fd != null) {
-        final DocumentFile dfile = DocumentFile.fromSingleUri(mContext, result.fd.getUri());
-        if (dfile != null && dfile.exists() && !dfile.delete()) {
+        final DocumentFile docFile = DocumentFile.fromSingleUri(mContext, result.fd.getUri());
+        if (docFile != null && docFile.exists() && !docFile.delete()) {
           Log.e(this.getClass().getSimpleName(), "File delete error");
         }
       }
@@ -109,11 +108,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    */
   private void close() {
     if (mRandomAccessFileChannel != null) {
-      try {
-        mRandomAccessFileChannel.close();
-      } catch (final IOException e) {
-        Log.e(this.getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
-      }
+      mRandomAccessFileChannel.close();
       mRandomAccessFileChannel = null;
     }
   }
@@ -147,7 +142,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     result.runnable = request.mRunnable;
     publishProgress(0L);
     try {
-      mRandomAccessFileChannel = new RandomAccessFileChannel(contentResolver, result.fd.getUri(), !result.fd.isSequential());
+      mRandomAccessFileChannel = RandomAccessFileChannel.openForWriteOnly(contentResolver, result.fd.getUri(), !result.fd.isSequential());
       List<Byte> bytes = new ArrayList<>();
       for (LineEntry entry : request.mEntries)
         bytes.addAll(entry.getRaw());

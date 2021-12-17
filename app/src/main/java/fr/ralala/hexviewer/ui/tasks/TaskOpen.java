@@ -3,9 +3,7 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.util.Log;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.Result> implements MemoryMonitor.MemoryListener {
-  private static final String TAG = TaskOpen.class.getSimpleName();
   private final Context mContext;
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 20000;
   private final HexTextArrayAdapter mAdapter;
@@ -112,11 +109,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
    */
   private void close() {
     if (mRandomAccessFileChannel != null) {
-      try {
-        mRandomAccessFileChannel.close();
-      } catch (final IOException e) {
-        Log.e(TAG, "Exception: " + e.getMessage(), e);
-      }
+      mRandomAccessFileChannel.close();
       mRandomAccessFileChannel = null;
     }
   }
@@ -149,7 +142,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       /* Size + stream */
       mTotalSize = fd.getSize();
       publishProgress(0L);
-      mRandomAccessFileChannel = new RandomAccessFileChannel(contentResolver, fd.getUri());
+      mRandomAccessFileChannel = RandomAccessFileChannel.openForReadOnly(contentResolver, fd.getUri());
 
       int maxLength = moveCursorIfSequential(fd, result);
 

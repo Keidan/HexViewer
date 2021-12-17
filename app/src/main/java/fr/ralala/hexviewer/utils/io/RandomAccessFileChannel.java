@@ -3,6 +3,7 @@ package fr.ralala.hexviewer.utils.io;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,36 +26,73 @@ import java.nio.channels.FileChannel;
  * ******************************************************************************
  */
 public class RandomAccessFileChannel {
-  private final ParcelFileDescriptor mFdInput;
-  private final ParcelFileDescriptor mFdOutput;
-  private final FileInputStream mFileInputStream;
-  private final FileOutputStream mFileOutputStream;
-  private long mPosition = 0;
-
-  /**
-   * Open a raw file descriptor in read/write mode to access the data.
-   *
-   * @param contentResolver ContentResolver
-   * @param fileUri         The URI of the file.
-   * @throws FileNotFoundException If the file designated by the specified URI has failed.
-   */
-  public RandomAccessFileChannel(ContentResolver contentResolver, Uri fileUri) throws FileNotFoundException {
-    this(contentResolver, fileUri, false);
+  private enum Mode {
+    RO, /* read only */
+    WO, /* write only */
+    RW /* read/write */
   }
 
+  private ParcelFileDescriptor mFdInput = null;
+  private ParcelFileDescriptor mFdOutput = null;
+  private FileInputStream mFileInputStream = null;
+  private FileOutputStream mFileOutputStream = null;
+  private long mPosition = 0;
+  private final Mode mMode;
+
   /**
-   * Open a raw file descriptor in read/write mode to access the data.
+   * Open a raw file descriptor in write mode to access the data.
    *
    * @param contentResolver ContentResolver
    * @param fileUri         The URI of the file.
    * @param resetOnWrite    If true, write access to the file will be opened in truncated mode.
    * @throws FileNotFoundException If the file designated by the specified URI has failed.
    */
-  public RandomAccessFileChannel(ContentResolver contentResolver, Uri fileUri, boolean resetOnWrite) throws FileNotFoundException {
-    mFdInput = contentResolver.openFileDescriptor(fileUri, "r");
-    mFdOutput = contentResolver.openFileDescriptor(fileUri, "rw" + (resetOnWrite ? "t" : ""));
-    mFileInputStream = new FileInputStream(mFdInput.getFileDescriptor());
-    mFileOutputStream = new FileOutputStream(mFdOutput.getFileDescriptor());
+  public static RandomAccessFileChannel openForWriteOnly(ContentResolver contentResolver, Uri fileUri, boolean resetOnWrite) throws FileNotFoundException {
+    return new RandomAccessFileChannel(contentResolver, fileUri, resetOnWrite, Mode.WO);
+  }
+
+  /**
+   * Open a raw file descriptor in read mode to access the data.
+   *
+   * @param contentResolver ContentResolver
+   * @param fileUri         The URI of the file.
+   * @throws FileNotFoundException If the file designated by the specified URI has failed.
+   */
+  public static RandomAccessFileChannel openForReadOnly(ContentResolver contentResolver, Uri fileUri) throws FileNotFoundException {
+    return new RandomAccessFileChannel(contentResolver, fileUri, false, Mode.RO);
+  }
+
+  /**
+   * Open a raw file descriptor in read mode to access the data.
+   *
+   * @param contentResolver ContentResolver
+   * @param fileUri         The URI of the file.
+   * @throws FileNotFoundException If the file designated by the specified URI has failed.
+   */
+  @SuppressWarnings("unused")
+  public static RandomAccessFileChannel openForReadWrite(ContentResolver contentResolver, Uri fileUri) throws FileNotFoundException {
+    return new RandomAccessFileChannel(contentResolver, fileUri, false, Mode.RW);
+  }
+
+  /**
+   * Open a raw file descriptor in mode specified by "mode" to access the data.
+   *
+   * @param contentResolver ContentResolver
+   * @param fileUri         The URI of the file.
+   * @param resetOnWrite    If true, write access to the file will be opened in truncated mode.
+   * @param mode            The mode to use.
+   * @throws FileNotFoundException If the file designated by the specified URI has failed.
+   */
+  private RandomAccessFileChannel(ContentResolver contentResolver, Uri fileUri, boolean resetOnWrite, Mode mode) throws FileNotFoundException {
+    mMode = mode;
+    if (mode == Mode.RO || mode == Mode.RW) {
+      mFdInput = contentResolver.openFileDescriptor(fileUri, "r");
+      mFileInputStream = new FileInputStream(mFdInput.getFileDescriptor());
+    }
+    if (mode == Mode.WO || mode == Mode.RW) {
+      mFdOutput = contentResolver.openFileDescriptor(fileUri, "rw" + (resetOnWrite ? "t" : ""));
+      mFileOutputStream = new FileOutputStream(mFdOutput.getFileDescriptor());
+    }
   }
 
   /**
@@ -129,25 +167,58 @@ public class RandomAccessFileChannel {
    * @throws IOException If an I/O error occurs.
    */
   public long getSize() throws IOException {
+    if (mMode == Mode.WO)
+      return mFileOutputStream == null ? 0 : mFileOutputStream.getChannel().size();
     return mFileInputStream == null ? 0 : mFileInputStream.getChannel().size();
   }
 
   /**
    * Closes the file.
-   *
-   * @throws IOException If an I/O error occurs.
    */
-  public void close() throws IOException {
-    if (mFileOutputStream != null) {
-      FileChannel fch = mFileOutputStream.getChannel();
-      fch.close();
-      mFileOutputStream.close();
+  public void close() {
+    if (mMode == Mode.WO && mFileOutputStream != null) {
+      try {
+        FileChannel fch = mFileOutputStream.getChannel();
+        fch.close();
+      } catch (IOException ioException) {
+        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+      }
+      try {
+        mFileOutputStream.close();
+      } catch (IOException ioException) {
+        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+      }
+      mFileOutputStream = null;
     }
-    if (mFileInputStream != null)
-      mFileInputStream.close();
-    if (mFdInput != null)
-      mFdInput.close();
-    if (mFdOutput != null)
-      mFdOutput.close();
+    if (mFileInputStream != null) {
+      try {
+        FileChannel fch = mFileInputStream.getChannel();
+        fch.close();
+      } catch (IOException ioException) {
+        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+      }
+      try {
+        mFileInputStream.close();
+      } catch (IOException ioException) {
+        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+      }
+      mFileInputStream = null;
+    }
+    if (mFdInput != null) {
+      try {
+        mFdInput.close();
+      } catch (IOException ioException) {
+        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+      }
+      mFdInput = null;
+    }
+    if (mFdOutput != null) {
+      try {
+        mFdOutput.close();
+      } catch (IOException ioException) {
+        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+      }
+      mFdOutput = null;
+    }
   }
 }
