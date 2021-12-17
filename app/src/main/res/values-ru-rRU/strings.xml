@@ -63,7 +63,7 @@
     <string name="settings_category_about">О программе</string>
     <string name="settings_pref_title_version">Версия</string>
     <string name="settings_pref_title_license">Лицензия</string>
-    <string name="settings_category_general">Общая</string>
+    <string name="settings_category_general">Общие</string>
     <string name="settings_pref_title_language">Язык</string>
     <string name="settings_pref_summary_language">Изменить язык приложения</string>
     <string name="settings_pref_title_screen_orientation">Ориентация экрана</string>
