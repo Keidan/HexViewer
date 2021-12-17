@@ -160,6 +160,11 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     mEtInputHex = findViewById(R.id.etInputHex);
     mTilInputHex = findViewById(R.id.tilInputHex);
 
+    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      mEtInputHex.setTextSize(mApp.getListSettingsLineEditLandscape().getFontSize());
+    } else {
+      mEtInputHex.setTextSize(mApp.getListSettingsLineEditPortrait().getFontSize());
+    }
     mIvVisibilitySource.setOnClickListener(this);
     mIvVisibilityResult.setOnClickListener(this);
     tvLabelSource.setOnClickListener(this);
@@ -228,6 +233,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
     mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(mAdapterResult, mTilInputHex, mApp, mShiftOffset));
+
   }
 
   /**
