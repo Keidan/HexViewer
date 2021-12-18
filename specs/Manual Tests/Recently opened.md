@@ -43,7 +43,6 @@ Recently opened.
 - The message is replaced by the new information.
    - When opening with the `Partial file opening` function, the start and end sizes are also displayed in hexadecimal.
 
-
 ## Clear list
 - Follow the instructions specified in the `Open a file` or `Partial file opening` test.
 - Close the file (if it's open).
