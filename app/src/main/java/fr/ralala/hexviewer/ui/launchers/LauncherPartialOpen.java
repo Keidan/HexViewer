@@ -30,6 +30,7 @@ public class LauncherPartialOpen {
   private final MainActivity mActivity;
   private FileData mPrevious;
   private boolean mAddRecent;
+  private String mOldToString;
   private ActivityResultLauncher<Intent> activityResultLauncherOpen;
 
   public LauncherPartialOpen(MainActivity activity) {
@@ -40,9 +41,10 @@ public class LauncherPartialOpen {
   /**
    * Starts the activity.
    */
-  public void startActivity(final FileData previous, final boolean addRecent) {
+  public void startActivity(final FileData previous, final String oldToString, final boolean addRecent) {
     mPrevious = previous;
     mAddRecent = addRecent;
+    mOldToString = oldToString;
     PartialOpenActivity.startActivity(mActivity, activityResultLauncherOpen, mActivity.getFileData());
   }
 
@@ -69,10 +71,9 @@ public class LauncherPartialOpen {
               Bundle bundle = data.getExtras();
               final long startOffset = bundle.getLong(PartialOpenActivity.RESULT_START_OFFSET);
               final long endOffset = bundle.getLong(PartialOpenActivity.RESULT_END_OFFSET);
-              if (endOffset != 0L)
-                mActivity.getFileData().setOffsets(startOffset, endOffset);
+              mActivity.getFileData().setOffsets(startOffset, endOffset, endOffset != 0L);
               mActivity.getUnDoRedo().clear();
-              new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mAddRecent).execute(mActivity.getFileData());
+              new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mOldToString, mAddRecent).execute(mActivity.getFileData());
             } else {
               Log.e(getClass().getSimpleName(), "LauncherPartialOpen -> Invalid data object!!!");
               cancel.run();

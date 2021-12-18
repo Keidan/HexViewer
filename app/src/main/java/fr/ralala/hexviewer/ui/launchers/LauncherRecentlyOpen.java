@@ -60,10 +60,19 @@ public class LauncherRecentlyOpen {
               Uri uri = data.getData();
               long startOffset = data.getLongExtra(RecentlyOpenActivity.RESULT_START_OFFSET, 0L);
               long endOffset = data.getLongExtra(RecentlyOpenActivity.RESULT_END_OFFSET, 0L);
-              FileData fd = new FileData(mActivity, uri, false, startOffset, endOffset);
+              final FileData fd = new FileData(mActivity, uri, false, startOffset, endOffset);
+              final String oldToString;
+              if(data.hasExtra(RecentlyOpenActivity.RESULT_OLD_TO_STRING))
+                oldToString = data.getStringExtra(RecentlyOpenActivity.RESULT_OLD_TO_STRING);
+              else
+                oldToString = null;
               if (FileHelper.isFileExists(mActivity.getContentResolver(), uri)) {
                 if (FileHelper.hasUriPermission(mActivity, uri, true)) {
-                  final Runnable r = () -> mActivity.getLauncherOpen().processFileOpen(fd, true);
+                  final Runnable r = () -> {
+                    if(fd.getEndOffset() > fd.getRealSize())
+                      ApplicationCtx.getInstance().setSequential(true);
+                    mActivity.getLauncherOpen().processFileOpen(fd, oldToString, true);
+                  };
                   if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
                     UIHelper.confirmFileChanged(mActivity, mActivity.getFileData(), r, () -> new TaskSave(mActivity, mActivity).execute(
                         new TaskSave.Request(mActivity.getFileData(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), r)));

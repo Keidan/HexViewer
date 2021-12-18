@@ -104,7 +104,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
       TextView detail = viewHolder.detail;
       if (mListener != null) {
         final View.OnClickListener l = (v) -> {
-          if (!ud.error)
+          if (ud.clickable)
             mListener.onClick(ud);
         };
         name.setOnClickListener(l);
@@ -135,32 +135,47 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
     public final int maxLength;
     public String detail;
     public boolean error;
+    public boolean clickable;
+    public boolean sizeChanged;
 
     public UriData(final Context ctx, int index, int maxLength, FileData fd) {
       this.ctx = ctx;
       this.maxLength = maxLength;
       this.index = index;
       this.fd = fd;
+      sizeChanged = false;
       String labelSize = ctx.getString(R.string.size) + ": ";
       String labelStart = ctx.getString(R.string.start_offset) + " ";
       String labelEnd = ctx.getString(R.string.end_offset) + " ";
       if (fd.isNotFound()) {
         this.detail = ctx.getString(R.string.error_no_file);
         error = true;
+        clickable = false;
       } else if (fd.isAccessError()) {
         this.detail = ctx.getString(R.string.error_no_file_access);
         error = true;
+        clickable = false;
       } else {
         long size = fd.getSize();
         String detail;
         if (fd.isSequential()) {
-          detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset(), true, true) + ", ";
-          detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset(), true, true) + ", ";
-          detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));
+          if(fd.getEndOffset() > fd.getRealSize()) {
+            this.detail = ctx.getString(R.string.error_size_changed);
+            error = true;
+            clickable = true;
+            sizeChanged = true;
+            return;
+          }
+          else {
+            detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset(), true, true) + ", ";
+            detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset(), true, true) + ", ";
+            detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));
+          }
         } else
           detail = labelSize + SysHelper.sizeToHuman(ctx, size);
         this.detail = detail;
         error = false;
+        clickable = true;
       }
     }
   }

@@ -99,6 +99,7 @@
   <string name="action_open_sequential_title">打开文件的一部分&#8230;</string>
   <string name="action_open_sequential_title_button">打开文件的一部分</string>
   <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除新数据</string>
+  <string name="error_size_changed">文件的大小已经改变，点击重新指定新的大小。</string>
   <string name="start_offset">初始值</string>
   <string name="end_offset">终值</string>
   <string name="unit"> 单位</string>

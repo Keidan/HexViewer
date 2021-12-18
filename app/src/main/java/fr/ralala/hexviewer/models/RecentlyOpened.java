@@ -34,6 +34,11 @@ public class RecentlyOpened {
       mList = load();
   }
 
+  public void reload() {
+    mList.clear();
+    mList = load();
+  }
+
   private boolean migrate() {
     String content = mApp.getPref(mApp).getString(ApplicationCtx.CFG_RECENTLY_OPEN, "");
     if (content.isEmpty() || content.startsWith(SEQUENTIAL_MASK))
@@ -76,7 +81,7 @@ public class RecentlyOpened {
    * @param recent The new element
    */
   public void add(FileData recent) {
-    removeElement(recent);
+    removeElement(recent.toString());
     mList.add(recent);
     setRecentlyOpened(mList);
   }
@@ -87,14 +92,23 @@ public class RecentlyOpened {
    * @param recent The new element
    */
   public void remove(FileData recent) {
+    remove(recent.toString());
+  }
+
+  /**
+   * Removes an existing element from the list.
+   *
+   * @param recent The new element
+   */
+  public void remove(String recent) {
     removeElement(recent);
     setRecentlyOpened(mList);
   }
 
-  private void removeElement(FileData recent) {
+  private void removeElement(String recent) {
     for (Iterator<FileData> iterator = mList.iterator(); iterator.hasNext(); ) {
       FileData fd = iterator.next();
-      if (fd.toString().equals(recent.toString())) {
+      if (fd.toString().equals(recent)) {
         iterator.remove();
         break;
       }

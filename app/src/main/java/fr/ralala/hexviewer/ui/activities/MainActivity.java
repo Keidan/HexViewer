@@ -153,7 +153,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
             addRecent = FileHelper.takeUriPermissions(this, uri, false);
           FileData fd = new FileData(this, uri, true);
           mApp.setSequential(true);
-          final Runnable r = () -> mLauncherOpen.processFileOpen(fd, addRecent);
+          final Runnable r = () -> mLauncherOpen.processFileOpen(fd, null, addRecent);
           if (mUnDoRedo.isChanged()) {// a save operation is pending?
             UIHelper.confirmFileChanged(this, mFileData, r,
                 () -> new TaskSave(this, this).execute(

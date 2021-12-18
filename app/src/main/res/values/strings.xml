@@ -144,6 +144,7 @@
     <string name="action_open_sequential_title">Partial file opening&#8230;</string>
     <string name="action_open_sequential_title_button">Partial file opening</string>
     <string name="error_open_sequential_add_or_delete_data">In this mode it is not possible to add or delete data</string>
+    <string name="error_size_changed">The file size has changed, click to re-specify the new size.</string>
     <string name="start_offset">Start</string>
     <string name="end_offset">End</string>
     <string name="unit">Unit</string>

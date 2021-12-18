@@ -41,6 +41,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   private final ContentResolver mContentResolver;
   private final MemoryMonitor mMemoryMonitor;
   private final AtomicBoolean mLowMemory = new AtomicBoolean(false);
+  private final String mOldToString;
 
   public static class Result {
     private List<LineEntry> listHex = null;
@@ -54,7 +55,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
 
   public TaskOpen(final Activity activity,
                   final HexTextArrayAdapter adapter,
-                  final OpenResultListener listener, final boolean addRecent) {
+                  final OpenResultListener listener, final String oldToString, final boolean addRecent) {
     super(activity, true);
     mMemoryMonitor = new MemoryMonitor(ApplicationCtx.getInstance().getMemoryThreshold(), 2000);
     mContext = activity;
@@ -62,6 +63,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     mAdapter = adapter;
     mListener = listener;
     mAddRecent = addRecent;
+    mOldToString = oldToString;
   }
 
   /**
@@ -175,8 +177,12 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         /* prepare result */
         if (result.exception == null) {
           result.listHex = list;
-          if (mAddRecent && !mCancel.get())
-            app.getRecentlyOpened().add(fd);
+          if(!mCancel.get()) {
+            if(mOldToString != null)
+              app.getRecentlyOpened().remove(mOldToString);
+            if (mAddRecent)
+              app.getRecentlyOpened().add(fd);
+          }
         }
       }
     } catch (final Exception e) {

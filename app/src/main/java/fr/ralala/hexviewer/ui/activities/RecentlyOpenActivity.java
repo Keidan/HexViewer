@@ -39,6 +39,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
   private ApplicationCtx mApp = null;
   public static final String RESULT_START_OFFSET = "startOffset";
   public static final String RESULT_END_OFFSET = "endOffset";
+  public static final String RESULT_OLD_TO_STRING = "oldToString";
 
   /**
    * Starts an activity.
@@ -80,7 +81,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
       actionBar.setDisplayShowHomeEnabled(true);
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
-
+    mApp.getRecentlyOpened().reload();
     // Lookup the recyclerview in activity layout
     RecyclerView recyclerView = findViewById(R.id.recyclerView);
     List<UriData> list = new ArrayList<>();
@@ -127,6 +128,8 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     i.setData(ud.fd.getUri());
     i.putExtra(RESULT_START_OFFSET, ud.fd.getStartOffset());
     i.putExtra(RESULT_END_OFFSET, ud.fd.getEndOffset());
+    if(ud.sizeChanged)
+      i.putExtra(RESULT_OLD_TO_STRING, ud.fd.toString());
     setResult(RESULT_OK, i);
     finish();
   }

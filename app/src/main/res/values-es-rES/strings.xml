@@ -98,6 +98,7 @@
   <string name="action_open_sequential_title">Apertura parcial de archivos&#8230;</string>
   <string name="action_open_sequential_title_button">Apertura parcial de archivos</string>
   <string name="error_open_sequential_add_or_delete_data">En este modo no es posible añadir o eliminar datos.</string>
+  <string name="error_size_changed">El tamaño del archivo ha cambiado, haga clic para volver a especificar el nuevo tamaño.</string>
   <string name="start_offset">Inicio</string>
   <string name="end_offset">Fin</string>
   <string name="unit">Unidad</string>

@@ -72,7 +72,7 @@ public class LauncherOpen {
    * Process the opening of the file
    */
   private void processFileOpen(final FileData fd) {
-    processFileOpen(fd, true);
+    processFileOpen(fd, null, true);
   }
 
 
@@ -81,16 +81,16 @@ public class LauncherOpen {
    *
    * @param fd FileData.
    */
-  public void processFileOpen(final FileData fd, final boolean addRecent) {
+  public void processFileOpen(final FileData fd, final String oldToString, final boolean addRecent) {
     if (fd != null && fd.getUri() != null && fd.getUri().getPath() != null) {
       final FileData previous = mActivity.getFileData();
       mActivity.setFileData(fd);
       Runnable r = () -> {
         mActivity.getUnDoRedo().clear();
-        new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, addRecent).execute(mActivity.getFileData());
+        new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, oldToString, addRecent).execute(mActivity.getFileData());
       };
       if (ApplicationCtx.getInstance().isSequential())
-        mActivity.getLauncherPartialOpen().startActivity(previous, addRecent);
+        mActivity.getLauncherPartialOpen().startActivity(previous, oldToString, addRecent);
       else
         r.run();
     } else {

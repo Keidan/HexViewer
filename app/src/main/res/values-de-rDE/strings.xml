@@ -100,6 +100,7 @@
     <string name="action_open_sequential_title">Teilweise Öffnung der Datei&#8230;</string>
     <string name="action_open_sequential_title_button">Teilweise Öffnung der Datei</string>
     <string name="error_open_sequential_add_or_delete_data">In diesem Modus ist es nicht möglich, Daten hinzuzufügen oder zu löschen.</string>
+    <string name="error_size_changed">Die Dateigröße hat sich geändert, klicken Sie auf , um die neue Größe neu festzulegen.</string>
     <string name="start_offset">Start</string>
     <string name="end_offset">Ende</string>
     <string name="unit">Einheit</string>

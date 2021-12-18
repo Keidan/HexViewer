@@ -195,11 +195,13 @@ public class FileData {
    *
    * @param startOffset Start offset
    * @param endOffset   End offset
+   * @param refreshSize   Refresh the size?
    */
-  public void setOffsets(long startOffset, long endOffset) {
+  public void setOffsets(long startOffset, long endOffset, boolean refreshSize) {
     mStartOffset = startOffset;
     mEndOffset = endOffset;
-    mSize = Math.abs(mEndOffset - mStartOffset);
+    if(refreshSize)
+      mSize = Math.abs(mEndOffset - mStartOffset);
   }
 
   /**
