@@ -72,6 +72,8 @@
     <string name="settings_pref_summary_screen_orientation">Konfiguriert die Standard-Bildschirmausrichtung (nur Hauptbildschirm).</string>
     <string name="settings_pref_title_nb_bytes">Anzahl der Bytes, die in einer Zeile angezeigt werden sollen</string>
     <string name="settings_pref_summary_nb_bytes">Die Anzahl der Bytes, die pro Zeile angezeigt werden sollen (8 oder 16). Beachten Sie, dass die Anzeige von 8 Bytes den Speicherverbrauch stark erhöht.</string>
+    <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Teilweise Öffnung der Datei</string>
+    <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">Wenn ein teilweises Öffnen angefordert wird, aber die gesamte Datei geöffnet wird, gilt sie als normal geöffnet.</string>
     <string name="error_file_open">Es ist nicht möglich, den Modus zu ändern, wenn eine Datei geöffnet ist</string>
     <string name="smart_input">Eingabe von Klartext</string>
     <string name="error_file_not_found">Die Datei %1$s wurde nicht gefunden</string>

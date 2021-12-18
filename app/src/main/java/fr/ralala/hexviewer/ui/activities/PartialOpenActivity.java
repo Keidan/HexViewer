@@ -258,8 +258,12 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     } else if (item.getItemId() == R.id.action_done) {
       if (checkValues()) {
         Intent i = new Intent();
-        i.putExtra(RESULT_START_OFFSET, getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null));
-        i.putExtra(RESULT_END_OFFSET, getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null));
+        long start = getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null);
+        long end = getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null);
+        if (ApplicationCtx.getInstance().isPartialOpenButWholeFileIsOpened() && start == 0L && end == mRealSize)
+          end = 0L;
+        i.putExtra(RESULT_START_OFFSET, start);
+        i.putExtra(RESULT_END_OFFSET, end);
         setResult(RESULT_OK, i);
         finish();
         return true;

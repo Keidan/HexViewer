@@ -70,6 +70,8 @@
   <string name="settings_pref_summary_screen_orientation">Configure l\'orientation par défaut de l\'écran (écran principal uniquement).</string>
   <string name="settings_pref_title_nb_bytes">Nombre d\'octets à afficher sur une ligne</string>
   <string name="settings_pref_summary_nb_bytes">Le nombre d\'octets à afficher par ligne (8 ou 16). Notez que l\'affichage de 8 octets augmente considérablement la consommation de mémoire.</string>
+  <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Ouverture partielle</string>
+  <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">Si une ouverture partielle est demandée, mais que le fichier entier est ouvert, on considère qu\'il est ouvert normalement.</string>
   <string name="error_file_open">Il n\'est pas possible de changer de mode lorsqu\'un fichier est ouvert.</string>
   <string name="smart_input">Saisie en texte brut</string>
   <string name="error_file_not_found">Le fichier %1$s n\'a pas été trouvé</string>

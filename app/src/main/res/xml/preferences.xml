@@ -38,6 +38,12 @@
       android:entryValues="@array/nb_bytes_per_Line"
       android:title="@string/settings_pref_title_nb_bytes"
       android:summary="@string/settings_pref_summary_nb_bytes" />
+    <androidx.preference.CheckBoxPreference
+      app:iconSpaceReserved="false"
+      android:key="partialOpenButWholeFileIsOpened"
+      android:defaultValue="@string/default_partial_open_but_whole_file_is_opened"
+      android:title="@string/settings_pref_title_partial_open_but_whole_file_is_opened"
+      android:summary="@string/settings_pref_summary_partial_open_but_whole_file_is_opened" />
   </androidx.preference.PreferenceCategory>
 
   <androidx.preference.PreferenceCategory

@@ -25,3 +25,4 @@ Open a file from a file manager.\
 - A dialog box showing the loading progress is displayed.
 - The content of the selected file is displayed.
 - The `Save` menu is disabled.
+**Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**

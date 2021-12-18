@@ -57,4 +57,6 @@ public interface SettingsKeys {
   String CFG_LINE_EDIT_SRC_EXPAND = "lineEditSrcExpanded";
   String CFG_LINE_EDIT_RST_EXPAND = "lineEditRstExpanded";
   String CFG_MEMORY_THRESHOLD = "memoryThreshold";
+  String CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED = "partialOpenButWholeFileIsOpened";
+
 }

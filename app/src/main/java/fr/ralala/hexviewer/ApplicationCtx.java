@@ -51,6 +51,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
   private RecentlyOpened mRecentlyOpened;
   private boolean mSequential = false;
   private String mDefaultMemoryThreshold;
+  private boolean mDefaultPartialOpenButWholeFileIsOpened;
 
   public static ApplicationCtx getInstance() {
     return instance;
@@ -70,6 +71,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
     mDefaultScreenOrientation = getString(R.string.default_screen_orientation);
     mDefaultNbBytesPerLine = getString(R.string.default_nb_bytes_per_line);
     mDefaultMemoryThreshold = getString(R.string.default_memory_threshold);
+    mDefaultPartialOpenButWholeFileIsOpened = Boolean.parseBoolean(getString(R.string.default_partial_open_but_whole_file_is_opened));
 
     mListSettingsHexPortrait = new ListSettings(this,
         CFG_PORTRAIT_HEX_DISPLAY_DATA,
@@ -178,6 +180,15 @@ public class ApplicationCtx extends Application implements SettingsKeys {
     SharedPreferences.Editor e = getPref(this).edit();
     e.putBoolean(CFG_LINE_EDIT_SRC_EXPAND, expanded);
     e.apply();
+  }
+
+  /**
+   * If a partial opening is requested but the whole file is opened, it will be considered as a normal opening.
+   *
+   * @return boolean
+   */
+  public boolean isPartialOpenButWholeFileIsOpened() {
+    return getPref(this).getBoolean(CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED, mDefaultPartialOpenButWholeFileIsOpened);
   }
 
   /**

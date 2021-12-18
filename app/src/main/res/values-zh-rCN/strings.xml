@@ -64,7 +64,6 @@
   <string name="settings_category_about">关于</string>
   <string name="settings_pref_title_version">版本号</string>
   <string name="settings_pref_title_license">授权许可</string>
-  
   <string name="settings_category_general">常规</string>
   <string name="settings_pref_title_language">语言</string>
   <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
@@ -72,6 +71,8 @@
   <string name="settings_pref_summary_screen_orientation">配置默认的屏幕方向 (仅主界面)。</string>
   <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
   <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
+  <string name="settings_pref_title_partial_open_but_whole_file_is_opened">打开文件的一部分</string>
+  <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果要求部分打开，但打开了整个文件，则认为是正常打开。</string>
   <string name="error_file_open">当一个文件打开时，不可能改变模式。</string>
   <string name="smart_input">纯文本输入</string>
   <string name="error_file_not_found">未找到文件 %1$s</string>

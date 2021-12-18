@@ -69,7 +69,8 @@ public class LauncherPartialOpen {
               Bundle bundle = data.getExtras();
               final long startOffset = bundle.getLong(PartialOpenActivity.RESULT_START_OFFSET);
               final long endOffset = bundle.getLong(PartialOpenActivity.RESULT_END_OFFSET);
-              mActivity.getFileData().setOffsets(startOffset, endOffset);
+              if (endOffset != 0L)
+                mActivity.getFileData().setOffsets(startOffset, endOffset);
               mActivity.getUnDoRedo().clear();
               new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mAddRecent).execute(mActivity.getFileData());
             } else {
