@@ -71,7 +71,7 @@
     <string name="settings_pref_title_nb_bytes">Количество байт для отображения в одной строке</string>
     <string name="settings_pref_summary_nb_bytes">Количество байт для отображения в одной строке (8 или 16). Обратите внимание, что отображение 8 байт значительно увеличивает потребление памяти.</string>
     <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Открыть часть файла</string>
-    <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">Если запрашивается частичное открытие, но открывается весь файл, считается, что он открыт нормально.</string>
+    <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">Если запрашивается частичное открытие, но открывается весь файл, тогда считается, что он открыт полностью как из меню "открыть".</string>
     <string name="error_file_open">Невозможно изменить режим, когда файл открыт.</string>
     <string name="smart_input">Ввод обычного текста</string>
     <string name="error_file_not_found">Файл %1$s не найден</string>
