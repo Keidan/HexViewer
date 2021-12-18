@@ -98,7 +98,7 @@
   <string name="action_open_sequential_title">Ouverture partielle&#8230;</string>
   <string name="action_open_sequential_title_button">Ouverture partielle</string>
   <string name="error_open_sequential_add_or_delete_data">Dans ce mode, il n\'est pas possible d\'ajouter ou de supprimer des données</string>
-  <string name="error_size_changed">La taille du fichier a changé, cliquez pour spécifier à nouveau la nouvelle taille.</string>
+  <string name="error_size_changed">La taille du fichier a changé, cliquez pour spécifier la nouvelle taille de la zone à ouvrir..</string>
   <string name="start_offset">Début</string>
   <string name="end_offset">Fin</string>
   <string name="unit">Unité</string>
