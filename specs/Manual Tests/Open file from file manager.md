@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Open file
+title: Open file from a file manager
 sizes: ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
 ---
 
