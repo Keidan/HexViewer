@@ -62,6 +62,7 @@ public class LauncherPartialOpen {
     activityResultLauncherOpen = mActivity.registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         result -> {
+          ApplicationCtx.getInstance().setSequential(false);
           if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
             if (data != null) {
