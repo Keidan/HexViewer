@@ -35,10 +35,54 @@
   <string name="uri_exception">Uri 异常</string>
   <string name="source">来源：</string>
   <string name="result">结果：</string>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <string name="new_value">新值</string>
   <string name="error_less_than">该值不能小于</string>
   <string name="error_greater_than">该值不能大于</string>
-  <string name="error_invalid_value">无效的值</string>
+  <string name="error_invalid_value"> 无效的值 </string>
   <string name="settings_pref_category_portrait">竖屏模式</string>
   <string name="settings_pref_title_abbreviate_portrait">缩略语</string>
   <string name="settings_pref_summary_abbreviate_portrait">竖屏模式下显示的文件名字符数。</string>
@@ -64,6 +108,7 @@
   <string name="settings_category_about">关于</string>
   <string name="settings_pref_title_version">版本号</string>
   <string name="settings_pref_title_license">授权许可</string>
+  
   <string name="settings_category_general">常规</string>
   <string name="settings_pref_title_language">语言</string>
   <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
@@ -72,7 +117,7 @@
   <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
   <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
   <string name="settings_pref_title_partial_open_but_whole_file_is_opened">打开文件的一部分</string>
-  <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果要求部分打开，但打开了整个文件，则认为是正常打开。</string>
+  <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果要求打开文件一部分，但打开了整个文件，也认为是正常打开。</string>
   <string name="error_file_open">当一个文件打开时，不可能改变模式。</string>
   <string name="smart_input">纯文本输入</string>
   <string name="error_file_not_found">未找到文件 %1$s</string>
@@ -97,20 +142,20 @@
   <string name="error_no_file_access">无法访问该文件，从菜单中打开它</string>
   <string name="error_no_file">文件丢失（被删除或移动）。</string>
   <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
-  <string name="action_open_sequential_title">打开文件的一部分&#8230;</string>
+  <string name="action_open_sequential_title">打开文件的一部分 &#8230;</string>
   <string name="action_open_sequential_title_button">打开文件的一部分</string>
-  <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除新数据</string>
-  <string name="error_size_changed">文件的大小已经改变，点击重新指定新的大小。</string>
-  <string name="start_offset">初始值</string>
+  <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除数据</string>
+  <string name="error_size_changed">文件大小已改变，单击指定要打开区域的新大小。</string>
+  <string name="start_offset">初值</string>
   <string name="end_offset">终值</string>
-  <string name="unit"> 单位</string>
+  <string name="unit">单位</string>
   <string name="input_type">输入类型</string>
   <string name="file_size">文件大小</string>
-  <string name="size_opening_part">要打开部分大小</string>
+  <string name="size_opening_part">要打开部分的大小</string>
   <string name="partial_file_opening_description">输入要打开部分的初值和终值。</string>
   <string name="not_enough_memory">无法执行命令，因可供此程序使用的内存不足。</string>
   <string name="memory_threshold_title">内存阈值</string>
   <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
-  <string name="error_not_available">不提供</string>
-
+  <string name="error_not_available">不可用</string>
+  
 </resources>
