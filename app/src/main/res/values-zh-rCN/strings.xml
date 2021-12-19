@@ -1,5 +1,4 @@
 <resources>
-
   <string name="search_title">搜索</string>
   <string name="search_hint">搜索&#8230;</string>
   <string name="action_open_title">打开&#8230;</string>
@@ -35,50 +34,6 @@
   <string name="uri_exception">Uri 异常</string>
   <string name="source">来源：</string>
   <string name="result">结果：</string>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <string name="new_value">新值</string>
   <string name="error_less_than">该值不能小于</string>
   <string name="error_greater_than">该值不能大于</string>
@@ -108,7 +63,6 @@
   <string name="settings_category_about">关于</string>
   <string name="settings_pref_title_version">版本号</string>
   <string name="settings_pref_title_license">授权许可</string>
-  
   <string name="settings_category_general">常规</string>
   <string name="settings_pref_title_language">语言</string>
   <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
@@ -157,5 +111,4 @@
   <string name="memory_threshold_title">内存阈值</string>
   <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
   <string name="error_not_available">不可用</string>
-  
 </resources>
