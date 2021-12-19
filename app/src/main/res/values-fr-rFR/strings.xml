@@ -39,13 +39,9 @@
   <string name="error_greater_than">La valeur ne peut pas être supérieur à</string>
   <string name="error_invalid_value">Valeur non valide</string>
   <string name="settings_pref_category_portrait">Mode portrait</string>
-  <string name="settings_pref_title_abbreviate_portrait">Abréviation</string>
-  <string name="settings_pref_summary_abbreviate_portrait">Le nombre de caractères à afficher pour le nom du fichier en mode portrait.</string>
   <string name="settings_pref_title_lists_portrait">Hauteur, Taille de la police &#8230;</string>
   <string name="settings_pref_summary_lists_portrait">Cliquez pour modifier</string>
   <string name="settings_pref_category_landscape">Mode paysage</string>
-  <string name="settings_pref_title_abbreviate_landscape">Abréviation</string>
-  <string name="settings_pref_summary_abbreviate_landscape">Le nombre de caractères à afficher pour le nom du fichier en mode paysage.</string>
   <string name="settings_pref_title_lists_landscape">Hauteur, Taille de la police &#8230;</string>
   <string name="settings_pref_summary_lists_landscape">Cliquez pour modifier</string>
   <string name="settings_category_hex">Texte en mode hexadécimal (sans numéros de ligne)</string>

@@ -97,7 +97,7 @@ public class UnDoRedo {
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
 
-    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.refreshTitle();
     return cmd;
   }
 
@@ -120,7 +120,7 @@ public class UnDoRedo {
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
 
-    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.refreshTitle();
     return cmd;
   }
 
@@ -138,7 +138,7 @@ public class UnDoRedo {
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
 
-    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.refreshTitle();
     return cmd;
   }
 
@@ -152,7 +152,7 @@ public class UnDoRedo {
       command.unExecute();
       manageControl(mControls[CONTROL_REDO], true);
     }
-    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.refreshTitle();
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
     if (!isChanged())
       mActivity.getPayloadHex().resetUpdateStatus();
@@ -168,7 +168,7 @@ public class UnDoRedo {
       command.execute();
       manageControl(mControls[CONTROL_UNDO], true);
     }
-    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.refreshTitle();
     manageControl(mControls[CONTROL_REDO], !mRedo.isEmpty());
     if (!isChanged())
       mActivity.getPayloadHex().resetUpdateStatus();
@@ -183,7 +183,7 @@ public class UnDoRedo {
     mUndo.clear();
     mRedo.clear();
     mReferenceIndex = 0;
-    mActivity.setTitle(mActivity.getResources().getConfiguration());
+    mActivity.refreshTitle();
   }
 
   /**

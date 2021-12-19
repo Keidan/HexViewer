@@ -58,7 +58,7 @@ public class LauncherPartialOpen {
         mActivity.onOpenResult(false, false);
       } else {
         mActivity.setFileData(mPrevious);
-        mActivity.setTitle(mActivity.getResources().getConfiguration());
+        mActivity.refreshTitle();
       }
     };
     activityResultLauncherOpen = mActivity.registerForActivityResult(

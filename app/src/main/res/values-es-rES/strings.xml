@@ -39,13 +39,9 @@
   <string name="error_greater_than">El valor es mayor que</string>
   <string name="error_invalid_value">Ungültiger Wert</string>
   <string name="settings_pref_category_portrait">Modo retrato</string>
-  <string name="settings_pref_title_abbreviate_portrait">Abreviado</string>
-  <string name="settings_pref_summary_abbreviate_portrait">El número de caracteres a mostrar para el archivo en vertical.</string>
   <string name="settings_pref_title_lists_portrait">Ancho, Tamaño de letra &#8230;</string>
   <string name="settings_pref_summary_lists_portrait">Haga clic para editar</string>
   <string name="settings_pref_category_landscape">Modo paisaje</string>
-  <string name="settings_pref_title_abbreviate_landscape">Abreviado</string>
-  <string name="settings_pref_summary_abbreviate_landscape">El número de caracteres a mostrar para el archivo en horizontal.</string>
   <string name="settings_pref_title_lists_landscape">Ancho, Tamaño de letra &#8230;</string>
   <string name="settings_pref_summary_lists_landscape">Haga clic para editar</string>
   <string name="settings_category_hex">Ver el texto en hexadecimal (sin números de línea)</string>

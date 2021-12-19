@@ -224,7 +224,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
 
 
     if (mFile != null) {
-      UIHelper.setTitle(this, getResources().getConfiguration().orientation, false, mFile, mChange);
+      UIHelper.setTitle(this, mFile, mChange);
     }
     if (mPosition == -1) {
       mPosition = 0;
@@ -266,7 +266,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     mAdapterResult.notifyDataSetChanged();
     // Checks the orientation of the screen
     if (mFile != null && !mFile.isEmpty()) {
-      UIHelper.setTitle(this, newConfig.orientation, false, mFile, mChange);
+      UIHelper.setTitle(this, mFile, mChange);
     }
 
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {

@@ -26,12 +26,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 import fr.ralala.hexviewer.utils.io.FileHelper;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -174,37 +172,20 @@ public class UIHelper {
   /**
    * Sets the activity title.
    *
-   * @param activity    Activity.
-   * @param orientation Screen orientation.
-   * @param addAppName  Adds the application name?
-   * @param filename    The file name.
-   * @param change      A change is detected?
+   * @param activity Activity.
+   * @param filename The file name.
+   * @param change   A change is detected?
    */
-  public static void setTitle(final Activity activity, int orientation, boolean addAppName, final String filename, final boolean change) {
-    ApplicationCtx app = ApplicationCtx.getInstance();
-    int length = 0;
-    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      length = app.getAbbreviateLandscape();
-    } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-      length = app.getAbbreviatePortrait();
-    }
-    final String name = activity.getString(R.string.app_name);
-    if (length != 0) {
-      String title = "";
-      if (addAppName) {
-        title += name;
-        if (filename != null)
-          title += " - ";
-      } else
-        length += name.length();
+  public static void setTitle(final Activity activity, final String filename, final boolean change) {
+    String title = "";
+    if (filename == null)
+      title = activity.getString(R.string.app_name);
+    else {
       if (change)
         title += "*";
-      if (filename != null) {
-        title += SysHelper.abbreviate(filename, length);
-      }
-      activity.setTitle(title);
-    } else
-      activity.setTitle(name);
+      title += filename;
+    }
+    activity.setTitle(title);
   }
 
   /**

@@ -39,13 +39,9 @@
     <string name="error_greater_than">Значение не может быть больше, чем</string>
     <string name="error_invalid_value">Недопустимое значение</string>
     <string name="settings_pref_category_portrait">Портретный режим</string>
-    <string name="settings_pref_title_abbreviate_portrait">Сокращать имя файла</string>
-    <string name="settings_pref_summary_abbreviate_portrait">Количество символов, отображаемых для имени файла в портретном режиме.</string>
     <string name="settings_pref_title_lists_portrait">Высота, Размер шрифта &#8230;</string>
     <string name="settings_pref_summary_lists_portrait">Нажмите для редактирования</string>
     <string name="settings_pref_category_landscape">Ландшафтный режим</string>
-    <string name="settings_pref_title_abbreviate_landscape">Сокращать имя файла</string>
-    <string name="settings_pref_summary_abbreviate_landscape">Количество символов, отображаемых для имени файла в альбомном режиме.</string>
     <string name="settings_pref_title_lists_landscape">Высота, Размер шрифта &#8230;</string>
     <string name="settings_pref_summary_lists_landscape">Нажмите для редактирования</string>
     <string name="settings_category_hex">Текст в hex (без номеров строк)</string>

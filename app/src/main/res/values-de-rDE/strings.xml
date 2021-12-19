@@ -41,13 +41,9 @@
     <string name="error_greater_than">Der Wert kann nicht größer sein als</string>
     <string name="error_invalid_value">Ungültiger Wert</string>
     <string name="settings_pref_category_portrait">Portraitmodus</string>
-    <string name="settings_pref_title_abbreviate_portrait">Abkürzen</string>
-    <string name="settings_pref_summary_abbreviate_portrait">Die Anzahl der Zeichen, die für den Dateinamen im Porträtmodus angezeigt werden sollen.</string>
     <string name="settings_pref_title_lists_portrait">Höhe, Schriftgröße &#8230;</string>
     <string name="settings_pref_summary_lists_portrait">Klicken Sie zum Bearbeiten</string>
     <string name="settings_pref_category_landscape">Landschaftsmodus</string>
-    <string name="settings_pref_title_abbreviate_landscape">Abkürzen</string>
-    <string name="settings_pref_summary_abbreviate_landscape">Die Anzahl der Zeichen, die für den Dateinamen im Querformat angezeigt werden sollen.</string>
     <string name="settings_pref_title_lists_landscape">Höhe, Schriftgröße &#8230;</string>
     <string name="settings_pref_summary_lists_landscape">Klicken Sie zum Bearbeiten</string>
     <string name="settings_category_hex">Text in hexadezimaler Darstellung (ohne Zeilennummern)</string>

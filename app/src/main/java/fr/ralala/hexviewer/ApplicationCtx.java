@@ -31,8 +31,6 @@ import fr.ralala.hexviewer.models.SettingsKeys;
  */
 public class ApplicationCtx extends Application implements SettingsKeys {
   private SharedPreferences mSharedPreferences;
-  private String mDefaultAbbreviatePortrait;
-  private String mDefaultAbbreviateLandscape;
   private boolean mDefaultSmartInput;
   private boolean mDefaultOverwrite;
   private static ApplicationCtx instance;
@@ -62,8 +60,6 @@ public class ApplicationCtx extends Application implements SettingsKeys {
     super.onCreate();
     instance = this;
     mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    mDefaultAbbreviatePortrait = getString(R.string.default_abbreviate_portrait);
-    mDefaultAbbreviateLandscape = getString(R.string.default_abbreviate_landscape);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = new RecentlyOpened(this);
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
@@ -350,54 +346,6 @@ public class ApplicationCtx extends Application implements SettingsKeys {
   public void setOverwrite(boolean mode) {
     SharedPreferences.Editor e = getPref(this).edit();
     e.putBoolean(CFG_OVERWRITE, mode);
-    e.apply();
-  }
-
-  /**
-   * Returns the number of characters to display for the file name in portrait mode.
-   *
-   * @return int
-   */
-  public int getAbbreviatePortrait() {
-    try {
-      return Integer.parseInt(getPref(this).getString(CFG_ABBREVIATE_PORTRAIT, mDefaultAbbreviatePortrait));
-    } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultAbbreviatePortrait);
-    }
-  }
-
-  /**
-   * Change the number of characters to display for the file name in portrait mode.
-   *
-   * @param number The new number.
-   */
-  public void setAbbreviatePortrait(int number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_ABBREVIATE_PORTRAIT, String.valueOf(number));
-    e.apply();
-  }
-
-  /**
-   * Returns the number of characters to display for the file name in landscape mode.
-   *
-   * @return int
-   */
-  public int getAbbreviateLandscape() {
-    try {
-      return Integer.parseInt(getPref(this).getString(CFG_ABBREVIATE_LANDSCAPE, mDefaultAbbreviateLandscape));
-    } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultAbbreviateLandscape);
-    }
-  }
-
-  /**
-   * Change the number of characters to display for the file name in landscape mode.
-   *
-   * @param number The new number.
-   */
-  public void setAbbreviateLandscape(int number) {
-    SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_ABBREVIATE_LANDSCAPE, String.valueOf(number));
     e.apply();
   }
 

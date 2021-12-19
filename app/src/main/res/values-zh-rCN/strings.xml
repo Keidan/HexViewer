@@ -39,13 +39,9 @@
   <string name="error_greater_than">该值不能大于</string>
   <string name="error_invalid_value"> 无效的值 </string>
   <string name="settings_pref_category_portrait">竖屏模式</string>
-  <string name="settings_pref_title_abbreviate_portrait">缩略语</string>
-  <string name="settings_pref_summary_abbreviate_portrait">竖屏模式下显示的文件名字符数。</string>
   <string name="settings_pref_title_lists_portrait">高度、字体大小 &#8230;</string>
   <string name="settings_pref_summary_lists_portrait">点击编辑</string>
   <string name="settings_pref_category_landscape">横屏模式</string>
-  <string name="settings_pref_title_abbreviate_landscape">缩略语</string>
-  <string name="settings_pref_summary_abbreviate_landscape">横屏模式下显示的文件名字符数。</string>
   <string name="settings_pref_title_lists_landscape">高度、字体大小 &#8230;</string>>
   <string name="settings_pref_summary_lists_landscape">点击编辑</string>
   <string name="settings_category_hex">以 16 进制查看文本 (不含行号)</string>

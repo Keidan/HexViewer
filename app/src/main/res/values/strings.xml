@@ -39,8 +39,6 @@
     <string name="zero" translatable="false">0</string>
     <string name="content_description_undo" translatable="false">Undo</string>
     <string name="content_description_redo" translatable="false">Redo</string>
-    <string name="default_abbreviate_portrait" translatable="false">8</string>
-    <string name="default_abbreviate_landscape" translatable="false">16</string>
     <string name="default_hex_display_data_portrait" translatable="false">true</string>
     <string name="default_hex_row_height_auto_portrait" translatable="false">true</string>
     <string name="default_hex_row_height_portrait" translatable="false">100</string>
@@ -84,13 +82,9 @@
     <string name="error_greater_than">The value cannot be greater than</string>
     <string name="error_invalid_value">Invalid value</string>
     <string name="settings_pref_category_portrait">Portrait mode</string>
-    <string name="settings_pref_title_abbreviate_portrait">Abbreviate</string>
-    <string name="settings_pref_summary_abbreviate_portrait">The number of characters to display for the file name in portrait mode.</string>
     <string name="settings_pref_title_lists_portrait">Height, Font size &#8230;</string>
     <string name="settings_pref_summary_lists_portrait">Click to edit</string>
     <string name="settings_pref_category_landscape">Landscape mode</string>
-    <string name="settings_pref_title_abbreviate_landscape">Abbreviate</string>
-    <string name="settings_pref_summary_abbreviate_landscape">The number of characters to display for the file name in landscape mode.</string>
     <string name="settings_pref_title_lists_landscape">Height, Font size &#8230;</string>
     <string name="settings_pref_summary_lists_landscape">Click to edit</string>
     <string name="settings_category_hex">View text in hexadecimal (without line numbers)</string>

@@ -51,11 +51,6 @@
     android:title="@string/settings_pref_category_portrait">
     <androidx.preference.Preference
       app:iconSpaceReserved="false"
-      android:key="abbreviatePortrait"
-      android:title="@string/settings_pref_title_abbreviate_portrait"
-      android:summary="@string/settings_pref_summary_abbreviate_portrait" />
-    <androidx.preference.Preference
-      app:iconSpaceReserved="false"
       android:key="listsPortrait"
       android:title="@string/settings_pref_title_lists_portrait"
       android:summary="@string/settings_pref_summary_lists_portrait" />
@@ -64,11 +59,6 @@
   <androidx.preference.PreferenceCategory
     app:iconSpaceReserved="false"
     android:title="@string/settings_pref_category_landscape">
-    <androidx.preference.Preference
-      app:iconSpaceReserved="false"
-      android:key="abbreviateLandscape"
-      android:title="@string/settings_pref_title_abbreviate_landscape"
-      android:summary="@string/settings_pref_summary_abbreviate_landscape" />
     <androidx.preference.Preference
       app:iconSpaceReserved="false"
       android:key="listsLandscape"

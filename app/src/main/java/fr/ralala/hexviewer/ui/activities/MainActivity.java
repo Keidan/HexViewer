@@ -225,7 +225,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       }
       mFileData = fd;
       mFileData.clearOpenFromAppIntent();
-      setTitle(getResources().getConfiguration());
+      refreshTitle();
       mPayloadHexHelper.resetUpdateStatus();
     } else
       mApp.getRecentlyOpened().remove(fd);
@@ -266,16 +266,14 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mFileData = null;
       mUnDoRedo.clear();
     }
-    setTitle(getResources().getConfiguration());
+    refreshTitle();
   }
 
   /**
-   * Sets the activity title.
-   *
-   * @param cfg Screen configuration.
+   * Refreshes the activity title.
    */
-  public void setTitle(Configuration cfg) {
-    UIHelper.setTitle(this, cfg.orientation, true, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
+  public void refreshTitle() {
+    UIHelper.setTitle(this, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
     if ((!FileData.isEmpty(mFileData) && !mFileData.isOpenFromAppIntent()))
       mPopup.setSaveMenuEnable(mUnDoRedo.isChanged());
   }
@@ -295,7 +293,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPayloadHexHelper.getAdapter().notifyDataSetChanged();
     // Checks the orientation of the screen
     if (!FileData.isEmpty(mFileData)) {
-      setTitle(newConfig);
+      refreshTitle();
     }
   }
 
@@ -517,7 +515,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     }
     new TaskSave(this, this).execute(new TaskSave.Request(mFileData,
         mPayloadHexHelper.getAdapter().getEntries().getItems(), null));
-    setTitle(getResources().getConfiguration());
+    refreshTitle();
   }
 
   /**

@@ -31,8 +31,6 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public class SettingsFragment extends AbstractSettingsFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
-  protected Preference mAbbreviatePortrait;
-  protected Preference mAbbreviateLandscape;
   protected Preference mSettingsListsPortrait;
   protected Preference mSettingsListsLandscape;
   protected Preference mLicense;
@@ -59,8 +57,6 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.preferences, rootKey);
 
-    mAbbreviatePortrait = findPreference(SettingsKeys.CFG_ABBREVIATE_PORTRAIT);
-    mAbbreviateLandscape = findPreference(SettingsKeys.CFG_ABBREVIATE_LANDSCAPE);
     mSettingsListsPortrait = findPreference(SettingsKeys.CFG_LISTS_PORTRAIT);
     mSettingsListsLandscape = findPreference(SettingsKeys.CFG_LISTS_LANDSCAPE);
     mLicense = findPreference(SettingsKeys.CFG_LICENSE);
@@ -69,8 +65,6 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mScreenOrientation = findPreference(SettingsKeys.CFG_SCREEN_ORIENTATION);
     mNbBytesPerLine = findPreference(SettingsKeys.CFG_NB_BYTES_PER_LINE);
 
-    mAbbreviatePortrait.setOnPreferenceClickListener(this);
-    mAbbreviateLandscape.setOnPreferenceClickListener(this);
     mSettingsListsPortrait.setOnPreferenceClickListener(this);
     mSettingsListsLandscape.setOnPreferenceClickListener(this);
     mLicense.setOnPreferenceClickListener(this);
@@ -109,9 +103,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       portraitEnable = true;
     }
     mSettingsListsLandscape.setEnabled(landscapeEnable);
-    mAbbreviateLandscape.setEnabled(landscapeEnable);
     mSettingsListsPortrait.setEnabled(portraitEnable);
-    mAbbreviatePortrait.setEnabled(portraitEnable);
   }
 
 
@@ -123,19 +115,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
    */
   @Override
   public boolean onPreferenceClick(Preference preference) {
-    if (preference.equals(mAbbreviatePortrait)) {
-      displayDialog(mAbbreviatePortrait.getTitle(),
-          mApp.getAbbreviatePortrait(),
-          MIN_ABBREVIATE_PORTRAIT,
-          MAX_ABBREVIATE_PORTRAIT,
-          mApp::setAbbreviatePortrait);
-    } else if (preference.equals(mAbbreviateLandscape)) {
-      displayDialog(mAbbreviateLandscape.getTitle(),
-          mApp.getAbbreviateLandscape(),
-          MIN_ABBREVIATE_LANDSCAPE,
-          MAX_ABBREVIATE_LANDSCAPE,
-          mApp::setAbbreviateLandscape);
-    } else if (preference.equals(mLicense)) {
+    if (preference.equals(mLicense)) {
       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer/blob/master/license.txt"));
       startActivity(browserIntent);
     } else if (preference.equals(mVersion)) {

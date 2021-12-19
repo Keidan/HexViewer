@@ -13,8 +13,6 @@ package fr.ralala.hexviewer.models;
  * ******************************************************************************
  */
 public interface SettingsKeys {
-  String CFG_ABBREVIATE_PORTRAIT = "abbreviatePortrait";
-  String CFG_ABBREVIATE_LANDSCAPE = "abbreviateLandscape";
   String CFG_LISTS_PORTRAIT = "listsPortrait";
   String CFG_LISTS_LANDSCAPE = "listsLandscape";
   String CFG_PORTRAIT_HEX_DISPLAY_DATA = "hexDisplayData";

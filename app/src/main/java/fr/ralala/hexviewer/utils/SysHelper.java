@@ -67,17 +67,6 @@ public class SysHelper {
   }
 
   /**
-   * Abbreviate a string.
-   *
-   * @param src Source String.
-   * @param max Max length.
-   * @return New String
-   */
-  public static String abbreviate(String src, int max) {
-    return src.substring(0, Math.min(max, src.length())) + (src.length() > max ? "..." : "");
-  }
-
-  /**
    * Converts hex string to byte array.
    *
    * @param s The hex string.
@@ -121,7 +110,7 @@ public class SysHelper {
     df.setRoundingMode(RoundingMode.FLOOR);
     df.setMinimumFractionDigits(2);
     String sf;
-    String hex = (!addHex ? "" : "(0x" + Long.toHexString((long)f).toUpperCase() + ") ");
+    String hex = (!addHex ? "" : "(0x" + Long.toHexString((long) f).toUpperCase() + ") ");
     if (f < 1000) {
       sf = String.format(Locale.US, "%d %s%s", (int) f,
           hex, !addUnit ? "" : ctx.getString(R.string.unit_byte));

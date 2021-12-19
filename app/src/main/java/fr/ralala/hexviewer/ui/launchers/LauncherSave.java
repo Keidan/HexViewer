@@ -117,7 +117,7 @@ public class LauncherSave {
             FileData fd = new FileData(mActivity, f.getUri(), false);
             new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(fd,
                 mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
-            mActivity.setTitle(mActivity.getResources().getConfiguration());
+            mActivity.refreshTitle();
           });
     } else {
       DocumentFile d_file = sourceDir.createFile("application/octet-stream", filename);
@@ -129,7 +129,7 @@ public class LauncherSave {
         mActivity.setFileData(fd);
         new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
             mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
-        mActivity.setTitle(mActivity.getResources().getConfiguration());
+        mActivity.refreshTitle();
       }
     }
   }
