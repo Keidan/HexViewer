@@ -27,7 +27,8 @@ Open a file using the partial opening feature.\
    - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }} (open the file with this size).**
 - After validation :
    - A dialog box showing the loading progress is displayed.
-   - The content of the selected file is displayed.\
+   - The content of the selected file is displayed.
+   
 **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
    
 
@@ -48,7 +49,7 @@ Open a file using the partial opening feature.\
    - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }} (open the file with this size).**
 - After validation :
    - A dialog box showing the loading progress is displayed.
-   - The content of the selected file is displayed.\
+   - The content of the selected file is displayed.
    - **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
    
 ## Open when a file is already open (no change)

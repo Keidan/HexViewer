@@ -81,6 +81,7 @@
     <string name="control_language_change">Пожалуйста, сначала сохраните свою работу.</string>
     <string name="overwrite">Pежим вставки</string>
     <string name="size">Размер</string>
+    <string name="unit_bytes_full_lc">bytes</string>
     <string name="unit_byte_full">Байт</string>
     <string name="unit_byte">Б</string>
     <string name="unit_kbyte">KБ</string>

@@ -81,6 +81,7 @@
   <string name="control_language_change">Veuillez d\'abord sauvegarder votre travail.</string>
   <string name="overwrite">Mode insertion</string>
   <string name="size">Taille</string>
+  <string name="unit_bytes_full_lc">octets</string>
   <string name="unit_byte_full">Octet</string>
   <string name="unit_byte">o</string>
   <string name="unit_kbyte">ko</string>

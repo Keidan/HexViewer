@@ -179,6 +179,8 @@
       android:id="@+id/tilInputHex"
       android:layout_width="match_parent"
       android:layout_height="0dp"
+      app:helperTextTextColor="@color/colorAccent"
+      app:helperTextEnabled="true"
       app:errorEnabled="true"
       app:errorTextAppearance="@style/AppTheme.ErrorTextAppearance"
       app:layout_constraintStart_toStartOf="parent"

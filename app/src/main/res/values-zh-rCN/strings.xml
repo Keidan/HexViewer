@@ -82,6 +82,7 @@
   <string name="control_language_change">请先保存你的工作。</string>
   <string name="overwrite">插入模式</string>
   <string name="size">大小</string>
+  <string name="unit_bytes_full_lc">bytes</string>
   <string name="unit_byte_full">Byte</string>
   <string name="unit_byte">B</string>
   <string name="unit_kbyte">kB</string>

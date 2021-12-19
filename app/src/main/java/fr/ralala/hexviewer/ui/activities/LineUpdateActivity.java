@@ -159,7 +159,6 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
 
     mEtInputHex = findViewById(R.id.etInputHex);
     mTilInputHex = findViewById(R.id.tilInputHex);
-
     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
       mEtInputHex.setTextSize(mApp.getListSettingsLineEditLandscape().getFontSize());
     } else {
@@ -185,6 +184,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     mChange = false;
     List<String> list = new ArrayList<>();
     StringBuilder sbHex = new StringBuilder();
+    int maxLengthWithPartial = 0;
     if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
       byte[] array = extras.getByteArray(ACTIVITY_EXTRA_TEXTS);
@@ -208,6 +208,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
         list.add(s);
         sbHex.append(s.substring(0, 23).trim()).append(" ");
       }
+      maxLengthWithPartial = array.length;
     }
     mAdapterSource = new LineUpdateHexArrayAdapter(this, lvSource, titleSource, list);
     mAdapterResult = new LineUpdateHexArrayAdapter(this, lvResult, titleResult, new ArrayList<>(list));
@@ -232,7 +233,8 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     if (mHex.endsWith(" "))
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
-    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(mAdapterResult, mTilInputHex, mApp, mShiftOffset));
+    mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(
+        mAdapterResult, mTilInputHex, mApp, mShiftOffset, maxLengthWithPartial, mSequential));
 
   }
 

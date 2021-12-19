@@ -9,6 +9,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
   private boolean mRemove = false;
   private int mStartOffsetForOverwrite = 0;
   private int mShiftOffset;
+  private final int mMaxLengthWithPartial;
+  private final boolean mSequential;
 
   private static class ProcessAddContext {
     String notChangedStart;
@@ -56,13 +59,21 @@ public class LineUpdateTextWatcher implements TextWatcher {
   }
 
   public LineUpdateTextWatcher(LineUpdateHexArrayAdapter resultAdapter,
-                               TextInputLayout layout, ApplicationCtx app, final int shiftOffset) {
+                               TextInputLayout layout,
+                               ApplicationCtx app,
+                               final int shiftOffset,
+                               final int maxLengthWithPartial,
+                               final boolean sequential) {
     mResultAdapter = resultAdapter;
     mShiftOffset = shiftOffset;
     mLayout = layout;
     mApp = app;
     if (mShiftOffset > SysHelper.MAX_BY_ROW_8)
       mShiftOffset -= SysHelper.MAX_BY_ROW_8;
+    mMaxLengthWithPartial = maxLengthWithPartial;
+    mSequential = sequential;
+    updateHelperText(Objects.requireNonNull(
+        layout.getEditText()).getText().toString().replaceAll(" ", ""), true);
   }
 
   /**
@@ -77,6 +88,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       mIgnore = false; // release, so the TextWatcher start to listen again.
     }
     mResultAdapter.clear();
+    updateHelperText("", true);
   }
 
   /**
@@ -89,7 +101,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
     final boolean validated = SysHelper.isValidHexLine(validate);
     if (!validated) {
       mLayout.setErrorTextAppearance(R.style.AppTheme_ErrorTextAppearance);
-      mLayout.setError(" "); /* only for the color */
+      if(!mSequential)
+        mLayout.setError(" "); /* only for the color */
     } else {
       byte[] bytes = SysHelper.hex2bin(validate);
       List<LineEntry> li = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_8, mShiftOffset);
@@ -100,6 +113,34 @@ public class LineUpdateTextWatcher implements TextWatcher {
         // Select the last row so it will scroll into view...
         mResultAdapter.getListView().setSelection(mResultAdapter.getCount() - 1);
       });
+    }
+    updateHelperText(validate, validated);
+  }
+
+  private void updateHelperText(final String validate, final boolean validated) {
+    if(mSequential) {
+      final String labelBytes = mApp.getString(R.string.unit_bytes_full_lc);
+      mLayout.setErrorTextAppearance(R.style.AppTheme_ErrorTextAppearance);
+      if(validate.isEmpty()) {
+        String newHelper = "0 " + mApp.getString(R.string.unit_byte_full) + " / " + mMaxLengthWithPartial + " " + labelBytes;
+        mLayout.setError(newHelper);
+      } else {
+        float nbBytesFloat = (validate.length() / 2.0f);
+        int nbBytes;
+        if(nbBytesFloat < mMaxLengthWithPartial)
+          nbBytes = (int) Math.floor(nbBytesFloat);
+        else
+          nbBytes = (int) Math.ceil(nbBytesFloat);
+        String newHelper = nbBytes + " " + labelBytes + " / " + mMaxLengthWithPartial + " " + labelBytes;
+        if(nbBytesFloat == mMaxLengthWithPartial) {
+          mLayout.setError(null);
+          mLayout.setHelperText(newHelper);
+        } else {
+          if(!validated)
+            newHelper += ": " + mApp.getString(R.string.error_invalid_value);
+          mLayout.setError(newHelper);
+        }
+      }
     }
   }
 
@@ -118,7 +159,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
   public void afterTextChanged(Editable s) {
     if (mIgnore)
       return;
-    mLayout.setError(null);
+    if(!mSequential)
+      mLayout.setError(null);
     final String strNew = mNewString;
     final String strOld = mOldString;
     if (strNew.isEmpty()) {
