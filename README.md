@@ -28,6 +28,8 @@ _Caution: Opening files that are too large seriously degrades application perfor
 
 **WARNING:** This application cannot open files larger than ~20 MB on recent smartphones and less for older smartphones.
 
+:star2: A special thanks to [@OmlineEditor](https://github.com/OmlineEditor) for her patience and help :pray:, without her this application would not be at this level :blush:.
+
 ## Instructions
 Download the software :
 
