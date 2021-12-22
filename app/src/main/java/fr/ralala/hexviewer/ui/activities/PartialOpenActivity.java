@@ -36,6 +36,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -257,6 +258,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       return true;
     } else if (item.getItemId() == R.id.action_done) {
       if (checkValues()) {
+        UIHelper.hideKeyboard(this);
         Intent i = new Intent();
         long start = getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null);
         long end = getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null);

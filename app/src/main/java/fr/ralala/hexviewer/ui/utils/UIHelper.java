@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +45,17 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  * ******************************************************************************
  */
 public class UIHelper {
+
+  /**
+   * Hides the soft keyboard.
+   *
+   * @param c The Android context.
+   */
+  public static void hideKeyboard(final Context c) {
+    /* hide keyboard */
+    ((InputMethodManager) c.getSystemService(Activity.INPUT_METHOD_SERVICE))
+        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+  }
 
   /**
    * Gets the number of chars by lines
