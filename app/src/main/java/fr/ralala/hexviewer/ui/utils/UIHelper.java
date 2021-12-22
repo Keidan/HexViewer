@@ -53,8 +53,10 @@ public class UIHelper {
    */
   public static void hideKeyboard(final Context c) {
     /* hide keyboard */
-    ((InputMethodManager) c.getSystemService(Activity.INPUT_METHOD_SERVICE))
-        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+    InputMethodManager imm = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
+    if (imm.isAcceptingText()) {
+      imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+    }
   }
 
   /**
