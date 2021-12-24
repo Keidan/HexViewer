@@ -1,0 +1,23 @@
+* In the recent files view it is now possible to see the start and end size in hexadecimal (only for partially opened files).
+* Fix regression with opening files of ~320kb or more.
+* Fix a bug when deleting rows in the edit mode.
+* Fix a bug where the text in the line edit did not take into account the new font size when loading the activity.
+* Fix a bug where the title of the result field in the line edit did not follow the width of the line number.
+* Fix a regression when opening some files from the system file manager.
+* Fix a bug where opening a partial file followed by opening from recent files would redisplay the partial opening window.
+* Now, if a partial opening is requested but the whole file is opened, it will be considered as a normal opening (can be disabled in the settings).
+* Fix a bug when the file was partially opened but the file size was modified by an external program and became smaller than the maximum size saved in the application.
+* When editing a line in a partially opened file, information about the number of bytes entered is now available.
+* Removal of the concept of abbreviation in the parameters and modification of the management of the title bar.
+* Fix the text in the progress window during recording that was set to "Loading" instead of "Saving".
+* Fix a bug where the keyboard remained displayed while opening a file.
+
+Please note that new text additions are mostly translated via DeepL (German+Spanish).
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
