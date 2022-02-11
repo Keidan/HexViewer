@@ -33,7 +33,6 @@
                 <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.OPENABLE" />
-                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="*/*" android:host="*" />
