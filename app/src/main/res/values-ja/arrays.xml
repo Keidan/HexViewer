@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languages_entries">
+        <item>英語</item>
+        <item>ドイツ語</item>
+        <item>スペイン語</item>
+        <item>フランス語</item>
+        <item>ロシア語</item>
+        <item>中国語</item>
+        <item>日本語</item>
+    </string-array>
+
+    <string-array name="screen_orientation_entries">
+        <item>自動検出</item>
+        <item>縦向き</item>
+        <item>横向き</item>
+    </string-array>
+</resources>
