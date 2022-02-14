@@ -7,6 +7,7 @@
         <item>Французский</item>
         <item>Русский</item>
         <item>Китайский</item>
+        <item>японский</item>
     </string-array>
 
     <string-array name="screen_orientation_entries">

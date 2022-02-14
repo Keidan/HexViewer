@@ -21,6 +21,7 @@
         <item>fr-FR</item>
         <item>ru-RU</item>
         <item>zh-CN</item>
+        <item>ja-JP</item>
     </string-array>
 
     <string-array name="languages_entries">
@@ -30,6 +31,7 @@
         <item>French</item>
         <item>Russian</item>
         <item>Chinese</item>
+        <item>Japanese</item>
     </string-array>
 
 
