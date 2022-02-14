@@ -10,6 +10,10 @@ This application offers the following features :
 
 Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices.
 
+**WARNING:** This application cannot open files larger than ~20 MB on recent smartphones and less for older smartphones.
+
+A special thanks to @OmlineEditor for her patience and help, without her this application would not be at this level.
+
 This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
 
   
@@ -18,6 +22,7 @@ Translations:
 * English: @Keidan
 * French: @Keidan
 * German: @iNtEgraIR2021
+* Japanese: @gnuhead-chieb
 * Russian: @OmlineEditor
 * Spanish: @sguinetti
 
@@ -27,5 +32,6 @@ Note: In the settings, the list of languages is sorted as follows:
     * de-DE: German
     * es-ES: Spanish
     * fr-FR: French
+    * ja-JP: Japanese
     * ru-RU: Russian
     * zh-CN: Chinese

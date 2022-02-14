@@ -59,7 +59,6 @@
     <string name="settings_category_about">このアプリについて</string>
     <string name="settings_pref_title_version">バージョン</string>
     <string name="settings_pref_title_license">ライセンス</string>
-    <string name="settings_pref_summary_license" translatable="false">GPLv3</string>
     <string name="settings_category_general">一般</string>
     <string name="settings_pref_title_language">言語</string>
     <string name="settings_pref_summary_language">このアプリのインターフェース言語を変更します</string>

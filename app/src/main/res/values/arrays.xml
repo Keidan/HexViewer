@@ -19,9 +19,9 @@
         <item>de-DE</item>
         <item>es-ES</item>
         <item>fr-FR</item>
+        <item>ja-JP</item>
         <item>ru-RU</item>
         <item>zh-CN</item>
-        <item>ja-JP</item>
     </string-array>
 
     <string-array name="languages_entries">
@@ -29,9 +29,9 @@
         <item>German</item>
         <item>Spanish</item>
         <item>French</item>
+        <item>Japanese</item>
         <item>Russian</item>
         <item>Chinese</item>
-        <item>Japanese</item>
     </string-array>
 
 

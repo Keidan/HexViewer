@@ -5,9 +5,9 @@
         <item>Allemand</item>
         <item>Espagnol</item>
         <item>Français</item>
+        <item>Japonais</item>
         <item>Russe</item>
         <item>Chinois</item>
-        <item>Japonais</item>
     </string-array>
 
     <string-array name="screen_orientation_entries">
