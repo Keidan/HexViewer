@@ -51,8 +51,11 @@ public class FileData {
     mRealSize = FileHelper.getFileSize(ctx.getContentResolver(), uri);
 
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-      DocumentFile sourceFile = DocumentFile.fromSingleUri(ctx, mUri);
-      mIsNotFound = (sourceFile == null || !sourceFile.exists());
+      /* We assume that if the file sizes are not <= 0, the file exists. */
+      if(mSize <= 0 || mRealSize <= 0) {
+        DocumentFile sourceFile = DocumentFile.fromSingleUri(ctx, mUri);
+        mIsNotFound = (sourceFile == null || !sourceFile.exists());
+      }
     }
     if (mIsNotFound) {
       mIsAccessError = false;
