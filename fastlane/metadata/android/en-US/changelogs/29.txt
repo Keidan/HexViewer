@@ -1,0 +1,13 @@
+* The application no longer registers for the BROWSABLE category support (unmanaged so useless).
+* Fixed a bug when opening files via an external application (e.g. gallery) on Android <= 10.
+* Japanese translation added, thanks to gnuhead-chieb.
+
+
+Translations:
+* Chinese: @sr093906 
+* English: @Keidan
+* French: @Keidan
+* German: @iNtEgraIR2021
+* Japanese: @gnuhead-chieb
+* Russian: @OmlineEditor
+* Spanish: @sguinetti
