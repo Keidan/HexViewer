@@ -25,15 +25,14 @@
     </string-array>
 
     <string-array name="languages_entries">
-        <item>English</item>
-        <item>German</item>
-        <item>Spanish</item>
-        <item>French</item>
-        <item>Japanese</item>
-        <item>Russian</item>
-        <item>Chinese</item>
+        <item>@string/languages_entries_english</item>
+        <item>@string/languages_entries_german</item>
+        <item>@string/languages_entries_spanish</item>
+        <item>@string/languages_entries_french</item>
+        <item>@string/languages_entries_japanese</item>
+        <item>@string/languages_entries_russian</item>
+        <item>@string/languages_entries_chinese</item>
     </string-array>
-
 
     <string-array name="screen_orientation_values" translatable="false">
         <item>SCREEN_ORIENTATION_UNSPECIFIED</item>
@@ -42,8 +41,19 @@
     </string-array>
 
     <string-array name="screen_orientation_entries">
-        <item>Automatic</item>
-        <item>Portrait</item>
-        <item>Landscape</item>
+        <item>@string/screen_orientation_entries_automatic</item>
+        <item>@string/screen_orientation_entries_portrait</item>
+        <item>@string/screen_orientation_entries_landscape</item>
     </string-array>
+
+    <string name="languages_entries_english">English</string>
+    <string name="languages_entries_german">German</string>
+    <string name="languages_entries_spanish">Spanish</string>
+    <string name="languages_entries_french">French</string>
+    <string name="languages_entries_japanese">Japanese</string>
+    <string name="languages_entries_russian">Russian</string>
+    <string name="languages_entries_chinese">Chinese</string>
+    <string name="screen_orientation_entries_automatic">Automatic</string>
+    <string name="screen_orientation_entries_portrait">Portrait</string>
+    <string name="screen_orientation_entries_landscape">Landscape</string>
 </resources>

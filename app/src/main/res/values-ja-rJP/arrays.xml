@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="languages_entries">
-        <item>英語</item>
-        <item>ドイツ語</item>
-        <item>スペイン語</item>
-        <item>フランス語</item>
-        <item>日本語</item>
-        <item>ロシア語</item>
-        <item>中国語</item>
+        <item>@string/languages_entries_english</item>
+        <item>@string/languages_entries_german</item>
+        <item>@string/languages_entries_spanish</item>
+        <item>@string/languages_entries_french</item>
+        <item>@string/languages_entries_japanese</item>
+        <item>@string/languages_entries_russian</item>
+        <item>@string/languages_entries_chinese</item>
     </string-array>
 
     <string-array name="screen_orientation_entries">
-        <item>自動検出</item>
-        <item>縦向き</item>
-        <item>横向き</item>
+        <item>@string/screen_orientation_entries_automatic</item>
+        <item>@string/screen_orientation_entries_portrait</item>
+        <item>@string/screen_orientation_entries_landscape</item>
     </string-array>
+
+    <string name="languages_entries_english">英語</string>
+    <string name="languages_entries_german">ドイツ語</string>
+    <string name="languages_entries_spanish">スペイン語</string>
+    <string name="languages_entries_french">フランス語</string>
+    <string name="languages_entries_japanese">日本語</string>
+    <string name="languages_entries_russian">ロシア語</string>
+    <string name="languages_entries_chinese">中国語</string>
+    <string name="screen_orientation_entries_automatic">自動検出</string>
+    <string name="screen_orientation_entries_portrait">縦向き</string>
+    <string name="screen_orientation_entries_landscape">横向き</string>
 </resources>

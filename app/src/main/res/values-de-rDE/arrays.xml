@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="languages_entries">
-        <item>Englisch</item>
-        <item>Deutsch</item>
-        <item>Spanisch</item>
-        <item>Französisch</item>
-        <item>Japanisch</item>
-        <item>Russisch</item>
-        <item>Chinesisch</item>
+        <item>@string/languages_entries_english</item>
+        <item>@string/languages_entries_german</item>
+        <item>@string/languages_entries_spanish</item>
+        <item>@string/languages_entries_french</item>
+        <item>@string/languages_entries_japanese</item>
+        <item>@string/languages_entries_russian</item>
+        <item>@string/languages_entries_chinese</item>
     </string-array>
 
     <string-array name="screen_orientation_entries">
-        <item>Automatische</item>
-        <item>Portrait</item>
-        <item>Landschaft</item>
+        <item>@string/screen_orientation_entries_automatic</item>
+        <item>@string/screen_orientation_entries_portrait</item>
+        <item>@string/screen_orientation_entries_landscape</item>
     </string-array>
+
+    <string name="languages_entries_english">Englisch</string>
+    <string name="languages_entries_german">Deutsch</string>
+    <string name="languages_entries_spanish">Spanisch</string>
+    <string name="languages_entries_french">Französisch</string>
+    <string name="languages_entries_japanese">Japanisch</string>
+    <string name="languages_entries_russian">Russisch</string>
+    <string name="languages_entries_chinese">Chinesisch</string>
+    <string name="screen_orientation_entries_automatic">Automatische</string>
+    <string name="screen_orientation_entries_portrait">Portrait</string>
+    <string name="screen_orientation_entries_landscape">Landschaft</string>
 </resources>
