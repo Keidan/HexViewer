@@ -1,123 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="arrays_languages_entries_english">英文</string>
-  <string name="arrays_languages_entries_german">德文</string>
-  <string name="arrays_languages_entries_spanish">西班牙语</string>
-  <string name="arrays_languages_entries_french">法语</string>
-  <string name="arrays_languages_entries_japanese">日语</string>
-  <string name="arrays_languages_entries_russian">俄语</string>
-  <string name="arrays_languages_entries_chinese">中文</string>
-  <string name="arrays_languages_entries_turkish">土耳其语</string>
-  <string name="arrays_screen_orientation_entries_automatic">自动的</string>
-  <string name="arrays_screen_orientation_entries_portrait">纵向</string>
-  <string name="arrays_screen_orientation_entries_landscape">横向</string>
-  <string name="arrays_languages_entries_norwegian_bokmal">挪威语Bokm\u00E5l</string>
-  <string name="search_title">搜索</string>
-  <string name="search_hint">搜索&#8230;</string>
-  <string name="action_open_title">打开&#8230;</string>
-  <string name="action_open_title_button">打开</string>
-  <string name="action_plain_text_title">纯文本</string>
-  <string name="action_line_numbers_title">行号</string>
-  <string name="action_save_title">保存</string>
-  <string name="action_save_as_title">另存为&#8230;</string>
-  <string name="action_close_title">关闭</string>
-  <string name="action_settings_title">设置</string>
-  <string name="action_recently_open_title">最近打开</string>
-  <string name="action_go_to_address">转到地址&#8230;</string>
-  <string name="action_go_to_line">转到行&#8230;</string>
-  <string name="loading">正加载&#8230;</string>
-  <string name="saving">正保存&#8230;</string>
-  <string name="yes">是</string>
-  <string name="no">否</string>
-  <string name="cancel">取消</string>
-  <string name="on_double_back_exit_text">再按一次退出！</string>
-  <string name="update_hint_hex">文本</string>
-  <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
-  <string name="error_filename">无效的文件名！</string>
-  <string name="save_success">保存成功。</string>
-  <string name="operation_canceled">已取消操作</string>
-  <string name="exception">异常</string>
-  <string name="confirm_overwrite">文件存在，你确定想覆盖它吗？</string>
-  <string name="open_a_file_before">打开先前的一个文件！</string>
-  <string name="file_manager_keyword">文件管理器</string>
-  <string name="select_file_to_open">选择要打开的一个文件。</string>
-  <string name="error_no_file_manager">请安装一款文件管理器。</string>
-  <string name="install">安装</string>
-  <string name="please_open_file">请打开一个文件</string>
-  <string name="uri_exception">Uri 异常</string>
-  <string name="source">来源：</string>
-  <string name="result">结果：</string>
-  <string name="new_value">新值</string>
-  <string name="error_less_than">该值不能小于</string>
-  <string name="error_greater_than">该值不能大于</string>
-  <string name="error_invalid_value"> 无效的值 </string>
-  <string name="settings_pref_category_portrait">竖屏模式</string>
-  <string name="settings_pref_title_lists_portrait">高度、字体大小...</string>
-  <string name="settings_pref_summary_lists_portrait">点击编辑</string>
-  <string name="settings_pref_category_landscape">横屏模式</string>
-  <string name="settings_pref_title_lists_landscape">高度、字体大小...</string>&gt;
+    <string name="arrays_languages_entries_english">英文</string>
+    <string name="arrays_languages_entries_german">德文</string>
+    <string name="arrays_languages_entries_spanish">西班牙语</string>
+    <string name="arrays_languages_entries_french">法语</string>
+    <string name="arrays_languages_entries_japanese">日语</string>
+    <string name="arrays_languages_entries_russian">俄语</string>
+    <string name="arrays_languages_entries_chinese">中文</string>
+    <string name="arrays_languages_entries_turkish">土耳其语</string>
+    <string name="arrays_screen_orientation_entries_automatic">自动的</string>
+    <string name="arrays_screen_orientation_entries_portrait">纵向</string>
+    <string name="arrays_screen_orientation_entries_landscape">横向</string>
+    <string name="arrays_languages_entries_norwegian_bokmal">挪威语Bokmål</string>
+    <string name="search_title">搜索</string>
+    <string name="search_hint">搜索…</string>
+    <string name="action_open_title">打开…</string>
+    <string name="action_open_title_button">打开</string>
+    <string name="action_plain_text_title">纯文本</string>
+    <string name="action_line_numbers_title">行号</string>
+    <string name="action_save_title">保存</string>
+    <string name="action_save_as_title">另存为…</string>
+    <string name="action_close_title">关闭</string>
+    <string name="action_settings_title">设置</string>
+    <string name="action_recently_open_title">最近打开</string>
+    <string name="action_go_to_address">转到地址…</string>
+    <string name="action_go_to_line">转到行…</string>
+    <string name="loading">正加载…</string>
+    <string name="saving">正保存…</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="cancel">取消</string>
+    <string name="on_double_back_exit_text">再按一次退出！</string>
+    <string name="update_hint_hex">文本</string>
+    <string name="error_not_supported_in_plain_text">纯文本展示期间不支持操作</string>
+    <string name="error_filename">无效的文件名！</string>
+    <string name="save_success">保存成功。</string>
+    <string name="operation_canceled">已取消操作</string>
+    <string name="exception">异常</string>
+    <string name="confirm_overwrite">文件存在，你确定想覆盖它吗？</string>
+    <string name="open_a_file_before">打开先前的一个文件！</string>
+    <string name="file_manager_keyword">文件管理器</string>
+    <string name="select_file_to_open">选择要打开的一个文件。</string>
+    <string name="error_no_file_manager">请安装一款文件管理器。</string>
+    <string name="install">安装</string>
+    <string name="please_open_file">请打开一个文件</string>
+    <string name="uri_exception">Uri 异常</string>
+    <string name="source">来源：</string>
+    <string name="result">结果：</string>
+    <string name="new_value">新值</string>
+    <string name="error_less_than">该值不能小于</string>
+    <string name="error_greater_than">该值不能大于</string>
+    <string name="error_invalid_value">无效的值</string>
+    <string name="settings_pref_category_portrait">竖屏模式</string>
+    <string name="settings_pref_title_lists_portrait">高度、字体大小...</string>
+    <string name="settings_pref_summary_lists_portrait">点击编辑</string>
+    <string name="settings_pref_category_landscape">横屏模式</string>
+    <string name="settings_pref_title_lists_landscape">高度、字体大小...</string>&gt;
   <string name="settings_pref_summary_lists_landscape">点击编辑</string>
-  <string name="settings_category_hex">以 16 进制查看文本 (不含行号)</string>
-  <string name="settings_category_hex_line_numbers">以 16 进制查看文本 (有行号)</string>
-  <string name="settings_category_plain">查看纯文本</string>
-  <string name="settings_category_line_edit">编辑模式下的文本</string>
-  <string name="settings_pref_title_display_data">数据列显示</string>
-  <string name="settings_pref_summary_display_data">以十六进制显示文本时，显示数据列。</string>
-  <string name="settings_pref_title_row_height_auto">自动高度</string>
-  <string name="settings_pref_summary_row_height_auto">根据字体大小自动确定高度。</string>
-  <string name="settings_pref_title_row_height">高度</string>
-  <string name="settings_pref_summary_row_height">列表中行的高度。</string>
-  <string name="settings_pref_title_font_size">字体大小</string>
-  <string name="settings_pref_summary_font_size">列表中文本的字体大小。</string>
-  <string name="settings_category_about">关于</string>
-  <string name="settings_pref_title_version">版本号</string>
-  <string name="settings_pref_title_license">授权许可</string>
-  <string name="settings_category_general">常规</string>
-  <string name="settings_pref_title_language">语言</string>
-  <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
-  <string name="settings_pref_title_screen_orientation">屏幕方向</string>
-  <string name="settings_pref_summary_screen_orientation">配置默认的屏幕方向 (仅主界面)。</string>
-  <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
-  <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
-  <string name="settings_pref_title_partial_open_but_whole_file_is_opened">打开文件的一部分</string>
-  <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果要求打开文件一部分，但打开了整个文件，也认为是正常打开。</string>
-  <string name="error_file_open">当一个文件打开时，不可能改变模式。</string>
-  <string name="smart_input">纯文本输入</string>
-  <string name="error_file_not_found">未找到文件 %1$s</string>
-  <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
-  <string name="items_selected">选中了 %1$d 项</string>
-  <string name="confirm_save">保存文件 "%1$s"？</string>
-  <string name="control_language_change">请先保存你的工作。</string>
-  <string name="overwrite">插入模式</string>
-  <string name="size">大小</string>
-  <string name="unit_bytes_full_lc">bytes</string>
-  <string name="unit_byte_full">Byte</string>
-  <string name="unit_byte">B</string>
-  <string name="unit_kbyte">kB</string>
-  <string name="unit_mbyte">MB</string>
-  <string name="unit_gbyte">GB</string>
-  <string name="hexadecimal">十六进制</string>
-  <string name="decimal">十进制</string>
-  <string name="error_title">错误</string>
-  <string name="error_no_line_selected">未选择任何一行</string>
-  <string name="error_edition_search_in_progress">在搜索过程中，不可能进行行编辑。</string>
-  <string name="error_edition_continuous_selection">只有在选择不间断的情况下才可能进行行编辑。</string>
-  <string name="error_no_file_access">无法访问该文件，从菜单中打开它</string>
-  <string name="error_no_file">文件丢失（被删除或移动）</string>
-  <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
-  <string name="action_open_sequential_title">打开文件的一部分...</string>
-  <string name="action_open_sequential_title_button">打开文件的一部分</string>
-  <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除数据</string>
-  <string name="error_size_changed">文件大小已改变，单击指定要打开区域的新大小。</string>
-  <string name="start_offset">初值</string>
-  <string name="end_offset">终值</string>
-  <string name="unit">单位</string>
-  <string name="input_type">输入类型</string>
-  <string name="file_size">文件大小</string>
-  <string name="size_opening_part">要打开部分的大小</string>
-  <string name="partial_file_opening_description">输入要打开部分的初值和终值。</string>
-  <string name="not_enough_memory">无法执行命令，因可供此程序使用的内存不足。</string>
-  <string name="memory_threshold_title">内存阈值</string>
-  <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
-  <string name="error_not_available">不可用</string>
+    <string name="settings_category_hex">以 16 进制查看文本 (不含行号)</string>
+    <string name="settings_category_hex_line_numbers">以 16 进制查看文本 (有行号)</string>
+    <string name="settings_category_plain">查看纯文本</string>
+    <string name="settings_category_line_edit">编辑模式下的文本</string>
+    <string name="settings_pref_title_display_data">数据列显示</string>
+    <string name="settings_pref_summary_display_data">以十六进制显示文本时，显示数据列。</string>
+    <string name="settings_pref_title_row_height_auto">自动高度</string>
+    <string name="settings_pref_summary_row_height_auto">根据字体大小自动确定高度。</string>
+    <string name="settings_pref_title_row_height">高度</string>
+    <string name="settings_pref_summary_row_height">列表中行的高度。</string>
+    <string name="settings_pref_title_font_size">字体大小</string>
+    <string name="settings_pref_summary_font_size">列表中文本的字体大小。</string>
+    <string name="settings_category_about">关于</string>
+    <string name="settings_pref_title_version">版本号</string>
+    <string name="settings_pref_title_license">授权许可</string>
+    <string name="settings_category_general">常规</string>
+    <string name="settings_pref_title_language">语言</string>
+    <string name="settings_pref_summary_language">更改应用程序的显示语言。</string>
+    <string name="settings_pref_title_screen_orientation">屏幕方向</string>
+    <string name="settings_pref_summary_screen_orientation">配置默认的屏幕方向 (仅主界面)。</string>
+    <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
+    <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
+    <string name="settings_pref_title_partial_open_but_whole_file_is_opened">打开文件的一部分</string>
+    <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果要求打开文件一部分，但打开了整个文件，也认为是正常打开。</string>
+    <string name="error_file_open">当一个文件打开时，不可能改变模式。</string>
+    <string name="smart_input">纯文本输入</string>
+    <string name="error_file_not_found">未找到文件 %1$s</string>
+    <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
+    <string name="items_selected">选中了 %1$d 项</string>
+    <string name="confirm_save">保存文件 %1$s？</string>
+    <string name="control_language_change">请先保存你的工作。</string>
+    <string name="overwrite">插入模式</string>
+    <string name="size">大小</string>
+    <string name="unit_bytes_full_lc">bytes</string>
+    <string name="unit_byte_full">Byte</string>
+    <string name="unit_byte">B</string>
+    <string name="unit_kbyte">kB</string>
+    <string name="unit_mbyte">MB</string>
+    <string name="unit_gbyte">GB</string>
+    <string name="hexadecimal">十六进制</string>
+    <string name="decimal">十进制</string>
+    <string name="error_title">错误</string>
+    <string name="error_no_line_selected">未选择任何一行</string>
+    <string name="error_edition_search_in_progress">在搜索过程中，不可能进行行编辑。</string>
+    <string name="error_edition_continuous_selection">只有在选择不间断的情况下才可能进行行编辑。</string>
+    <string name="error_no_file_access">无法访问该文件，从菜单中打开它</string>
+    <string name="error_no_file">文件丢失（被删除或移动）</string>
+    <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
+    <string name="action_open_sequential_title">打开文件的一部分...</string>
+    <string name="action_open_sequential_title_button">打开文件的一部分</string>
+    <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除数据</string>
+    <string name="error_size_changed">文件大小已改变，单击指定要打开区域的新大小。</string>
+    <string name="start_offset">初值</string>
+    <string name="end_offset">终值</string>
+    <string name="unit">单位</string>
+    <string name="input_type">输入类型</string>
+    <string name="file_size">文件大小</string>
+    <string name="size_opening_part">要打开部分的大小</string>
+    <string name="partial_file_opening_description">输入要打开部分的初值和终值。</string>
+    <string name="not_enough_memory">无法执行命令，因可供此程序使用的内存不足。</string>
+    <string name="memory_threshold_title">内存阈值</string>
+    <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
+    <string name="error_not_available">不可用</string>
+    <string name="app_name" translatable="false"></string>
+    <string name="content_description_redo" translatable="false"></string>
+    <string name="default_memory_threshold" translatable="false"></string>
+    <string name="default_partial_open_but_whole_file_is_opened" translatable="false"></string>
+    <string name="default_line_edit_font_size_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_plain_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_screen_orientation" translatable="false"></string>
+    <string name="default_smart_input" translatable="false"></string>
+    <string name="content_description_undo" translatable="false"></string>
+    <string name="default_hex_display_data_portrait" translatable="false"></string>
+    <string name="zero" translatable="false"></string>
+    <string name="default_lines_number" translatable="false"></string>
+    <string name="default_plain_font_size_portrait" translatable="false"></string>
+    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_line_edit_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_plain_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_hex_font_size_landscape" translatable="false"></string>
+    <string name="title_content8" translatable="false"></string>
+    <string name="default_overwrite" translatable="false"></string>
+    <string name="default_line_edit_row_height_landscape" translatable="false"></string>
+    <string name="default_plain_row_height_landscape" translatable="false"></string>
+    <string name="default_plain_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_portrait" translatable="false"></string>
+    <string name="default_line_edit_font_size_landscape" translatable="false"></string>
+    <string name="default_nb_bytes_per_line" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_portrait" translatable="false"></string>
+    <string name="title_content" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_landscape" translatable="false"></string>
+    <string name="settings_pref_summary_license" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_hex_row_height_landscape" translatable="false"></string>
+    <string name="default_plain_font_size_landscape" translatable="false"></string>
+    <string name="default_hex_row_height_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_display_data_landscape" translatable="false"></string>
 </resources>
