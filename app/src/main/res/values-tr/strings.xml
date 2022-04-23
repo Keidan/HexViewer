@@ -6,7 +6,7 @@
     <string name="open_a_file_before">Önce bir dosya açın!</string>
     <string name="error_no_file_manager">Lütfen bir dosya yöneticisi kurun.</string>
     <string name="result">Sonuç:</string>
-    <string name="error_greater_than">Değer şundan daha büyük olamaz:</string>
+    <string name="error_greater_than">Değer şundan daha büyük olamaz</string>
     <string name="settings_category_hex">Metni onaltılılık olarak görüntüle (satır numaraları olmadan)</string>
     <string name="settings_pref_title_row_height">Yükseklik</string>
     <string name="settings_pref_title_screen_orientation">Ekran yönlendirmesi</string>
@@ -18,7 +18,7 @@
     <string name="end_offset">Bitiş</string>
     <string name="input_type">Giriş türü</string>
     <string name="new_value">Yeni değer</string>
-    <string name="error_less_than">Değer şundan daha az olamaz:</string>
+    <string name="error_less_than">Değer şundan daha az olamaz</string>
     <string name="settings_pref_category_portrait">Dikey mod</string>
     <string name="action_recently_open_title">Son açılan</string>
     <string name="action_go_to_line">Satıra git…</string>
