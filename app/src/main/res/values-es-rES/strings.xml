@@ -8,25 +8,25 @@
     <string name="arrays_languages_entries_russian">Ruso</string>
     <string name="arrays_languages_entries_chinese">Chino</string>
     <string name="arrays_languages_entries_turkish">Turco</string>
-    <string name="arrays_languages_entries_norwegian_bokmal">Bokm\u00E5l Noruego</string>
+    <string name="arrays_languages_entries_norwegian_bokmal">Bokmål Noruego</string>
     <string name="arrays_screen_orientation_entries_automatic">Automático</string>
     <string name="arrays_screen_orientation_entries_portrait">Retrato</string>
     <string name="arrays_screen_orientation_entries_landscape">Paisaje</string>
     <string name="search_title">Buscar</string>
-    <string name="search_hint">Buscar&#8230;</string>
-    <string name="action_open_title">Abrir&#8230;</string>
+    <string name="search_hint">Buscar…</string>
+    <string name="action_open_title">Abrir…</string>
     <string name="action_open_title_button">Abrir</string>
     <string name="action_plain_text_title">Texto plano</string>
     <string name="action_line_numbers_title">Números de línea</string>
     <string name="action_save_title">Guardar</string>
-    <string name="action_save_as_title">Guardar como&#8230;</string>
+    <string name="action_save_as_title">Guardar como…</string>
     <string name="action_close_title">Cerrar</string>
     <string name="action_settings_title">Ajustes</string>
     <string name="action_recently_open_title">Abierta reciente</string>
-    <string name="action_go_to_address">Ir a la dirección&#8230;</string>
-    <string name="action_go_to_line">Ir a la línea&#8230;</string>
-    <string name="loading">Cargando&#8230;</string>
-    <string name="saving">Guardando&#8230;</string>
+    <string name="action_go_to_address">Ir a la dirección…</string>
+    <string name="action_go_to_line">Ir a la línea…</string>
+    <string name="loading">Cargando…</string>
+    <string name="saving">Guardando…</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="cancel">Cancelar</string>
@@ -37,7 +37,7 @@
     <string name="save_success">Guardado completado.</string>
     <string name="operation_canceled">Operación cancelada</string>
     <string name="exception">Excepción</string>
-    <string name="confirm_overwrite">El archivo ya existe, ¿deseas sobreescribirlo?</string>
+    <string name="confirm_overwrite">El archivo ya existe, ¿deseas sobreescribirlo\?</string>
     <string name="open_a_file_before">¡Primero abre un archivo!</string>
     <string name="file_manager_keyword">Administrador de archivos</string>
     <string name="select_file_to_open">Seleccione un archivo para abrir.</string>
@@ -52,10 +52,10 @@
     <string name="error_greater_than">El valor es mayor que</string>
     <string name="error_invalid_value">Ungültiger Wert</string>
     <string name="settings_pref_category_portrait">Modo retrato</string>
-    <string name="settings_pref_title_lists_portrait">Ancho, Tamaño de letra&#8230;</string>
+    <string name="settings_pref_title_lists_portrait">Ancho, Tamaño de letra…</string>
     <string name="settings_pref_summary_lists_portrait">Haga clic para editar</string>
     <string name="settings_pref_category_landscape">Modo paisaje</string>
-    <string name="settings_pref_title_lists_landscape">Ancho, Tamaño de letra&#8230;</string>
+    <string name="settings_pref_title_lists_landscape">Ancho, Tamaño de letra…</string>
     <string name="settings_pref_summary_lists_landscape">Haga clic para editar</string>
     <string name="settings_category_hex">Ver el texto en hexadecimal (sin números de línea)</string>
     <string name="settings_category_hex_line_numbers">Ver el texto en hexadecimal (con números de línea)</string>
@@ -86,7 +86,7 @@
     <string name="error_file_not_found">No se ha encontrado el archivo %1$s</string>
     <string name="error_file_permission">No se ha concedido permiso para el archivo %1$s</string>
     <string name="items_selected">%1$d Seleccionado</string>
-    <string name="confirm_save">¿Guardar el archivo "%1$s"?</string>
+    <string name="confirm_save">¿Guardar el archivo %1$s\?</string>
     <string name="control_language_change">Por favor, guarde primero su trabajo.</string>
     <string name="overwrite">Modo de inserción</string>
     <string name="size">Tamaño</string>
@@ -105,7 +105,7 @@
     <string name="error_no_file">El archivo ha desaparecido (borrado o movido)</string>
     <string name="error_no_file_access">No hay acceso al archivo, ábralo desde el menú</string>
     <string name="error_cant_exceed_xxx">No es posible superar %1$s</string>
-    <string name="action_open_sequential_title">Apertura parcial de archivos&#8230;</string>
+    <string name="action_open_sequential_title">Apertura parcial de archivos…</string>
     <string name="action_open_sequential_title_button">Apertura parcial de archivos</string>
     <string name="error_open_sequential_add_or_delete_data">En este modo no es posible añadir o eliminar datos</string>
     <string name="error_size_changed">El tamaño del archivo ha cambiado, haga clic para especificar el nuevo tamaño del área a abrir.</string>
@@ -120,4 +120,46 @@
     <string name="memory_threshold_title">Umbral de memoria</string>
     <string name="memory_threshold_description">Valor umbral del límite de memoria antes de que se aborte la apertura de un archivo.</string>
     <string name="error_not_available">No disponible</string>
+    <string name="app_name" translatable="false"></string>
+    <string name="default_line_edit_font_size_landscape" translatable="false"></string>
+    <string name="settings_pref_summary_license" translatable="false"></string>
+    <string name="default_hex_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_hex_font_size_portrait" translatable="false"></string>
+    <string name="default_nb_bytes_per_line" translatable="false"></string>
+    <string name="zero" translatable="false"></string>
+    <string name="default_line_edit_row_height_landscape" translatable="false"></string>
+    <string name="default_partial_open_but_whole_file_is_opened" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_plain_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_plain_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"></string>
+    <string name="content_description_redo" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_plain_row_height_landscape" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_row_height_landscape" translatable="false"></string>
+    <string name="default_line_edit_font_size_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_plain_font_size_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_plain_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_plain_font_size_landscape" translatable="false"></string>
+    <string name="default_memory_threshold" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_landscape" translatable="false"></string>
+    <string name="title_content" translatable="false"></string>
+    <string name="default_lines_number" translatable="false"></string>
+    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_hex_display_data_portrait" translatable="false"></string>
+    <string name="default_overwrite" translatable="false"></string>
+    <string name="default_screen_orientation" translatable="false"></string>
+    <string name="default_hex_row_height_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_line_edit_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_display_data_landscape" translatable="false"></string>
+    <string name="default_smart_input" translatable="false"></string>
+    <string name="content_description_undo" translatable="false"></string>
+    <string name="default_hex_font_size_landscape" translatable="false"></string>
+    <string name="title_content8" translatable="false"></string>
 </resources>
