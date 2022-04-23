@@ -120,9 +120,6 @@
     <string name="memory_threshold_title">Seuil de mémoire</string>
     <string name="memory_threshold_description">Valeur seuil de la limite de mémoire avant que l\'ouverture d\'un fichier ne soit interrompue.</string>
     <string name="error_not_available">Non disponible</string>
-    <string name="default_hex_row_height_landscape" translatable="false"/>
     <string name="default_partial_open_but_whole_file_is_opened" translatable="false"/>
-    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"/>
     <string name="default_overwrite" translatable="false"/>
-    <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false"/>
 </resources>

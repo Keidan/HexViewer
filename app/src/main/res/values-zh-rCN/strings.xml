@@ -120,9 +120,6 @@
     <string name="memory_threshold_title">内存阈值</string>
     <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
     <string name="error_not_available">不可用</string>
-    <string name="default_hex_row_height_auto_portrait" translatable="false"/>
     <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"/>
-    <string name="default_plain_row_height_auto_landscape" translatable="false"/>
     <string name="default_line_edit_font_size_landscape" translatable="false"/>
-    <string name="default_plain_font_size_landscape" translatable="false"/>
 </resources>
