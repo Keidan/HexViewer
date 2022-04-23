@@ -76,7 +76,7 @@
     <string name="settings_pref_title_language">语言</string>
     <string name="settings_pref_summary_language">更改应用显示语言。</string>
     <string name="settings_pref_title_screen_orientation">屏幕方向</string>
-    <string name="settings_pref_summary_screen_orientation">配置默认的屏幕方向 (仅主界面)。</string>
+    <string name="settings_pref_summary_screen_orientation">设置默认的屏幕方向 (仅主屏幕)。</string>
     <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
     <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
     <string name="settings_pref_title_partial_open_but_whole_file_is_opened">打开文件的一部分</string>
