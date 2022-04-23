@@ -102,7 +102,7 @@
     <string name="error_no_line_selected">未选择任何一行</string>
     <string name="error_edition_search_in_progress">在搜索过程中，不可能进行行编辑。</string>
     <string name="error_edition_continuous_selection">只有在选择不间断的情况下才可能进行行编辑。</string>
-    <string name="error_no_file_access">无法访问该文件，从菜单中打开它</string>
+    <string name="error_no_file_access">无法访问该文件，从菜单中打开它。</string>
     <string name="error_no_file">文件丢失（被删除或移动）</string>
     <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
     <string name="action_open_sequential_title">打开文件的一部分...</string>
