@@ -1,19 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_title">Поиск</string>
-    <string name="search_hint">Искать&#8230;</string>
-    <string name="action_open_title">Открыть&#8230;</string>
+    <string name="search_hint">Искать…</string>
+    <string name="action_open_title">Открыть…</string>
     <string name="action_open_title_button">Открыть</string>
     <string name="action_plain_text_title">Простой текст</string>
     <string name="action_line_numbers_title">Номера строк</string>
     <string name="action_save_title">Сохранить</string>
-    <string name="action_save_as_title">Сохранить как &#8230;</string>
+    <string name="action_save_as_title">Сохранить как …</string>
     <string name="action_close_title">Закрыть</string>
     <string name="action_settings_title">Настройки</string>
     <string name="action_recently_open_title">Недавно открытые</string>
-    <string name="action_go_to_address">Перейти к aдресу &#8230;</string>
-    <string name="action_go_to_line">Перейти к строке &#8230;</string>
-    <string name="loading">Загрузка&#8230;</string>
-    <string name="saving">Сохранение&#8230;</string>
+    <string name="action_go_to_address">Перейти к aдресу …</string>
+    <string name="action_go_to_line">Перейти к строке …</string>
+    <string name="loading">Загрузка…</string>
+    <string name="saving">Сохранение…</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="cancel">Отмена</string>
@@ -21,7 +22,7 @@
     <string name="update_hint_hex">Текст</string>
     <string name="error_not_supported_in_plain_text">Операция не поддерживается при отображении обычного текста</string>
     <string name="error_filename">Неверное имя файла!</string>
-    <string name="save_success">Сохранили успешно</string>
+    <string name="save_success">Сохранили успешно.</string>
     <string name="operation_canceled">Операция отменена</string>
     <string name="exception">Исключение</string>
     <string name="confirm_overwrite">Файл существует, вы уверены, что хотите его перезаписать?</string>
@@ -39,10 +40,10 @@
     <string name="error_greater_than">Значение не может быть больше, чем</string>
     <string name="error_invalid_value">Недопустимое значение</string>
     <string name="settings_pref_category_portrait">Портретный режим</string>
-    <string name="settings_pref_title_lists_portrait">Высота, Размер шрифта &#8230;</string>
+    <string name="settings_pref_title_lists_portrait">Высота, Размер шрифта …</string>
     <string name="settings_pref_summary_lists_portrait">Нажмите для редактирования</string>
     <string name="settings_pref_category_landscape">Ландшафтный режим</string>
-    <string name="settings_pref_title_lists_landscape">Высота, Размер шрифта &#8230;</string>
+    <string name="settings_pref_title_lists_landscape">Высота, Размер шрифта …</string>
     <string name="settings_pref_summary_lists_landscape">Нажмите для редактирования</string>
     <string name="settings_category_hex">Текст в hex (без номеров строк)</string>
     <string name="settings_category_hex_line_numbers">Текст в hex (с номерами строк)</string>
@@ -61,7 +62,7 @@
     <string name="settings_pref_title_license">Лицензия</string>
     <string name="settings_category_general">Общие</string>
     <string name="settings_pref_title_language">Язык</string>
-    <string name="settings_pref_summary_language">Изменить язык приложения</string>
+    <string name="settings_pref_summary_language">Изменить язык приложения.</string>
     <string name="settings_pref_title_screen_orientation">Ориентация экрана</string>
     <string name="settings_pref_summary_screen_orientation">Настройка ориентации экрана по умолчанию (только основной экран).</string>
     <string name="settings_pref_title_nb_bytes">Количество байт для отображения в одной строке</string>
@@ -92,7 +93,7 @@
     <string name="error_no_file">Файл отсутствует (удален или перемещен)</string>
     <string name="error_no_file_access">Нет доступа к файлу, откройте его через меню</string>
     <string name="error_cant_exceed_xxx">Невозможно превысить %1$s</string>
-    <string name="action_open_sequential_title">Открыть часть файла&#8230;</string>
+    <string name="action_open_sequential_title">Открыть часть файла…</string>
     <string name="action_open_sequential_title_button">Открыть часть файла</string>
     <string name="error_open_sequential_add_or_delete_data">В этом режиме невозможно добавить новые данные</string>
     <string name="error_size_changed">Размер файла изменился, нажмите, чтобы указать новый размер области для открытия.</string>
