@@ -14,27 +14,27 @@
     <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
     <string name="arrays_screen_orientation_entries_landscape">Landscape</string>
     <string name="search_title">Search</string>
-    <string name="search_hint">Search&#8230;</string>
-    <string name="action_open_title">Open&#8230;</string>
+    <string name="search_hint">Search…</string>
+    <string name="action_open_title">Open…</string>
     <string name="action_open_title_button">Open</string>
     <string name="action_plain_text_title">Plain text</string>
     <string name="action_line_numbers_title">Line numbers</string>
     <string name="action_save_title">Save</string>
-    <string name="action_save_as_title">Save as &#8230;</string>
+    <string name="action_save_as_title">Save as …</string>
     <string name="action_close_title">Close</string>
     <string name="action_settings_title">Settings</string>
     <string name="action_recently_open_title">Recently opened</string>
-    <string name="action_go_to_address">Go to address&#8230;</string>
-    <string name="action_go_to_line">Go to line&#8230;</string>
-    <string name="loading">Loading&#8230;</string>
-    <string name="saving">Saving&#8230;</string>
+    <string name="action_go_to_address">Go to address…</string>
+    <string name="action_go_to_line">Go to line…</string>
+    <string name="loading">Loading…</string>
+    <string name="saving">Saving…</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="on_double_back_exit_text">Press again to exit.</string>
     <string name="update_hint_hex">Text</string>
     <string name="error_not_supported_in_plain_text">This is not supported during plain-text display</string>
-    <string name="error_filename">Invalid filename.</string>
+    <string name="error_filename">Invalid filename!</string>
     <string name="save_success">Saved.</string>
     <string name="operation_canceled">Operation cancelled</string>
     <string name="exception">Exception</string>
@@ -48,7 +48,6 @@
     <string name="uri_exception">URI exception</string>
     <string name="source">Source:</string>
     <string name="result">Result:</string>
-
     <string name="zero" translatable="false">0</string>
     <string name="content_description_undo" translatable="false">Undo</string>
     <string name="content_description_redo" translatable="false">Redo</string>
@@ -89,16 +88,15 @@
     <string name="default_line_edit_font_size_landscape" translatable="false">16</string>
     <string name="default_memory_threshold" translatable="false">~5%</string>
     <string name="default_partial_open_but_whole_file_is_opened" translatable="false">true</string>
-
     <string name="new_value">New value</string>
     <string name="error_less_than">The value cannot be below</string>
     <string name="error_greater_than">The value cannot be above</string>
     <string name="error_invalid_value">Invalid value</string>
     <string name="settings_pref_category_portrait">Portrait</string>
-    <string name="settings_pref_title_lists_portrait">Height, font size &#8230;</string>
+    <string name="settings_pref_title_lists_portrait">Height, font size…</string>
     <string name="settings_pref_summary_lists_portrait">Click to edit</string>
     <string name="settings_pref_category_landscape">Landscape</string>
-    <string name="settings_pref_title_lists_landscape">Height, font size&#8230;</string>
+    <string name="settings_pref_title_lists_landscape">Height, font size…</string>
     <string name="settings_pref_summary_lists_landscape">Click to edit</string>
     <string name="settings_category_hex">Show text hexadecimally (without line numbers)</string>
     <string name="settings_category_hex_line_numbers">Show text hexadecimally (with line numbers)</string>
@@ -149,7 +147,7 @@
     <string name="error_no_file_access">No access to the file. Open it from the menu.</string>
     <string name="error_no_file">File missing (deleted or moved)</string>
     <string name="error_cant_exceed_xxx">It is not possible to exceed %1$s</string>
-    <string name="action_open_sequential_title">Partial file opening&#8230;</string>
+    <string name="action_open_sequential_title">Partial file opening…</string>
     <string name="action_open_sequential_title_button">Partial file opening</string>
     <string name="error_open_sequential_add_or_delete_data">Change to a different mode if you want to add or delete data</string>
     <string name="error_size_changed">The file size has changed. Click to specify the new size of the area to open.</string>
@@ -164,5 +162,4 @@
     <string name="memory_threshold_title">Memory threshold</string>
     <string name="memory_threshold_description">Amount of memory allowed before opening a file is aborted.</string>
     <string name="error_not_available">Not available</string>
-
 </resources>
