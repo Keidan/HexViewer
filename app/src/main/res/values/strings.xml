@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name" translatable="false">HexViewer</string>
+    <string name="arrays_languages_entries_english">English</string>
+    <string name="arrays_languages_entries_german">German</string>
+    <string name="arrays_languages_entries_spanish">Spanish</string>
+    <string name="arrays_languages_entries_french">French</string>
+    <string name="arrays_languages_entries_japanese">Japanese</string>
+    <string name="arrays_languages_entries_russian">Russian</string>
+    <string name="arrays_languages_entries_chinese">Chinese</string>
+    <string name="arrays_languages_entries_turkish">Turkish</string>
+    <string name="arrays_screen_orientation_entries_automatic">Automatic</string>
+    <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
+    <string name="arrays_screen_orientation_entries_landscape">Landscape</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search&#8230;</string>
     <string name="action_open_title">Open&#8230;</string>

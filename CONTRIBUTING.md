@@ -16,6 +16,6 @@ You are invited to provide translations for the app. But there are some rules.
 * Please translate only if you're **familiar with the nomenclature of the Android system**. If you're not sure, check the official documentation and see how it should be done.
 * Contribute only if you commit to translating the **majority** of the strings. No one wants an application that is a mix of English and native language. I may remove translations, if they are not updated on new string resources.
 
-Translations can be provided via [Weblates][weblate].
+Translations can be provided via [Weblate][weblate].
 
 [weblate]: https://hosted.weblate.org/engage/hexviewer/

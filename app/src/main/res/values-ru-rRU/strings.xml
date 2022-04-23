@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_languages_entries_english">Английский</string>
+    <string name="arrays_languages_entries_german">Немецкий</string>
+    <string name="arrays_languages_entries_spanish">Испанский</string>
+    <string name="arrays_languages_entries_french">Французский</string>
+    <string name="arrays_languages_entries_japanese">японский</string>
+    <string name="arrays_languages_entries_russian">Русский</string>
+    <string name="arrays_languages_entries_chinese">Китайский</string>
+    <string name="arrays_languages_entries_turkish">Турецкий</string>
+    <string name="arrays_screen_orientation_entries_automatic">Автоматическая</string>
+    <string name="arrays_screen_orientation_entries_portrait">Портретный</string>
+    <string name="arrays_screen_orientation_entries_landscape">Ландшафтный</string>
     <string name="search_title">Поиск</string>
     <string name="search_hint">Искать…</string>
     <string name="action_open_title">Открыть…</string>

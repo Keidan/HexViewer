@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_languages_entries_english">Anglais</string>
+    <string name="arrays_languages_entries_german">Allemand</string>
+    <string name="arrays_languages_entries_spanish">Espagnol</string>
+    <string name="arrays_languages_entries_french">Français</string>
+    <string name="arrays_languages_entries_japanese">Japonais</string>
+    <string name="arrays_languages_entries_russian">Russe</string>
+    <string name="arrays_languages_entries_chinese">Chinois</string>
+    <string name="arrays_languages_entries_turkish">Turc</string>
+    <string name="arrays_screen_orientation_entries_automatic">Automatique</string>
+    <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
+    <string name="arrays_screen_orientation_entries_landscape">Paysage</string>
     <string name="search_title">Rechercher</string>
     <string name="search_hint">Rechercher…</string>
     <string name="action_open_title">Ouvrir…</string>
