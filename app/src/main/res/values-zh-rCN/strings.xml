@@ -55,7 +55,7 @@
     <string name="settings_pref_title_lists_portrait">高度、字体大小…</string>
     <string name="settings_pref_summary_lists_portrait">点击编辑</string>
     <string name="settings_pref_category_landscape">横屏</string>
-    <string name="settings_pref_title_lists_landscape">高度、字体大小...</string>&gt;
+    <string name="settings_pref_title_lists_landscape">高度、字体大小…</string>&gt;
   <string name="settings_pref_summary_lists_landscape">点击编辑</string>
     <string name="settings_category_hex">以 16 进制显示文本 (不含行号)</string>
     <string name="settings_category_hex_line_numbers">以 16 进制显示文本 (带行号)</string>
@@ -105,7 +105,7 @@
     <string name="error_no_file_access">无法访问该文件，从菜单中打开它。</string>
     <string name="error_no_file">文件丢失（被删除或移动）</string>
     <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
-    <string name="action_open_sequential_title">打开文件的一部分...</string>
+    <string name="action_open_sequential_title">打开文件的一部分…</string>
     <string name="action_open_sequential_title_button">打开文件的一部分</string>
     <string name="error_open_sequential_add_or_delete_data">如果要添加或删除数据，请更改为其他模式</string>
     <string name="error_size_changed">文件大小已改变，单击来指定要打开区域的新大小。</string>
