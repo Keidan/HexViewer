@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="languages_entries_chinese">Çince</string>
+    <string name="screen_orientation_entries_portrait">Dikey</string>
+    <string name="screen_orientation_entries_landscape">Yatay</string>
+    <string name="languages_entries_spanish">İspanyolca</string>
+    <string name="languages_entries_english">İngilizce</string>
+    <string name="languages_entries_japanese">Japonca</string>
+    <string name="languages_entries_german">Almanca</string>
+    <string name="languages_entries_french">Fransızca</string>
+    <string name="screen_orientation_entries_automatic">Otomatik</string>
+    <string name="languages_entries_russian">Rusça</string>
+</resources>
