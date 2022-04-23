@@ -120,25 +120,14 @@
     <string name="memory_threshold_title">Seuil de mémoire</string>
     <string name="memory_threshold_description">Valeur seuil de la limite de mémoire avant que l\'ouverture d\'un fichier ne soit interrompue.</string>
     <string name="error_not_available">Non disponible</string>
-    <string name="zero" translatable="false"/>
     <string name="default_line_edit_row_height_auto_landscape" translatable="false"/>
-    <string name="default_nb_bytes_per_line" translatable="false"/>
     <string name="default_hex_font_size_landscape" translatable="false"/>
-    <string name="title_content8" translatable="false"/>
     <string name="default_plain_font_size_landscape" translatable="false"/>
-    <string name="default_screen_orientation" translatable="false"/>
     <string name="default_line_edit_row_height_auto_portrait" translatable="false"/>
-    <string name="default_hex_font_size_landscape_lines_numbers" translatable="false"/>
     <string name="default_hex_row_height_portrait" translatable="false"/>
-    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"/>
     <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"/>
-    <string name="default_hex_display_data_landscape" translatable="false"/>
     <string name="default_plain_row_height_auto_landscape" translatable="false"/>
-    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"/>
     <string name="default_overwrite" translatable="false"/>
-    <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false"/>
     <string name="content_description_undo" translatable="false"/>
-    <string name="default_smart_input" translatable="false"/>
     <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false"/>
-    <string name="title_content" translatable="false"/>
 </resources>
