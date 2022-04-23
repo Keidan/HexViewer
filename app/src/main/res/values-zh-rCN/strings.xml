@@ -78,12 +78,12 @@
     <string name="settings_pref_title_screen_orientation">屏幕方向</string>
     <string name="settings_pref_summary_screen_orientation">设置默认的屏幕方向 (仅主屏幕)。</string>
     <string name="settings_pref_title_nb_bytes">一行中要显示的字节数</string>
-    <string name="settings_pref_summary_nb_bytes">每行要显示的字节数（8或16）。注意，显示8字节会大大增加内存消耗。</string>
+    <string name="settings_pref_summary_nb_bytes">允许每行显示 8 或 16 个字节。 显示 8 个字节会大大增加内存消耗。</string>
     <string name="settings_pref_title_partial_open_but_whole_file_is_opened">打开文件的一部分</string>
-    <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果要求打开文件一部分，但打开了整个文件，也认为是正常打开。</string>
-    <string name="error_file_open">当一个文件打开时，不可能改变模式。</string>
+    <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">如果打开整个文件，则认为文件已正常打开，即使请求部分打开也是如此。</string>
+    <string name="error_file_open">关闭所有文件以更改模式。</string>
     <string name="smart_input">纯文本输入</string>
-    <string name="error_file_not_found">未找到文件 %1$s</string>
+    <string name="error_file_not_found">找不到文件 %1$s</string>
     <string name="error_file_permission">尚未将权限授予文件 %1$s</string>
     <string name="items_selected">选中了 %1$d 项</string>
     <string name="confirm_save">保存文件 "%1$s"？</string>
@@ -107,8 +107,8 @@
     <string name="error_cant_exceed_xxx">不可能超过 %1$s</string>
     <string name="action_open_sequential_title">打开文件的一部分...</string>
     <string name="action_open_sequential_title_button">打开文件的一部分</string>
-    <string name="error_open_sequential_add_or_delete_data">此模式下，不可能添加或删除数据</string>
-    <string name="error_size_changed">文件大小已改变，单击指定要打开区域的新大小。</string>
+    <string name="error_open_sequential_add_or_delete_data">如果要添加或删除数据，请更改为其他模式</string>
+    <string name="error_size_changed">文件大小已改变，单击来指定要打开区域的新大小。</string>
     <string name="start_offset">初值</string>
     <string name="end_offset">终值</string>
     <string name="unit">单位</string>
@@ -118,6 +118,6 @@
     <string name="partial_file_opening_description">输入要打开部分的初值和终值。</string>
     <string name="not_enough_memory">无法执行命令，因可供此程序使用的内存不足。</string>
     <string name="memory_threshold_title">内存阈值</string>
-    <string name="memory_threshold_description">系统可用内存达到此值后，打开文件操作将被终止。</string>
+    <string name="memory_threshold_description">打开文件操作中止前允许的内存量。</string>
     <string name="error_not_available">不可用</string>
 </resources>
