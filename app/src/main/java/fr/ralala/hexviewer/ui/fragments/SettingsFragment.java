@@ -77,6 +77,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
 
     mLanguage.setDefaultValue(mApp.getApplicationLanguage(getContext()));
     mScreenOrientation.setDefaultValue(mApp.getScreenOrientationStr());
+    mScreenOrientation.setValue(mApp.getScreenOrientationStr());
     mNbBytesPerLine.setDefaultValue("" + mApp.getNbBytesPerLine());
 
     refreshUiAccordingToOrientation(null);
