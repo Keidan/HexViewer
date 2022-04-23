@@ -5,7 +5,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 [![Tests](https://keidan.testspace.com/spaces/154614/badge?token=1703ccc98e9b749c34f17b691e15d58ce0789f38)][tests]
 [![Issues](https://keidan.testspace.com/spaces/154614/metrics/192721/badge?token=5f710af9a9e6285910122d933e899b47c31eeb22)][issues]
-[![Weblate](https://weblate.bubu1.eu/widgets/hexviewer/-/svg-badge.svg)][weblate]
+[![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/svg-badge.svg)][weblate]
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
@@ -79,4 +79,4 @@ Check out [CONTRIBUTING.md](CONTRIBUTING.md), if you're interested in participat
 [license]: https://github.com/Keidan/HexViewer/blob/master/license.txt
 [tests]: https://keidan.testspace.com/spaces/154614?utm_campaign=badge&utm_medium=referral&utm_source=test
 [issues]: https://keidan.testspace.com/spaces/154614/current/Issues?utm_campaign=badge&utm_medium=referral&utm_source=issues
-[weblate]: https://weblate.bubu1.eu/engage/hexviewer/
+[weblate]: https://hosted.weblate.org/engage/hexviewer/

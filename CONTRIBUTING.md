@@ -9,7 +9,7 @@ About the style of the code: Try to respect the original style as much as possib
 
 ## Translations
 
-[![Weblate](https://weblate.bubu1.eu/widgets/hexviewer/-/multi-auto.svg)][weblate]
+[![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/multi-auto.svg)][weblate]
 
 You are invited to provide translations for the app. But there are some rules.
 
@@ -18,4 +18,4 @@ You are invited to provide translations for the app. But there are some rules.
 
 Translations can be provided via [Weblates][weblate].
 
-[weblate]: https://weblate.bubu1.eu/engage/hexviewer/
+[weblate]: https://hosted.weblate.org/engage/hexviewer/
