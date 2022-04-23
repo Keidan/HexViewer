@@ -41,9 +41,9 @@ Download the software :
  	Use with android studio
 
 ## Translations
-*   Chinese: [@sr093906](https://github.com/sr093906)
-*   English: [@Keidan](https://github.com/Keidan)
-*   French: [@Keidan](https://github.com/Keidan)
+*   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/)
+*   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
+*   French: [@Keidan](https://github.com/Keidan), [@@Edanas](https://hosted.weblate.org/user/Edanas/)
 *   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021)
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
