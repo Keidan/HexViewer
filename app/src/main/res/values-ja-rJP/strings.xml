@@ -120,14 +120,9 @@
     <string name="memory_threshold_title">メモリのしきい値</string>
     <string name="memory_threshold_description">ファイルのオープンが中断されるまでのメモリ制限のしきい値。</string>
     <string name="error_not_available">利用できません</string>
-    <string name="default_plain_font_size_portrait" translatable="false"/>
     <string name="content_description_redo" translatable="false"/>
-    <string name="content_description_undo" translatable="false"/>
     <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false"/>
-    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"/>
     <string name="default_hex_row_height_landscape" translatable="false"/>
-    <string name="settings_pref_summary_license" translatable="false"/>
     <string name="default_hex_row_height_auto_landscape" translatable="false"/>
-    <string name="default_hex_display_data_landscape" translatable="false"/>
     <string name="default_screen_orientation" translatable="false"/>
 </resources>
