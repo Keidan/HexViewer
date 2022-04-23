@@ -7,7 +7,7 @@ android {
         applicationId "fr.ralala.hexviewer"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 29
+        versionCode 127
         versionName "1.27"
     }
 
@@ -41,4 +41,47 @@ dependencies {
     implementation "com.android.support:support-emoji-bundled:$version"
     implementation "com.google.android.material:material:1.4.0"
     testImplementation "junit:junit:4.12"
+}
+// versionCode <-> versionName /////////////////////////////////////////////////////////////////////
+// I got the idea (code) below from the repository https://github.com/sal0max/currencie
+/**
+ * Checks if versionCode and versionName match.
+ * Needed because of F-Droid: both have to be hard-coded and can't be assigned dynamically.
+ * So at least check during build for them to match.
+ */
+task checkVersion {
+    int versionCode = android.defaultConfig.versionCode
+    int correctVersionCode = generateVersionCode(android.defaultConfig.versionName)
+    if (versionCode != correctVersionCode)
+        throw new GradleException(
+            "versionCode and versionName don't match: " +
+                "versionCode should be $correctVersionCode. Is $versionCode."
+        )
+}
+assemble.dependsOn checkVersion
+
+/**
+ * Checks if a fastlane changelog for the current version is present.
+ */
+task checkFastlaneChangelog {
+    int versionCode = android.defaultConfig.versionCode
+    File changelogFile = file("$rootDir/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt")
+    if (!changelogFile.exists())
+        throw new GradleException(
+            "Fastlane changelog missing: expecting file '$changelogFile'"
+        )
+}
+build.dependsOn checkFastlaneChangelog
+
+/**
+ * Generates a versionCode based on the given semVer String.
+ * See e.g. https://proandroiddev.com/keep-salinity-with-your-versioncode-db2089b640b9
+ *
+ * @param semVer e.g. 1.27
+ * @return e.g. 127 (-> 1 27)
+ */
+private static int generateVersionCode(String semVer) {
+    return semVer.split('\\.')
+        .collect { Integer.parseInt(it) }
+        .inject { sum, value -> sum * 100 + value }
 }

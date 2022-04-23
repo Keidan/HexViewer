@@ -1,0 +1,5 @@
+* The default value for "Screen orientation setting" was not selected.
+* Use of weblate to manage the translations.
+* Turkish translation added, thanks to ersen0.
+* Norwegian Bokmål translation added, thanks to comradekingu.
+* Update of some texts (English, Chinese and French).
