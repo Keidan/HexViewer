@@ -21,17 +21,19 @@
         <item>fr-FR</item>
         <item>ja-JP</item>
         <item>ru-RU</item>
+        <item>tr-TR</item>
         <item>zh-CN</item>
     </string-array>
 
-    <string-array name="languages_entries">
-        <item>@string/languages_entries_english</item>
-        <item>@string/languages_entries_german</item>
-        <item>@string/languages_entries_spanish</item>
-        <item>@string/languages_entries_french</item>
-        <item>@string/languages_entries_japanese</item>
-        <item>@string/languages_entries_russian</item>
-        <item>@string/languages_entries_chinese</item>
+    <string-array name="languages_entries" translatable="false">
+        <item>@string/arrays_languages_entries_english</item>
+        <item>@string/arrays_languages_entries_german</item>
+        <item>@string/arrays_languages_entries_spanish</item>
+        <item>@string/arrays_languages_entries_french</item>
+        <item>@string/arrays_languages_entries_japanese</item>
+        <item>@string/arrays_languages_entries_russian</item>
+        <item>@string/arrays_languages_entries_turkish</item>
+        <item>@string/arrays_languages_entries_chinese</item>
     </string-array>
 
     <string-array name="screen_orientation_values" translatable="false">
@@ -40,20 +42,9 @@
         <item>SCREEN_ORIENTATION_LANDSCAPE</item>
     </string-array>
 
-    <string-array name="screen_orientation_entries">
-        <item>@string/screen_orientation_entries_automatic</item>
-        <item>@string/screen_orientation_entries_portrait</item>
-        <item>@string/screen_orientation_entries_landscape</item>
+    <string-array name="screen_orientation_entries" translatable="false">
+        <item>@string/arrays_screen_orientation_entries_automatic</item>
+        <item>@string/arrays_screen_orientation_entries_portrait</item>
+        <item>@string/arrays_screen_orientation_entries_landscape</item>
     </string-array>
-
-    <string name="languages_entries_english">English</string>
-    <string name="languages_entries_german">German</string>
-    <string name="languages_entries_spanish">Spanish</string>
-    <string name="languages_entries_french">French</string>
-    <string name="languages_entries_japanese">Japanese</string>
-    <string name="languages_entries_russian">Russian</string>
-    <string name="languages_entries_chinese">Chinese</string>
-    <string name="screen_orientation_entries_automatic">Automatic</string>
-    <string name="screen_orientation_entries_portrait">Portrait</string>
-    <string name="screen_orientation_entries_landscape">Landscape</string>
 </resources>

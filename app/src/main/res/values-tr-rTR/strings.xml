@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_screen_orientation_entries_automatic">Otomatik</string>
+    <string name="arrays_screen_orientation_entries_portrait">Dikey</string>
+    <string name="arrays_screen_orientation_entries_landscape">Yatay</string>
+    <string name="arrays_languages_entries_chinese">Çince</string>
+    <string name="arrays_languages_entries_spanish">İspanyolca</string>
+    <string name="arrays_languages_entries_english">İngilizce</string>
+    <string name="arrays_languages_entries_japanese">Japonca</string>
+    <string name="arrays_languages_entries_german">Almanca</string>
+    <string name="arrays_languages_entries_french">Fransızca</string>
+    <string name="arrays_languages_entries_russian">Rusça</string>
+    <string name="arrays_languages_entries_turkish">Türkçe</string>
     <string name="cancel">İptal</string>
     <string name="on_double_back_exit_text">Çıkmak için bir kez daha basın!</string>
     <string name="update_hint_hex">Metin</string>

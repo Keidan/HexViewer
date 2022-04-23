@@ -48,6 +48,7 @@ Download the software :
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
 *   Spanish: [@sguinetti](https://github.com/sguinetti)
+*   Turkish: [@ersen0](https://github.com/ersen0)
 
 Note: In the settings, the list of languages is sorted as follows:
 *   en-US: English (always first)
@@ -57,6 +58,7 @@ Note: In the settings, the list of languages is sorted as follows:
     * fr-FR: French
     * ja-JP: Japanese
     * ru-RU: Russian
+    * tr-TR: Turkish
     * zh-CN: Chinese
 	
 Check out [CONTRIBUTING.md](CONTRIBUTING.md), if you're interested in participating.

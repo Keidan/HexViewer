@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_languages_entries_english">英語</string>
+    <string name="arrays_languages_entries_german">ドイツ語</string>
+    <string name="arrays_languages_entries_spanish">スペイン語</string>
+    <string name="arrays_languages_entries_french">フランス語</string>
+    <string name="arrays_languages_entries_japanese">日本語</string>
+    <string name="arrays_languages_entries_russian">ロシア語</string>
+    <string name="arrays_languages_entries_chinese">中国語</string>
+    <string name="arrays_languages_entries_turkish">トルコ語</string>
+    <string name="arrays_screen_orientation_entries_automatic">自動検出</string>
+    <string name="arrays_screen_orientation_entries_portrait">縦向き</string>
+    <string name="arrays_screen_orientation_entries_landscape">横向き</string>
     <string name="search_title">検索</string>
     <string name="search_hint">検索する…</string>
     <string name="action_open_title">開く…</string>
