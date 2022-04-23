@@ -20,6 +20,7 @@
         <item>es-ES</item>
         <item>fr-FR</item>
         <item>ja-JP</item>
+        <item>nb-NO</item>
         <item>ru-RU</item>
         <item>tr-TR</item>
         <item>zh-CN</item>
@@ -31,6 +32,7 @@
         <item>@string/arrays_languages_entries_spanish</item>
         <item>@string/arrays_languages_entries_french</item>
         <item>@string/arrays_languages_entries_japanese</item>
+        <item>@string/arrays_languages_entries_norwegian_bokmal</item>
         <item>@string/arrays_languages_entries_russian</item>
         <item>@string/arrays_languages_entries_turkish</item>
         <item>@string/arrays_languages_entries_chinese</item>

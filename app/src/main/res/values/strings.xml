@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">HexViewer</string>
     <string name="arrays_languages_entries_english">English</string>
@@ -8,6 +9,7 @@
     <string name="arrays_languages_entries_russian">Russian</string>
     <string name="arrays_languages_entries_chinese">Chinese</string>
     <string name="arrays_languages_entries_turkish">Turkish</string>
+    <string name="arrays_languages_entries_norwegian_bokmal">Norwegian Bokm\u00E5l</string>
     <string name="arrays_screen_orientation_entries_automatic">Auto</string>
     <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
     <string name="arrays_screen_orientation_entries_landscape">Landscape</string>

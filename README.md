@@ -46,6 +46,7 @@ Download the software :
 *   French: [@Keidan](https://github.com/Keidan)
 *   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021)
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
+*   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
 *   Spanish: [@sguinetti](https://github.com/sguinetti)
 *   Turkish: [@ersen0](https://github.com/ersen0)
@@ -57,6 +58,7 @@ Note: In the settings, the list of languages is sorted as follows:
     * es-ES: Spanish
     * fr-FR: French
     * ja-JP: Japanese
+    * nb-NO: Norwegian Bokmål
     * ru-RU: Russian
     * tr-TR: Turkish
     * zh-CN: Chinese
