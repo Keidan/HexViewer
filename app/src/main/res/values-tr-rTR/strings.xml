@@ -11,7 +11,7 @@
     <string name="arrays_languages_entries_french">Fransızca</string>
     <string name="arrays_languages_entries_russian">Rusça</string>
     <string name="arrays_languages_entries_turkish">Türkçe</string>
-    <string name="arrays_languages_entries_norwegian_bokmal">Norveç Bokm\u00E5l</string>
+    <string name="arrays_languages_entries_norwegian_bokmal">Norveç Bokmål</string>
     <string name="cancel">İptal</string>
     <string name="on_double_back_exit_text">Çıkmak için bir kez daha basın!</string>
     <string name="update_hint_hex">Metin</string>
@@ -24,7 +24,7 @@
     <string name="settings_pref_title_screen_orientation">Ekran yönlendirmesi</string>
     <string name="decimal">ondalık</string>
     <string name="error_cant_exceed_xxx">%1$s değeri aşılamaz</string>
-    <string name="action_open_sequential_title">Kısmi dosya açma&#8230;</string>
+    <string name="action_open_sequential_title">Kısmi dosya açma…</string>
     <string name="action_open_sequential_title_button">Kısmi dosya açma</string>
     <string name="error_size_changed">Dosya boyutu değişti, açılacak alanın yeni boyutunu belirtmek için tıklayın.</string>
     <string name="end_offset">Bitiş</string>
@@ -33,28 +33,28 @@
     <string name="error_less_than">Değer şundan daha az olamaz</string>
     <string name="settings_pref_category_portrait">Dikey mod</string>
     <string name="action_recently_open_title">Son açılan</string>
-    <string name="action_go_to_line">Satıra git&#8230;</string>
+    <string name="action_go_to_line">Satıra git…</string>
     <string name="yes">Evet</string>
     <string name="source">Kaynak:</string>
     <string name="error_invalid_value">Geçersiz değer</string>
     <string name="settings_pref_summary_lists_portrait">Düzenlemek için tıklayın</string>
-    <string name="settings_pref_title_lists_landscape">Yükseklik, yazı tipi boyutu&#8230;</string>
+    <string name="settings_pref_title_lists_landscape">Yükseklik, yazı tipi boyutu…</string>
     <string name="settings_pref_summary_font_size">Listedeki metinlerin yazı tipi boyutu.</string>
     <string name="search_title">Ara</string>
     <string name="action_line_numbers_title">Satır numaraları</string>
     <string name="action_save_title">Kaydet</string>
-    <string name="search_hint">Ara&#8230;</string>
-    <string name="action_open_title">Aç&#8230;</string>
+    <string name="search_hint">Ara…</string>
+    <string name="action_open_title">Aç…</string>
     <string name="action_open_title_button">Aç</string>
     <string name="action_plain_text_title">Düz metin</string>
     <string name="action_close_title">Kapat</string>
     <string name="action_settings_title">Ayarlar</string>
     <string name="no">Hayır</string>
     <string name="error_not_supported_in_plain_text">Düz metin görüntüleme sırasında işlem desteklenmiyor</string>
-    <string name="action_save_as_title">Farklı Kaydet&#8230;</string>
-    <string name="action_go_to_address">Adrese git&#8230;</string>
-    <string name="loading">Yükleniyor&#8230;</string>
-    <string name="saving">Kaydediliyor&#8230;</string>
+    <string name="action_save_as_title">Farklı Kaydet…</string>
+    <string name="action_go_to_address">Adrese git…</string>
+    <string name="loading">Yükleniyor…</string>
+    <string name="saving">Kaydediliyor…</string>
     <string name="confirm_overwrite">Dosya var, üzerine yazmak istediğinizden emin misiniz\?</string>
     <string name="file_manager_keyword">Dosya yöneticisi</string>
     <string name="select_file_to_open">Açmak için bir dosya seçin.</string>
@@ -67,7 +67,7 @@
     <string name="error_no_file">Dosya yok (silindi veya taşındı)</string>
     <string name="error_open_sequential_add_or_delete_data">Bu modda veri eklenemez veya silinemez</string>
     <string name="please_open_file">Lütfen bir dosya açın</string>
-    <string name="settings_pref_title_lists_portrait">Yükseklik, yazı tipi boyutu&#8230;</string>
+    <string name="settings_pref_title_lists_portrait">Yükseklik, yazı tipi boyutu…</string>
     <string name="settings_pref_category_landscape">Yatay mod</string>
     <string name="settings_category_plain">Düz metni görüntüle</string>
     <string name="settings_pref_title_row_height_auto">Otomatik yükseklik</string>
@@ -120,4 +120,46 @@
     <string name="error_no_line_selected">Hiçbir satır seçilmedi</string>
     <string name="memory_threshold_description">Bir dosyanın açılması iptal edilmeden önceki bellek sınırı için eşik değeri.</string>
     <string name="partial_file_opening_description">Açmak istediğiniz alanın başlangıcını ve bitişini girin.</string>
+    <string name="app_name" translatable="false"></string>
+    <string name="default_hex_row_height_landscape" translatable="false"></string>
+    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_plain_row_height_landscape" translatable="false"></string>
+    <string name="title_content" translatable="false"></string>
+    <string name="title_content8" translatable="false"></string>
+    <string name="settings_pref_summary_license" translatable="false"></string>
+    <string name="default_memory_threshold" translatable="false"></string>
+    <string name="default_partial_open_but_whole_file_is_opened" translatable="false"></string>
+    <string name="default_plain_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_plain_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_hex_display_data_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_lines_number" translatable="false"></string>
+    <string name="default_hex_row_height_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_line_edit_font_size_landscape" translatable="false"></string>
+    <string name="content_description_redo" translatable="false"></string>
+    <string name="default_plain_font_size_portrait" translatable="false"></string>
+    <string name="default_hex_display_data_landscape" translatable="false"></string>
+    <string name="default_plain_row_height_portrait" translatable="false"></string>
+    <string name="default_line_edit_font_size_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"></string>
+    <string name="zero" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_smart_input" translatable="false"></string>
+    <string name="default_hex_font_size_portrait" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_nb_bytes_per_line" translatable="false"></string>
+    <string name="content_description_undo" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_line_edit_row_height_landscape" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_hex_font_size_landscape" translatable="false"></string>
+    <string name="default_screen_orientation" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_line_edit_row_height_portrait" translatable="false"></string>
+    <string name="default_plain_font_size_landscape" translatable="false"></string>
+    <string name="default_overwrite" translatable="false"></string>
+    <string name="default_hex_row_height_portrait" translatable="false"></string>
 </resources>
