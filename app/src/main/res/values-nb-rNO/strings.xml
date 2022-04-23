@@ -120,5 +120,4 @@
     <string name="memory_threshold_title">Minneterskel</string>
     <string name="memory_threshold_description">Terskelverdi for minnegrense før åpning av en fil avbrytes.</string>
     <string name="error_not_available">Ikke tilgjengelig</string>
-    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"/>
 </resources>

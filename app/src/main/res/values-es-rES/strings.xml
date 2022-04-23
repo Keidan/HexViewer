@@ -120,5 +120,4 @@
     <string name="memory_threshold_title">Umbral de memoria</string>
     <string name="memory_threshold_description">Valor umbral del límite de memoria antes de que se aborte la apertura de un archivo.</string>
     <string name="error_not_available">No disponible</string>
-    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"/>
 </resources>
