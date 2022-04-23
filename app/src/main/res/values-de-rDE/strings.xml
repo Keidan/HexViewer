@@ -120,5 +120,4 @@
     <string name="memory_threshold_title">Schwellenwert für den Speicher</string>
     <string name="memory_threshold_description">Schwellenwert für die Speichergrenze, bevor das Öffnen einer Datei abgebrochen wird.</string>
     <string name="error_not_available">Nicht verfügbar</string>
-    <string name="title_content" translatable="false"/>
 </resources>
