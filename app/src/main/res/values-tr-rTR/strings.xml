@@ -120,6 +120,5 @@
     <string name="error_no_line_selected">Hiçbir satır seçilmedi</string>
     <string name="memory_threshold_description">Bir dosyanın açılması iptal edilmeden önceki bellek sınırı için eşik değeri.</string>
     <string name="partial_file_opening_description">Açmak istediğiniz alanın başlangıcını ve bitişini girin.</string>
-    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"/>
     <string name="default_nb_bytes_per_line" translatable="false"/>
 </resources>
