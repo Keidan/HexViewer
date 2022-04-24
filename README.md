@@ -75,7 +75,7 @@ Check out [CONTRIBUTING.md](CONTRIBUTING.md), if you're interested in participat
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.jpg" width="270px" height="600px" alt="Plain display"></p>
 
 ## License
-[GPLv3](https://github.com/Keidan/HexViewer/blob/master/license.txt)
+[GNU GPL v3 or later](https://github.com/Keidan/HexViewer/blob/master/license.txt)
 
 [build]: https://github.com/Keidan/HexViewer/actions
 [releases]: https://github.com/Keidan/HexViewer/releases
