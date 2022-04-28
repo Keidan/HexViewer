@@ -39,17 +39,20 @@ Download the software :
 	git clone git://github.com/Keidan/HexViewer.git
 	cd HexViewer
  	Use with android studio
+	
+## Contributions
+### Bug fixes
 
-## Translations
-*   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/)
-*   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
-*   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
-*   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021)
-*   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
-*   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
-*   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
-*   Spanish: [@sguinetti](https://github.com/sguinetti)
-*   Turkish: [@ersen0](https://github.com/ersen0)
+You can simply report a problem via an issue, or even provide pull requests with fixes for a bug you discovered.
+
+About the style of the code: Try to respect the original style as much as possible.
+
+### Translations
+You are invited to provide translations for the app. But there are some rules.
+* Please translate only if you're **familiar with the nomenclature of the Android system**. If you're not sure, check the official documentation and see how it should be done.
+* Contribute only if you commit to translating the **majority** of the strings. No one wants an application that is a mix of English and native language. I may remove translations, if they are not updated on new string resources.
+
+Translations can be provided via [Weblate][weblate].
 
 Note: In the settings, the list of languages is sorted as follows:
 *   en-US: English (always first)
@@ -62,8 +65,20 @@ Note: In the settings, the list of languages is sorted as follows:
     * ru-RU: Russian
     * tr-TR: Turkish
     * zh-CN: Chinese
-	
-Check out [CONTRIBUTING.md](CONTRIBUTING.md), if you're interested in participating.
+
+The current status of the translations is as follows:
+
+[![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/multi-auto.svg)][weblate]
+
+*   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/)
+*   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
+*   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
+*   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), (+DeepL)
+*   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
+*   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
+*   Russian: [@OmlineEditor](https://github.com/OmlineEditor)
+*   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
+*   Turkish: [@ersen0](https://github.com/ersen0)
 
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>
