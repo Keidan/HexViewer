@@ -41,6 +41,7 @@ Download the software :
  	Use with android studio
 	
 ## Contributions
+
 ### Bug fixes
 
 You can simply report a problem via an issue, or even provide pull requests with fixes for a bug you discovered.

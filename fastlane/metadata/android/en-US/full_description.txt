@@ -18,13 +18,15 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
 
   
 Translations:
-* Chinese: @sr093906 
-* English: @Keidan
-* French: @Keidan
-* German: @iNtEgraIR2021
+* Chinese: @sr093906, @alchemillatruth
+* English: @Keidan, @comradekingu
+* French: @Keidan, @Edanas
+* German: @iNtEgraIR2021, (+DeepL)
 * Japanese: @gnuhead-chieb
+* Norwegian Bokmål: @comradekingu
 * Russian: @OmlineEditor
-* Spanish: @sguinetti
+* Spanish: @sguinetti, (+DeepL)
+* Turkish: @ersen0
 
 Note: In the settings, the list of languages is sorted as follows:
 *   en-US: English (always first)
@@ -33,5 +35,7 @@ Note: In the settings, the list of languages is sorted as follows:
     * es-ES: Spanish
     * fr-FR: French
     * ja-JP: Japanese
+    * nb-NO: Norwegian Bokmål
     * ru-RU: Russian
+    * tr-TR: Turkish
     * zh-CN: Chinese
