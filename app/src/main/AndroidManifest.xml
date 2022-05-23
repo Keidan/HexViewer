@@ -1,104 +1,112 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="fr.ralala.hexviewer">
+  xmlns:tools="http://schemas.android.com/tools"
+  package="fr.ralala.hexviewer">
 
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29"
-      tools:ignore="ScopedStorage" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission
+    android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    android:maxSdkVersion="29"
+    tools:ignore="ScopedStorage" />
 
-    <application
-        android:testOnly="false"
-        android:name=".ApplicationCtx"
-        android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"
-        android:label="@string/app_name"
-        android:allowBackup="false"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+  <application
+    android:name=".ApplicationCtx"
+    android:allowBackup="false"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:requestLegacyExternalStorage="true"
+    android:supportsRtl="true"
+    android:testOnly="false"
+    android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".ui.activities.MainActivity"
-            android:configChanges="locale|orientation|screenSize"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
+    <activity
+      android:name=".ui.activities.MainActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:exported="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:launchMode="singleTask">
+      <intent-filter>
+        <action android:name="android.intent.action.SEARCH" />
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.OPENABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      <intent-filter tools:ignore="AppLinkUrlError">
+        <action android:name="android.intent.action.VIEW" />
+        <action android:name="android.intent.action.EDIT" />
 
-                <data android:mimeType="*/*" android:host="*" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-              android:resource="@xml/searchable"/>
-        </activity>
+        <category android:name="android.intent.category.OPENABLE" />
+        <category android:name="android.intent.category.DEFAULT" />
 
-        <activity
-          android:name=".ui.activities.LineUpdateActivity"
-          android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask">
+        <data
+          android:host="*"
+          android:mimeType="*/*" />
+      </intent-filter>
 
-            <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value=".ui.activities.MainActivity"/>
-        </activity>
+      <meta-data
+        android:name="android.app.searchable"
+        android:resource="@xml/searchable" />
+    </activity>
 
-        <activity
-          android:name=".ui.activities.RecentlyOpenActivity"
-          android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask">
+    <activity
+      android:name=".ui.activities.LineUpdateActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:launchMode="singleTask">
 
-            <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value=".ui.activities.MainActivity"/>
-        </activity>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activities.MainActivity" />
+    </activity>
 
-        <activity
-          android:name=".ui.activities.PartialOpenActivity"
-          android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask">
+    <activity
+      android:name=".ui.activities.RecentlyOpenActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:launchMode="singleTask">
 
-            <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value=".ui.activities.MainActivity"/>
-        </activity>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activities.MainActivity" />
+    </activity>
 
-        <activity
-          android:name=".ui.activities.settings.SettingsActivity"
-          android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask">
+    <activity
+      android:name=".ui.activities.PartialOpenActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:launchMode="singleTask">
 
-            <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value=".ui.activities.MainActivity"/>
-        </activity>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activities.MainActivity" />
+    </activity>
 
-        <activity
-          android:name=".ui.activities.settings.SettingsListsPortraitActivity"
-          android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask">
+    <activity
+      android:name=".ui.activities.settings.SettingsActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:launchMode="singleTask">
 
-            <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value=".ui.activities.settings.SettingsActivity"/>
-        </activity>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activities.MainActivity" />
+    </activity>
 
-        <activity
-          android:name=".ui.activities.settings.SettingsListsLandscapeActivity"
-          android:configChanges="locale|orientation|screenSize"
-          android:launchMode="singleTask">
+    <activity
+      android:name=".ui.activities.settings.SettingsListsPortraitActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:launchMode="singleTask">
 
-            <meta-data
-              android:name="android.support.PARENT_ACTIVITY"
-              android:value=".ui.activities.settings.SettingsActivity"/>
-        </activity>
-    </application>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activities.settings.SettingsActivity" />
+    </activity>
+
+    <activity
+      android:name=".ui.activities.settings.SettingsListsLandscapeActivity"
+      android:configChanges="locale|orientation|screenSize"
+      android:launchMode="singleTask">
+
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.activities.settings.SettingsActivity" />
+    </activity>
+  </application>
 </manifest>
