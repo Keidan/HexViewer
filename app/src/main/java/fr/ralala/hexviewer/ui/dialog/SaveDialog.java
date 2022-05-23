@@ -52,8 +52,8 @@ public class SaveDialog {
     builder.setCancelable(false)
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(mTitle)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        .setPositiveButton(android.R.string.ok, null)
+        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
         });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_save, null));

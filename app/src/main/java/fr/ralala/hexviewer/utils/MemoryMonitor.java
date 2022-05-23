@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.utils;
 
 import android.os.Handler;
+import android.os.Looper;
 
 /**
  * ******************************************************************************
@@ -40,7 +41,7 @@ public class MemoryMonitor implements Runnable {
     stop();
     mMemoryListener = memoryListener;
     mAutoStop = autoStop;
-    mMemoryHandler = new Handler();
+    mMemoryHandler = new Handler(Looper.getMainLooper());
     run();
   }
 

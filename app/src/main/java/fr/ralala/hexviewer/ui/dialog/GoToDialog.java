@@ -69,8 +69,8 @@ public class GoToDialog implements View.OnClickListener {
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
     builder.setCancelable(true)
         .setTitle(R.string.action_go_to_address)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        .setPositiveButton(android.R.string.ok, null)
+        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
         });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));

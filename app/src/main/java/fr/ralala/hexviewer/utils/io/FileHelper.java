@@ -206,7 +206,9 @@ public class FileHelper {
     if (uri.getScheme().equals("content")) {
       try (Cursor cursor = ApplicationCtx.getInstance().getContentResolver().query(uri, null, null, null, null)) {
         if (cursor != null && cursor.moveToFirst()) {
-          result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+          int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+          if(index >= 0)
+            result = cursor.getString(index);
         }
       } catch (Exception e) {
         Log.e(FileHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);

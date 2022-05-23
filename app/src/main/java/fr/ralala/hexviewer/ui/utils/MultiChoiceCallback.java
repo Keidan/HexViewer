@@ -204,7 +204,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
         selected.get(0), selected.size(),
         mActivity.getFileData().getShiftOffset(), mAdapter.getCurrentLine(selected.get(0)));
     // Close CAB
-    new Handler().postDelayed(mode::finish, 500);
+    new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 500);
     return true;
   }
 

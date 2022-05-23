@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -30,10 +31,6 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat {
-  protected static final int MIN_ABBREVIATE_PORTRAIT = 1;
-  protected static final int MAX_ABBREVIATE_PORTRAIT = 25;
-  protected static final int MIN_ABBREVIATE_LANDSCAPE = 4;
-  protected static final int MAX_ABBREVIATE_LANDSCAPE = 100;
   protected static final int MIN_HEX_ROW_HEIGHT = 10;
   protected static final int MAX_HEX_ROW_HEIGHT = 1000;
   protected static final int MIN_HEX_FONT_SIZE = 1;
@@ -83,8 +80,8 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
     builder.setCancelable(false)
         .setTitle(title)
-        .setPositiveButton(android.R.string.yes, null)
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        .setPositiveButton(android.R.string.ok, null)
+        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
         });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_pref_input, null));
@@ -114,7 +111,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
       }
     }
     final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
       if (et != null && validInput(et, defaultValue, minValue, maxValue, iv, decimal)) {
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);

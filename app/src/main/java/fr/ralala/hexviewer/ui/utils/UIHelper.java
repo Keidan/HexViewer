@@ -49,13 +49,19 @@ public class UIHelper {
   /**
    * Hides the soft keyboard.
    *
-   * @param c The Android context.
+   * @param activity The Android activity.
    */
-  public static void hideKeyboard(final Context c) {
+  public static void hideKeyboard(final Activity activity) {
     /* hide keyboard */
-    InputMethodManager imm = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
+    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
     if (imm.isAcceptingText()) {
-      imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+      //Find the currently focused view, so we can grab the correct window token from it.
+      View view = activity.getCurrentFocus();
+      //If no view currently has focus, create a new one, just so we can grab a window token from it
+      if (view == null) {
+        view = new View(activity);
+      }
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
   }
 
@@ -160,7 +166,7 @@ public class UIHelper {
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(title)
         .setMessage(message)
-        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> dialog.dismiss()).show();
+        .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> dialog.dismiss()).show();
   }
 
   /**
@@ -269,10 +275,10 @@ public class UIHelper {
         .setIcon(R.mipmap.ic_launcher)
         .setTitle(title)
         .setMessage(message)
-        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+        .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {
           if (yes != null) yes.onClick(null);
         })
-        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
         }).show();
   }
 
