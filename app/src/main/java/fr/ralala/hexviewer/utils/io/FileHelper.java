@@ -233,15 +233,20 @@ public class FileHelper {
   public static Uri getParentUri(final Uri uri) {
     final String filename = getFileName(uri);
     final String encoded = uri.getEncodedPath();
-    String parent = encoded.substring(0, encoded.length() - filename.length());
-    if (parent.endsWith("%2F"))
-      parent = parent.substring(0, parent.length() - 3);
+    final int length = encoded.length() - filename.length();
     String path;
-    final String documentPrimary = "/document/primary%3A";
-    if (parent.startsWith(documentPrimary))
-      path = "/tree/primary%3A" + parent.substring(documentPrimary.length());
-    else
-      path = parent;
+    if(length > 0 && length < encoded.length()) {
+      String parent = encoded.substring(0, encoded.length() - filename.length());
+      if (parent.endsWith("%2F"))
+        parent = parent.substring(0, parent.length() - 3);
+      final String documentPrimary = "/document/primary%3A";
+      if (parent.startsWith(documentPrimary))
+        path = "/tree/primary%3A" + parent.substring(documentPrimary.length());
+      else
+        path = parent;
+    } else {
+      path = encoded;
+    }
     return Uri.parse(uri.getScheme() + "://" + uri.getHost() + path);
   }
 }
