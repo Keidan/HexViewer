@@ -201,10 +201,11 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       if (mApp.isLineNumber()) {
         final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
         final String s = String.format("%0" + maxLength + "X", getCurrentLine(fd.getIndex()));
-        final @ColorInt int color = ContextCompat.getColor(getContext(),
-            R.color.colorLineNumbers);
+        final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
+        final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
+            isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
         holder.lineNumbers.setText(s);
-        holder.lineNumbers.setTextColor(color);
+        holder.lineNumbers.setTextColor(colorLine);
         applyUserConfig(holder.lineNumbers);
         holder.lineNumbers.setVisibility(View.VISIBLE);
 
@@ -212,7 +213,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
           mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
           mTitle.titleContent.setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
               R.string.title_content : R.string.title_content8));
-          mTitle.titleContent.setTextColor(color);
+          mTitle.titleContent.setTextColor(colorTitle);
         }
         applyUserConfig(mTitle.titleContent);
         applyUserConfig(mTitle.titleLineNumbers);
@@ -222,7 +223,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       }
       applyUpdated(holder.content, fd);
       holder.content.setTextColor(ContextCompat.getColor(getContext(),
-          fd.isUpdated() ? R.color.colorTextUpdated : R.color.textColor));
+          fd.isUpdated() ? R.color.colorTextUpdated : isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor));
       applyUserConfig(holder.content);
       v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
     }
