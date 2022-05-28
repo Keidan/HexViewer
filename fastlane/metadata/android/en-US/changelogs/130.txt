@@ -1,0 +1,6 @@
+* Android 12 support
+* Russian text update, thanks to AHOHNMYC.
+* The code no longer uses deprecated APIs.
+* Fix an error on Android 12 when opening a file.
+* Color harmonization.
+* Fix crash when searching a word from the hexadecimal part in a plain text display.
