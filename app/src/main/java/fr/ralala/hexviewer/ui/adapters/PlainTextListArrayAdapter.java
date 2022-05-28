@@ -102,10 +102,11 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
     if (v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
       LineEntry le = getItem(position);
-
-      holder.setText(ignoreNonDisplayedChar(le.getPlain()));
-      holder.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
-      applyUserConfig(holder);
+      if(le != null) {
+        holder.setText(ignoreNonDisplayedChar(le.getPlain()));
+        holder.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
+        applyUserConfig(holder);
+      }
     }
   }
 }

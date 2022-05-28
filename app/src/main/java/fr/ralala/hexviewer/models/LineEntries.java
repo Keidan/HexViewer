@@ -154,8 +154,11 @@ public class LineEntries {
    * @return This value may be null.
    */
   public LineEntry getItem(final int position) {
-    if (mFilteredList != null)
-      return mEntryList.get(mFilteredList.get(position));
+    if (mFilteredList != null && mFilteredList.size() > position) {
+      final int pos = mFilteredList.get(position);
+      if(mEntryList.size() > pos)
+        return mEntryList.get(pos);
+    }
     return null;
   }
 

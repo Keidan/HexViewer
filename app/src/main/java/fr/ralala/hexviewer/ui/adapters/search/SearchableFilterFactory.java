@@ -195,6 +195,8 @@ public class SearchableFilterFactory {
    */
   private void evaluateResult(final int shiftOffset, int i, SearchResult sr,
                               final String query, final Set<Integer> tempList) {
+    if(sr.isHexPart() && !sr.isFromHexView())
+      return;
     if (sr.getIndexes() != null) {
       for (Integer idx : sr.getIndexes()) {
         int index = idx;
