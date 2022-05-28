@@ -3,7 +3,7 @@
   <color name="colorPrimary">#FF212121</color>
   <color name="colorPrimaryDark">#FF000000</color>
   <color name="navigationBarColor">#FF000000</color>
-  <color name="colorAccent">#FF0099CC</color>
+  <color name="colorAccent">#FFFFC107</color>
   <color name="textColorPrimary">#FFFFFFFF</color>
   <color name="textColorSecondary">#FFC5C5C5</color>
   <color name="actionMenuTextColor">#FFFFFFFF</color>
@@ -15,7 +15,7 @@
   <color name="textColorDisabled">#FF9E9E9E</color>
   <color name="textColorPrimaryDisabled">#FF9E9E9E</color>
   <color name="textColorSecondaryDisabled">#FF919191</color>
-  <color name="colorAccentDisabled">#FF76A6B6</color>
+  <color name="colorAccentDisabled">#FF816205</color>
   <color name="colorResultError">#FFD34248</color>
   <color name="colorResultWarning">#FFFF9800</color>
   <color name="colorTextUpdated">#FFD34248</color>
