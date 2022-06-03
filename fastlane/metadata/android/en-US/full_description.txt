@@ -24,6 +24,7 @@ Translations:
 * German: @iNtEgraIR2021, (+DeepL)
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
+* Portuguese (Brazil): @Bardock88
 * Russian: @OmlineEditor, @AHOHNMYC
 * Spanish: @sguinetti, (+DeepL)
 * Turkish: @ersen0
@@ -36,6 +37,7 @@ Note: In the settings, the list of languages is sorted as follows:
     * fr-FR: French
     * ja-JP: Japanese
     * nb-NO: Norwegian Bokmål
+    * pt-BR: Portuguese (Brazil)
     * ru-RU: Russian
     * tr-TR: Turkish
     * zh-CN: Chinese
