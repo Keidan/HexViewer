@@ -70,7 +70,7 @@ Note: In the settings, the list of languages is sorted as follows:
 
 The current status of the translations is as follows:
 
-[![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/multi-auto.svg)][weblate]
+[![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/strings/multi-auto.svg)][weblate]
 
 *   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/)
 *   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
