@@ -63,6 +63,7 @@ Note: In the settings, the list of languages is sorted as follows:
     * fr-FR: French
     * ja-JP: Japanese
     * nb-NO: Norwegian Bokmål
+    * pt-BR: Portuguese (Brazil)
     * ru-RU: Russian
     * tr-TR: Turkish
     * zh-CN: Chinese
@@ -78,6 +79,7 @@ The current status of the translations is as follows:
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC)
+*   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
 
