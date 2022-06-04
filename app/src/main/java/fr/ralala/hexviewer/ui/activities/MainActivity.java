@@ -144,24 +144,31 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     } else {
       if (intent.getData() != null) {
         closeOrphanDialog();
-        Uri uri = getIntent().getData();
-        if (uri != null) {
-          boolean addRecent;
-          if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            addRecent = false;
-          } else
-            addRecent = FileHelper.takeUriPermissions(this, uri, false);
-          FileData fd = new FileData(this, uri, true);
-          mApp.setSequential(true);
-          final Runnable r = () -> mLauncherOpen.processFileOpen(fd, null, addRecent);
-          if (mUnDoRedo.isChanged()) {// a save operation is pending?
-            UIHelper.confirmFileChanged(this, mFileData, r,
-                () -> new TaskSave(this, this).execute(
-                    new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
-          } else {
-            r.run();
-          }
-        }
+        processIntentUri(getIntent().getData());
+      }
+    }
+  }
+
+  /**
+   * Processes the intent Uri.
+   * @param uri Uri
+   */
+  private void processIntentUri(final Uri uri) {
+    if (uri != null) {
+      boolean addRecent;
+      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+        addRecent = false;
+      } else
+        addRecent = FileHelper.takeUriPermissions(this, uri, false);
+      FileData fd = new FileData(this, uri, true);
+      mApp.setSequential(true);
+      final Runnable r = () -> mLauncherOpen.processFileOpen(fd, null, addRecent);
+      if (mUnDoRedo.isChanged()) {// a save operation is pending?
+        UIHelper.confirmFileChanged(this, mFileData, r,
+            () -> new TaskSave(this, this).execute(
+                new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+      } else {
+        r.run();
       }
     }
   }
@@ -219,10 +226,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   public void onSaveResult(FileData fd, boolean success, final Runnable userRunnable) {
     if (success) {
       mUnDoRedo.refreshChange();
-      if (mFileData.isOpenFromAppIntent()) {
-        if (mPopup != null)
-          mPopup.setSaveMenuEnable(true);
-      }
+      if (mFileData.isOpenFromAppIntent() && mPopup != null)
+        mPopup.setSaveMenuEnable(true);
       mFileData = fd;
       mFileData.clearOpenFromAppIntent();
       refreshTitle();

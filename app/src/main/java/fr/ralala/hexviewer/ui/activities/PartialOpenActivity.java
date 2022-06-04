@@ -124,7 +124,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
+    super.attachBaseContext(((ApplicationCtx) base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -256,20 +256,18 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       setResult(RESULT_CANCELED);
       finish();
       return true;
-    } else if (item.getItemId() == R.id.action_done) {
-      if (checkValues()) {
-        UIHelper.hideKeyboard(this);
-        Intent i = new Intent();
-        long start = getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null);
-        long end = getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null);
-        if (((ApplicationCtx)getApplicationContext()).isPartialOpenButWholeFileIsOpened() && start == 0L && end == mRealSize)
-          end = 0L;
-        i.putExtra(RESULT_START_OFFSET, start);
-        i.putExtra(RESULT_END_OFFSET, end);
-        setResult(RESULT_OK, i);
-        finish();
-        return true;
-      }
+    } else if (item.getItemId() == R.id.action_done && checkValues()) {
+      UIHelper.hideKeyboard(this);
+      Intent i = new Intent();
+      long start = getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null);
+      long end = getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null);
+      if (((ApplicationCtx) getApplicationContext()).isPartialOpenButWholeFileIsOpened() && start == 0L && end == mRealSize)
+        end = 0L;
+      i.putExtra(RESULT_START_OFFSET, start);
+      i.putExtra(RESULT_END_OFFSET, end);
+      setResult(RESULT_OK, i);
+      finish();
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }
@@ -282,14 +280,14 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     mTextSizePart.setText("0");
     if (!checkValues())
       return;
-    String s_start = Objects.requireNonNull(mTietStart.getText()).toString();
-    String s_end = Objects.requireNonNull(mTietEnd.getText()).toString();
-    long start = getValue(s_start, mTietStart);
-    long end = getValue(s_end, mTietEnd);
+    String sStart = Objects.requireNonNull(mTietStart.getText()).toString();
+    String sEnd = Objects.requireNonNull(mTietEnd.getText()).toString();
+    long start = getValue(sStart, mTietStart);
+    long end = getValue(sEnd, mTietEnd);
     long size = Math.abs(end - start);
-    String s_size = SysHelper.sizeToHuman(this, size);
-    s_size += "\n(" + Long.toHexString(size).toUpperCase() + ")";
-    mTextSizePart.setText(s_size);
+    String sSize = SysHelper.sizeToHuman(this, size);
+    sSize += "\n(" + Long.toHexString(size).toUpperCase() + ")";
+    mTextSizePart.setText(sSize);
   }
 
   /**
@@ -298,31 +296,53 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    * @return False on error.
    */
   private boolean checkValues() {
-    String s_start = mTietStart == null || mTietStart.getText() == null ? "" : mTietStart.getText().toString();
-    String s_end = mTietEnd == null || mTietEnd.getText() == null ? "" : mTietEnd.getText().toString();
-    boolean valid = checkEmpty(s_start, s_end);
+    String sStart = mTietStart == null || mTietStart.getText() == null ? "" : mTietStart.getText().toString();
+    String sEnd = mTietEnd == null || mTietEnd.getText() == null ? "" : mTietEnd.getText().toString();
+    boolean valid = checkEmpty(sStart, sEnd);
     if (valid) {
-      long start = getValue(s_start, null);
-      long end = getValue(s_end, null);
+      long start = getValue(sStart, null);
+      long end = getValue(sEnd, null);
       int ret = checkForSize(start, end);
       if (ret == 0) {
-        if (start == -1 || end == -1) {
-          valid = false;
-        } else if (end <= start) {
-          valid = false;
-          setErrorMessage(mTilStart, R.string.error_less_than, end);
-          setErrorMessage(mTilEnd, R.string.error_less_than, start);
-        } else {
-          setErrorMessage(mTilStart, null);
-          setErrorMessage(mTilEnd, null);
-        }
+        valid = checkValuesValidSize(start, end);
       } else {
         valid = false;
-        if ((ret & ERROR_START) != ERROR_START)
-          setErrorMessage(mTilStart, null);
-        if ((ret & ERROR_END) != ERROR_END)
-          setErrorMessage(mTilEnd, null);
+        checkValuesInValidSize(ret);
       }
+    }
+    return valid;
+  }
+
+  /**
+   * Checks the values (if checkForSize returns ERROR_START and/or ERROR_END).
+   *
+   * @param ret int
+   */
+  private void checkValuesInValidSize(int ret) {
+    if ((ret & ERROR_START) != ERROR_START)
+      setErrorMessage(mTilStart, null);
+    if ((ret & ERROR_END) != ERROR_END)
+      setErrorMessage(mTilEnd, null);
+  }
+
+  /**
+   * Checks the values (if checkForSize returns 0).
+   *
+   * @param start long
+   * @param end   long
+   * @return false on error.
+   */
+  private boolean checkValuesValidSize(long start, long end) {
+    boolean valid = true;
+    if (start == -1 || end == -1) {
+      valid = false;
+    } else if (end <= start) {
+      valid = false;
+      setErrorMessage(mTilStart, R.string.error_less_than, end);
+      setErrorMessage(mTilEnd, R.string.error_less_than, start);
+    } else {
+      setErrorMessage(mTilStart, null);
+      setErrorMessage(mTilEnd, null);
     }
     return valid;
   }
@@ -330,12 +350,12 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   /**
    * Gets the value according to the unit.
    *
-   * @param s_value The string value.
-   * @param edit    The EditText.
+   * @param sValue The string value.
+   * @param edit   The EditText.
    * @return The long value.
    */
-  private long getValue(String s_value, EditText edit) {
-    String val = s_value;
+  private long getValue(String sValue, EditText edit) {
+    String val = sValue;
     if (mSpInputType.getSelectedItemId() == IDX_HEXADECIMAL) {
       try {
         val = String.valueOf(Long.parseLong(val, 16));
@@ -343,7 +363,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
         return -1;
       }
     } else
-      val = s_value;
+      val = sValue;
     return convert(val, edit);
   }
 
@@ -354,7 +374,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    * @param edit The EditText.
    * @return The long value.
    */
-  private long convert(String val, EditText edit) {
+  private long convert(final String val, final EditText edit) {
     if (mSpUnit.getSelectedItemId() == IDX_K_BYTES) {
       try {
         return (long) (Float.parseFloat(val) * SysHelper.SIZE_1KB);
@@ -374,27 +394,38 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
         return -1;
       }
     } else {
-      try {
-        String copy = val;
-        int idx;
-        if ((idx = copy.indexOf('.')) != -1) {
-          copy = copy.substring(0, idx);
-          if (edit != null) {
-            edit.setText(copy);
-            edit.setSelection(copy.length());
-          }
+      return convertBytes(val, edit);
+    }
+  }
+
+  /**
+   * Convert the value in byte.
+   *
+   * @param val  The string value.
+   * @param edit The EditText.
+   * @return The long value.
+   */
+  private long convertBytes(final String val, final EditText edit) {
+    try {
+      String copy = val;
+      int idx;
+      if ((idx = copy.indexOf('.')) != -1) {
+        copy = copy.substring(0, idx);
+        if (edit != null) {
+          edit.setText(copy);
+          edit.setSelection(copy.length());
         }
-        if ((idx = copy.indexOf(',')) != -1) {
-          copy = copy.substring(0, idx);
-          if (edit != null) {
-            edit.setText(copy);
-            edit.setSelection(copy.length());
-          }
-        }
-        return Long.parseLong(copy);
-      } catch (Exception e) {
-        return -1;
       }
+      if ((idx = copy.indexOf(',')) != -1) {
+        copy = copy.substring(0, idx);
+        if (edit != null) {
+          edit.setText(copy);
+          edit.setSelection(copy.length());
+        }
+      }
+      return Long.parseLong(copy);
+    } catch (Exception e) {
+      return -1;
     }
   }
 
@@ -566,7 +597,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    *
    * @param start Long value for the start field.
    * @param end   Long value for the end field.
-   * @return boolean
+   * @return 0 on success, ERROR_START or ERROR_END otherwise
    */
   private int checkForSize(long start, long end) {
     int valid = 0;
