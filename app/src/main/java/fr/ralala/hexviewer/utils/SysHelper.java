@@ -39,6 +39,8 @@ public class SysHelper {
   public static final int MAX_BY_ROW_8 = 8;
   public static final int MAX_BYTES_ROW_16 = 48;
   public static final int MAX_BYTES_ROW_8 = MAX_BYTES_ROW_16 / 2;
+  private static final String FORMAT_INT = "%d %s%s";
+  private static final String FORMAT_STR = "%s %s%s";
 
   /**
    * Sorts keys.
@@ -112,16 +114,16 @@ public class SysHelper {
     String sf;
     String hex = (!addHex ? "" : "(0x" + Long.toHexString((long) f).toUpperCase() + ") ");
     if (f < 1000) {
-      sf = String.format(Locale.US, "%d %s%s", (int) f,
+      sf = String.format(Locale.US, FORMAT_INT, (int) f,
           hex, !addUnit ? "" : ctx.getString(R.string.unit_byte));
     } else if (f < 1000000) {
-      sf = String.format(Locale.US, "%s %s%s", df.format((f / SIZE_1KB)),
+      sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1KB)),
           hex, !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
     } else if (f < 1000000000) {
-      sf = String.format(Locale.US, "%s %s%s", df.format((f / SIZE_1MB)),
+      sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1MB)),
           hex, !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
     } else {
-      sf = String.format(Locale.US, "%s %s%s", df.format((f / SIZE_1GB)),
+      sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1GB)),
           hex, !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
     }
     return sf;

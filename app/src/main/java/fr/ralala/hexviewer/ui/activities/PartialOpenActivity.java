@@ -474,21 +474,25 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       changeInputType();
     } else if (parent.equals(mSpInputType)) {
       if (!mIgnoreInputEvent) {
-        if (mTietStart != null) {
-          String s = convertValueTo(Objects.requireNonNull(mTietStart.getText()).toString());
-          if (!s.isEmpty())
-            mTietStart.setText(s);
-        }
-        if (mTietEnd != null) {
-          String s = convertValueTo(Objects.requireNonNull(mTietEnd.getText()).toString());
-          if (!s.isEmpty())
-            mTietEnd.setText(s);
-        }
+        updateText(mTietStart);
+        updateText(mTietEnd);
         mCurrentIsHex = !mCurrentIsHex;
       } else
         mIgnoreInputEvent = false;
       evaluateSize();
       changeInputType();
+    }
+  }
+
+  /**
+   * Sets the text according to the converted value.
+   * @param output TextInputEditText
+   */
+  private void updateText(TextInputEditText output) {
+    if (output != null) {
+      String s = convertValueTo(Objects.requireNonNull(output.getText()).toString());
+      if (!s.isEmpty())
+        output.setText(s);
     }
   }
 

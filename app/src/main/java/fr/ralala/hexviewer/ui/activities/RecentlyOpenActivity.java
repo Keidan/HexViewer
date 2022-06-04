@@ -19,9 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
+import fr.ralala.hexviewer.models.UriData;
 import fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter;
-
-import static fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter.UriData;
 
 /**
  * ******************************************************************************
@@ -125,11 +124,11 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
   @Override
   public void onClick(@NonNull UriData ud) {
     Intent i = new Intent();
-    i.setData(ud.fd.getUri());
-    i.putExtra(RESULT_START_OFFSET, ud.fd.getStartOffset());
-    i.putExtra(RESULT_END_OFFSET, ud.fd.getEndOffset());
-    if(ud.sizeChanged)
-      i.putExtra(RESULT_OLD_TO_STRING, ud.fd.toString());
+    i.setData(ud.getFd().getUri());
+    i.putExtra(RESULT_START_OFFSET, ud.getFd().getStartOffset());
+    i.putExtra(RESULT_END_OFFSET, ud.getFd().getEndOffset());
+    if(ud.isSizeChanged())
+      i.putExtra(RESULT_OLD_TO_STRING, ud.getFd().toString());
     setResult(RESULT_OK, i);
     finish();
   }
@@ -141,7 +140,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
    */
   @Override
   public void onDelete(@NonNull UriData ud) {
-    mApp.getRecentlyOpened().remove(ud.fd);
+    mApp.getRecentlyOpened().remove(ud.getFd());
     if (mApp.getRecentlyOpened().list().isEmpty()) {
       Intent i = new Intent();
       i.setData(null);

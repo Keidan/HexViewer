@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.ListSettings;
+import fr.ralala.hexviewer.ui.adapters.holders.HolderHex;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -153,7 +154,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
    */
   protected void fillView(final @NonNull View v, final int position) {
     if (v.getTag() != null) {
-      final HexTextArrayAdapter.Holder holder = (HexTextArrayAdapter.Holder) v.getTag();
+      final HolderHex holder = (HolderHex) v.getTag();
       String string = mEntryList.get(position);
       if (mPreviousSize != mEntryList.size()) {
         mPreviousSize = mEntryList.size();
@@ -164,15 +165,15 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
 
       final @ColorInt int color = ContextCompat.getColor(getContext(),
           R.color.colorLineNumbers);
-      holder.lineNumbers.setText(s);
-      holder.lineNumbers.setTextColor(color);
-      holder.lineNumbers.setVisibility(View.VISIBLE);
+      holder.getLineNumbers().setText(s);
+      holder.getLineNumbers().setTextColor(color);
+      holder.getLineNumbers().setVisibility(View.VISIBLE);
 
-      holder.content.setText(string);
+      holder.getContent().setText(string);
       applyUserConfig(mTitle.titleContent);
       applyUserConfig(mTitle.titleLineNumbers);
-      applyUserConfig(holder.lineNumbers);
-      applyUserConfig(holder.content);
+      applyUserConfig(holder.getLineNumbers());
+      applyUserConfig(holder.getContent());
     }
   }
 
@@ -189,11 +190,11 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
         v = inflater.inflate(ID, null);
-        HexTextArrayAdapter.Holder holder = new HexTextArrayAdapter.Holder();
-        holder.content = v.findViewById(R.id.content);
-        holder.lineNumbers = v.findViewById(R.id.lineNumbers);
-        holder.content.setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_font_size));
-        holder.lineNumbers.setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_font_size));
+        HolderHex holder = new HolderHex();
+        holder.setContent(v.findViewById(R.id.content));
+        holder.setLineNumbers(v.findViewById(R.id.lineNumbers));
+        holder.getContent().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_font_size));
+        holder.getLineNumbers().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_font_size));
         v.setTag(holder);
       }
     }

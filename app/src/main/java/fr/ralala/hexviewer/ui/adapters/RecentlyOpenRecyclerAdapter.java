@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
+import fr.ralala.hexviewer.models.UriData;
+import fr.ralala.hexviewer.ui.adapters.holders.HolderRecently;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -31,7 +33,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOpenRecyclerAdapter.ViewHolder> {
+public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRecently> {
   private static final int ID = R.layout.recyclerview_recently_open;
   private final List<UriData> mItems;
   private final OnEventListener mListener;
@@ -79,9 +81,9 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
    */
   @Override
   public @NonNull
-  ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+  HolderRecently onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
     View view = LayoutInflater.from(viewGroup.getContext()).inflate(ID, viewGroup, false);
-    return new ViewHolder(view);
+    return new HolderRecently(view);
   }
 
   /**
@@ -91,7 +93,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
    * @param i          The position.
    */
   @Override
-  public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+  public void onBindViewHolder(@NonNull HolderRecently viewHolder, int i) {
     if (mItems.isEmpty()) return;
     int idx = i;
     if (idx > mItems.size())
@@ -99,22 +101,22 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
     final UriData ud = mItems.get(idx);
     if (ud != null) {
       // Set item views based on the views and data model
-      TextView name = viewHolder.name;
-      TextView index = viewHolder.index;
-      TextView detail = viewHolder.detail;
+      TextView name = viewHolder.getName();
+      TextView index = viewHolder.getIndex();
+      TextView detail = viewHolder.getDetail();
       if (mListener != null) {
         final View.OnClickListener l = (v) -> {
-          if (ud.clickable)
+          if (ud.isClickable())
             mListener.onClick(ud);
         };
         name.setOnClickListener(l);
         index.setOnClickListener(l);
         detail.setOnClickListener(l);
       }
-      index.setText(String.format("%0" + (String.valueOf(ud.maxLength).length() + 1) + "d - ", ud.index));
-      name.setText(ud.fd.getName());
-      detail.setText(ud.detail);
-      detail.setTextColor(ContextCompat.getColor(ud.ctx, ud.error ? R.color.colorResultError : R.color.textColor));
+      index.setText(String.format("%0" + (String.valueOf(ud.getMaxLength()).length() + 1) + "d - ", ud.getIndex()));
+      name.setText(ud.getFd().getName());
+      detail.setText(ud.getDetail());
+      detail.setTextColor(ContextCompat.getColor(ud.getCtx(), ud.isError() ? R.color.colorResultError : R.color.textColor));
     }
   }
 
@@ -126,72 +128,6 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<RecentlyOp
   @Override
   public int getItemCount() {
     return mItems.size();
-  }
-
-  public static class UriData {
-    public final Context ctx;
-    public final FileData fd;
-    public final int index;
-    public final int maxLength;
-    public String detail;
-    public boolean error;
-    public boolean clickable;
-    public boolean sizeChanged;
-
-    public UriData(final Context ctx, int index, int maxLength, FileData fd) {
-      this.ctx = ctx;
-      this.maxLength = maxLength;
-      this.index = index;
-      this.fd = fd;
-      sizeChanged = false;
-      String labelSize = ctx.getString(R.string.size) + ": ";
-      String labelStart = ctx.getString(R.string.start_offset) + " ";
-      String labelEnd = ctx.getString(R.string.end_offset) + " ";
-      if (fd.isNotFound()) {
-        this.detail = ctx.getString(R.string.error_no_file);
-        error = true;
-        clickable = false;
-      } else if (fd.isAccessError()) {
-        this.detail = ctx.getString(R.string.error_no_file_access);
-        error = true;
-        clickable = false;
-      } else {
-        long size = fd.getSize();
-        String detail;
-        if (fd.isSequential()) {
-          if(fd.getEndOffset() > fd.getRealSize()) {
-            this.detail = ctx.getString(R.string.error_size_changed);
-            error = true;
-            clickable = true;
-            sizeChanged = true;
-            return;
-          }
-          else {
-            detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset(), true, true) + ", ";
-            detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset(), true, true) + ", ";
-            detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));
-          }
-        } else
-          detail = labelSize + SysHelper.sizeToHuman(ctx, size);
-        this.detail = detail;
-        error = false;
-        clickable = true;
-      }
-    }
-  }
-
-
-  static class ViewHolder extends RecyclerView.ViewHolder {
-    TextView index;
-    TextView detail;
-    TextView name;
-
-    ViewHolder(View view) {
-      super(view);
-      index = view.findViewById(R.id.index);
-      detail = view.findViewById(R.id.detail);
-      name = view.findViewById(R.id.name);
-    }
   }
 
 

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -185,7 +186,6 @@ public class SearchableFilterFactory {
       Log.e(getClass().getSimpleName(), "Close exception: " + e.getMessage(), e);
     }
   }
-
   /**
    * Evaluates the result of the research.
    *
@@ -197,42 +197,55 @@ public class SearchableFilterFactory {
    */
   private void evaluateResult(final int shiftOffset, int i, SearchResult sr,
                               final String query, final Set<Integer> tempList) {
-    if(sr.isHexPart() && !sr.isFromHexView())
+    if (sr.getIndexes() == null || (sr.isHexPart() && !sr.isFromHexView()))
       return;
-    if (sr.getIndexes() != null) {
-      for (Integer idx : sr.getIndexes()) {
-        int index = idx;
-        int nbPerLines;
-        if (sr.isHexPart()) {
-          final int cfgNbPerLine = mApp.getNbBytesPerLine();
-          if (sr.isWithSpaces()) {
-            nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8;
-            index += shiftOffset * 3;
-          } else {
-            nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 * 2 : SysHelper.MAX_BY_ROW_8 * 2;
-            index += shiftOffset * 2;
-          }
-        } else {
-          if (!sr.isFromHexView())
-            nbPerLines = UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1;
-          else {
-            final int cfgNbPerLine = mApp.getNbBytesPerLine();
-            nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 : SysHelper.MAX_BY_ROW_8;
-            index += shiftOffset;
-          }
-        }
-        final int full = index + query.length();
-        int start = i + (index / nbPerLines);
-        int end = i + (full / nbPerLines);
-        if (full % nbPerLines == 0)
-          end--;
-        if (start == end) {
-          tempList.add((index < nbPerLines) ? i : start);
-        } else {
-          for (int j = start; j <= end; j++)
-            tempList.add(j);
-        }
-      }
+    for (Integer idx : sr.getIndexes()) {
+      AtomicInteger index = new AtomicInteger(idx);
+      AtomicInteger nbPerLines = new AtomicInteger();
+      if (sr.isHexPart())
+        prepareEvaluateResultHexPart(shiftOffset, sr, nbPerLines, index);
+      else
+        prepareEvaluateResultTextPart(shiftOffset, sr, nbPerLines, index);
+
+      finalizeEvaluateResult(i, index.get(), nbPerLines.get(), query, tempList);
+    }
+  }
+
+  private void prepareEvaluateResultHexPart(final int shiftOffset, final SearchResult sr,
+                                            final AtomicInteger nbPerLines, final AtomicInteger index) {
+    final int cfgNbPerLine = mApp.getNbBytesPerLine();
+    if (sr.isWithSpaces()) {
+      nbPerLines.set(cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8);
+      index.set(index.get() + (shiftOffset * 3));
+    } else {
+      nbPerLines.set(cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 * 2 : SysHelper.MAX_BY_ROW_8 * 2);
+      index.set(index.get() + (shiftOffset * 2));
+    }
+  }
+
+  private void prepareEvaluateResultTextPart(final int shiftOffset, final SearchResult sr,
+                                             final AtomicInteger nbPerLines, final AtomicInteger index) {
+    if (!sr.isFromHexView())
+      nbPerLines.set(UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1);
+    else {
+      final int cfgNbPerLine = mApp.getNbBytesPerLine();
+      nbPerLines.set(cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 : SysHelper.MAX_BY_ROW_8);
+      index.set(index.get() + shiftOffset);
+    }
+  }
+
+  private void finalizeEvaluateResult(final int i, final int index, final int nbPerLines,
+                                      final String query, final Set<Integer> tempList) {
+    final int full = index + query.length();
+    int start = i + (index / nbPerLines);
+    int end = i + (full / nbPerLines);
+    if (full % nbPerLines == 0)
+      end--;
+    if (start == end) {
+      tempList.add((index < nbPerLines) ? i : start);
+    } else {
+      for (int j = start; j <= end; j++)
+        tempList.add(j);
     }
   }
 }

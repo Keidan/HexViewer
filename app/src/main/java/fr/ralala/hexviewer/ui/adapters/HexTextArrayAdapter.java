@@ -23,6 +23,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
+import fr.ralala.hexviewer.ui.adapters.holders.HolderHex;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -63,10 +64,6 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
 
   public void setStartOffset(final long startOffset) {
     mStartOffset = startOffset;
-  }
-
-  public long getStartOffset() {
-    return mStartOffset;
   }
 
   /**
@@ -137,9 +134,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
         v = inflater.inflate(ID, null);
-        Holder holder = new Holder();
-        holder.content = v.findViewById(R.id.content);
-        holder.lineNumbers = v.findViewById(R.id.lineNumbers);
+        HolderHex holder = new HolderHex();
+        holder.setContent(v.findViewById(R.id.content));
+        holder.setLineNumbers(v.findViewById(R.id.lineNumbers));
         v.setTag(holder);
       }
     }
@@ -195,43 +192,52 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   @Override
   protected void fillView(final @NonNull View v, final int position) {
     if (v.getTag() != null) {
-      final Holder holder = (Holder) v.getTag();
+      final HolderHex holder = (HolderHex) v.getTag();
       LineEntry fd = getItem(position);
-
-      if (mApp.isLineNumber()) {
-        final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
-        final String s = String.format("%0" + maxLength + "X", getCurrentLine(fd.getIndex()));
-        final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
-        final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
-            isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
-        holder.lineNumbers.setText(s);
-        holder.lineNumbers.setTextColor(colorLine);
-        applyUserConfig(holder.lineNumbers);
-        holder.lineNumbers.setVisibility(View.VISIBLE);
-
-        if (position == 0) {
-          mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
-          mTitle.titleContent.setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
-              R.string.title_content : R.string.title_content8));
-          mTitle.titleContent.setTextColor(colorTitle);
-        }
-        applyUserConfig(mTitle.titleContent);
-        applyUserConfig(mTitle.titleLineNumbers);
-
-      } else {
-        holder.lineNumbers.setVisibility(View.GONE);
-      }
-      applyUpdated(holder.content, fd);
-      holder.content.setTextColor(ContextCompat.getColor(getContext(),
-          fd.isUpdated() ? R.color.colorTextUpdated : isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor));
-      applyUserConfig(holder.content);
-      v.setBackgroundColor(ContextCompat.getColor(getContext(), isSelected(position) ? R.color.colorAccent : R.color.windowBackground));
+      updateLineNumbers(fd, holder, position);
+      applyUpdated(holder.getContent(), fd);
+      holder.getContent().setTextColor(ContextCompat.getColor(getContext(), getContentTextColor(fd, position)));
+      applyUserConfig(holder.getContent());
+      v.setBackgroundColor(ContextCompat.getColor(getContext(), getContentBackgroundColor(position)));
     }
   }
+  private int getContentTextColor(final LineEntry fd, final int position) {
+    return fd.isUpdated() ? R.color.colorTextUpdated : isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor;
+  }
+  private int getContentBackgroundColor(final int position) {
+    return isSelected(position) ? R.color.colorAccent : R.color.windowBackground;
+  }
 
-  public static class Holder {
-    public TextView lineNumbers;
-    public TextView content;
+  /**
+   * Update of the line numbers part.
+   * @param fd LineEntry
+   * @param holder Holder
+   * @param position position
+   */
+  private void updateLineNumbers(final LineEntry fd, final HolderHex holder, final int position) {
+    if (mApp.isLineNumber()) {
+      final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
+      final String s = String.format("%0" + maxLength + "X", getCurrentLine(fd.getIndex()));
+      final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
+      final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
+          isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
+      holder.getLineNumbers().setText(s);
+      holder.getLineNumbers().setTextColor(colorLine);
+      applyUserConfig(holder.getLineNumbers());
+      holder.getLineNumbers().setVisibility(View.VISIBLE);
+
+      if (position == 0) {
+        mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
+        mTitle.titleContent.setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
+            R.string.title_content : R.string.title_content8));
+        mTitle.titleContent.setTextColor(colorTitle);
+      }
+      applyUserConfig(mTitle.titleContent);
+      applyUserConfig(mTitle.titleLineNumbers);
+
+    } else {
+      holder.getLineNumbers().setVisibility(View.GONE);
+    }
   }
 }
 

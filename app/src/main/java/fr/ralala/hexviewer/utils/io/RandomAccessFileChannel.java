@@ -26,6 +26,7 @@ import java.nio.channels.FileChannel;
  * ******************************************************************************
  */
 public class RandomAccessFileChannel {
+  private static final String EXCEPTION_TAG = "Exception: ";
   private enum Mode {
     RO, /* read only */
     WO, /* write only */
@@ -181,12 +182,12 @@ public class RandomAccessFileChannel {
         FileChannel fch = mFileOutputStream.getChannel();
         fch.close();
       } catch (IOException ioException) {
-        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + ioException.getMessage(), ioException);
       }
       try {
         mFileOutputStream.close();
       } catch (IOException ioException) {
-        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + ioException.getMessage(), ioException);
       }
       mFileOutputStream = null;
     }
@@ -195,12 +196,12 @@ public class RandomAccessFileChannel {
         FileChannel fch = mFileInputStream.getChannel();
         fch.close();
       } catch (IOException ioException) {
-        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + ioException.getMessage(), ioException);
       }
       try {
         mFileInputStream.close();
       } catch (IOException ioException) {
-        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + ioException.getMessage(), ioException);
       }
       mFileInputStream = null;
     }
@@ -208,7 +209,7 @@ public class RandomAccessFileChannel {
       try {
         mFdInput.close();
       } catch (IOException ioException) {
-        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + ioException.getMessage(), ioException);
       }
       mFdInput = null;
     }
@@ -216,7 +217,7 @@ public class RandomAccessFileChannel {
       try {
         mFdOutput.close();
       } catch (IOException ioException) {
-        Log.e(getClass().getSimpleName(), "Exception: " + ioException.getMessage(), ioException);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + ioException.getMessage(), ioException);
       }
       mFdOutput = null;
     }
