@@ -39,6 +39,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public class GoToDialog implements View.OnClickListener {
+  private static final String EXCEPTION_TAG = "Exception: ";
   private static final Pattern HEXADECIMAL_PATTERN = Pattern.compile("\\p{XDigit}+");
   private String mPreviousGoToValueAddress = "0";
   private String mPreviousGoToValueLineHex = "0";
@@ -82,7 +83,8 @@ public class GoToDialog implements View.OnClickListener {
     mMode = mode;
     mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
         WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    String title1, title2;
+    String title1;
+    String title2;
     if (mode == Mode.ADDRESS) {
       title1 = mActivity.getString(R.string.action_go_to_address);
       title2 = mActivity.getString(R.string.hexadecimal);
@@ -217,7 +219,7 @@ public class GoToDialog implements View.OnClickListener {
   private boolean validatePosition(String text, int maxLines) {
     int position;
     int max = maxLines;
-    String s_max;
+    String sMax;
     if (mMode == Mode.ADDRESS) {
       if (!HEXADECIMAL_PATTERN.matcher(text).matches()) {
         UIHelper.shakeError(mEt, null);
@@ -229,26 +231,27 @@ public class GoToDialog implements View.OnClickListener {
       try {
         position = Integer.parseInt(text, 16) / nbBytesPerLines;
       } catch (Exception e) {
-        Log.e(getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
         position = -1;
       }
       final int maxLength = String.format("%X", max * nbBytesPerLines).length();
-      s_max = String.format("%0" + maxLength + "X", (max * nbBytesPerLines) + nbBytesPerLines - 1);
+      final String fmt = "%0" + maxLength + "X";
+      sMax = String.format(fmt, (max * nbBytesPerLines) + nbBytesPerLines - 1);
     } else {
       try {
         position = Integer.parseInt(text) - 1;
         if (position < 0)
           position = 0;
       } catch (Exception e) {
-        Log.e(getClass().getSimpleName(), "Exception: " + e.getMessage(), e);
+        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
         position = -1;
       }
-      s_max = String.valueOf(max + 1);
+      sMax = String.valueOf(max + 1);
       if (position <= max)
         max++;
     }
     if (position == -1 || position > max) {
-      String err = String.format(mActivity.getString(R.string.error_cant_exceed_xxx), s_max);
+      String err = String.format(mActivity.getString(R.string.error_cant_exceed_xxx), sMax);
       displayError(err);
       return true;
     }

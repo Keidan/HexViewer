@@ -31,6 +31,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class FileHelper {
+  private static final String EXCEPTION_TAG = "Exception: ";
 
   /**
    * Prepares the intent for the directory opening mode.
@@ -82,12 +83,12 @@ public class FileHelper {
           try {
             c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
           } catch (Exception e) {
-            Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+            Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
           }
       }
       success = true;
     } catch (Exception e) {
-      Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+      Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
     }
     return success;
   }
@@ -117,7 +118,7 @@ public class FileHelper {
             c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
           }
         } catch (Exception e) {
-          Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+          Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
         }
   }
 
@@ -160,7 +161,7 @@ public class FileHelper {
         pfd.close();
       }
     } catch (Exception e) {
-      Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage(), e);
+      Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
     }
     return exists;
   }
@@ -182,14 +183,14 @@ public class FileHelper {
         pfd.close();
       }
     } catch (Exception e) {
-      Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);
+      Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage()/*, e*/);
       size = e instanceof FileNotFoundException ? -1 : -2;
     } finally {
       if (pfd != null)
         try {
           pfd.close();
         } catch (IOException e) {
-          Log.e(SysHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);
+          Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage()/*, e*/);
         }
     }
     return size;
@@ -211,7 +212,7 @@ public class FileHelper {
             result = cursor.getString(index);
         }
       } catch (Exception e) {
-        Log.e(FileHelper.class.getSimpleName(), "Exception: " + e.getMessage()/*, e*/);
+        Log.e(FileHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage()/*, e*/);
       }
     }
     if (result == null) {

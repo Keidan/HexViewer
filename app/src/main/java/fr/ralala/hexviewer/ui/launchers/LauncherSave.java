@@ -120,12 +120,12 @@ public class LauncherSave {
             mActivity.refreshTitle();
           });
     } else {
-      DocumentFile d_file = sourceDir.createFile("application/octet-stream", filename);
-      if (d_file == null) {
+      DocumentFile dFile = sourceDir.createFile("application/octet-stream", filename);
+      if (dFile == null) {
         UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
       } else {
-        FileData fd = new FileData(mActivity, d_file.getUri(), false);
+        FileData fd = new FileData(mActivity, dFile.getUri(), false);
         mActivity.setFileData(fd);
         new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
             mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));

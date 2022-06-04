@@ -20,7 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * ******************************************************************************
  */
-public abstract class TaskRunner<Config, Param, Progress, Result> implements TaskRunnerCallback<Config, Param, Progress, Result> {
+public abstract class TaskRunner<C, P, I, R> implements TaskRunnerCallback<C, P, I, R> {
+  private static final String EXCEPTION_TAG = "Exception: ";
   private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
   private final Handler mHandler = new Handler(Looper.getMainLooper());
   protected final AtomicBoolean mCancel = new AtomicBoolean(false);
@@ -34,7 +35,7 @@ public abstract class TaskRunner<Config, Param, Progress, Result> implements Tas
    * @see #onProgressUpdate
    * @see #doInBackground
    */
-  public void publishProgress(Progress value) {
+  public void publishProgress(I value) {
     mHandler.post(() -> onProgressUpdate(value));
   }
 
@@ -56,17 +57,17 @@ public abstract class TaskRunner<Config, Param, Progress, Result> implements Tas
     return mCancel.get();
   }
 
-  public void execute(final Param param) {
-    final Config config = onPreExecute();
+  public void execute(final P param) {
+    final C config = onPreExecute();
     mExecutor.submit(() -> {
-      Result result = null;
+      R result = null;
       try {
         result = doInBackground(config, param);
       } catch (Exception e) {
-        Log.e(getClass().getName(), "Exception: " + e.getMessage(), e);
+        Log.e(getClass().getName(), EXCEPTION_TAG + e.getMessage(), e);
         onException(e);
       } finally {
-        final Result finalResult = result;
+        final R finalResult = result;
         mHandler.post(() -> onPostExecute(finalResult));
         if (!mExecutor.isShutdown())
           mExecutor.shutdown();
@@ -80,7 +81,7 @@ public abstract class TaskRunner<Config, Param, Progress, Result> implements Tas
    * @return The Config.
    */
   @Override
-  public Config onPreExecute() {
+  public C onPreExecute() {
     /* user implementation */
     return null;
   }
@@ -91,7 +92,7 @@ public abstract class TaskRunner<Config, Param, Progress, Result> implements Tas
    * @param value The value indicating progress.
    */
   @Override
-  public void onProgressUpdate(Progress value) {
+  public void onProgressUpdate(I value) {
     /* user implementation */
   }
 
@@ -101,7 +102,7 @@ public abstract class TaskRunner<Config, Param, Progress, Result> implements Tas
    * @param result The result.
    */
   @Override
-  public void onPostExecute(final Result result) {
+  public void onPostExecute(final R result) {
     /* user implementation */
   }
 

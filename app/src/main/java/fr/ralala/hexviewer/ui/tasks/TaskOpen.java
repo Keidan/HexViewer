@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +129,37 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       mListener.onOpenResult(false, true);
   }
 
+  private void processRead(final FileData fd,
+                              final List<LineEntry> list,
+                              final Result result,
+                              long totalSequential,
+                              int maxLength) throws IOException {
+    boolean first = true;
+    int reads;
+    boolean forceBreak = false;
+    /* read data */
+    ByteBuffer buffer = ByteBuffer.allocate(maxLength);
+    while (!isCancelled() && (reads = mRandomAccessFileChannel.read(buffer)) != -1) {
+      try {
+        SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
+            mApp.getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
+        first = false;
+        buffer.clear();
+        publishProgress((long) reads);
+        if (fd.isSequential()) {
+          totalSequential += reads;
+          if (totalSequential >= fd.getEndOffset())
+            forceBreak = true;
+        }
+      } catch (IllegalArgumentException iae) {
+        result.exception = iae.getMessage();
+        forceBreak = true;
+      }
+      if(forceBreak)
+        break;
+    }
+  }
+
   /**
    * Performs a computation on a background thread.
    *
@@ -152,29 +184,9 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       if (result.exception == null) {
         MemoryMonitor.forceGC(); /* force GC before */
         /* prepare buffer */
-        int reads;
         long totalSequential = fd.getStartOffset();
         evaluateShiftOffset(fd, totalSequential);
-        boolean first = true;
-        /* read data */
-        ByteBuffer buffer = ByteBuffer.allocate(maxLength);
-        while (!isCancelled() && (reads = mRandomAccessFileChannel.read(buffer)) != -1) {
-          try {
-            SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
-                mApp.getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
-            first = false;
-            buffer.clear();
-          } catch (IllegalArgumentException iae) {
-            result.exception = iae.getMessage();
-            break;
-          }
-          publishProgress((long) reads);
-          if (fd.isSequential()) {
-            totalSequential += reads;
-            if (totalSequential >= fd.getEndOffset())
-              break;
-          }
-        }
+        processRead(fd, list, result, totalSequential, maxLength);
         /* prepare result */
         if (result.exception == null) {
           result.listHex = list;

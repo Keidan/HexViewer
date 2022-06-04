@@ -215,7 +215,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   private void updateLineNumbers(final LineEntry fd, final HolderHex holder, final int position) {
     if (mApp.isLineNumber()) {
       final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
-      final String s = String.format("%0" + maxLength + "X", getCurrentLine(fd.getIndex()));
+      String fmt = "%0" + maxLength + "X";
+      final String s = String.format(fmt, getCurrentLine(fd.getIndex()));
       final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
       final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
           isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
@@ -225,7 +226,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       holder.getLineNumbers().setVisibility(View.VISIBLE);
 
       if (position == 0) {
-        final String fmt = "%" + maxLength + "s";
+        fmt = "%" + maxLength + "s";
         mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
         mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
             R.string.title_content : R.string.title_content8));
