@@ -116,7 +116,23 @@ public class LineUpdateTextWatcher implements TextWatcher {
     }
     updateHelperText(validate, validated);
   }
-
+  private void updateHelperTextNotEmpty(final String validate, final boolean validated, final String labelBytes) {
+    float nbBytesFloat = (validate.length() / 2.0f);
+    int nbBytes;
+    if(nbBytesFloat < mMaxLengthWithPartial)
+      nbBytes = (int) Math.floor(nbBytesFloat);
+    else
+      nbBytes = (int) Math.ceil(nbBytesFloat);
+    String newHelper = nbBytes + " " + labelBytes + " / " + mMaxLengthWithPartial + " " + labelBytes;
+    if(nbBytesFloat == mMaxLengthWithPartial) {
+      mLayout.setError(null);
+      mLayout.setHelperText(newHelper);
+    } else {
+      if(!validated)
+        newHelper += ": " + mApp.getString(R.string.error_invalid_value);
+      mLayout.setError(newHelper);
+    }
+  }
   private void updateHelperText(final String validate, final boolean validated) {
     if(mSequential) {
       final String labelBytes = mApp.getString(R.string.unit_bytes_full_lc);
@@ -125,21 +141,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
         String newHelper = "0 " + mApp.getString(R.string.unit_byte_full) + " / " + mMaxLengthWithPartial + " " + labelBytes;
         mLayout.setError(newHelper);
       } else {
-        float nbBytesFloat = (validate.length() / 2.0f);
-        int nbBytes;
-        if(nbBytesFloat < mMaxLengthWithPartial)
-          nbBytes = (int) Math.floor(nbBytesFloat);
-        else
-          nbBytes = (int) Math.ceil(nbBytesFloat);
-        String newHelper = nbBytes + " " + labelBytes + " / " + mMaxLengthWithPartial + " " + labelBytes;
-        if(nbBytesFloat == mMaxLengthWithPartial) {
-          mLayout.setError(null);
-          mLayout.setHelperText(newHelper);
-        } else {
-          if(!validated)
-            newHelper += ": " + mApp.getString(R.string.error_invalid_value);
-          mLayout.setError(newHelper);
-        }
+        updateHelperTextNotEmpty(validate, validated, labelBytes);
       }
     }
   }
@@ -355,6 +357,31 @@ public class LineUpdateTextWatcher implements TextWatcher {
     return pac;
   }
 
+  private String processAddWithSmartInputOverwrite(final ProcessAddContext pac, final StringBuilder newChangeHex) {
+    String str;
+    String endStr = pac.notChangedEnd.replace(" ", "");
+    String startStr = pac.notChangedStart.replace(" ", "");
+    String ns = newChangeHex.toString().replace(" ", "");
+    boolean odd = !SysHelper.isEven(startStr.length());
+    if (odd) {
+      startStr = startStr.substring(0, startStr.length() - 1);
+    }
+    odd = !SysHelper.isEven(endStr.length());
+    if (odd) {
+      endStr = endStr.substring(1);
+    }
+    if (!mBetweenDigits) {
+      str = startStr + ns;
+      if (!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
+        str += endStr.substring(ns.length());
+      } else if (ns.length() <= endStr.length())
+        str += endStr;
+    } else
+      str = startStr + ns + endStr;
+    mStartOffsetForOverwrite = ns.length();
+    return str;
+  }
+
   /**
    * Management of the addition of text with the SmartInput option.
    *
@@ -387,26 +414,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       if (mAfterSpace)
         mStart--;
     } else {
-      String endStr = pac.notChangedEnd.replace(" ", "");
-      String startStr = pac.notChangedStart.replace(" ", "");
-      String ns = newChangeHex.toString().replace(" ", "");
-      boolean odd = !SysHelper.isEven(startStr.length());
-      if (odd) {
-        startStr = startStr.substring(0, startStr.length() - 1);
-      }
-      odd = !SysHelper.isEven(endStr.length());
-      if (odd) {
-        endStr = endStr.substring(1);
-      }
-      if (!mBetweenDigits) {
-        str = startStr + ns;
-        if (!odd && ns.length() < endStr.length() || !odd && ns.length() == endStr.length()) {
-          str += endStr.substring(ns.length());
-        } else if (ns.length() <= endStr.length())
-          str += endStr;
-      } else
-        str = startStr + ns + endStr;
-      mStartOffsetForOverwrite = ns.length();
+      str = processAddWithSmartInputOverwrite(pac, newChangeHex);
     }
     mNewString = formatText(str.replace(" ", "").toLowerCase(Locale.US));
   }
@@ -457,15 +465,17 @@ public class LineUpdateTextWatcher implements TextWatcher {
         mNewString = notChangedStart + newChange;
       else
         mNewString = notChangedStart + newChange + (!notChangedEnd.isEmpty() ? notChangedEnd.substring(nbChars) : "");
-
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < mNewString.length(); i += 2) {
-        sb.append(mNewString.charAt(i));
-        if (i + 1 < mNewString.length())
-          sb.append(mNewString.charAt(i + 1));
-        sb.append(" ");
-      }
-      mNewString = sb.toString().trim();
+      formatNewString();
     }
+  }
+  private void formatNewString() {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < mNewString.length(); i += 2) {
+      sb.append(mNewString.charAt(i));
+      if (i + 1 < mNewString.length())
+        sb.append(mNewString.charAt(i + 1));
+      sb.append(" ");
+    }
+    mNewString = sb.toString().trim();
   }
 }
