@@ -13,3 +13,5 @@ jobs:
               with:
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
                   assignees: Keidan
+                  removePreviousAssignees: true
+                  numOfAssignee: 1
