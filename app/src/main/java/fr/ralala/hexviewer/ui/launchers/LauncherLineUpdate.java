@@ -63,6 +63,54 @@ public class LauncherLineUpdate {
     activityResultLauncherLineUpdate.launch(intent);
   }
 
+  private void processIntentData(Intent data) {
+    Bundle bundle = data.getExtras();
+    String refString = bundle.getString(LineUpdateActivity.RESULT_REFERENCE_STRING);
+    String newString = bundle.getString(LineUpdateActivity.RESULT_NEW_STRING);
+    int position = bundle.getInt(LineUpdateActivity.RESULT_POSITION);
+    int nbLines = bundle.getInt(LineUpdateActivity.RESULT_NB_LINES);
+
+    byte[] buf = SysHelper.hexStringToByteArray(newString);
+    final byte[] ref = SysHelper.hexStringToByteArray(refString);
+    if (Arrays.equals(ref, buf)) {
+      /* nothing to do */
+      return;
+    }
+
+    final List<LineEntry> li = new ArrayList<>();
+    int nbBytesPerLine = mApp.getNbBytesPerLine();
+    if (position == 0 && mActivity.getFileData().getShiftOffset() != 0) {
+      byte[] b = new byte[Math.min(buf.length, nbBytesPerLine - mActivity.getFileData().getShiftOffset())];
+      System.arraycopy(buf, 0, b, 0, b.length);
+      SysHelper.formatBuffer(li, b, b.length, null, nbBytesPerLine, mActivity.getFileData().getShiftOffset());
+      byte[] buff2 = new byte[buf.length - b.length];
+      System.arraycopy(buf, b.length, buff2, 0, buff2.length);
+      buf = buff2;
+    }
+    processUndoRedo(li, buf, nbBytesPerLine, position, nbLines);
+  }
+
+  private void processUndoRedo(final List<LineEntry> li, final byte[] buf,
+                               final int nbBytesPerLine, final int position, final int nbLines) {
+    SysHelper.formatBuffer(li, buf, buf.length, null, nbBytesPerLine);
+    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
+    if (li.isEmpty()) {
+      Map<Integer, LineEntry> map = new HashMap<>();
+      for (int i = position; i < position + nbLines; i++) {
+        map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
+      }
+      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
+    } else if (li.size() >= nbLines) {
+      mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, nbLines, li).execute();
+    } else {
+      Map<Integer, LineEntry> map = new HashMap<>();
+      for (int i = position + li.size(); i < position + nbLines; i++) {
+        map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
+      }
+      mActivity.getUnDoRedo().insertInUnDoRedoForUpdateAndDelete(mActivity, position, li, map).execute();
+    }
+  }
+
   /**
    * Registers result launcher for the activity for line update.
    */
@@ -73,46 +121,7 @@ public class LauncherLineUpdate {
           if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
             if (data != null) {
-              Bundle bundle = data.getExtras();
-              String refString = bundle.getString(LineUpdateActivity.RESULT_REFERENCE_STRING);
-              String newString = bundle.getString(LineUpdateActivity.RESULT_NEW_STRING);
-              int position = bundle.getInt(LineUpdateActivity.RESULT_POSITION);
-              int nbLines = bundle.getInt(LineUpdateActivity.RESULT_NB_LINES);
-
-              byte[] buf = SysHelper.hexStringToByteArray(newString);
-              final byte[] ref = SysHelper.hexStringToByteArray(refString);
-              if (Arrays.equals(ref, buf)) {
-                /* nothing to do */
-                return;
-              }
-
-              final List<LineEntry> li = new ArrayList<>();
-              int nbBytesPerLine = mApp.getNbBytesPerLine();
-              if (position == 0 && mActivity.getFileData().getShiftOffset() != 0) {
-                byte[] b = new byte[Math.min(buf.length, nbBytesPerLine - mActivity.getFileData().getShiftOffset())];
-                System.arraycopy(buf, 0, b, 0, b.length);
-                SysHelper.formatBuffer(li, b, b.length, null, nbBytesPerLine, mActivity.getFileData().getShiftOffset());
-                byte[] buff2 = new byte[buf.length - b.length];
-                System.arraycopy(buf, b.length, buff2, 0, buff2.length);
-                buf = buff2;
-              }
-              SysHelper.formatBuffer(li, buf, buf.length, null, nbBytesPerLine);
-              HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-              if (li.isEmpty()) {
-                Map<Integer, LineEntry> map = new HashMap<>();
-                for (int i = position; i < position + nbLines; i++) {
-                  map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
-                }
-                mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
-              } else if (li.size() >= nbLines) {
-                mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, nbLines, li).execute();
-              } else {
-                Map<Integer, LineEntry> map = new HashMap<>();
-                for (int i = position + li.size(); i < position + nbLines; i++) {
-                  map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
-                }
-                mActivity.getUnDoRedo().insertInUnDoRedoForUpdateAndDelete(mActivity, position, li, map).execute();
-              }
+              processIntentData(data);
             } else
               Log.e(getClass().getSimpleName(), "Null data!!!");
           }

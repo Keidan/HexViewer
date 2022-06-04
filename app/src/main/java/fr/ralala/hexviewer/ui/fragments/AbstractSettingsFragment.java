@@ -125,7 +125,23 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     });
   }
 
-
+  private boolean validateInputValue(EditText et, InputValidated<Float> iv, float nb,
+                                     float minValue, float maxValue, boolean decimal) {
+    if (nb < minValue) {
+      UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
+      et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
+      et.selectAll();
+      return false;
+    } else if (nb > maxValue) {
+      UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
+      et.setText(String.valueOf(!decimal ? (int) maxValue : maxValue));
+      et.selectAll();
+      return false;
+    } else
+      et.setError(null);
+    iv.onValidated(nb);
+    return true;
+  }
   /**
    * Validation of the input.
    *
@@ -136,7 +152,8 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
    * @param iv           Callback
    * @return False on error.
    */
-  protected boolean validInput(EditText et, float defaultValue, float minValue, float maxValue, InputValidated<Float> iv, boolean decimal) {
+  protected boolean validInput(EditText et, float defaultValue, float minValue, float maxValue,
+                               InputValidated<Float> iv, boolean decimal) {
     try {
       Editable s = et.getText();
       float nb = Float.parseFloat(s.toString());
@@ -145,20 +162,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
         et.selectAll();
         return false;
       } else {
-        if (nb < minValue) {
-          UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
-          et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
-          et.selectAll();
-          return false;
-        } else if (nb > maxValue) {
-          UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
-          et.setText(String.valueOf(!decimal ? (int) maxValue : maxValue));
-          et.selectAll();
-          return false;
-        } else
-          et.setError(null);
-        iv.onValidated(nb);
-        return true;
+        return validateInputValue(et, iv, nb, minValue, maxValue, decimal);
       }
     } catch (Exception ex) {
       UIHelper.shakeError(et, ex.getMessage());
