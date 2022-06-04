@@ -36,7 +36,7 @@ public class PayloadHexHelper {
   private LinearLayout mTitle = null;
   private TextView mTitleLineNumbers = null;
   private TextView mTitleContent = null;
-
+  private ApplicationCtx mApp = null;
   /**
    * Called when the activity is created.
    *
@@ -44,6 +44,7 @@ public class PayloadHexHelper {
    */
   public void onCreate(final MainActivity activity) {
     mActivity = activity;
+    mApp = (ApplicationCtx)activity.getApplicationContext();
     mPayloadViewContainer = activity.findViewById(R.id.payloadViewContainer);
     mTitle = activity.findViewById(R.id.title);
     mTitleLineNumbers = activity.findViewById(R.id.titleLineNumbers);
@@ -63,8 +64,8 @@ public class PayloadHexHelper {
     mAdapterHex = new HexTextArrayAdapter(activity,
         new ArrayList<>(),
         title,
-        new UserConfigPortrait(true),
-        new UserConfigLandscape(true));
+        new UserConfigPortrait(activity, true),
+        new UserConfigLandscape(activity,true));
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(activity);
     mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -138,7 +139,7 @@ public class PayloadHexHelper {
    * Refreshes line numbers visibility.
    */
   private void refreshLineNumbersVisibility() {
-    final boolean checked = ApplicationCtx.getInstance().isLineNumber();
+    final boolean checked = mApp.isLineNumber();
     mTitleLineNumbers.setVisibility(checked ? View.VISIBLE : View.GONE);
     mTitleContent.setVisibility(checked ? View.VISIBLE : View.GONE);
     mTitle.setVisibility(checked ? View.VISIBLE : View.GONE);

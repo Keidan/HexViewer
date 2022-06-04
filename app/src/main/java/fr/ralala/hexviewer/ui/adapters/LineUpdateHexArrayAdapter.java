@@ -42,6 +42,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
   private long mStartOffset;
   private int mMaxLength;
   private int mPreviousSize = -1;
+  private final ApplicationCtx mApp;
 
   public LineUpdateHexArrayAdapter(final Context context,
                                    ListView listView,
@@ -52,6 +53,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
     mListView = listView;
     mEntryList = objects;
     mTitle = title;
+    mApp = (ApplicationCtx)context.getApplicationContext();
   }
 
   public void setStartOffset(final long startOffset) {
@@ -206,9 +208,8 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
    */
   private void applyUserConfig(final TextView tv) {
     Configuration cfg = getContext().getResources().getConfiguration();
-    ApplicationCtx app = ApplicationCtx.getInstance();
-    ListSettings landscape = app.getListSettingsLineEditLandscape();
-    ListSettings portrait = app.getListSettingsLineEditPortrait();
+    ListSettings landscape = mApp.getListSettingsLineEditLandscape();
+    ListSettings portrait = mApp.getListSettingsLineEditPortrait();
     if (landscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       tv.setTextSize(landscape.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();

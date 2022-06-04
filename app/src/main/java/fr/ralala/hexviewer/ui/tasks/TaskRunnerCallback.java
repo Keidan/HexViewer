@@ -14,14 +14,14 @@ import androidx.annotation.Nullable;
  * </p>
  * ******************************************************************************
  */
-public interface TaskRunnerCallback<Config, Param, Progress, Result> {
+public interface TaskRunnerCallback<C, P, I, R> {
 
   /**
    * Runs on the UI thread.
    *
    * @param value The value indicating progress.
    */
-  void onProgressUpdate(Progress value);
+  void onProgressUpdate(I value);
 
   /**
    * Called before the execution of the task.
@@ -29,14 +29,14 @@ public interface TaskRunnerCallback<Config, Param, Progress, Result> {
    * @return The Config.
    */
   @Nullable
-  Config onPreExecute();
+  C onPreExecute();
 
   /**
    * Called after the execution of the task.
    *
    * @param result The result.
    */
-  void onPostExecute(@Nullable final Result result);
+  void onPostExecute(@Nullable final R result);
 
   /**
    * Performs a computation on a background thread.
@@ -46,7 +46,7 @@ public interface TaskRunnerCallback<Config, Param, Progress, Result> {
    * @return A result, defined by the subclass of this task.
    */
   @Nullable
-  Result doInBackground(@Nullable Config config, @Nullable Param param) throws Exception;
+  R doInBackground(@Nullable C config, @Nullable P param) throws TaskRunnerException;
 
   /**
    * Called when the async task is cancelled.

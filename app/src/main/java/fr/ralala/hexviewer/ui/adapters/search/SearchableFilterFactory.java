@@ -33,12 +33,14 @@ public class SearchableFilterFactory {
   private final UserConfig mUserConfigPortrait;
   private final UserConfig mUserConfigLandscape;
   private final ISearchFrom mSearchFromHewView;
+  private final ApplicationCtx mApp;
 
   public SearchableFilterFactory(final Context context,
                                  ISearchFrom searchFromHewView,
                                  UserConfig userConfigPortrait,
                                  UserConfig userConfigLandscape) {
     mContext = context;
+    mApp = (ApplicationCtx)context.getApplicationContext();
     mSearchFromHewView = searchFromHewView;
     mUserConfigLandscape = userConfigLandscape;
     mUserConfigPortrait = userConfigPortrait;
@@ -72,7 +74,7 @@ public class SearchableFilterFactory {
     boolean withSpaces = true;
     if (indexes.isEmpty()) {
       /* hex no space */
-      final String hexNoSpaces = plain.substring(0, hexLength).replaceAll(" ", "");
+      final String hexNoSpaces = plain.substring(0, hexLength).replace(" ", "");
       allIndexes(indexes, hexNoSpaces.toLowerCase(loc), query);
       if (indexes.isEmpty()) {
         /* plain text */
@@ -148,7 +150,7 @@ public class SearchableFilterFactory {
     if (!mSearchFromHewView.isSearchFromHewView())
       lineWidth = UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1;
     else {
-      lineWidth = ApplicationCtx.getInstance().getNbBytesPerLine();
+      lineWidth = mApp.getNbBytesPerLine();
     }
 
     int count = (query.length() / lineWidth);
@@ -202,7 +204,7 @@ public class SearchableFilterFactory {
         int index = idx;
         int nbPerLines;
         if (sr.isHexPart()) {
-          final int cfgNbPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
+          final int cfgNbPerLine = mApp.getNbBytesPerLine();
           if (sr.isWithSpaces()) {
             nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8;
             index += shiftOffset * 3;
@@ -214,7 +216,7 @@ public class SearchableFilterFactory {
           if (!sr.isFromHexView())
             nbPerLines = UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1;
           else {
-            final int cfgNbPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
+            final int cfgNbPerLine = mApp.getNbBytesPerLine();
             nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 : SysHelper.MAX_BY_ROW_8;
             index += shiftOffset;
           }

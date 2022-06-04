@@ -124,7 +124,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -262,7 +262,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
         Intent i = new Intent();
         long start = getValue(Objects.requireNonNull(mTietStart.getText()).toString(), null);
         long end = getValue(Objects.requireNonNull(mTietEnd.getText()).toString(), null);
-        if (ApplicationCtx.getInstance().isPartialOpenButWholeFileIsOpened() && start == 0L && end == mRealSize)
+        if (((ApplicationCtx)getApplicationContext()).isPartialOpenButWholeFileIsOpened() && start == 0L && end == mRealSize)
           end = 0L;
         i.putExtra(RESULT_START_OFFSET, start);
         i.putExtra(RESULT_END_OFFSET, end);

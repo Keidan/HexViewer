@@ -42,6 +42,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   private final MemoryMonitor mMemoryMonitor;
   private final AtomicBoolean mLowMemory = new AtomicBoolean(false);
   private final String mOldToString;
+  private final ApplicationCtx mApp;
 
   public static class Result {
     private List<LineEntry> listHex = null;
@@ -57,7 +58,8 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
                   final HexTextArrayAdapter adapter,
                   final OpenResultListener listener, final String oldToString, final boolean addRecent) {
     super(activity, true);
-    mMemoryMonitor = new MemoryMonitor(ApplicationCtx.getInstance().getMemoryThreshold(), 2000);
+    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
     mContext = activity;
     mContentResolver = activity.getContentResolver();
     mAdapter = adapter;
@@ -140,7 +142,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     final List<LineEntry> list = new ArrayList<>();
     try {
       result.startOffset = fd.getStartOffset();
-      final ApplicationCtx app = ApplicationCtx.getInstance();
       /* Size + stream */
       mTotalSize = fd.getSize();
       publishProgress(0L);
@@ -160,7 +161,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         while (!isCancelled() && (reads = mRandomAccessFileChannel.read(buffer)) != -1) {
           try {
             SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
-                ApplicationCtx.getInstance().getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
+                mApp.getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
             first = false;
             buffer.clear();
           } catch (IllegalArgumentException iae) {
@@ -179,9 +180,9 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
           result.listHex = list;
           if(!mCancel.get()) {
             if(mOldToString != null)
-              app.getRecentlyOpened().remove(mOldToString);
+              mApp.getRecentlyOpened().remove(mOldToString);
             if (mAddRecent)
-              app.getRecentlyOpened().add(fd);
+              mApp.getRecentlyOpened().add(fd);
           }
         }
       }
@@ -207,7 +208,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
 
   private void evaluateShiftOffset(FileData fd, long totalSequential) {
     if (totalSequential != 0) {
-      final int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
+      final int nbBytesPerLine = mApp.getNbBytesPerLine();
       final long count = totalSequential / nbBytesPerLine;
       final long remain = totalSequential - (count * nbBytesPerLine);
       fd.setShiftOffset((int) remain);

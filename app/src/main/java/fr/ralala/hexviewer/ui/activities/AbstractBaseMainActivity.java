@@ -33,7 +33,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  */
 public abstract class AbstractBaseMainActivity extends AppCompatActivity {
   private static final int BACK_TIME_DELAY = 2000;
-  private static long mLastBackPressed = -1;
+  private long mLastBackPressed = -1;
   private SearchView mSearchView = null;
   private AlertDialog mOrphanDialog = null;
   protected ApplicationCtx mApp = null;
@@ -47,7 +47,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -58,7 +58,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)getApplicationContext();
 
     /* sanity check */
     String[] languages = getResources().getStringArray(R.array.languages_values);

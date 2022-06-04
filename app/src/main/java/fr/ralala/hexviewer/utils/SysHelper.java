@@ -274,7 +274,7 @@ public class SysHelper {
    */
   public static byte[] hex2bin(final String hex) {
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    final String h = hex.replaceAll(" ", "");
+    final String h = hex.replace(" ", "");
     int len = h.length();
     if (len == 0)
       return byteArrayOutputStream.toByteArray();

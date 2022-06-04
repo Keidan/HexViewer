@@ -123,7 +123,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -136,7 +136,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_line_update);
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)getApplicationContext();
     mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
     ListView lvSource = findViewById(R.id.lvSource);
     ListView lvResult = findViewById(R.id.lvResult);
@@ -305,7 +305,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       mEtInputHex.setText("");
       return true;
     } else if (item.getItemId() == R.id.action_done) {
-      final String validate = mEtInputHex.getText() == null ? "" : mEtInputHex.getText().toString().trim().replaceAll(" ", "").toLowerCase(Locale.US);
+      final String validate = mEtInputHex.getText() == null ? "" : mEtInputHex.getText().toString().trim().replace(" ", "").toLowerCase(Locale.US);
       if (!SysHelper.isValidHexLine(validate)) {
         mTilInputHex.setError(" "); /* only for the color */
         return false;
@@ -321,7 +321,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       Intent i = new Intent();
       i.putExtra(RESULT_POSITION, mPosition);
       i.putExtra(RESULT_NB_LINES, mNbLines);
-      i.putExtra(RESULT_REFERENCE_STRING, mHex.replaceAll(" ", ""));
+      i.putExtra(RESULT_REFERENCE_STRING, mHex.replace(" ", ""));
       i.putExtra(RESULT_NEW_STRING, validate);
       setResult(RESULT_OK, i);
       finish();

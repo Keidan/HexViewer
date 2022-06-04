@@ -124,7 +124,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
-    findViewById(R.id.buttonRecentlyOpen).setEnabled(!ApplicationCtx.getInstance().getRecentlyOpened().list().isEmpty());
+    findViewById(R.id.buttonRecentlyOpen).setEnabled(!((ApplicationCtx)getApplicationContext()).getRecentlyOpened().list().isEmpty());
     onOpenResult(!FileData.isEmpty(mFileData), false);
     if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.refreshAdapter();

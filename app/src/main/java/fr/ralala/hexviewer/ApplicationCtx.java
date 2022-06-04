@@ -29,11 +29,10 @@ import fr.ralala.hexviewer.models.SettingsKeys;
  * </p>
  * ******************************************************************************
  */
-public class ApplicationCtx extends Application implements SettingsKeys {
+public class ApplicationCtx extends Application {
   private SharedPreferences mSharedPreferences;
   private boolean mDefaultSmartInput;
   private boolean mDefaultOverwrite;
-  private static ApplicationCtx instance;
   private String mLanguage = null;
   private boolean mDefaultLinesNumber;
   private ListSettings mListSettingsHexPortrait;
@@ -51,14 +50,9 @@ public class ApplicationCtx extends Application implements SettingsKeys {
   private String mDefaultMemoryThreshold;
   private boolean mDefaultPartialOpenButWholeFileIsOpened;
 
-  public static ApplicationCtx getInstance() {
-    return instance;
-  }
-
   @Override
   public void onCreate() {
     super.onCreate();
-    instance = this;
     mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = new RecentlyOpened(this);
@@ -70,50 +64,66 @@ public class ApplicationCtx extends Application implements SettingsKeys {
     mDefaultPartialOpenButWholeFileIsOpened = Boolean.parseBoolean(getString(R.string.default_partial_open_but_whole_file_is_opened));
 
     mListSettingsHexPortrait = new ListSettings(this,
-        CFG_PORTRAIT_HEX_DISPLAY_DATA,
-        CFG_PORTRAIT_HEX_ROW_HEIGHT, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO, CFG_PORTRAIT_HEX_FONT_SIZE,
+        SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA,
+        SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT,
+        SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO,
+        SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE,
         R.string.default_hex_display_data_portrait,
         R.string.default_hex_row_height_portrait, R.string.default_hex_row_height_auto_portrait,
         R.string.default_hex_font_size_portrait);
     mListSettingsHexLandscape = new ListSettings(this,
-        CFG_LANDSCAPE_HEX_DISPLAY_DATA,
-        CFG_LANDSCAPE_HEX_ROW_HEIGHT, CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_HEX_FONT_SIZE,
+        SettingsKeys.CFG_LANDSCAPE_HEX_DISPLAY_DATA,
+        SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT,
+        SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO,
+        SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE,
         R.string.default_hex_display_data_landscape,
         R.string.default_hex_row_height_landscape, R.string.default_hex_row_height_auto_landscape,
         R.string.default_hex_font_size_landscape);
 
     mListSettingsHexLineNumbersPortrait = new ListSettings(this,
-        CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS,
-        CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS, CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS, CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS,
+        SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS,
+        SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS,
+        SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS,
+        SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS,
         R.string.default_hex_display_data_portrait_lines_numbers,
         R.string.default_hex_row_height_portrait_lines_numbers, R.string.default_hex_row_height_auto_portrait_lines_numbers,
         R.string.default_hex_font_size_portrait_lines_numbers);
     mListSettingsHexLineNumbersLandscape = new ListSettings(this,
-        CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS,
-        CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS, CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS, CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS,
+        SettingsKeys.CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS,
+        SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS,
+        SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS,
+        SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS,
         R.string.default_hex_display_data_landscape_lines_numbers,
         R.string.default_hex_row_height_landscape_lines_numbers, R.string.default_hex_row_height_auto_landscape_lines_numbers,
         R.string.default_hex_font_size_landscape_lines_numbers);
 
     mListSettingsPlainPortrait = new ListSettings(this,
         null,
-        CFG_PORTRAIT_PLAIN_ROW_HEIGHT, CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO, CFG_PORTRAIT_PLAIN_FONT_SIZE,
+        SettingsKeys.CFG_PORTRAIT_PLAIN_ROW_HEIGHT,
+        SettingsKeys.CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO,
+        SettingsKeys.CFG_PORTRAIT_PLAIN_FONT_SIZE,
         0, R.string.default_plain_row_height_portrait, R.string.default_plain_row_height_auto_portrait,
         R.string.default_plain_font_size_portrait);
     mListSettingsPlainLandscape = new ListSettings(this,
         null,
-        CFG_LANDSCAPE_PLAIN_ROW_HEIGHT, CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_PLAIN_FONT_SIZE,
+        SettingsKeys.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT,
+        SettingsKeys.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO,
+        SettingsKeys.CFG_LANDSCAPE_PLAIN_FONT_SIZE,
         0, R.string.default_plain_row_height_landscape, R.string.default_plain_row_height_auto_landscape,
         R.string.default_plain_font_size_landscape);
 
     mListSettingsLineEditPortrait = new ListSettings(this,
         null,
-        CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT, CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO, CFG_PORTRAIT_LINE_EDIT_FONT_SIZE,
+        SettingsKeys.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT,
+        SettingsKeys.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO,
+        SettingsKeys.CFG_PORTRAIT_LINE_EDIT_FONT_SIZE,
         0, R.string.default_line_edit_row_height_portrait, R.string.default_line_edit_row_height_auto_portrait,
         R.string.default_line_edit_font_size_portrait);
     mListSettingsLineEditLandscape = new ListSettings(this,
         null,
-        CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT, CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO, CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE,
+        SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT,
+        SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO,
+        SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE,
         0, R.string.default_line_edit_row_height_landscape, R.string.default_line_edit_row_height_auto_landscape,
         R.string.default_line_edit_font_size_landscape);
     /* EmojiCompat */
@@ -156,7 +166,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public int getMemoryThreshold() {
     try {
-      String s = getPref(this).getString(CFG_MEMORY_THRESHOLD, mDefaultMemoryThreshold);
+      String s = getPref(this).getString(SettingsKeys.CFG_MEMORY_THRESHOLD, mDefaultMemoryThreshold);
       if (s.startsWith("~"))
         s = s.substring(1);
       if (s.endsWith("%"))
@@ -174,7 +184,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public void setLineEditSrcExpanded(boolean expanded) {
     SharedPreferences.Editor e = getPref(this).edit();
-    e.putBoolean(CFG_LINE_EDIT_SRC_EXPAND, expanded);
+    e.putBoolean(SettingsKeys.CFG_LINE_EDIT_SRC_EXPAND, expanded);
     e.apply();
   }
 
@@ -184,7 +194,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    * @return boolean
    */
   public boolean isPartialOpenButWholeFileIsOpened() {
-    return getPref(this).getBoolean(CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED, mDefaultPartialOpenButWholeFileIsOpened);
+    return getPref(this).getBoolean(SettingsKeys.CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED, mDefaultPartialOpenButWholeFileIsOpened);
   }
 
   /**
@@ -193,7 +203,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    * @return boolean
    */
   public boolean isLineEditSrcExpanded() {
-    return getPref(this).getBoolean(CFG_LINE_EDIT_SRC_EXPAND, true);
+    return getPref(this).getBoolean(SettingsKeys.CFG_LINE_EDIT_SRC_EXPAND, true);
   }
 
   /**
@@ -203,7 +213,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public void setLineEditRstExpanded(boolean expanded) {
     SharedPreferences.Editor e = getPref(this).edit();
-    e.putBoolean(CFG_LINE_EDIT_RST_EXPAND, expanded);
+    e.putBoolean(SettingsKeys.CFG_LINE_EDIT_RST_EXPAND, expanded);
     e.apply();
   }
 
@@ -213,7 +223,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    * @return boolean
    */
   public boolean isLineEditRstExpanded() {
-    return getPref(this).getBoolean(CFG_LINE_EDIT_RST_EXPAND, true);
+    return getPref(this).getBoolean(SettingsKeys.CFG_LINE_EDIT_RST_EXPAND, true);
   }
 
   /**
@@ -223,7 +233,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public void setNbBytesPerLine(String nb) {
     SharedPreferences.Editor e = getPref(this).edit();
-    e.putString(CFG_NB_BYTES_PER_LINE, nb);
+    e.putString(SettingsKeys.CFG_NB_BYTES_PER_LINE, nb);
     e.apply();
   }
 
@@ -234,7 +244,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public int getNbBytesPerLine() {
     try {
-      return Integer.parseInt(getPref(this).getString(CFG_NB_BYTES_PER_LINE, mDefaultNbBytesPerLine));
+      return Integer.parseInt(getPref(this).getString(SettingsKeys.CFG_NB_BYTES_PER_LINE, mDefaultNbBytesPerLine));
     } catch (Exception ignore) {
       return Integer.parseInt(mDefaultNbBytesPerLine);
     }
@@ -248,7 +258,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    * SCREEN_ORIENTATION_UNSPECIFIED
    */
   public String getScreenOrientationStr() {
-    return getPref(this).getString(CFG_SCREEN_ORIENTATION, mDefaultScreenOrientation);
+    return getPref(this).getString(SettingsKeys.CFG_SCREEN_ORIENTATION, mDefaultScreenOrientation);
   }
 
   /**
@@ -275,7 +285,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public boolean isLineNumber() {
     try {
-      return getPref(this).getBoolean(CFG_LINES_NUMBER, mDefaultLinesNumber);
+      return getPref(this).getBoolean(SettingsKeys.CFG_LINES_NUMBER, mDefaultLinesNumber);
     } catch (Exception ignore) {
       return mDefaultLinesNumber;
     }
@@ -288,7 +298,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public void setLineNumber(boolean mode) {
     SharedPreferences.Editor e = getPref(this).edit();
-    e.putBoolean(CFG_LINES_NUMBER, mode);
+    e.putBoolean(SettingsKeys.CFG_LINES_NUMBER, mode);
     e.apply();
   }
 
@@ -308,7 +318,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public boolean isSmartInput() {
     try {
-      return getPref(this).getBoolean(CFG_SMART_INPUT, mDefaultSmartInput);
+      return getPref(this).getBoolean(SettingsKeys.CFG_SMART_INPUT, mDefaultSmartInput);
     } catch (Exception ignore) {
       return mDefaultSmartInput;
     }
@@ -321,7 +331,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public void setSmartInput(boolean mode) {
     SharedPreferences.Editor e = getPref(this).edit();
-    e.putBoolean(CFG_SMART_INPUT, mode);
+    e.putBoolean(SettingsKeys.CFG_SMART_INPUT, mode);
     e.apply();
   }
 
@@ -332,7 +342,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public boolean isOverwrite() {
     try {
-      return getPref(this).getBoolean(CFG_OVERWRITE, mDefaultOverwrite);
+      return getPref(this).getBoolean(SettingsKeys.CFG_OVERWRITE, mDefaultOverwrite);
     } catch (Exception ignore) {
       return mDefaultOverwrite;
     }
@@ -345,7 +355,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    */
   public void setOverwrite(boolean mode) {
     SharedPreferences.Editor e = getPref(this).edit();
-    e.putBoolean(CFG_OVERWRITE, mode);
+    e.putBoolean(SettingsKeys.CFG_OVERWRITE, mode);
     e.apply();
   }
 
@@ -443,7 +453,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
   public void setApplicationLanguage(final String lang) {
     SharedPreferences sp = getPref(this);
     SharedPreferences.Editor e = sp.edit();
-    e.putString(ApplicationCtx.CFG_LANGUAGE, lang);
+    e.putString(SettingsKeys.CFG_LANGUAGE, lang);
     e.apply();
   }
 
@@ -454,7 +464,7 @@ public class ApplicationCtx extends Application implements SettingsKeys {
    * @return String.
    */
   public String getApplicationLanguage(final Context context) {
-    return getPref(context).getString(CFG_LANGUAGE, mLanguage);
+    return getPref(context).getString(SettingsKeys.CFG_LANGUAGE, mLanguage);
   }
 
   /**

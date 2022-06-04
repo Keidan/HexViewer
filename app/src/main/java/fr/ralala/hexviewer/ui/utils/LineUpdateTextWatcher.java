@@ -73,7 +73,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     mMaxLengthWithPartial = maxLengthWithPartial;
     mSequential = sequential;
     updateHelperText(Objects.requireNonNull(
-        layout.getEditText()).getText().toString().replaceAll(" ", ""), true);
+        layout.getEditText()).getText().toString().replace(" ", ""), true);
   }
 
   /**
@@ -97,7 +97,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
    * @param strNew The new string.
    */
   private void processResultAndError(String strNew) {
-    final String validate = strNew.trim().replaceAll(" ", "").toLowerCase(Locale.US);
+    final String validate = strNew.trim().replace(" ", "").toLowerCase(Locale.US);
     final boolean validated = SysHelper.isValidHexLine(validate);
     if (!validated) {
       mLayout.setErrorTextAppearance(R.style.AppTheme_ErrorTextAppearance);
@@ -383,13 +383,13 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
     String str;
     if (!mApp.isOverwrite()) {
-      str = (pac.notChangedStart + newChangeHex.toString() + pac.notChangedEnd).replaceAll(" ", "");
+      str = (pac.notChangedStart + newChangeHex.toString() + pac.notChangedEnd).replace(" ", "");
       if (mAfterSpace)
         mStart--;
     } else {
-      String endStr = pac.notChangedEnd.replaceAll(" ", "");
-      String startStr = pac.notChangedStart.replaceAll(" ", "");
-      String ns = newChangeHex.toString().replaceAll(" ", "");
+      String endStr = pac.notChangedEnd.replace(" ", "");
+      String startStr = pac.notChangedStart.replace(" ", "");
+      String ns = newChangeHex.toString().replace(" ", "");
       boolean odd = !SysHelper.isEven(startStr.length());
       if (odd) {
         startStr = startStr.substring(0, startStr.length() - 1);
@@ -408,7 +408,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
         str = startStr + ns + endStr;
       mStartOffsetForOverwrite = ns.length();
     }
-    mNewString = formatText(str.replaceAll(" ", "").toLowerCase(Locale.US));
+    mNewString = formatText(str.replace(" ", "").toLowerCase(Locale.US));
   }
 
   /**
@@ -443,14 +443,14 @@ public class LineUpdateTextWatcher implements TextWatcher {
     if (!mRemove) { /* remove */
       mStart = start < 0 ? 0 : start + 1;
 
-      final String notChangedStart = mNewString.substring(0, start).replaceAll(" ", "");
+      final String notChangedStart = mNewString.substring(0, start).replace(" ", "");
       String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
       mStartOffsetForOverwrite = (notChangedEnd.startsWith(" ") || notChangedEnd.isEmpty()) ? 1 : 0;
       if (mBetweenDigits)
         mStartOffsetForOverwrite++;
-      notChangedEnd = notChangedEnd.replaceAll(" ", "");
+      notChangedEnd = notChangedEnd.replace(" ", "");
 
-      CharSequence newChange = mNewString.substring(Math.max(0, start), Math.min(start + count, mNewString.length())).replaceAll(" ", "");
+      CharSequence newChange = mNewString.substring(Math.max(0, start), Math.min(start + count, mNewString.length())).replace(" ", "");
       int nbChars = newChange.length() - Math.max(0, before);
       if (nbChars < 0) nbChars = 0;
       if (nbChars > notChangedEnd.length())

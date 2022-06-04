@@ -50,6 +50,7 @@ public class GoToDialog implements View.OnClickListener {
   private int mPosition = 0;
   private Mode mMode;
   private String mTitle;
+  private final ApplicationCtx mApp;
 
   public enum Mode {
     ADDRESS,
@@ -59,6 +60,7 @@ public class GoToDialog implements View.OnClickListener {
 
   public GoToDialog(MainActivity activity) {
     mActivity = activity;
+    mApp = (ApplicationCtx)activity.getApplicationContext();
   }
 
   /**
@@ -223,7 +225,7 @@ public class GoToDialog implements View.OnClickListener {
           mLayout.setError(" "); /* only for the color */
         return true;
       }
-      int nbBytesPerLines = ApplicationCtx.getInstance().getNbBytesPerLine();
+      int nbBytesPerLines = mApp.getNbBytesPerLine();
       try {
         position = Integer.parseInt(text, 16) / nbBytesPerLines;
       } catch (Exception e) {

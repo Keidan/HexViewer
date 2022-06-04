@@ -34,7 +34,7 @@ public abstract class AbstractSettingsActivity extends AppCompatActivity {
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
   }
 
   /**

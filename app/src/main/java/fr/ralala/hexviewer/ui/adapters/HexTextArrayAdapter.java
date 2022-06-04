@@ -58,7 +58,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     mStartOffset = 0;
     mTitle = title;
     mSelectedItemsIds = new HashSet<>();
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)activity.getApplicationContext();
   }
 
   public void setStartOffset(final long startOffset) {

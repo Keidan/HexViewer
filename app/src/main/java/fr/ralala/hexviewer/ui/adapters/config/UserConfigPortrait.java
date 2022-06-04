@@ -1,5 +1,7 @@
 package fr.ralala.hexviewer.ui.adapters.config;
 
+import android.content.Context;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 
 /**
@@ -18,9 +20,9 @@ public class UserConfigPortrait implements UserConfig {
   private final ApplicationCtx mApp;
   private final boolean mIsHexList;
 
-  public UserConfigPortrait(boolean isHexList) {
+  public UserConfigPortrait(final Context ctx, boolean isHexList) {
     mIsHexList = isHexList;
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)ctx.getApplicationContext();
   }
 
   @Override

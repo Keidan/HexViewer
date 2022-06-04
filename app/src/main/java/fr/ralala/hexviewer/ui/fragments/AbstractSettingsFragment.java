@@ -44,7 +44,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
 
   public AbstractSettingsFragment(AppCompatActivity owner) {
     mActivity = owner;
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)owner.getApplicationContext();
   }
 
   /* ----------------------------- */

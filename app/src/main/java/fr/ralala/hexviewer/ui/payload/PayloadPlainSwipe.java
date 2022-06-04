@@ -60,8 +60,8 @@ public class PayloadPlainSwipe {
 
     mAdapterPlain = new PlainTextListArrayAdapter(activity,
         new ArrayList<>(),
-        mUserConfigPortrait = new UserConfigPortrait(false),
-        mUserConfigLandscape = new UserConfigLandscape(false));
+        mUserConfigPortrait = new UserConfigPortrait(activity, false),
+        mUserConfigLandscape = new UserConfigLandscape(activity, false));
     mPayloadPlain.setAdapter(mAdapterPlain);
   }
 

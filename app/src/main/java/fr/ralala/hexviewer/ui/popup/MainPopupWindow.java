@@ -36,13 +36,14 @@ public class MainPopupWindow {
   private final TextView mRecentlyOpen;
   private final PopupCheckboxHelper mPlainText;
   private final PopupCheckboxHelper mLineNumbers;
+  private final ApplicationCtx mApp;
 
   public interface ClickListener {
     void onClick(int id);
   }
 
   public MainPopupWindow(final Context ctx, UnDoRedo undoRedo, ClickListener clickListener) {
-    ApplicationCtx app = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)ctx.getApplicationContext();
 
     LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.main_popup, null);
@@ -93,7 +94,7 @@ public class MainPopupWindow {
     actionRedo.setOnClickListener(click);
     actionUndo.setOnClickListener(click);
     undoRedo.setControls(containerUndo, actionUndo, containerRedo, actionRedo);
-    mLineNumbers.setChecked(app.isLineNumber());
+    mLineNumbers.setChecked(mApp.isLineNumber());
 
     refreshGoToName();
   }
@@ -137,7 +138,7 @@ public class MainPopupWindow {
     setMenuEnabled(mGoTo, en);
     setMenuEnabled(mSaveAsMenu, en);
     setMenuEnabled(mCloseMenu, en);
-    setMenuEnabled(mRecentlyOpen, !ApplicationCtx.getInstance().getRecentlyOpened().list().isEmpty());
+    setMenuEnabled(mRecentlyOpen, !mApp.getRecentlyOpened().list().isEmpty());
     if (mLineNumbers != null)
       mLineNumbers.setEnable(en);
     if (!en && mPlainText != null) {

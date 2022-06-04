@@ -32,9 +32,11 @@ public class LauncherPartialOpen {
   private boolean mAddRecent;
   private String mOldToString;
   private ActivityResultLauncher<Intent> activityResultLauncherOpen;
+  private final ApplicationCtx mApp;
 
   public LauncherPartialOpen(MainActivity activity) {
     mActivity = activity;
+    mApp = (ApplicationCtx)activity.getApplicationContext();
     register();
   }
 
@@ -53,7 +55,7 @@ public class LauncherPartialOpen {
    */
   private void register() {
     Runnable cancel = () -> {
-      ApplicationCtx.getInstance().setSequential(false);
+      mApp.setSequential(false);
       if (mPrevious == null) {
         mActivity.onOpenResult(false, false);
       } else {
@@ -64,7 +66,7 @@ public class LauncherPartialOpen {
     activityResultLauncherOpen = mActivity.registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         result -> {
-          ApplicationCtx.getInstance().setSequential(false);
+          mApp.setSequential(false);
           if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
             if (data != null) {

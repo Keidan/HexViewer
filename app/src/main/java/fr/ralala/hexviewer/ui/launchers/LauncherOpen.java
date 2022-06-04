@@ -30,10 +30,12 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
 public class LauncherOpen {
   private final MainActivity mActivity;
   private final LinearLayout mMainLayout;
+  private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherOpen;
 
   public LauncherOpen(MainActivity activity, LinearLayout mainLayout) {
     mActivity = activity;
+    mApp = (ApplicationCtx)activity.getApplicationContext();
     mMainLayout = mainLayout;
     register();
   }
@@ -58,13 +60,13 @@ public class LauncherOpen {
               if (FileHelper.takeUriPermissions(mActivity, data.getData(), false)) {
                 processFileOpen(new FileData(mActivity, data.getData(), false, 0L, 0L));
               } else
-                UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(data.getData())));
+                UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, data.getData())));
             } else {
               Log.e(getClass().getSimpleName(), "Null data!!!");
-              ApplicationCtx.getInstance().setSequential(false);
+              mApp.setSequential(false);
             }
           } else
-            ApplicationCtx.getInstance().setSequential(false);
+            mApp.setSequential(false);
         });
   }
 
@@ -89,7 +91,7 @@ public class LauncherOpen {
         mActivity.getUnDoRedo().clear();
         new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, oldToString, addRecent).execute(mActivity.getFileData());
       };
-      if (ApplicationCtx.getInstance().isSequential())
+      if (mApp.isSequential())
         mActivity.getLauncherPartialOpen().startActivity(previous, oldToString, addRecent);
       else
         r.run();

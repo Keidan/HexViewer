@@ -34,7 +34,7 @@ public class LauncherRecentlyOpen {
   private ActivityResultLauncher<Intent> activityResultLauncherRecentlyOpen;
 
   public LauncherRecentlyOpen(MainActivity activity) {
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)activity.getApplicationContext();
     mActivity = activity;
     register();
   }
@@ -70,7 +70,7 @@ public class LauncherRecentlyOpen {
                 if (FileHelper.hasUriPermission(mActivity, uri, true)) {
                   final Runnable r = () -> {
                     if(fd.getEndOffset() > fd.getRealSize())
-                      ApplicationCtx.getInstance().setSequential(true);
+                      mApp.setSequential(true);
                     mActivity.getLauncherOpen().processFileOpen(fd, oldToString, true);
                   };
                   if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
@@ -79,11 +79,11 @@ public class LauncherRecentlyOpen {
                   } else
                     r.run();
                 } else {
-                  UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(uri)));
+                  UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, uri)));
                   mApp.getRecentlyOpened().remove(fd);
                 }
               } else {
-                UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_not_found), FileHelper.getFileName(uri)));
+                UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_not_found), FileHelper.getFileName(mApp, uri)));
                 mApp.getRecentlyOpened().remove(fd);
                 FileHelper.releaseUriPermissions(mActivity, uri);
               }

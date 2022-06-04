@@ -35,10 +35,12 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public class LauncherLineUpdate {
   private final MainActivity mActivity;
+  private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherLineUpdate;
 
   public LauncherLineUpdate(MainActivity activity) {
     mActivity = activity;
+    mApp = (ApplicationCtx)mActivity.getApplicationContext();
     register();
   }
 
@@ -79,7 +81,7 @@ public class LauncherLineUpdate {
               }
 
               final List<LineEntry> li = new ArrayList<>();
-              int nbBytesPerLine = ApplicationCtx.getInstance().getNbBytesPerLine();
+              int nbBytesPerLine = mApp.getNbBytesPerLine();
               if (position == 0 && mActivity.getFileData().getShiftOffset() != 0) {
                 byte[] b = new byte[Math.min(buf.length, nbBytesPerLine - mActivity.getFileData().getShiftOffset())];
                 System.arraycopy(buf, 0, b, 0, b.length);

@@ -61,7 +61,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(ApplicationCtx.getInstance().onAttach(base));
+    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -74,7 +74,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_recently_open);
-    mApp = ApplicationCtx.getInstance();
+    mApp = (ApplicationCtx)getApplicationContext();
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {

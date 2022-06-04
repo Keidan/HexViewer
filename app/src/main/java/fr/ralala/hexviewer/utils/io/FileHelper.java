@@ -77,7 +77,7 @@ public class FileHelper {
       final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
       c.getContentResolver().takePersistableUriPermission(uri, takeFlags);
       if (!fromDir) {
-        Uri dir = getParentUri(uri);
+        Uri dir = getParentUri(c, uri);
         if (!hasUriPermission(c, dir, false))
           try {
             c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -105,7 +105,7 @@ public class FileHelper {
           final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
           c.getContentResolver().releasePersistableUriPermission(uri, takeFlags);
 
-          Uri dir = getParentUri(uri);
+          Uri dir = getParentUri(c, uri);
           final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
           int found = 0;
           for (UriPermission up : list) {
@@ -201,10 +201,10 @@ public class FileHelper {
    * @param uri Uri
    * @return String
    */
-  public static String getFileName(final Uri uri) {
+  public static String getFileName(final Context ctx, final Uri uri) {
     String result = null;
     if (uri.getScheme().equals("content")) {
-      try (Cursor cursor = ApplicationCtx.getInstance().getContentResolver().query(uri, null, null, null, null)) {
+      try (Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null)) {
         if (cursor != null && cursor.moveToFirst()) {
           int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
           if(index >= 0)
@@ -230,8 +230,8 @@ public class FileHelper {
    * @param uri Uri
    * @return String
    */
-  public static Uri getParentUri(final Uri uri) {
-    final String filename = getFileName(uri);
+  public static Uri getParentUri(final Context ctx, final Uri uri) {
+    final String filename = getFileName(ctx, uri);
     final String encoded = uri.getEncodedPath();
     final int length = encoded.length() - filename.length();
     String path;

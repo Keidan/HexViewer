@@ -40,7 +40,7 @@ public class FileData {
   public FileData(final Context ctx, final Uri uri, boolean openFromAppIntent, long startOffset, long endOffset) {
     mShiftOffset = 0;
     mUri = uri;
-    mName = FileHelper.getFileName(uri);
+    mName = FileHelper.getFileName(ctx, uri);
     mStartOffset = startOffset;
     mEndOffset = endOffset;
     mOpenFromAppIntent = openFromAppIntent;

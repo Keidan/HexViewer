@@ -40,7 +40,7 @@ public class RecentlyOpened {
   }
 
   private boolean migrate() {
-    String content = mApp.getPref(mApp).getString(ApplicationCtx.CFG_RECENTLY_OPEN, "");
+    String content = mApp.getPref(mApp).getString(SettingsKeys.CFG_RECENTLY_OPEN, "");
     if (content.isEmpty() || content.startsWith(SEQUENTIAL_MASK))
       return false;
     final List<FileData> uris = new ArrayList<>();
@@ -139,7 +139,7 @@ public class RecentlyOpened {
         sb.append("|");
     }
     SharedPreferences.Editor e = mApp.getPref(mApp).edit();
-    e.putString(ApplicationCtx.CFG_RECENTLY_OPEN, sb.toString());
+    e.putString(SettingsKeys.CFG_RECENTLY_OPEN, sb.toString());
     e.apply();
   }
 
@@ -150,7 +150,7 @@ public class RecentlyOpened {
    */
   private List<FileData> load() {
     final List<FileData> uris = new ArrayList<>();
-    String content = mApp.getPref(mApp).getString(ApplicationCtx.CFG_RECENTLY_OPEN, "");
+    String content = mApp.getPref(mApp).getString(SettingsKeys.CFG_RECENTLY_OPEN, "");
     if (content.startsWith(SEQUENTIAL_MASK))
       content = content.substring(SEQUENTIAL_MASK.length());
     String[] split = content.split("\\|");
