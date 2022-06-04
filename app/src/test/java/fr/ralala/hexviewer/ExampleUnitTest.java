@@ -1,8 +1,13 @@
 package fr.ralala.hexviewer;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import fr.ralala.hexviewer.models.LineEntry;
@@ -15,7 +20,32 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@RunWith(value = Parameterized.class)
 public class ExampleUnitTest {
+  private final int mShiftOffset;
+  private final String mLine1;
+  private final String mLine2;
+
+  public ExampleUnitTest(int shiftOffset, String line1, String line2) {
+    mShiftOffset = shiftOffset;
+    mLine1 = line1;
+    mLine2 = line2;
+  }
+  // name attribute is optional, provide an unique name for test
+  // multiple parameters, uses Collection<Object[]>
+  @Parameters(name = "{index}: testFormatBufferShift({0}, {1}, {2})")
+  public static Collection<Object[]> data() {
+    return Arrays.asList(new Object[][]{
+        {0, "00 01 02 03 04 05 06 07  ........", "08                       ."},
+        {1, "   00 01 02 03 04 05 06   .......", "07 08                    .."},
+        {2, "      00 01 02 03 04 05    ......", "06 07 08                 ..."},
+        {3, "         00 01 02 03 04     .....", "05 06 07 08              ...."},
+        {4, "            00 01 02 03      ....", "04 05 06 07 08           ....."},
+        {5, "               00 01 02       ...", "03 04 05 06 07 08        ......"},
+        {6, "                  00 01        ..", "02 03 04 05 06 07 08     ......."},
+        {7, "                     00         .", "01 02 03 04 05 06 07 08  ........"}
+    });
+  }
 
   @Test
   public void testFormatBuffer1() {
@@ -254,96 +284,7 @@ public class ExampleUnitTest {
   }
 
   @Test
-  public void testFormatBuffer27() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 0);
-
-    assertEquals(2, list.size());
-    assertEquals("00 01 02 03 04 05 06 07  ........", list.get(0).getPlain());
-    assertEquals("08                       .", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer28() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 1);
-
-    assertEquals(2, list.size());
-    assertEquals("   00 01 02 03 04 05 06   .......", list.get(0).getPlain());
-    assertEquals("07 08                    ..", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer29() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 2);
-
-    assertEquals(2, list.size());
-    assertEquals("      00 01 02 03 04 05    ......", list.get(0).getPlain());
-    assertEquals("06 07 08                 ...", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer30() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 3);
-
-    assertEquals(2, list.size());
-    assertEquals("         00 01 02 03 04     .....", list.get(0).getPlain());
-    assertEquals("05 06 07 08              ....", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer31() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 4);
-
-    assertEquals(2, list.size());
-    assertEquals("            00 01 02 03      ....", list.get(0).getPlain());
-    assertEquals("04 05 06 07 08           .....", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer32() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 5);
-
-    assertEquals(2, list.size());
-    assertEquals("               00 01 02       ...", list.get(0).getPlain());
-    assertEquals("03 04 05 06 07 08        ......", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer33() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 6);
-
-    assertEquals(2, list.size());
-    assertEquals("                  00 01        ..", list.get(0).getPlain());
-    assertEquals("02 03 04 05 06 07 08     .......", list.get(1).getPlain());
-  }
-
-  @Test
-  public void testFormatBuffer34() {
-    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    List<LineEntry> list = new ArrayList<>();
-    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 7);
-
-    assertEquals(2, list.size());
-    assertEquals("                     00         .", list.get(0).getPlain());
-    assertEquals("01 02 03 04 05 06 07 08  ........", list.get(1).getPlain());
-  }
-
-
-  @Test
-  public void testFormatBuffer35() {
+  public void testFormatBuffer37() {
     byte[] bytes = {0, 1, 2, 3};
     List<LineEntry> list = new ArrayList<>();
     SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, 1);
@@ -352,4 +293,14 @@ public class ExampleUnitTest {
     assertEquals("   00 01 02 03           ....", list.get(0).getPlain());
   }
 
+  @Test
+  public void testFormatBufferShift() {
+    byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    List<LineEntry> list = new ArrayList<>();
+    SysHelper.formatBuffer(list, bytes, bytes.length, null, SysHelper.MAX_BY_ROW_8, mShiftOffset);
+
+    assertEquals(2, list.size());
+    assertEquals(mLine1, list.get(0).getPlain());
+    assertEquals(mLine2, list.get(1).getPlain());
+  }
 }
