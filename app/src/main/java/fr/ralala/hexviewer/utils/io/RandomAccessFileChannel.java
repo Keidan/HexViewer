@@ -173,11 +173,8 @@ public class RandomAccessFileChannel {
     return mFileInputStream == null ? 0 : mFileInputStream.getChannel().size();
   }
 
-  /**
-   * Closes the file.
-   */
-  public void close() {
-    if (mMode == Mode.WO && mFileOutputStream != null) {
+  private void closeOutputStreams() {
+    if(mFileOutputStream != null) {
       try {
         FileChannel fch = mFileOutputStream.getChannel();
         fch.close();
@@ -191,6 +188,9 @@ public class RandomAccessFileChannel {
       }
       mFileOutputStream = null;
     }
+  }
+
+  private void closeInputStreams() {
     if (mFileInputStream != null) {
       try {
         FileChannel fch = mFileInputStream.getChannel();
@@ -205,6 +205,16 @@ public class RandomAccessFileChannel {
       }
       mFileInputStream = null;
     }
+  }
+
+  /**
+   * Closes the file.
+   */
+  public void close() {
+    if (mMode == Mode.WO) {
+      closeOutputStreams();
+    }
+    closeInputStreams();
     if (mFdInput != null) {
       try {
         mFdInput.close();

@@ -68,17 +68,10 @@ public class MemoryMonitor implements Runnable {
         mMemoryListener.onLowAppMemory();
       if (mAutoStop)
         stop();
-      forceGC();
     }
 
     // Repeat after a delay
     if (mMemoryHandler != null)
       mMemoryHandler.postDelayed(this, mCheckFrequencyMs);
-  }
-
-  public static void forceGC() {
-    /* force cleanup */
-    System.runFinalization();
-    System.gc();
   }
 }

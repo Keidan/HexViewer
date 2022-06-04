@@ -1,11 +1,19 @@
 # HexViewer
 [![Build Status](https://github.com/Keidan/HexViewer/actions/workflows/build.yml/badge.svg)][build]
-[![CodeFactor](https://www.codefactor.io/repository/github/keidan/hexviewer/badge)][codefactor]
 [![Release](https://img.shields.io/github/v/release/Keidan/HexViewer.svg?logo=github)][releases]
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)][license]
 [![Tests](https://keidan.testspace.com/spaces/154614/badge?token=1703ccc98e9b749c34f17b691e15d58ce0789f38)][tests]
 [![Issues](https://keidan.testspace.com/spaces/154614/metrics/192721/badge?token=5f710af9a9e6285910122d933e899b47c31eeb22)][issues]
 [![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/svg-badge.svg)][weblate]
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=bugs)][sonarcloud]
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=code_smells)][sonarcloud]
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=duplicated_lines_density)][sonarcloud]
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=vulnerabilities)][sonarcloud]
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=sqale_rating)][sonarcloud]
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=reliability_rating)][sonarcloud]
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=security_rating)][sonarcloud]
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=ncloc)][sonarcloud]
+
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
@@ -97,8 +105,8 @@ The current status of the translations is as follows:
 
 [build]: https://github.com/Keidan/HexViewer/actions
 [releases]: https://github.com/Keidan/HexViewer/releases
-[codefactor]: https://www.codefactor.io/repository/github/keidan/hexviewer
 [license]: https://github.com/Keidan/HexViewer/blob/master/license.txt
 [tests]: https://keidan.testspace.com/spaces/154614?utm_campaign=badge&utm_medium=referral&utm_source=test
 [issues]: https://keidan.testspace.com/spaces/154614/current/Issues?utm_campaign=badge&utm_medium=referral&utm_source=issues
 [weblate]: https://hosted.weblate.org/engage/hexviewer/
+[sonarcloud]: https://sonarcloud.io/summary/new_code?id=Keidan_HexViewer

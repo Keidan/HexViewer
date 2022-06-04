@@ -603,7 +603,6 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPayloadHexHelper.getAdapter().clear();
       cancelSearch();
       findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
-      MemoryMonitor.forceGC(); /* force GC before */
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
