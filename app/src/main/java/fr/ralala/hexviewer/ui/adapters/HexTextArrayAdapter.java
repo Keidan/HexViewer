@@ -202,7 +202,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     }
   }
   private int getContentTextColor(final LineEntry fd, final int position) {
-    return fd.isUpdated() ? R.color.colorTextUpdated : isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor;
+    if(fd.isUpdated())
+      return R.color.colorTextUpdated;
+    return isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor;
   }
   private int getContentBackgroundColor(final int position) {
     return isSelected(position) ? R.color.colorAccent : R.color.windowBackground;
