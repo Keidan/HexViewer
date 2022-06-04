@@ -39,6 +39,8 @@ android {
             property "sonar.projectKey", "Keidan_HexViewer"
             property "sonar.organization", "keidan"
             property "sonar.host.url", "https://sonarcloud.io"
+            property 'sonar.projectName', 'HexViewer'
+            property 'sonar.coverage.exclusions', "**/**"
         }
     }
 }
