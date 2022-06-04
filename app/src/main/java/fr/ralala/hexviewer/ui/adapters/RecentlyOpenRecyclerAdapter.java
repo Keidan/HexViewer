@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -113,7 +114,8 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
         index.setOnClickListener(l);
         detail.setOnClickListener(l);
       }
-      index.setText(String.format("%0" + (String.valueOf(ud.getMaxLength()).length() + 1) + "d - ", ud.getIndex()));
+      final String fmt = "%0" + (String.valueOf(ud.getMaxLength()).length() + 1) + "d - ";
+      index.setText(String.format(Locale.US, fmt, ud.getIndex()));
       name.setText(ud.getFd().getName());
       detail.setText(ud.getDetail());
       detail.setTextColor(ContextCompat.getColor(ud.getCtx(), ud.isError() ? R.color.colorResultError : R.color.textColor));
