@@ -35,7 +35,7 @@ public class FileHelper {
 
   private FileHelper() {
   }
-  
+
   /**
    * Prepares the intent for the directory opening mode.
    *
@@ -81,19 +81,23 @@ public class FileHelper {
       final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
       c.getContentResolver().takePersistableUriPermission(uri, takeFlags);
       if (!fromDir) {
-        Uri dir = getParentUri(c, uri);
-        if (!hasUriPermission(c, dir, false))
-          try {
-            c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-          } catch (Exception e) {
-            Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
-          }
+        takUriPermissionsForDir(c, uri);
       }
       success = true;
     } catch (Exception e) {
       Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
     }
     return success;
+  }
+
+  private static void takUriPermissionsForDir(final Context c, final Uri uri) {
+    Uri dir = getParentUri(c, uri);
+    if (!hasUriPermission(c, dir, false))
+      try {
+        c.getContentResolver().takePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+      } catch (Exception e) {
+        Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
+      }
   }
 
   /**
@@ -103,26 +107,25 @@ public class FileHelper {
    * @param uri Uri
    */
   public static void releaseUriPermissions(final Context c, final Uri uri) {
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
-      if (hasUriPermission(c, uri, true))
-        try {
-          final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-          c.getContentResolver().releasePersistableUriPermission(uri, takeFlags);
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q && hasUriPermission(c, uri, true))
+      try {
+        final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+        c.getContentResolver().releasePersistableUriPermission(uri, takeFlags);
 
-          Uri dir = getParentUri(c, uri);
-          final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
-          int found = 0;
-          for (UriPermission up : list) {
-            if (up.getUri().equals(dir)) {
-              found++;
-            }
+        Uri dir = getParentUri(c, uri);
+        final List<UriPermission> list = c.getContentResolver().getPersistedUriPermissions();
+        int found = 0;
+        for (UriPermission up : list) {
+          if (up.getUri().equals(dir)) {
+            found++;
           }
-          if (found == 1) {
-            c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-          }
-        } catch (Exception e) {
-          Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
         }
+        if (found == 1) {
+          c.getContentResolver().releasePersistableUriPermission(dir, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+      } catch (Exception e) {
+        Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
+      }
   }
 
   /**
