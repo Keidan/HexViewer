@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**

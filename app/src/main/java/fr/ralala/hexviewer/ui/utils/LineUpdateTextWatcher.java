@@ -109,10 +109,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
       mResultAdapter.clear();
       for (LineEntry ld : li)
         mResultAdapter.add(ld.toString());
-      mResultAdapter.getListView().post(() -> {
+      mResultAdapter.getListView().post(() ->
         // Select the last row so it will scroll into view...
-        mResultAdapter.getListView().setSelection(mResultAdapter.getCount() - 1);
-      });
+        mResultAdapter.getListView().setSelection(mResultAdapter.getCount() - 1)
+      );
     }
     updateHelperText(validate, validated);
   }

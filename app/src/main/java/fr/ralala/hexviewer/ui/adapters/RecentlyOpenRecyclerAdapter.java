@@ -17,10 +17,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.UriData;
 import fr.ralala.hexviewer.ui.adapters.holders.HolderRecently;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -106,7 +104,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
       TextView index = viewHolder.getIndex();
       TextView detail = viewHolder.getDetail();
       if (mListener != null) {
-        final View.OnClickListener l = (v) -> {
+        final View.OnClickListener l = v -> {
           if (ud.isClickable())
             mListener.onClick(ud);
         };

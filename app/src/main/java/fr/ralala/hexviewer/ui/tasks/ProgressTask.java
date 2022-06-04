@@ -35,7 +35,7 @@ public abstract class ProgressTask<C, P, T> extends TaskRunner<C, P, Long, T> {
     final View v = activity.getLayoutInflater().inflate(R.layout.progress_dialog, null);
     mTextView = v.findViewById(R.id.text);
     mTextView.setText(loading ? R.string.loading : R.string.saving);
-    v.findViewById(R.id.cancel).setOnClickListener((view) -> {
+    v.findViewById(R.id.cancel).setOnClickListener(view -> {
       cancel();
       mDialog.dismiss();
     });

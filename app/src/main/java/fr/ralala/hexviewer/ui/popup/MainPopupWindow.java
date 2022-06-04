@@ -76,7 +76,7 @@ public class MainPopupWindow {
     FrameLayout containerUndo = popupView.findViewById(R.id.containerUndo);
     mGoTo = popupView.findViewById(R.id.action_go_to);
 
-    View.OnClickListener click = (v) -> {
+    View.OnClickListener click = v -> {
       mPopup.dismiss();
       if (clickListener != null)
         clickListener.onClick(v.getId());

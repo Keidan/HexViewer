@@ -67,7 +67,7 @@ public class SaveDialog {
       et.setText(defaultValue);
       et.addTextChangedListener(UIHelper.getResetLayoutWatcher(layout, false));
     }
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) ->
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
         positiveClick.onClick(dialog, et, layout));
     return dialog;
   }

@@ -63,7 +63,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
    */
   @SuppressLint("InflateParams")
   protected void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated<Integer> iv) {
-    displayDialog(title, defaultValue, minValue, maxValue, (v) -> iv.onValidated(v.intValue()), false);
+    displayDialog(title, defaultValue, minValue, maxValue, v -> iv.onValidated(v.intValue()), false);
   }
 
   /**
@@ -112,13 +112,13 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     }
     final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v) -> {
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
       if (et != null && validInput(et, defaultValue, minValue, maxValue, iv, decimal)) {
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         dialog.dismiss();
       }
     });
-    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> {
+    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
       if (et != null)
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
       dialog.dismiss();

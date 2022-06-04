@@ -40,7 +40,6 @@ import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.io.FileHelper;
-import fr.ralala.hexviewer.utils.MemoryMonitor;
 
 /**
  * ******************************************************************************
@@ -89,11 +88,11 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     mIdleView = findViewById(R.id.idleView);
     mIdleView.setVisibility(View.VISIBLE);
 
-    findViewById(R.id.buttonOpenFile).setOnClickListener((v) ->
+    findViewById(R.id.buttonOpenFile).setOnClickListener(v ->
         onPopupItemClick(R.id.action_open));
-    findViewById(R.id.buttonPartialOpenFile).setOnClickListener((v) ->
+    findViewById(R.id.buttonPartialOpenFile).setOnClickListener(v ->
         onPopupItemClick(R.id.action_open_sequential));
-    findViewById(R.id.buttonRecentlyOpen).setOnClickListener((v) ->
+    findViewById(R.id.buttonRecentlyOpen).setOnClickListener(v ->
         onPopupItemClick(R.id.action_recently_open));
     findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
     mPayloadHexHelper = new PayloadHexHelper();

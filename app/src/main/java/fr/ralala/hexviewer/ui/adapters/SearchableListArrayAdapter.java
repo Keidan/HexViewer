@@ -75,17 +75,6 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   }
 
   /**
-   * Returns the position of the specified item in the array.
-   *
-   * @param item The item to retrieve the position of. This value may be null.
-   * @return The position of the specified item.
-   */
-  @Override
-  public int getPosition(LineEntry item) {
-    return super.getPosition(item);
-  }
-
-  /**
    * How many items are in the data set represented by this Adapter.
    *
    * @return Count of items.

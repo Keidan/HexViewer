@@ -113,7 +113,7 @@ public class LauncherSave {
       final DocumentFile f = file;
       UIHelper.showConfirmDialog(mActivity, mActivity.getString(R.string.action_save_title),
           mActivity.getString(R.string.confirm_overwrite),
-          (view) -> {
+          view -> {
             FileData fd = new FileData(mActivity, f.getUri(), false);
             new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(fd,
                 mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));

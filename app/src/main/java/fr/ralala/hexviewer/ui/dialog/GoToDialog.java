@@ -115,7 +115,7 @@ public class GoToDialog implements View.OnClickListener {
       mEt.requestFocus();
     }
     mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this);
-    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener((v) -> mDialog.dismiss());
+    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> mDialog.dismiss());
     return mDialog;
   }
 

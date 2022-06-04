@@ -89,7 +89,7 @@ public class UIHelper {
   public static int getScreenWidth(final Context context) {
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
     /* The current view has a padding of 1dp */
-    return (int) ((float) displayMetrics.widthPixels - getSize(context, TypedValue.COMPLEX_UNIT_DIP, 1.0f));
+    return (int) (displayMetrics.widthPixels - getSize(context, TypedValue.COMPLEX_UNIT_DIP, 1.0f));
   }
 
   /**
@@ -232,7 +232,7 @@ public class UIHelper {
           Intent.createChooser(FileHelper.prepareForOpenFile(), c.getString(R.string.select_file_to_open)));
     } catch (android.content.ActivityNotFoundException ex) {
       Snackbar customSnackBar = Snackbar.make(snackBarLayout, c.getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG);
-      customSnackBar.setAction(c.getString(R.string.install), (v) -> {
+      customSnackBar.setAction(c.getString(R.string.install), v -> {
         final String search = c.getString(R.string.file_manager_keyword);
         try {
           c.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=" + search + "&c=apps")));

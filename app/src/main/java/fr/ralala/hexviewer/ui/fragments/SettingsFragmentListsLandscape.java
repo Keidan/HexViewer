@@ -116,13 +116,13 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
           mApp.getListSettingsHexLandscape().getRowHeight(),
           MIN_HEX_ROW_HEIGHT,
           MAX_HEX_ROW_HEIGHT,
-          (n) -> mApp.getListSettingsHexLandscape().setRowHeight(n));
+          n -> mApp.getListSettingsHexLandscape().setRowHeight(n));
     } else if (preference.equals(mHexFontSizeLandscape)) {
       displayDialog(mHexFontSizeLandscape.getTitle(),
           mApp.getListSettingsHexLandscape().getFontSize(),
           MIN_HEX_FONT_SIZE,
           MAX_HEX_FONT_SIZE,
-          (n) -> mApp.getListSettingsHexLandscape().setFontSize(n), true);
+          n -> mApp.getListSettingsHexLandscape().setFontSize(n), true);
     } else if (preference.equals(mHexRowHeightAutoLineNumbersLandscape)) {
       mHexRowHeightLineNumbersLandscape.setEnabled(!mHexRowHeightAutoLineNumbersLandscape.isChecked());
     } else if (preference.equals(mHexRowHeightLineNumbersLandscape)) {
@@ -130,13 +130,13 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
           mApp.getListSettingsHexLineNumbersLandscape().getRowHeight(),
           MIN_HEX_ROW_HEIGHT,
           MAX_HEX_ROW_HEIGHT,
-          (n) -> mApp.getListSettingsHexLineNumbersLandscape().setRowHeight(n));
+          n -> mApp.getListSettingsHexLineNumbersLandscape().setRowHeight(n));
     } else if (preference.equals(mHexFontSizeLineNumbersLandscape)) {
       displayDialog(mHexFontSizeLineNumbersLandscape.getTitle(),
           mApp.getListSettingsHexLineNumbersLandscape().getFontSize(),
           MIN_HEX_FONT_SIZE,
           MAX_HEX_FONT_SIZE,
-          (n) -> mApp.getListSettingsHexLineNumbersLandscape().setFontSize(n), true);
+          n -> mApp.getListSettingsHexLineNumbersLandscape().setFontSize(n), true);
     } else if (preference.equals(mPlainRowHeightAutoLandscape)) {
       mPlainRowHeightLandscape.setEnabled(!mPlainRowHeightAutoLandscape.isChecked());
     } else if (preference.equals(mPlainRowHeightLandscape)) {
@@ -144,13 +144,13 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
           mApp.getListSettingsPlainLandscape().getRowHeight(),
           MIN_PLAIN_ROW_HEIGHT,
           MAX_PLAIN_ROW_HEIGHT,
-          (n) -> mApp.getListSettingsPlainLandscape().setRowHeight(n));
+          n -> mApp.getListSettingsPlainLandscape().setRowHeight(n));
     } else if (preference.equals(mPlainFontSizeLandscape)) {
       displayDialog(mPlainFontSizeLandscape.getTitle(),
           mApp.getListSettingsPlainLandscape().getFontSize(),
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
-          (n) -> mApp.getListSettingsPlainLandscape().setFontSize(n), true);
+          n -> mApp.getListSettingsPlainLandscape().setFontSize(n), true);
     } else if (preference.equals(mLineEditRowHeightAutoLandscape)) {
       mLineEditRowHeightLandscape.setEnabled(!mLineEditRowHeightAutoLandscape.isChecked());
     } else if (preference.equals(mLineEditRowHeightLandscape)) {
@@ -158,13 +158,13 @@ public class SettingsFragmentListsLandscape extends AbstractSettingsFragment imp
           mApp.getListSettingsLineEditLandscape().getRowHeight(),
           MIN_PLAIN_ROW_HEIGHT,
           MAX_PLAIN_ROW_HEIGHT,
-          (n) -> mApp.getListSettingsLineEditLandscape().setRowHeight(n));
+          n -> mApp.getListSettingsLineEditLandscape().setRowHeight(n));
     } else if (preference.equals(mLineEditFontSizeLandscape)) {
       displayDialog(mLineEditFontSizeLandscape.getTitle(),
           mApp.getListSettingsLineEditLandscape().getFontSize(),
           MIN_PLAIN_FONT_SIZE,
           MAX_PLAIN_FONT_SIZE,
-          (n) -> mApp.getListSettingsLineEditLandscape().setFontSize(n), true);
+          n -> mApp.getListSettingsLineEditLandscape().setFontSize(n), true);
     }
     return false;
   }
