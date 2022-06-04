@@ -11,10 +11,10 @@
     <string name="arrays_languages_entries_french">Fransızca</string>
     <string name="arrays_languages_entries_russian">Rusça</string>
     <string name="arrays_languages_entries_turkish">Türkçe</string>
-    <string name="arrays_languages_entries_norwegian_bokmal">Norveç Bokmål</string>
+    <string name="arrays_languages_entries_norwegian_bokmal">Bokmål Norveççe</string>
     <string name="arrays_languages_entries_portuguese_brazil">Portekizce (Brezilya)</string>
     <string name="cancel">İptal</string>
-    <string name="on_double_back_exit_text">Çıkmak için bir kez daha basın.</string>
+    <string name="on_double_back_exit_text">Çıkmak için tekrar basın.</string>
     <string name="update_hint_hex">Metin</string>
     <string name="open_a_file_before">Önce bir dosya açın!</string>
     <string name="error_no_file_manager">Lütfen bir dosya yöneticisi kurun.</string>
@@ -98,7 +98,7 @@
     <string name="memory_threshold_title">Bellek eşiği</string>
     <string name="error_not_available">Yok</string>
     <string name="settings_pref_title_license">Lisans</string>
-    <string name="install">KUR</string>
+    <string name="install">Kur</string>
     <string name="settings_category_hex_line_numbers">Metni onaltılılık olarak görüntüle (satır numaralarıyla)</string>
     <string name="settings_pref_title_language">Dil</string>
     <string name="settings_pref_summary_language">Uygulamanın dilini değiştirin.</string>
