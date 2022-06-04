@@ -132,7 +132,6 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    */
   @Override
   public Result doInBackground(final ContentResolver contentResolver, final Request request) {
-    //final Activity activity = mActivityRef.get();
     final Result result = new Result();
     if (request == null) {
       result.exception = "Invalid param!";

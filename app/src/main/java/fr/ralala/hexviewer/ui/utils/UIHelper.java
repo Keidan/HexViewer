@@ -45,6 +45,8 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  * ******************************************************************************
  */
 public class UIHelper {
+  private UIHelper() {
+  }
 
   /**
    * Hides the soft keyboard.

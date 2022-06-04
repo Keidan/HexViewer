@@ -42,7 +42,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
   protected final AppCompatActivity mActivity;
   protected final ApplicationCtx mApp;
 
-  public AbstractSettingsFragment(AppCompatActivity owner) {
+  protected AbstractSettingsFragment(AppCompatActivity owner) {
     mActivity = owner;
     mApp = (ApplicationCtx)owner.getApplicationContext();
   }

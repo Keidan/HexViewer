@@ -106,9 +106,7 @@ public class MainPopupWindow {
    */
   public void show(View more) {
     if (mPopup != null) {
-
       mPopup.showAtLocation(more, Gravity.TOP | Gravity.END, 12, 120);
-      //mPopup.showAsDropDown(findViewById(R.id.action_more));
     }
   }
 

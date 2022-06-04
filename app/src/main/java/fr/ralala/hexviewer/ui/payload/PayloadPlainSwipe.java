@@ -58,10 +58,12 @@ public class PayloadPlainSwipe {
         android.R.color.holo_red_light);
     mPayloadPlain.setVisibility(View.GONE);
 
+    mUserConfigPortrait = new UserConfigPortrait(activity, false);
+    mUserConfigLandscape = new UserConfigLandscape(activity, false);
     mAdapterPlain = new PlainTextListArrayAdapter(activity,
         new ArrayList<>(),
-        mUserConfigPortrait = new UserConfigPortrait(activity, false),
-        mUserConfigLandscape = new UserConfigLandscape(activity, false));
+        mUserConfigPortrait,
+        mUserConfigLandscape);
     mPayloadPlain.setAdapter(mAdapterPlain);
   }
 

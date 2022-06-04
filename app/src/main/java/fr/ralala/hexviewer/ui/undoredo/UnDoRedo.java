@@ -3,9 +3,10 @@ package fr.ralala.hexviewer.ui.undoredo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import androidx.core.content.ContextCompat;
 
@@ -33,15 +34,15 @@ public class UnDoRedo {
   private static final int CONTROL_REDO = 1;
   private final MainActivity mActivity;
   private final Control[] mControls;
-  private final Stack<ICommand> mUndo;
-  private final Stack<ICommand> mRedo;
+  private final Deque<ICommand> mUndo;
+  private final Deque<ICommand> mRedo;
   private int mReferenceIndex;
 
   public UnDoRedo(MainActivity activity) {
     mActivity = activity;
     mControls = new Control[2];
-    mUndo = new Stack<>();
-    mRedo = new Stack<>();
+    mUndo = new ArrayDeque<>();
+    mRedo = new ArrayDeque<>();
   }
 
   /**

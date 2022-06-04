@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -440,7 +441,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       /* hex to long */
       try {
         return String.valueOf(Long.parseLong(val, 16));
-      } catch (Exception ignored) {
+      } catch (Exception ex) {
+        Log.e(getClass().getSimpleName(), ex.getMessage(), ex);
       }
     } else {
       /* long to hex */
@@ -452,7 +454,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       if (value != -1)
         try {
           return Long.toHexString(Long.parseLong(val)).toUpperCase();
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+          Log.e(getClass().getSimpleName(), ex.getMessage(), ex);
         }
     }
     return "";

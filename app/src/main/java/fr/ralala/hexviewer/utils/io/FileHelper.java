@@ -33,6 +33,9 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class FileHelper {
   private static final String EXCEPTION_TAG = "Exception: ";
 
+  private FileHelper() {
+  }
+  
   /**
    * Prepares the intent for the directory opening mode.
    *

@@ -41,7 +41,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   protected final UserConfig mUserConfigLandscape;
   private final LineEntries mLineEntries;
 
-  public SearchableListArrayAdapter(final Context context,
+  protected SearchableListArrayAdapter(final Context context,
                                     final int layoutId,
                                     final List<LineEntry> objects,
                                     UserConfig userConfigPortrait,

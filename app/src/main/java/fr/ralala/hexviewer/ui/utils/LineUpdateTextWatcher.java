@@ -313,9 +313,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   private int evaluateLocalStart(int start) {
     int localStart = start;
-    if (mBetweenDigits)
-      localStart = mApp.isOverwrite() ? Math.max(0, localStart - 1) :
-          (start == 0 ? 0 : localStart);
+    if (mBetweenDigits && mApp.isOverwrite()) {
+      localStart = Math.max(0, localStart - 1);
+    }
     return localStart;
   }
 

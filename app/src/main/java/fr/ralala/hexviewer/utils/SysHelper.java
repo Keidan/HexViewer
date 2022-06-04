@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.math.RoundingMode;
@@ -42,6 +43,8 @@ public class SysHelper {
   private static final String FORMAT_INT = "%d %s%s";
   private static final String FORMAT_STR = "%s %s%s";
 
+  private SysHelper() {
+  }
   /**
    * Sorts keys.
    *
@@ -162,7 +165,8 @@ public class SysHelper {
     List<LineEntry> lines = new ArrayList<>();
     try {
       formatBuffer(lines, buffer, buffer.length, cancel, maxByRow, shiftOffset);
-    } catch (IllegalArgumentException ignored) {
+    } catch (IllegalArgumentException ex) {
+      Log.e(SysHelper.class.getSimpleName(), ex.getMessage(), ex);
     }
     return lines;
   }

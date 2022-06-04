@@ -169,7 +169,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
    */
   @Override
   public Result doInBackground(ContentResolver contentResolver, FileData fd) {
-    //final Activity activity = mActivityRef.get();
     final Result result = new Result();
     final List<LineEntry> list = new ArrayList<>();
     try {
