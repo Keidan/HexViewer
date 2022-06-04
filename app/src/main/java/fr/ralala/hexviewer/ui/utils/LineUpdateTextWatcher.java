@@ -440,6 +440,19 @@ public class LineUpdateTextWatcher implements TextWatcher {
       mNewString = "";
   }
 
+  private void initializeStart(int start) {
+    mStart = start < 0 ? 0 : start + 1;
+  }
+
+  private void fillNewString(final String notChangedEnd, String notChangedStart, final int start, final int before, final int count) {
+    CharSequence newChange = mNewString.substring(Math.max(0, start), Math.min(start + count, mNewString.length())).replace(" ", "");
+    int nbChars = newChange.length() - Math.max(0, before);
+    if (nbChars < 0) nbChars = 0;
+    if (nbChars > notChangedEnd.length())
+      mNewString = notChangedStart + newChange;
+    else
+      mNewString = notChangedStart + newChange + (!notChangedEnd.isEmpty() ? notChangedEnd.substring(nbChars) : "");
+  }
   /**
    * Management of text insertion in Overwrite mode without the SmartInput option.
    *
@@ -449,7 +462,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
    */
   private void processOverwriteWithoutSmartInput(int start, int before, int count) {
     if (!mRemove) { /* remove */
-      mStart = start < 0 ? 0 : start + 1;
+      initializeStart(start);
 
       final String notChangedStart = mNewString.substring(0, start).replace(" ", "");
       String notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
@@ -457,14 +470,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       if (mBetweenDigits)
         mStartOffsetForOverwrite++;
       notChangedEnd = notChangedEnd.replace(" ", "");
-
-      CharSequence newChange = mNewString.substring(Math.max(0, start), Math.min(start + count, mNewString.length())).replace(" ", "");
-      int nbChars = newChange.length() - Math.max(0, before);
-      if (nbChars < 0) nbChars = 0;
-      if (nbChars > notChangedEnd.length())
-        mNewString = notChangedStart + newChange;
-      else
-        mNewString = notChangedStart + newChange + (!notChangedEnd.isEmpty() ? notChangedEnd.substring(nbChars) : "");
+      fillNewString(notChangedEnd, notChangedStart, start, before, count);
       formatNewString();
     }
   }
