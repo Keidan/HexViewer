@@ -47,7 +47,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
+    super.attachBaseContext(((ApplicationCtx) base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -58,7 +58,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mApp = (ApplicationCtx)getApplicationContext();
+    mApp = (ApplicationCtx) getApplicationContext();
 
     /* sanity check */
     String[] languages = getResources().getStringArray(R.array.languages_values);
@@ -75,11 +75,9 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
 
     /* permissions */
     boolean requestPermissions = true;
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-      if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-          ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-        requestPermissions = false;
-      }
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+      requestPermissions = false;
     }
     if (requestPermissions)
       ActivityCompat.requestPermissions(this, new String[]{

@@ -67,7 +67,8 @@ public class ApplicationCtx extends Application {
         SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA,
         SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT,
         SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO,
-        SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE,
+        SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE);
+    mListSettingsHexPortrait.setDefaults(
         R.string.default_hex_display_data_portrait,
         R.string.default_hex_row_height_portrait, R.string.default_hex_row_height_auto_portrait,
         R.string.default_hex_font_size_portrait);
@@ -75,7 +76,8 @@ public class ApplicationCtx extends Application {
         SettingsKeys.CFG_LANDSCAPE_HEX_DISPLAY_DATA,
         SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT,
         SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO,
-        SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE,
+        SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE);
+    mListSettingsHexLandscape.setDefaults(
         R.string.default_hex_display_data_landscape,
         R.string.default_hex_row_height_landscape, R.string.default_hex_row_height_auto_landscape,
         R.string.default_hex_font_size_landscape);
@@ -84,7 +86,8 @@ public class ApplicationCtx extends Application {
         SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA_LINE_NUMBERS,
         SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_LINE_NUMBERS,
         SettingsKeys.CFG_PORTRAIT_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS,
-        SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS,
+        SettingsKeys.CFG_PORTRAIT_HEX_FONT_SIZE_LINE_NUMBERS);
+    mListSettingsHexLineNumbersPortrait.setDefaults(
         R.string.default_hex_display_data_portrait_lines_numbers,
         R.string.default_hex_row_height_portrait_lines_numbers, R.string.default_hex_row_height_auto_portrait_lines_numbers,
         R.string.default_hex_font_size_portrait_lines_numbers);
@@ -92,7 +95,8 @@ public class ApplicationCtx extends Application {
         SettingsKeys.CFG_LANDSCAPE_HEX_DISPLAY_DATA_LINE_NUMBERS,
         SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_LINE_NUMBERS,
         SettingsKeys.CFG_LANDSCAPE_HEX_ROW_HEIGHT_AUTO_LINE_NUMBERS,
-        SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS,
+        SettingsKeys.CFG_LANDSCAPE_HEX_FONT_SIZE_LINE_NUMBERS);
+    mListSettingsHexLineNumbersLandscape.setDefaults(
         R.string.default_hex_display_data_landscape_lines_numbers,
         R.string.default_hex_row_height_landscape_lines_numbers, R.string.default_hex_row_height_auto_landscape_lines_numbers,
         R.string.default_hex_font_size_landscape_lines_numbers);
@@ -101,14 +105,16 @@ public class ApplicationCtx extends Application {
         null,
         SettingsKeys.CFG_PORTRAIT_PLAIN_ROW_HEIGHT,
         SettingsKeys.CFG_PORTRAIT_PLAIN_ROW_HEIGHT_AUTO,
-        SettingsKeys.CFG_PORTRAIT_PLAIN_FONT_SIZE,
+        SettingsKeys.CFG_PORTRAIT_PLAIN_FONT_SIZE);
+    mListSettingsPlainPortrait.setDefaults(
         0, R.string.default_plain_row_height_portrait, R.string.default_plain_row_height_auto_portrait,
         R.string.default_plain_font_size_portrait);
     mListSettingsPlainLandscape = new ListSettings(this,
         null,
         SettingsKeys.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT,
         SettingsKeys.CFG_LANDSCAPE_PLAIN_ROW_HEIGHT_AUTO,
-        SettingsKeys.CFG_LANDSCAPE_PLAIN_FONT_SIZE,
+        SettingsKeys.CFG_LANDSCAPE_PLAIN_FONT_SIZE);
+    mListSettingsPlainLandscape.setDefaults(
         0, R.string.default_plain_row_height_landscape, R.string.default_plain_row_height_auto_landscape,
         R.string.default_plain_font_size_landscape);
 
@@ -116,14 +122,16 @@ public class ApplicationCtx extends Application {
         null,
         SettingsKeys.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT,
         SettingsKeys.CFG_PORTRAIT_LINE_EDIT_ROW_HEIGHT_AUTO,
-        SettingsKeys.CFG_PORTRAIT_LINE_EDIT_FONT_SIZE,
+        SettingsKeys.CFG_PORTRAIT_LINE_EDIT_FONT_SIZE);
+    mListSettingsLineEditPortrait.setDefaults(
         0, R.string.default_line_edit_row_height_portrait, R.string.default_line_edit_row_height_auto_portrait,
         R.string.default_line_edit_font_size_portrait);
     mListSettingsLineEditLandscape = new ListSettings(this,
         null,
         SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT,
         SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_ROW_HEIGHT_AUTO,
-        SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE,
+        SettingsKeys.CFG_LANDSCAPE_LINE_EDIT_FONT_SIZE);
+    mListSettingsLineEditLandscape.setDefaults(
         0, R.string.default_line_edit_row_height_landscape, R.string.default_line_edit_row_height_auto_landscape,
         R.string.default_line_edit_font_size_landscape);
     /* EmojiCompat */

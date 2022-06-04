@@ -3,6 +3,7 @@ package fr.ralala.hexviewer.models;
 import android.content.SharedPreferences;
 
 import androidx.annotation.StringRes;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 
 /**
@@ -22,27 +23,36 @@ public class ListSettings {
   private final String mKeyRowHeight;
   private final String mKeyRowHeightAuto;
   private final String mKeyFontSize;
-  private final String mDefaultRowHeight;
-  private final boolean mDefaultDisplayDataColumn;
-  private final boolean mDefaultRowHeightAuto;
-  private final String mDefaultFontSize;
+  private String mDefaultRowHeight = "100";
+  private boolean mDefaultDisplayDataColumn = true;
+  private boolean mDefaultRowHeightAuto = true;
+  private String mDefaultFontSize = "16";
   private final ApplicationCtx mApp;
 
   public ListSettings(final ApplicationCtx app,
                       final String keyDisplayDataColumn,
-                      final String keyRowHeight, String keyRowHeightAuto, String keyFontSize,
-                      final @StringRes int defaultDisplayDataColumn,
-                      final @StringRes int defaultRowHeight,
-                      final @StringRes int defaultRowHeightAuto,
-                      final @StringRes int defaultFontSize) {
+                      final String keyRowHeight, String keyRowHeightAuto, String keyFontSize
+  ) {
     mApp = app;
 
     mKeyDisplayDataColumn = keyDisplayDataColumn;
     mKeyRowHeight = keyRowHeight;
     mKeyRowHeightAuto = keyRowHeightAuto;
     mKeyFontSize = keyFontSize;
+  }
 
-
+  /**
+   * Sets the default values.
+   *
+   * @param defaultDisplayDataColumn Xml rss
+   * @param defaultRowHeight         Xml rss
+   * @param defaultRowHeightAuto     Xml rss
+   * @param defaultFontSize          Xml rss
+   */
+  public void setDefaults(final @StringRes int defaultDisplayDataColumn,
+                          final @StringRes int defaultRowHeight,
+                          final @StringRes int defaultRowHeightAuto,
+                          final @StringRes int defaultFontSize) {
     mDefaultDisplayDataColumn = defaultDisplayDataColumn == 0 || Boolean.parseBoolean(mApp.getString(defaultDisplayDataColumn));
     mDefaultRowHeightAuto = Boolean.parseBoolean(mApp.getString(defaultRowHeightAuto));
     mDefaultRowHeight = mApp.getString(defaultRowHeight);
@@ -56,7 +66,7 @@ public class ListSettings {
    */
   public boolean isDisplayDataColumn() {
     try {
-      if(mKeyDisplayDataColumn == null)
+      if (mKeyDisplayDataColumn == null)
         return true;
       return mApp.getPref(mApp).getBoolean(mKeyDisplayDataColumn, mDefaultDisplayDataColumn);
     } catch (Exception ignore) {

@@ -51,10 +51,16 @@ public class LauncherLineUpdate {
    * @param position The position in the list view.
    */
   public void startActivity(final byte[] texts, final int position, final int nbLines, final int shiftOffset, final long startRow) {
-    LineUpdateActivity.startActivity(mActivity, activityResultLauncherLineUpdate, texts,
-        mActivity.getFileData().getName(), position, nbLines, mActivity.getUnDoRedo().isChanged(),
-        mActivity.getFileData().isSequential(),
-        shiftOffset, startRow);
+    Intent intent = new Intent(mActivity, LineUpdateActivity.class);
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_TEXTS, texts);
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_POSITION, position);
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_NB_LINES, nbLines);
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_FILENAME, mActivity.getFileData().getName());
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_CHANGE, mActivity.getUnDoRedo().isChanged());
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_SEQUENTIAL, mActivity.getFileData().isSequential());
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_SHIFT_OFFSET, shiftOffset);
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_START_OFFSET, startRow);
+    activityResultLauncherLineUpdate.launch(intent);
   }
 
   /**

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,14 +50,14 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class LineUpdateActivity extends AppCompatActivity implements View.OnClickListener {
-  private static final String ACTIVITY_EXTRA_TEXTS = "ACTIVITY_EXTRA_TEXTS";
-  private static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
-  private static final String ACTIVITY_EXTRA_NB_LINES = "ACTIVITY_EXTRA_NB_LINES";
-  private static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
-  private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
-  private static final String ACTIVITY_EXTRA_SEQUENTIAL = "ACTIVITY_EXTRA_SEQUENTIAL";
-  private static final String ACTIVITY_EXTRA_SHIFT_OFFSET = "ACTIVITY_EXTRA_SHIFT_OFFSET";
-  private static final String ACTIVITY_EXTRA_START_OFFSET = "ACTIVITY_EXTRA_START_OFFSET";
+  public static final String ACTIVITY_EXTRA_TEXTS = "ACTIVITY_EXTRA_TEXTS";
+  public static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
+  public static final String ACTIVITY_EXTRA_NB_LINES = "ACTIVITY_EXTRA_NB_LINES";
+  public static final String ACTIVITY_EXTRA_FILENAME = "ACTIVITY_EXTRA_FILENAME";
+  public static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
+  public static final String ACTIVITY_EXTRA_SEQUENTIAL = "ACTIVITY_EXTRA_SEQUENTIAL";
+  public static final String ACTIVITY_EXTRA_SHIFT_OFFSET = "ACTIVITY_EXTRA_SHIFT_OFFSET";
+  public static final String ACTIVITY_EXTRA_START_OFFSET = "ACTIVITY_EXTRA_START_OFFSET";
   public static final String RESULT_REFERENCE_STRING = "RESULT_REFERENCE_STRING";
   public static final String RESULT_NEW_STRING = "RESULT_NEW_STRING";
   public static final String RESULT_POSITION = "RESULT_POSITION";
@@ -82,37 +81,6 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private LineUpdateHexArrayAdapter mAdapterSource;
   private LineUpdateHexArrayAdapter mAdapterResult;
   private MemoryMonitor mMemoryMonitor;
-
-  /**
-   * Starts an activity.
-   *
-   * @param c                      Android context.
-   * @param activityResultLauncher Activity Result Launcher.
-   * @param texts                  The texts.
-   * @param file                   The file name.
-   * @param position               The item position.
-   * @param nbLines                The number of lines.
-   * @param change                 A change is detected?
-   */
-  public static void startActivity(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher,
-                                   final byte[] texts, final String file,
-                                   final int position,
-                                   final int nbLines,
-                                   final boolean change,
-                                   final boolean sequential,
-                                   final int shiftOffset,
-                                   final long startOffset) {
-    Intent intent = new Intent(c, LineUpdateActivity.class);
-    intent.putExtra(ACTIVITY_EXTRA_TEXTS, texts);
-    intent.putExtra(ACTIVITY_EXTRA_POSITION, position);
-    intent.putExtra(ACTIVITY_EXTRA_NB_LINES, nbLines);
-    intent.putExtra(ACTIVITY_EXTRA_FILENAME, file);
-    intent.putExtra(ACTIVITY_EXTRA_CHANGE, change);
-    intent.putExtra(ACTIVITY_EXTRA_SEQUENTIAL, sequential);
-    intent.putExtra(ACTIVITY_EXTRA_SHIFT_OFFSET, shiftOffset);
-    intent.putExtra(ACTIVITY_EXTRA_START_OFFSET, startOffset);
-    activityResultLauncher.launch(intent);
-  }
 
   /**
    * Set the base context for this ContextWrapper.

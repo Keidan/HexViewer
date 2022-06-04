@@ -57,4 +57,6 @@ public final class SettingsKeys {
   public static final String CFG_MEMORY_THRESHOLD = "memoryThreshold";
   public static final String CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED = "partialOpenButWholeFileIsOpened";
 
+  private SettingsKeys() {
+  }
 }
