@@ -32,6 +32,7 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.holders.LineNumbersTitle;
 import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.MemoryMonitor;
@@ -115,12 +116,13 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     TextView tvLabelSource = findViewById(R.id.tvLabelSource);
     TextView tvLabelResult = findViewById(R.id.tvLabelResult);
 
-    HexTextArrayAdapter.LineNumbersTitle titleSource = new HexTextArrayAdapter.LineNumbersTitle();
-    titleSource.titleContent = findViewById(R.id.titleContentSource);
-    titleSource.titleLineNumbers = findViewById(R.id.titleLineNumbersSource);
-    HexTextArrayAdapter.LineNumbersTitle titleResult = new HexTextArrayAdapter.LineNumbersTitle();
-    titleResult.titleContent = findViewById(R.id.titleContentResult);
-    titleResult.titleLineNumbers = findViewById(R.id.titleLineNumbersResult);
+    LineNumbersTitle titleSource = new LineNumbersTitle();
+    titleSource.setTitleContent(findViewById(R.id.titleContentSource));
+    titleSource.setTitleLineNumbers(findViewById(R.id.titleLineNumbersSource));
+    LineNumbersTitle titleResult = new LineNumbersTitle();
+    titleResult.setTitleContent(findViewById(R.id.titleContentResult));
+    titleResult.setTitleLineNumbers(findViewById(R.id.titleLineNumbersResult));
+
     AppCompatCheckBox chkSmartInput = findViewById(R.id.chkSmartInput);
     AppCompatCheckBox chkOverwrite = findViewById(R.id.chkOverwrite);
 

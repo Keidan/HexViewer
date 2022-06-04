@@ -14,6 +14,7 @@ import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
+import fr.ralala.hexviewer.ui.adapters.holders.LineNumbersTitle;
 import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
 
 /**
@@ -57,9 +58,9 @@ public class PayloadHexHelper {
     mTitleContent.setVisibility(View.GONE);
     mTitle.setVisibility(View.GONE);
 
-    HexTextArrayAdapter.LineNumbersTitle title = new HexTextArrayAdapter.LineNumbersTitle();
-    title.titleContent = mTitleContent;
-    title.titleLineNumbers = mTitleLineNumbers;
+    LineNumbersTitle title = new LineNumbersTitle();
+    title.setTitleContent(mTitleContent);
+    title.setTitleLineNumbers(mTitleLineNumbers);
 
     mAdapterHex = new HexTextArrayAdapter(activity,
         new ArrayList<>(),

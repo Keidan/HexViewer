@@ -20,6 +20,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.ui.adapters.holders.HolderHex;
+import fr.ralala.hexviewer.ui.adapters.holders.LineNumbersTitle;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -38,7 +39,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
   private static final int ID = R.layout.listview_hex_row;
   private final List<String> mEntryList;
-  private final HexTextArrayAdapter.LineNumbersTitle mTitle;
+  private final LineNumbersTitle mTitle;
   private final ListView mListView;
   private long mStartOffset;
   private int mMaxLength;
@@ -47,7 +48,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
 
   public LineUpdateHexArrayAdapter(final Context context,
                                    ListView listView,
-                                   HexTextArrayAdapter.LineNumbersTitle title,
+                                   LineNumbersTitle title,
                                    final List<String> objects) {
     super(context, ID, objects);
     mStartOffset = 0;
@@ -159,7 +160,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       if (mPreviousSize != mEntryList.size()) {
         mPreviousSize = mEntryList.size();
         mMaxLength = Long.toHexString(UIHelper.getCurrentLine(mPreviousSize, mStartOffset, SysHelper.MAX_BY_ROW_8)).length();
-        mTitle.titleLineNumbers.setText(String.format("%" + mMaxLength + "s", " "));
+        mTitle.getTitleLineNumbers().setText(String.format("%" + mMaxLength + "s", " "));
       }
       final String s = String.format("%0" + mMaxLength + "X", UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
 
@@ -170,8 +171,8 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       holder.getLineNumbers().setVisibility(View.VISIBLE);
 
       holder.getContent().setText(string);
-      applyUserConfig(mTitle.titleContent);
-      applyUserConfig(mTitle.titleLineNumbers);
+      applyUserConfig(mTitle.getTitleContent());
+      applyUserConfig(mTitle.getTitleLineNumbers());
       applyUserConfig(holder.getLineNumbers());
       applyUserConfig(holder.getContent());
     }

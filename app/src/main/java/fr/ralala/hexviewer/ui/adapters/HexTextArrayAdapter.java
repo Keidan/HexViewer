@@ -24,6 +24,7 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 import fr.ralala.hexviewer.ui.adapters.holders.HolderHex;
+import fr.ralala.hexviewer.ui.adapters.holders.LineNumbersTitle;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -45,11 +46,6 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   private final ApplicationCtx mApp;
   private final LineNumbersTitle mTitle;
   private long mStartOffset;
-
-  public static class LineNumbersTitle {
-    public TextView titleLineNumbers;
-    public TextView titleContent;
-  }
 
   public HexTextArrayAdapter(final Context activity, final List<LineEntry> objects,
                              LineNumbersTitle title,
@@ -229,13 +225,13 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       holder.getLineNumbers().setVisibility(View.VISIBLE);
 
       if (position == 0) {
-        mTitle.titleLineNumbers.setText(String.format("%" + maxLength + "s", " "));
-        mTitle.titleContent.setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
+        mTitle.getTitleLineNumbers().setText(String.format("%" + maxLength + "s", " "));
+        mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
             R.string.title_content : R.string.title_content8));
-        mTitle.titleContent.setTextColor(colorTitle);
+        mTitle.getTitleContent().setTextColor(colorTitle);
       }
-      applyUserConfig(mTitle.titleContent);
-      applyUserConfig(mTitle.titleLineNumbers);
+      applyUserConfig(mTitle.getTitleContent());
+      applyUserConfig(mTitle.getTitleLineNumbers());
 
     } else {
       holder.getLineNumbers().setVisibility(View.GONE);
