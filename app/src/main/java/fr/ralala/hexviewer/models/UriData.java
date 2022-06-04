@@ -18,14 +18,14 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class UriData {
-  public final Context mCtx;
-  public final FileData mFd;
-  public final int mIndex;
-  public final int mMaxLength;
-  public String mDetail;
-  public boolean mError;
-  public boolean mClickable;
-  public boolean mSizeChanged;
+  private final Context mCtx;
+  private final FileData mFd;
+  private final int mIndex;
+  private final int mMaxLength;
+  private final String mDetail;
+  private boolean mError;
+  private final boolean mClickable;
+  private boolean mSizeChanged;
 
   public UriData(final Context ctx, int index, int maxLength, FileData fd) {
     mCtx = ctx;

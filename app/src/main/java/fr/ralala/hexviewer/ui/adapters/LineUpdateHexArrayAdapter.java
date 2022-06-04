@@ -160,9 +160,11 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       if (mPreviousSize != mEntryList.size()) {
         mPreviousSize = mEntryList.size();
         mMaxLength = Long.toHexString(UIHelper.getCurrentLine(mPreviousSize, mStartOffset, SysHelper.MAX_BY_ROW_8)).length();
-        mTitle.getTitleLineNumbers().setText(String.format("%" + mMaxLength + "s", " "));
+        final String fmt = "%" + mMaxLength + "s";
+        mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
       }
-      final String s = String.format("%0" + mMaxLength + "X", UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
+      final String fmt = "%0" + mMaxLength + "X";
+      final String s = String.format(fmt, UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
 
       final @ColorInt int color = ContextCompat.getColor(getContext(),
           R.color.colorLineNumbers);

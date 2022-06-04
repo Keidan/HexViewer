@@ -225,7 +225,8 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       holder.getLineNumbers().setVisibility(View.VISIBLE);
 
       if (position == 0) {
-        mTitle.getTitleLineNumbers().setText(String.format("%" + maxLength + "s", " "));
+        final String fmt = "%" + maxLength + "s";
+        mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
         mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
             R.string.title_content : R.string.title_content8));
         mTitle.getTitleContent().setTextColor(colorTitle);
