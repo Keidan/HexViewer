@@ -210,6 +210,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   /**
    * Called when the activity is resumed.
    */
+  @Override
   public void onResume() {
     super.onResume();
     mMemoryMonitor.start(null, false);
@@ -218,6 +219,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   /**
    * Called when the activity is destroyed.
    */
+  @Override
   public void onDestroy() {
     super.onDestroy();
     mMemoryMonitor.stop();
