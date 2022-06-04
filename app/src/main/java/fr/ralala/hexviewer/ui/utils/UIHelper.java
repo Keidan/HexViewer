@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -224,14 +225,14 @@ public class UIHelper {
    *
    * @param c                      Android context.
    * @param activityResultLauncher Activity Result Launcher.
-   * @param snackBarLayout         Layout used to attach the snackbar.
+   * @param snackBarLayout         Layout used to attach the snack bar.
    */
   public static void openFilePickerInFileSelectionMode(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final View snackBarLayout) {
     try {
       activityResultLauncher.launch(
           Intent.createChooser(FileHelper.prepareForOpenFile(), c.getString(R.string.select_file_to_open)));
     } catch (android.content.ActivityNotFoundException ex) {
-      Snackbar customSnackBar = Snackbar.make(snackBarLayout, c.getString(R.string.error_no_file_manager), Snackbar.LENGTH_LONG);
+      Snackbar customSnackBar = Snackbar.make(snackBarLayout, c.getString(R.string.error_no_file_manager), BaseTransientBottomBar.LENGTH_LONG);
       customSnackBar.setAction(c.getString(R.string.install), v -> {
         final String search = c.getString(R.string.file_manager_keyword);
         try {

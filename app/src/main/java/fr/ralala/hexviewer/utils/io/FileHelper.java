@@ -161,10 +161,8 @@ public class FileHelper {
     boolean exists = false;
     try {
       pfd = cr.openFileDescriptor(uri, "r");
-      if (pfd != null) {
-        exists = true;
-        pfd.close();
-      }
+      pfd.close();
+      exists = true;
     } catch (Exception e) {
       Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
     }
@@ -183,10 +181,9 @@ public class FileHelper {
     long size = 0L;
     try {
       pfd = cr.openFileDescriptor(uri, "r");
-      if (pfd != null) {
-        size = pfd.getStatSize();
-        pfd.close();
-      }
+      long sz = pfd.getStatSize();
+      pfd.close();
+      size = sz;
     } catch (Exception e) {
       Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage()/*, e*/);
       size = e instanceof FileNotFoundException ? -1 : -2;

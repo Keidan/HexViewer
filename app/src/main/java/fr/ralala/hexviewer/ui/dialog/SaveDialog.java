@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.dialog;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -67,7 +68,7 @@ public class SaveDialog {
       et.setText(defaultValue);
       et.addTextChangedListener(UIHelper.getResetLayoutWatcher(layout, false));
     }
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v ->
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v ->
         positiveClick.onClick(dialog, et, layout));
     return dialog;
   }

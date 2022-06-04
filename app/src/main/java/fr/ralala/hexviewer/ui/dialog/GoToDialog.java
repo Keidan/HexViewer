@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,8 +115,8 @@ public class GoToDialog implements View.OnClickListener {
 
       mEt.requestFocus();
     }
-    mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this);
-    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> mDialog.dismiss());
+    mDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(this);
+    mDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> mDialog.dismiss());
     return mDialog;
   }
 

@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.payload;
 
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -69,7 +70,7 @@ public class PayloadHexHelper {
         new UserConfigLandscape(activity,true));
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(activity);
-    mPayloadHex.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+    mPayloadHex.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
     MultiChoiceCallback multiChoiceCallback = new MultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
     mPayloadHex.setMultiChoiceModeListener(multiChoiceCallback);
   }

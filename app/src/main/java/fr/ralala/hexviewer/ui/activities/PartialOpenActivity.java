@@ -363,8 +363,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       } catch (Exception e) {
         return -1;
       }
-    } else
-      val = sValue;
+    }
     return convert(val, edit);
   }
 

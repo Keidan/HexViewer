@@ -116,6 +116,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    *
    * @param collection The items to be added.
    */
+  @Override
   public void addAll(@NonNull Collection<? extends LineEntry> collection) {
     mLineEntries.addAll(collection);
     notifyDataSetChanged();

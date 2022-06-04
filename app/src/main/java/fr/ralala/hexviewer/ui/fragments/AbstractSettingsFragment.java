@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -112,13 +113,13 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     }
     final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
       if (et != null && validInput(et, defaultValue, minValue, maxValue, iv, decimal)) {
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         dialog.dismiss();
       }
     });
-    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
       if (et != null)
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
       dialog.dismiss();

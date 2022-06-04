@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,7 +53,7 @@ public class MainPopupWindow {
 
     mPopup = new PopupWindow(popupView,
         with + 150,
-        WindowManager.LayoutParams.WRAP_CONTENT, true);
+        ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
     mPopup.setElevation(5.0f);
     mPopup.setOutsideTouchable(true);

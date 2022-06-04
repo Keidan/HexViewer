@@ -116,6 +116,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   /**
    * Called when the activity is resumed.
    */
+  @Override
   public void onResume() {
     super.onResume();
     setRequestedOrientation(mApp.getScreenOrientation(null));
