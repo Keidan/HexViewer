@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AlertDialog;
@@ -118,6 +119,31 @@ public class GoToDialog implements View.OnClickListener {
     return mDialog;
   }
 
+  private boolean processPosition(final String text) {
+    ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
+        mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+    SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter) lv.getAdapter());
+    int position;
+    if (mMode == Mode.ADDRESS) {
+      if (validatePosition(text, adapter.getEntries().getItemsCount() - 1))
+        return false;
+      position = evaluatePosition(adapter, adapter.getCount());
+      if (position == -1) {
+        displayError(mActivity.getString(R.string.error_not_available));
+        return false;
+      }
+    } else {
+      if (validatePosition(text, lv.getAdapter().getCount() - 1))
+        return false;
+      position = mPosition;
+    }
+    lv.post(() -> {
+      lv.setSelectionFromTop(position, 0);
+      lv.post(() -> blinkBackground(position));
+    });
+    return true;
+  }
+
   /**
    * Called when a view has been clicked.
    *
@@ -133,28 +159,8 @@ public class GoToDialog implements View.OnClickListener {
     String text = mEt.getText().toString();
     if (text.isEmpty())
       return;
-
-    ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
-        mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
-    SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter) lv.getAdapter());
-    int position;
-    if (mMode == Mode.ADDRESS) {
-      if (validatePosition(text, adapter.getEntries().getItemsCount() - 1))
-        return;
-      position = evaluatePosition(adapter, adapter.getCount());
-      if (position == -1) {
-        displayError(mActivity.getString(R.string.error_not_available));
-        return;
-      }
-    } else {
-      if (validatePosition(text, lv.getAdapter().getCount() - 1))
-        return;
-      position = mPosition;
-    }
-    lv.post(() -> {
-      lv.setSelectionFromTop(position, 0);
-      lv.post(() -> blinkBackground(position));
-    });
+    if(!processPosition(text))
+      return;
     if (mMode == Mode.LINE_PLAIN)
       mPreviousGoToValueLinePlain = text;
     else if (mMode == Mode.LINE_HEX)
@@ -209,6 +215,39 @@ public class GoToDialog implements View.OnClickListener {
     return position;
   }
 
+  private String validatePositionModeAddress(final String text, final int max, final AtomicInteger position) {
+    if (!HEXADECIMAL_PATTERN.matcher(text).matches()) {
+      UIHelper.shakeError(mEt, null);
+      if (mLayout != null)
+        mLayout.setError(" "); /* only for the color */
+      return "";
+    }
+    int nbBytesPerLines = mApp.getNbBytesPerLine();
+    try {
+      position.set(Integer.parseInt(text, 16) / nbBytesPerLines);
+    } catch (Exception e) {
+      Log.e(getClass().getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
+      position.set(-1);
+    }
+    final int maxLength = String.format("%X", max * nbBytesPerLines).length();
+    final String fmt = "%0" + maxLength + "X";
+    return String.format(fmt, (max * nbBytesPerLines) + nbBytesPerLines - 1);
+  }
+  private String validatePositionModeLines(final String text, final AtomicInteger max, final AtomicInteger position) {
+    try {
+      position.set(Integer.parseInt(text) - 1);
+      if (position.get() < 0)
+        position.set(0);
+    } catch (Exception e) {
+      Log.e(getClass().getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
+      position.set(-1);
+    }
+    final String sMax = String.valueOf(max.get() + 1);
+    if (position.get() <= max.get())
+      max.set(max.get() + 1);
+    return sMax;
+  }
+
   /**
    * Validates the position of the cursor.
    *
@@ -217,45 +256,22 @@ public class GoToDialog implements View.OnClickListener {
    * @return true on error.
    */
   private boolean validatePosition(String text, int maxLines) {
-    int position;
-    int max = maxLines;
+    AtomicInteger position = new AtomicInteger();
+    AtomicInteger max = new AtomicInteger(maxLines);
     String sMax;
     if (mMode == Mode.ADDRESS) {
-      if (!HEXADECIMAL_PATTERN.matcher(text).matches()) {
-        UIHelper.shakeError(mEt, null);
-        if (mLayout != null)
-          mLayout.setError(" "); /* only for the color */
+      sMax = validatePositionModeAddress(text, max.get(), position);
+      if(sMax.isEmpty())
         return true;
-      }
-      int nbBytesPerLines = mApp.getNbBytesPerLine();
-      try {
-        position = Integer.parseInt(text, 16) / nbBytesPerLines;
-      } catch (Exception e) {
-        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
-        position = -1;
-      }
-      final int maxLength = String.format("%X", max * nbBytesPerLines).length();
-      final String fmt = "%0" + maxLength + "X";
-      sMax = String.format(fmt, (max * nbBytesPerLines) + nbBytesPerLines - 1);
     } else {
-      try {
-        position = Integer.parseInt(text) - 1;
-        if (position < 0)
-          position = 0;
-      } catch (Exception e) {
-        Log.e(getClass().getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
-        position = -1;
-      }
-      sMax = String.valueOf(max + 1);
-      if (position <= max)
-        max++;
+      sMax = validatePositionModeLines(text, max, position);
     }
-    if (position == -1 || position > max) {
+    if (position.get() == -1 || position.get() > max.get()) {
       String err = String.format(mActivity.getString(R.string.error_cant_exceed_xxx), sMax);
       displayError(err);
       return true;
     }
-    mPosition = Math.max(0, position);
+    mPosition = Math.max(0, position.get());
     return false;
   }
 

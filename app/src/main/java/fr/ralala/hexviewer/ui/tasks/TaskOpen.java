@@ -181,7 +181,6 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       int maxLength = moveCursorIfSequential(fd, result);
 
       if (result.exception == null) {
-        MemoryMonitor.forceGC(); /* force GC before */
         /* prepare buffer */
         long totalSequential = fd.getStartOffset();
         evaluateShiftOffset(fd, totalSequential);
