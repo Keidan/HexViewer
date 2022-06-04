@@ -3,6 +3,9 @@ plugins {
 }
 apply plugin: 'com.android.application'
 
+final VERSION_NAME = '1.30'
+final VERSION_CODE = 130
+
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.2"
@@ -10,8 +13,8 @@ android {
         applicationId "fr.ralala.hexviewer"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 130
-        versionName "1.30"
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
     }
 
     compileOptions {
@@ -40,6 +43,7 @@ android {
             property "sonar.organization", "keidan"
             property "sonar.host.url", "https://sonarcloud.io"
             property 'sonar.projectName', 'HexViewer'
+            property 'sonar.projectVersion', VERSION_NAME
             property 'sonar.coverage.exclusions', "**/**"
         }
     }
