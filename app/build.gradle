@@ -3,8 +3,8 @@ plugins {
 }
 apply plugin: 'com.android.application'
 
-final VERSION_NAME = '1.30'
-final VERSION_CODE = 130
+final VERSION_NAME = '1.31'
+final VERSION_CODE = 131
 
 android {
     compileSdkVersion 31
