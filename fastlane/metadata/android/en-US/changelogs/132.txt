@@ -1,0 +1,1 @@
+* Fix a regression that prevented F-Droid from detecting new versions.
