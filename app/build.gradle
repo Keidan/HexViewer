@@ -3,8 +3,7 @@ plugins {
 }
 apply plugin: 'com.android.application'
 
-final VERSION_NAME = '1.31'
-final VERSION_CODE = 131
+final SONAR_PROJECT_VERSION = '1.31'
 
 android {
     compileSdkVersion 31
@@ -13,8 +12,8 @@ android {
         applicationId "fr.ralala.hexviewer"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode VERSION_CODE
-        versionName VERSION_NAME
+        versionCode 131
+        versionName '1.31'
     }
 
     compileOptions {
@@ -43,7 +42,7 @@ android {
             property "sonar.organization", "keidan"
             property "sonar.host.url", "https://sonarcloud.io"
             property 'sonar.projectName', 'HexViewer'
-            property 'sonar.projectVersion', VERSION_NAME
+            property 'sonar.projectVersion', SONAR_PROJECT_VERSION
             property 'sonar.coverage.exclusions', "**/**"
         }
     }
@@ -67,11 +66,17 @@ dependencies {
  */
 task checkVersion {
     int versionCode = android.defaultConfig.versionCode
+    String versionName = android.defaultConfig.versionName
     int correctVersionCode = generateVersionCode(android.defaultConfig.versionName)
     if (versionCode != correctVersionCode)
         throw new GradleException(
             "versionCode and versionName don't match: " +
                 "versionCode should be $correctVersionCode. Is $versionCode."
+        )
+    if (versionName != SONAR_PROJECT_VERSION)
+        throw new GradleException(
+            "versionName and sonar.projectVersion don't match: " +
+                "sonar.projectVersion should be $versionName. Is $SONAR_PROJECT_VERSION."
         )
 }
 assemble.dependsOn checkVersion
