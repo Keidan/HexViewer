@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="arrays_languages_entries_english">English</string>
-    <string name="arrays_languages_entries_german">German</string>
-    <string name="arrays_languages_entries_spanish">Spanish</string>
-    <string name="arrays_languages_entries_french">French</string>
-    <string name="arrays_languages_entries_japanese">Japanese</string>
+    <string name="arrays_languages_entries_english">Inglês</string>
+    <string name="arrays_languages_entries_german">Alemão</string>
+    <string name="arrays_languages_entries_spanish">Espanhol</string>
+    <string name="arrays_languages_entries_french">Francês</string>
+    <string name="arrays_languages_entries_japanese">Japonês</string>
     <string name="save_success">Saved.</string>
     <string name="operation_canceled">Operation cancelled</string>
     <string name="exception">Exception</string>
@@ -26,19 +26,19 @@
     <string name="error_edition_continuous_selection">Line editing is only possible with a continuous selection.</string>
     <string name="error_no_file_access">No access to the file. Open it from the menu.</string>
     <string name="error_no_file">File missing (deleted or moved)</string>
-    <string name="arrays_languages_entries_russian">Russian</string>
-    <string name="arrays_languages_entries_chinese">Chinese</string>
-    <string name="arrays_languages_entries_turkish">Turkish</string>
-    <string name="arrays_languages_entries_norwegian_bokmal">Norwegian Bokmål</string>
-    <string name="arrays_languages_entries_portuguese_brazil">Portuguese (Brazil)</string>
+    <string name="arrays_languages_entries_russian">Russo</string>
+    <string name="arrays_languages_entries_chinese">Chinês</string>
+    <string name="arrays_languages_entries_turkish">Turco</string>
+    <string name="arrays_languages_entries_norwegian_bokmal">Norueguês Bokmål</string>
+    <string name="arrays_languages_entries_portuguese_brazil">Português (Brasil)</string>
     <string name="arrays_screen_orientation_entries_automatic">Auto</string>
-    <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
-    <string name="arrays_screen_orientation_entries_landscape">Landscape</string>
-    <string name="search_title">Search</string>
-    <string name="search_hint">Search…</string>
-    <string name="action_open_title">Open…</string>
-    <string name="action_open_title_button">Open</string>
-    <string name="action_plain_text_title">Plain text</string>
+    <string name="arrays_screen_orientation_entries_portrait">Retrato</string>
+    <string name="arrays_screen_orientation_entries_landscape">Paisagem</string>
+    <string name="search_title">Buscar</string>
+    <string name="search_hint">Buscar…</string>
+    <string name="action_open_title">Abrir…</string>
+    <string name="action_open_title_button">Abrir</string>
+    <string name="action_plain_text_title">Texto plano</string>
     <string name="action_line_numbers_title">Line numbers</string>
     <string name="action_save_title">Save</string>
     <string name="action_save_as_title">Save as …</string>
