@@ -60,7 +60,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          KEY: ${{github.event.issue.number}}
+          KEY: ${{ github.event.issue.number }}
           PR_BRANCH: ${{ github.head_ref }}
         run: ./gradlew build sonarqube
                 -Dsonar.login=${{ env.SONAR_TOKEN }}
