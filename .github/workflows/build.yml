@@ -57,18 +57,19 @@ jobs:
         run: ./gradlew build sonarqube --info
         if: github.event_name != 'pull_request'
       - name: Build and analyze (PR)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          KEY: ${{ github.event.number }}
-          PR_BRANCH: ${{ github.head_ref }}
-        run:  |
-          ./gradlew build sonarqube \
-                -Dsonar.projectKey=Keidan_HexViewer \
-                -Dsonar.organization=keidan \
-                -Dsonar.login=${{ env.SONAR_TOKEN }} \
-                -Dsonar.pullrequest.key=${{ env.KEY }} \
-                -Dsonar.pullrequest.base=master \
-                -Dsonar.pullrequest.provider=GitHub \
-                -Dsonar.pullrequest.branch=${{ env.PR_BRANCH }} --info
+        run: echo 'Temporarily disabled'
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        #  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #  KEY: ${{ github.event.number }}
+        #  PR_BRANCH: ${{ github.head_ref }}
+        #run:  |
+        #  ./gradlew build sonarqube \
+        #        -Dsonar.projectKey=Keidan_HexViewer \
+        #        -Dsonar.organization=keidan \
+        #        -Dsonar.login=${{ env.SONAR_TOKEN }} \
+        #        -Dsonar.pullrequest.key=${{ env.KEY }} \
+        #        -Dsonar.pullrequest.base=master \
+        #        -Dsonar.pullrequest.provider=GitHub \
+        #        -Dsonar.pullrequest.branch=${{ env.PR_BRANCH }} --info
         if: github.event_name == 'pull_request'
