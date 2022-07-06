@@ -62,10 +62,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           KEY: ${{ github.event.issue.number }}
           PR_BRANCH: ${{ github.head_ref }}
-        run: ./gradlew build sonarqube
-                -Dsonar.login=${{ env.SONAR_TOKEN }}
-                -Dsonar.pullrequest.key=${{ env.KEY }}
-                -Dsonar.pullrequest.base=master
-                -Dsonar.pullrequest.provider=GitHub
+        run:  |
+          ./gradlew build sonarqube \
+                -Dsonar.login=${{ env.SONAR_TOKEN }} \
+                -Dsonar.pullrequest.key=${{ env.KEY }} \
+                -Dsonar.pullrequest.base=master \
+                -Dsonar.pullrequest.provider=GitHub \
                 -Dsonar.pullrequest.branch=${{ env.PR_BRANCH }} --info
         if: github.event_name == 'pull_request'
