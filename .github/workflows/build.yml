@@ -64,6 +64,8 @@ jobs:
           PR_BRANCH: ${{ github.head_ref }}
         run:  |
           ./gradlew build sonarqube \
+                -Dsonar.projectKey=Keidan_HexViewer \
+                -Dsonar.organization=keidan \
                 -Dsonar.login=${{ env.SONAR_TOKEN }} \
                 -Dsonar.pullrequest.key=${{ env.KEY }} \
                 -Dsonar.pullrequest.base=master \
