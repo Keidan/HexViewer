@@ -88,7 +88,7 @@ public class SearchableFilterFactory {
         withSpaces = false;
       }
     }
-    return new SearchResult(length, indexes.isEmpty() ? null : indexes, hexPart, withSpaces, mSearchFromHewView.isSearchFromHewView());
+    return new SearchResult(length, indexes.isEmpty() ? null : indexes, hexPart, withSpaces, mSearchFromHewView.isSearchNotFromHewView());
   }
 
   /**
@@ -127,7 +127,7 @@ public class SearchableFilterFactory {
       int hexLength = bytes.length * 3 - 1;
       return performsSearch(new LineEntry(le.toString(), le.getRaw()), query, loc, hexLength);
     }
-    return new SearchResult(0, null, false, false, false);
+    return new SearchResult(0, null, false, false, true);
   }
 
   /**
@@ -148,7 +148,7 @@ public class SearchableFilterFactory {
                               final Set<Integer> tempList) {
     /* The word fits on 2 or more lines */
     final int lineWidth;
-    if (!mSearchFromHewView.isSearchFromHewView())
+    if (mSearchFromHewView.isSearchNotFromHewView())
       lineWidth = UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1;
     else {
       lineWidth = mApp.getNbBytesPerLine();
@@ -197,7 +197,7 @@ public class SearchableFilterFactory {
    */
   private void evaluateResult(final int shiftOffset, int i, SearchResult sr,
                               final String query, final Set<Integer> tempList) {
-    if (sr.getIndexes() == null || (sr.isHexPart() && !sr.isFromHexView()))
+    if (sr.getIndexes() == null || (sr.isHexPart() && sr.isNotFromHexView()))
       return;
     for (Integer idx : sr.getIndexes()) {
       AtomicInteger index = new AtomicInteger(idx);
@@ -225,7 +225,7 @@ public class SearchableFilterFactory {
 
   private void prepareEvaluateResultTextPart(final int shiftOffset, final SearchResult sr,
                                              final AtomicInteger nbPerLines, final AtomicInteger index) {
-    if (!sr.isFromHexView())
+    if (sr.isNotFromHexView())
       nbPerLines.set(UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1);
     else {
       final int cfgNbPerLine = mApp.getNbBytesPerLine();

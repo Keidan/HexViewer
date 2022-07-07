@@ -48,13 +48,13 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Test if we are from the hex view or the plain view.
+   * Test if we aren't from the hex view or the plain view.
    *
    * @return boolean
    */
   @Override
-  public boolean isSearchFromHewView() {
-    return false;
+  public boolean isSearchNotFromHewView() {
+    return true;
   }
 
   /**

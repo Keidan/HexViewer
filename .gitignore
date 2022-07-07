@@ -10,3 +10,4 @@
 .idea/jarRepositories.xml
 .idea/deploymentTargetDropDown.xml
 .idea/caches/build_file_checksums.ser
+.idea/sonarlint*

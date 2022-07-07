@@ -178,7 +178,7 @@ public class FileHelper {
    */
   public static long getFileSize(ContentResolver cr, Uri uri) {
     ParcelFileDescriptor pfd = null;
-    long size = 0L;
+    long size;
     try {
       pfd = cr.openFileDescriptor(uri, "r");
       long sz = pfd.getStatSize();

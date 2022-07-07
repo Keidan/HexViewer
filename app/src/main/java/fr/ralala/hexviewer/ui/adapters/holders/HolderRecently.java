@@ -21,7 +21,7 @@ import fr.ralala.hexviewer.R;
  */
 public class HolderRecently extends RecyclerView.ViewHolder {
   private TextView mIndex;
-  private TextView mDetail;
+  private final TextView mDetail;
   private TextView mName;
 
   public HolderRecently(View view) {
@@ -41,10 +41,6 @@ public class HolderRecently extends RecyclerView.ViewHolder {
 
   public TextView getDetail() {
     return mDetail;
-  }
-
-  public void setDetail(TextView mDetail) {
-    this.mDetail = mDetail;
   }
 
   public TextView getName() {

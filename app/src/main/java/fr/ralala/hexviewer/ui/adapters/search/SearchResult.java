@@ -19,14 +19,14 @@ public class SearchResult {
   private final Set<Integer> mIndexes;
   private final boolean mHexPart;
   private final boolean mWithSpaces;
-  private final boolean mFromHexView;
+  private final boolean mNotFromHexView;
 
-  protected SearchResult(int length, Set<Integer> indexes, boolean hexPart, boolean withSpaces, boolean fromHexView) {
+  protected SearchResult(int length, Set<Integer> indexes, boolean hexPart, boolean withSpaces, boolean notFromHexView) {
     mLength = length;
     mIndexes = indexes;
     mHexPart = hexPart;
     mWithSpaces = withSpaces;
-    mFromHexView = fromHexView;
+    mNotFromHexView = notFromHexView;
   }
 
   /**
@@ -66,11 +66,11 @@ public class SearchResult {
   }
 
   /**
-   * Tests if the indexes are in the hexadecimal part.
+   * Tests if the indexes aren't in the hexadecimal part.
    *
    * @return boolean
    */
-  public boolean isFromHexView() {
-    return mFromHexView;
+  public boolean isNotFromHexView() {
+    return mNotFromHexView;
   }
 }
