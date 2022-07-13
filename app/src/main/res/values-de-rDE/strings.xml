@@ -87,7 +87,7 @@
     <string name="error_file_not_found">Die Datei %1$s wurde nicht gefunden</string>
     <string name="error_file_permission">Für die Datei %1$s wurde die benötigte Berechtigung nicht erteilt</string>
     <string name="items_selected">%1$d ausgewählt</string>
-    <string name="confirm_save">Datei "%1$s" speichern?</string>
+    <string name="confirm_save">Datei %1$s speichern\?</string>
     <string name="control_language_change">Bitte speichern Sie Ihre Arbeit zuerst.</string>
     <string name="overwrite">Einfügemodus</string>
     <string name="size">Größe</string>
@@ -121,4 +121,46 @@
     <string name="memory_threshold_title">Schwellenwert für den Speicher</string>
     <string name="memory_threshold_description">Schwellenwert für die Speichergrenze, bevor das Öffnen einer Datei abgebrochen wird.</string>
     <string name="error_not_available">Nicht verfügbar</string>
+    <string name="default_line_edit_font_size_landscape" translatable="false"></string>
+    <string name="default_plain_font_size_landscape" translatable="false"></string>
+    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_line_edit_row_height_landscape" translatable="false"></string>
+    <string name="content_description_undo" translatable="false"></string>
+    <string name="default_plain_row_height_auto_portrait" translatable="false"></string>
+    <string name="settings_pref_summary_license" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait_lines_numbers" translatable="false"></string>
+    <string name="app_name" translatable="false"></string>
+    <string name="default_plain_font_size_portrait" translatable="false"></string>
+    <string name="default_plain_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_plain_row_height_landscape" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_row_height_landscape" translatable="false"></string>
+    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"></string>
+    <string name="content_description_redo" translatable="false"></string>
+    <string name="default_hex_row_height_auto_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"></string>
+    <string name="default_hex_display_data_portrait" translatable="false"></string>
+    <string name="default_plain_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_portrait" translatable="false"></string>
+    <string name="default_hex_row_height_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_hex_font_size_landscape" translatable="false"></string>
+    <string name="default_memory_threshold" translatable="false"></string>
+    <string name="default_hex_font_size_landscape_lines_numbers" translatable="false"></string>
+    <string name="default_overwrite" translatable="false"></string>
+    <string name="default_nb_bytes_per_line" translatable="false"></string>
+    <string name="default_hex_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_landscape" translatable="false"></string>
+    <string name="default_smart_input" translatable="false"></string>
+    <string name="default_lines_number" translatable="false"></string>
+    <string name="title_content8" translatable="false"></string>
+    <string name="default_hex_display_data_landscape" translatable="false"></string>
+    <string name="title_content" translatable="false"></string>
+    <string name="zero" translatable="false"></string>
+    <string name="default_hex_font_size_portrait" translatable="false"></string>
+    <string name="default_line_edit_font_size_portrait" translatable="false"></string>
+    <string name="default_partial_open_but_whole_file_is_opened" translatable="false"></string>
+    <string name="default_line_edit_row_height_portrait" translatable="false"></string>
+    <string name="default_screen_orientation" translatable="false"></string>
+    <string name="default_line_edit_row_height_auto_portrait" translatable="false"></string>
 </resources>
