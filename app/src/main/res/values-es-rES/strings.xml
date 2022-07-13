@@ -121,14 +121,9 @@
     <string name="memory_threshold_title">Umbral de memoria</string>
     <string name="memory_threshold_description">Valor umbral del límite de memoria antes de que se aborte la apertura de un archivo.</string>
     <string name="error_not_available">No disponible</string>
-    <string name="default_plain_font_size_portrait" translatable="false"/>
     <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"/>
-    <string name="default_hex_font_size_landscape" translatable="false"/>
     <string name="title_content8" translatable="false"/>
-    <string name="default_hex_row_height_portrait" translatable="false"/>
     <string name="default_plain_row_height_portrait" translatable="false"/>
-    <string name="default_line_edit_font_size_portrait" translatable="false"/>
     <string name="default_smart_input" translatable="false"/>
-    <string name="default_line_edit_row_height_auto_landscape" translatable="false"/>
     <string name="default_hex_display_data_portrait" translatable="false"/>
 </resources>
