@@ -121,5 +121,4 @@
     <string name="memory_threshold_title">Порог памяти</string>
     <string name="memory_threshold_description">Максимальное значение потреблённой памяти до прерывания открытия файла.</string>
     <string name="error_not_available">Не доступно</string>
-    <string name="default_nb_bytes_per_line" translatable="false"/>
 </resources>

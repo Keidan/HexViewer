@@ -121,5 +121,4 @@
     <string name="memory_threshold_title">Limite de memória</string>
     <string name="memory_threshold_description">Quantidade de memória permitida antes de abrir um arquivo é abortada.</string>
     <string name="error_not_available">Não disponível</string>
-    <string name="content_description_redo" translatable="false"/>
 </resources>
