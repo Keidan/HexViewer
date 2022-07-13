@@ -121,9 +121,6 @@
     <string name="memory_threshold_title">Seuil de mémoire</string>
     <string name="memory_threshold_description">Quantité de mémoire autorisée avant que l\'ouverture d\'un fichier soit interrompue.</string>
     <string name="error_not_available">Non disponible</string>
-    <string name="default_hex_display_data_portrait" translatable="false"/>
     <string name="default_plain_row_height_auto_portrait" translatable="false"/>
-    <string name="default_nb_bytes_per_line" translatable="false"/>
     <string name="title_content8" translatable="false"/>
-    <string name="content_description_redo" translatable="false"/>
 </resources>
