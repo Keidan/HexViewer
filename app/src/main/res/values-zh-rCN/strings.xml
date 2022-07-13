@@ -121,25 +121,14 @@
     <string name="memory_threshold_title">内存阈值</string>
     <string name="memory_threshold_description">打开文件操作中止前允许的内存量。</string>
     <string name="error_not_available">不可用</string>
-    <string name="title_content" translatable="false"/>
     <string name="settings_pref_summary_license" translatable="false"/>
-    <string name="default_plain_font_size_landscape" translatable="false"/>
     <string name="default_hex_display_data_landscape" translatable="false"/>
-    <string name="app_name" translatable="false"/>
     <string name="default_line_edit_font_size_portrait" translatable="false"/>
-    <string name="default_plain_row_height_portrait" translatable="false"/>
     <string name="default_screen_orientation" translatable="false"/>
-    <string name="content_description_undo" translatable="false"/>
     <string name="default_nb_bytes_per_line" translatable="false"/>
-    <string name="default_lines_number" translatable="false"/>
     <string name="default_hex_row_height_portrait_lines_numbers" translatable="false"/>
-    <string name="default_hex_font_size_portrait_lines_numbers" translatable="false"/>
     <string name="default_hex_display_data_portrait_lines_numbers" translatable="false"/>
-    <string name="default_hex_font_size_landscape" translatable="false"/>
     <string name="default_plain_row_height_auto_portrait" translatable="false"/>
-    <string name="default_overwrite" translatable="false"/>
     <string name="default_hex_row_height_portrait" translatable="false"/>
-    <string name="default_hex_display_data_landscape_lines_numbers" translatable="false"/>
     <string name="default_line_edit_row_height_landscape" translatable="false"/>
-    <string name="default_partial_open_but_whole_file_is_opened" translatable="false"/>
 </resources>
