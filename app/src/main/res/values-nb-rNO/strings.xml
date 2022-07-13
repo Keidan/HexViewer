@@ -121,6 +121,5 @@
     <string name="memory_threshold_title">Minneterskel</string>
     <string name="memory_threshold_description">Terskelverdi for minnegrense før åpning av en fil avbrytes.</string>
     <string name="error_not_available">Ikke tilgjengelig</string>
-    <string name="default_line_edit_row_height_portrait" translatable="false"/>
     <string name="default_line_edit_font_size_landscape" translatable="false"/>
 </resources>
