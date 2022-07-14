@@ -275,7 +275,7 @@ public class UIHelper {
                                        String message, final View.OnClickListener yes) {
     new AlertDialog.Builder(c)
         .setCancelable(false)
-        .setIcon(R.mipmap.ic_launcher)
+        .setIcon(R.mipmap.ic_launcher_round)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {

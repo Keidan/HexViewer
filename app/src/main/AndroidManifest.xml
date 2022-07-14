@@ -13,6 +13,7 @@
     android:name=".ApplicationCtx"
     android:allowBackup="false"
     android:icon="@mipmap/ic_launcher"
+    android:roundIcon="@mipmap/ic_launcher_round"
     android:label="@string/app_name"
     android:requestLegacyExternalStorage="true"
     android:supportsRtl="true"
@@ -24,7 +25,7 @@
       android:name=".ui.activities.MainActivity"
       android:configChanges="locale|orientation|screenSize"
       android:exported="true"
-      android:icon="@mipmap/ic_launcher"
+      android:icon="@mipmap/ic_launcher_round"
       android:label="@string/app_name"
       android:launchMode="singleTask">
       <intent-filter>
