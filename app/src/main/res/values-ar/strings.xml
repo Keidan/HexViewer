@@ -3,6 +3,7 @@
     <string name="new_value">قيمة جديدة</string>
     <string name="settings_pref_category_landscape">المناظر الطبيعيه</string>
     <string name="settings_pref_title_lists_landscape">الارتفاع، وحجم الخط …</string>
+    <string name="arrays_languages_entries_arabic">Arabic</string>
     <string name="arrays_languages_entries_english">إنجليزي</string>
     <string name="arrays_languages_entries_german">ألمانية</string>
     <string name="arrays_languages_entries_spanish">اسبانية</string>

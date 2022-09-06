@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_languages_entries_arabic">Arabic</string>
     <string name="arrays_screen_orientation_entries_automatic">Otomatik</string>
     <string name="arrays_screen_orientation_entries_portrait">Dikey</string>
     <string name="arrays_screen_orientation_entries_landscape">Yatay</string>

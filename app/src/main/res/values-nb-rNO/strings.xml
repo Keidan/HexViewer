@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_languages_entries_arabic">Arabic</string>
     <string name="new_value">Ny verdi</string>
     <string name="error_less_than">Kan ikke være mindre enn</string>
     <string name="error_invalid_value">Ugyldig verdi</string>

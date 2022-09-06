@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
@@ -48,10 +50,10 @@ public class MainPopupWindow {
     LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.main_popup, null);
     popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-    int with = popupView.getMeasuredWidth();
+    int width = popupView.getMeasuredWidth();
 
     mPopup = new PopupWindow(popupView,
-        with + 150,
+        width + 150,
         ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
     mPopup.setElevation(5.0f);
@@ -106,7 +108,13 @@ public class MainPopupWindow {
    */
   public void show(View more) {
     if (mPopup != null) {
-      mPopup.showAtLocation(more, Gravity.TOP | Gravity.END, 12, 120);
+      int gravity;
+      final int layoutDirection = ViewCompat.getLayoutDirection(more);
+      if (layoutDirection == View.LAYOUT_DIRECTION_RTL)
+        gravity = Gravity.START;
+      else
+        gravity = Gravity.END;
+      mPopup.showAtLocation(more, Gravity.TOP | gravity, 12, 120);
     }
   }
 

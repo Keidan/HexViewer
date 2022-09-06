@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="arrays_languages_entries_arabic">Arabic</string>
     <string name="arrays_languages_entries_english">英語</string>
     <string name="arrays_languages_entries_german">ドイツ語</string>
     <string name="arrays_languages_entries_spanish">スペイン語</string>

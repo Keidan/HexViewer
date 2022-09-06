@@ -67,6 +67,7 @@ Translations can be provided via [Weblate][weblate].
 Note: In the settings, the list of languages is sorted as follows:
 *   en-US: English (always first)
 *   Other languages according to the alphabetical order of their codes, i.e.:
+    * ar: Arabic
     * de-DE: German
     * es-ES: Spanish
     * fr-FR: French
@@ -91,6 +92,7 @@ The current status of the translations is as follows:
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
+*   Arabic: [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/)
 
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>
