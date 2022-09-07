@@ -11,11 +11,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import androidx.core.view.ViewCompat;
-
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -45,7 +44,7 @@ public class MainPopupWindow {
   }
 
   public MainPopupWindow(final Context ctx, UnDoRedo undoRedo, ClickListener clickListener) {
-    mApp = (ApplicationCtx)ctx.getApplicationContext();
+    mApp = (ApplicationCtx) ctx.getApplicationContext();
 
     LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.main_popup, null);
@@ -108,13 +107,7 @@ public class MainPopupWindow {
    */
   public void show(View more) {
     if (mPopup != null) {
-      int gravity;
-      final int layoutDirection = ViewCompat.getLayoutDirection(more);
-      if (layoutDirection == View.LAYOUT_DIRECTION_RTL)
-        gravity = Gravity.START;
-      else
-        gravity = Gravity.END;
-      mPopup.showAtLocation(more, Gravity.TOP | gravity, 12, 120);
+      mPopup.showAtLocation(more, Gravity.TOP | (SysHelper.isRTL(more) ? Gravity.START : Gravity.END), 12, 120);
     }
   }
 

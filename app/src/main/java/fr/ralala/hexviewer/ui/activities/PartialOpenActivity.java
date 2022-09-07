@@ -10,6 +10,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -445,9 +446,13 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       }
     } else {
       /* long to hex */
-      long value;
+      long value = -1;
       if (val.indexOf('.') == -1)
-        value = Long.parseLong(val);
+        try {
+          value = Long.parseLong(val);
+        } catch (Exception ex) {
+          Log.e(getClass().getSimpleName(), ex.getMessage(), ex);
+        }
       else
         value = convert(val, null);
       if (value != -1)
@@ -514,6 +519,13 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     }
     mTietStart.setTypeface(Typeface.MONOSPACE);
     mTietEnd.setTypeface(Typeface.MONOSPACE);
+    if(SysHelper.isRTL(this)) {
+      mTietStart.setTextDirection(View.TEXT_DIRECTION_RTL);
+      mTietEnd.setTextDirection(View.TEXT_DIRECTION_RTL);
+    } else {
+      mTietStart.setTextDirection(View.TEXT_DIRECTION_LTR);
+      mTietEnd.setTextDirection(View.TEXT_DIRECTION_LTR);
+    }
   }
 
   /**

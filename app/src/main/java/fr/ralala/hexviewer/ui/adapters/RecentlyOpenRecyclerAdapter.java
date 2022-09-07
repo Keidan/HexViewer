@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.UriData;
 import fr.ralala.hexviewer.ui.adapters.holders.HolderRecently;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -37,6 +38,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
   private final List<UriData> mItems;
   private final OnEventListener mListener;
   private final SwipeToDeleteCallback mSwipeToDeleteCallback;
+  private final Context mContext;
 
   public interface OnEventListener {
     /**
@@ -57,6 +59,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
   public RecentlyOpenRecyclerAdapter(final Context context,
                                      final List<UriData> objects,
                                      final OnEventListener listener) {
+    mContext = context;
     mItems = objects;
     mListener = listener;
     mSwipeToDeleteCallback = new SwipeToDeleteCallback(context);
@@ -112,11 +115,12 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
         index.setOnClickListener(l);
         detail.setOnClickListener(l);
       }
-      final String fmt = "%0" + (String.valueOf(ud.getMaxLength()).length() + 1) + "d - ";
+      String fmt = "%0" + (String.valueOf(ud.getMaxLength()).length() + 1) + "d - ";
       index.setText(String.format(Locale.US, fmt, ud.getIndex()));
       name.setText(ud.getFd().getName());
       detail.setText(ud.getDetail());
       detail.setTextColor(ContextCompat.getColor(ud.getCtx(), ud.isError() ? R.color.colorResultError : R.color.textColor));
+      name.setGravity(SysHelper.isRTL(mContext) ? android.view.Gravity.END : android.view.Gravity.START);
     }
   }
 

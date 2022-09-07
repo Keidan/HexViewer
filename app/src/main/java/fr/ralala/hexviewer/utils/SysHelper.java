@@ -1,7 +1,11 @@
 package fr.ralala.hexviewer.utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.Log;
+import android.view.View;
+
+import androidx.core.view.ViewCompat;
 
 import java.io.ByteArrayOutputStream;
 import java.math.RoundingMode;
@@ -45,6 +49,29 @@ public class SysHelper {
 
   private SysHelper() {
   }
+
+  /**
+   * Tests if the RTL mode is activated or not.
+   *
+   * @param view The reference view.
+   * @return boolean
+   */
+  public static boolean isRTL(final View view) {
+    final int layoutDirection = ViewCompat.getLayoutDirection(view);
+    return layoutDirection == View.LAYOUT_DIRECTION_RTL;
+  }
+
+  /**
+   * Tests if the RTL mode is activated or not.
+   *
+   * @param context The reference context.
+   * @return boolean
+   */
+  public static boolean isRTL(final Context context) {
+    final Configuration config = context.getResources().getConfiguration();
+    return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+  }
+
   /**
    * Sorts keys.
    *

@@ -13,7 +13,8 @@
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"
       android:orientation="horizontal"
-      android:baselineAligned="false">
+      android:baselineAligned="false"
+      android:layoutDirection="ltr">
       <FrameLayout
         android:id="@+id/containerUndo"
         android:layout_weight="0.5"

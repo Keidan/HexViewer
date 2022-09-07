@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -93,6 +95,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
       mSearchView = (SearchView) si.getActionView();
       mSearchView.setSearchableInfo(searchManager
           .getSearchableInfo(getComponentName()));
+      mSearchView.setTextDirection(SysHelper.isRTL(this) ? View.TEXT_DIRECTION_RTL : View.TEXT_DIRECTION_LTR);
       mSearchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
       mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         @Override
