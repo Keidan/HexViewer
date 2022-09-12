@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@null"
-    android:textSize="12sp"
+    android:textSize="@dimen/listview_simple_row_textSize"
     android:typeface="monospace" />
 
 </LinearLayout> 

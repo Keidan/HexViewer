@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!-- activity_main.xml -->
+  <dimen name="activity_main_please_open_file_textSize">14sp</dimen>
+  <dimen name="activity_main_buttons_textSize">14sp</dimen>
+  <dimen name="activity_main_payload_view_textSize">12sp</dimen>
+  <dimen name="activity_main_payload_plain_swipe_refresh_layout_textSize">12sp</dimen>
+
+  <!-- main_popup.xml -->
+  <dimen name="main_popup_items_textSize">14sp</dimen>
+
   <!-- listview_hex_row.xml -->
-  <dimen name="listview_hex_row_font_size">9sp</dimen>
+  <dimen name="listview_hex_row_textSize">9sp</dimen>
+
+  <!-- listview_simple_row.xml -->
+  <dimen name="listview_simple_row_textSize">12sp</dimen>
+
   <!-- activity_line_update.xml -->
-  <dimen name="activity_line_update_lv_font_size">14sp</dimen>
+  <dimen name="activity_line_update_lv_textSize">14sp</dimen>
 
   <!-- progress_dialog -->
   <dimen name="progress_dialog_textSize">18sp</dimen>
@@ -14,10 +27,25 @@
   <dimen name="progress_dialog_layout_marginEnd">10dp</dimen>
   <dimen name="progress_dialog_layout_marginBottom">10dp</dimen>
 
+  <!-- recently_open -->
+  <dimen name="recently_open_textSize">16sp</dimen>
+
   <!-- InputLabel -->
-  <dimen name="input_label_text_size">12sp</dimen>
   <dimen name="input_label_paddingTop">3dp</dimen>
   <dimen name="input_label_paddingBottom">2dp</dimen>
   <dimen name="input_label_paddingStart">4dp</dimen>
   <dimen name="input_label_paddingEnd">4dp</dimen>
+  <dimen name="input_label_textSize">14sp</dimen>
+
+  <!-- AppTheme.ErrorTextAppearance -->
+  <dimen name="app_theme_error_text_appearance_textSize">14sp</dimen>
+
+  <!-- AppTheme.HintTextAppearance -->
+  <dimen name="app_theme_hint_text_appearance_textSize">14sp</dimen>
+
+  <!-- Controls -->
+  <dimen name="controls_textSize">14sp</dimen>
+
+  <!-- Preferences -->
+  <dimen name="preferences_textSize">14sp</dimen>
 </resources>

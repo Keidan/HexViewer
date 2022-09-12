@@ -27,6 +27,7 @@ import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -101,6 +102,7 @@ public class GoToDialog implements View.OnClickListener {
     mLayout = mDialog.findViewById(R.id.tilValue);
 
     if (mEt != null && mLayout != null) {
+      mEt.setTextDirection(SysHelper.isRTL(mActivity) ? View.TEXT_DIRECTION_RTL : View.TEXT_DIRECTION_LTR);
       if (mode == Mode.ADDRESS) {
         mEt.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         mEt.setText(mPreviousGoToValueAddress);

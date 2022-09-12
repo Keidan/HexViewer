@@ -17,6 +17,7 @@
     android:layout_alignParentTop="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textSize="@dimen/recently_open_textSize"
     android:layout_marginEnd="5dp"/>
   <TextView
     android:id="@+id/name"
@@ -25,7 +26,8 @@
     android:layout_alignParentTop="true"
     android:layout_toEndOf="@id/index"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/recently_open_textSize"/>
   <TextView
     android:id="@+id/detail"
     android:gravity="start"
@@ -34,5 +36,6 @@
     android:layout_below="@id/name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textStyle="italic"/>
+    android:textStyle="italic"
+    android:textSize="@dimen/recently_open_textSize"/>
 </RelativeLayout>

@@ -157,12 +157,10 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
                                InputValidated<Float> iv, boolean decimal) {
     try {
       Editable s = et.getText();
-      float nb = Float.parseFloat(s.toString());
       if (s.length() == 0) {
-        et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
-        et.selectAll();
-        return false;
+        return validateInputValue(et, iv, -1, minValue, maxValue, decimal);
       } else {
+        float nb = Float.parseFloat(s.toString());
         return validateInputValue(et, iv, nb, minValue, maxValue, decimal);
       }
     } catch (Exception ex) {

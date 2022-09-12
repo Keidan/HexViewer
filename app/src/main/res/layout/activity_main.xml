@@ -19,6 +19,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/please_open_file"
+      android:textSize="@dimen/activity_main_please_open_file_textSize"
       android:textAlignment="center"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -38,19 +39,22 @@
         android:id="@+id/buttonOpenFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_open_title_button" />
+        android:text="@string/action_open_title_button"
+        android:textSize="@dimen/activity_main_buttons_textSize" />
 
       <Button
         android:id="@+id/buttonPartialOpenFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_open_sequential_title_button" />
+        android:text="@string/action_open_sequential_title_button"
+        android:textSize="@dimen/activity_main_buttons_textSize" />
 
       <Button
         android:id="@+id/buttonRecentlyOpen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_recently_open_title" />
+        android:text="@string/action_recently_open_title"
+        android:textSize="@dimen/activity_main_buttons_textSize" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -86,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@null"
-        android:textSize="@dimen/listview_hex_row_font_size"
+        android:textSize="@dimen/listview_hex_row_textSize"
         android:typeface="monospace"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
@@ -96,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@null"
-        android:textSize="@dimen/listview_hex_row_font_size"
+        android:textSize="@dimen/listview_hex_row_textSize"
         android:typeface="monospace" />
 
     </LinearLayout>
@@ -109,7 +113,7 @@
       android:fastScrollEnabled="true"
       android:layout_below="@id/title"
       android:padding="1dp"
-      android:textSize="12sp"
+      android:textSize="@dimen/activity_main_payload_view_textSize"
       android:typeface="monospace" />
   </RelativeLayout>
 
@@ -124,7 +128,7 @@
       android:visibility="gone"
       android:fastScrollEnabled="true"
       android:padding="1dp"
-      android:textSize="12sp"
+      android:textSize="@dimen/activity_main_payload_plain_swipe_refresh_layout_textSize"
       android:typeface="monospace" />
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

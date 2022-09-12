@@ -11,7 +11,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@null"
-    android:textSize="@dimen/listview_hex_row_font_size"
+    android:textSize="@dimen/listview_hex_row_textSize"
     android:typeface="monospace"
     android:paddingEnd="5dp"
     android:paddingStart="1dp"/>
@@ -21,7 +21,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@null"
-    android:textSize="@dimen/listview_hex_row_font_size"
+    android:textSize="@dimen/listview_hex_row_textSize"
     android:typeface="monospace" />
 
 </LinearLayout> 

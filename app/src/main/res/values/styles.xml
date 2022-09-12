@@ -22,6 +22,11 @@
     <item name="android:textColorHint">@color/text_color_primary_enabled</item>
     <item name="android:checkboxStyle">@style/AppTheme.CheckBoxStyle</item>
     <item name="android:radioButtonStyle">@style/AppTheme.RadioButtonStyle</item>
+    <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
+  </style>
+
+  <style name="AppTheme.PreferenceTheme" parent="@style/PreferenceThemeOverlay">
+    <item name="android:textSize">@dimen/preferences_textSize</item>
   </style>
 
   <style name="AppTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -39,34 +44,47 @@
 
   <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
+    <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
   <style name="NeutralButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
+    <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
   <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
+    <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
   <style name="AppTheme.CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
     <item name="android:textColor">@color/text_color_enabled</item>
     <item name="buttonTint">@color/accent_color_enabled</item>
+    <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
   <style name="AppTheme.ErrorTextAppearance" parent="@android:style/TextAppearance">
-    <!-- Customize your theme here. -->
     <item name="android:textColor">@color/colorResultError</item>
-    <item name="android:textSize">12sp</item>
+    <item name="android:textSize">@dimen/app_theme_error_text_appearance_textSize</item>
+  </style>
+
+  <style name="AppTheme.HintPrefTextAppearance" parent="@android:style/TextAppearance">
+    <item name="android:textColor">@color/colorAccent</item>
+    <item name="android:textSize">@dimen/app_theme_hint_text_appearance_textSize</item>
+  </style>
+
+  <style name="TextLabelSize" parent="TextAppearance.Design.Hint">
+    <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
 
   <style name="AppTheme.RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
     <item name="android:textColor">@color/text_color_enabled</item>
     <item name="buttonTint">@color/accent_color_enabled</item>
+    <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
   <style name="AppTheme.InputLabel" parent="TextAppearance.AppCompat.Caption">
     <item name="android:textColor">@color/textColor</item>
-    <item name="android:textSize">14sp</item>
+    <item name="android:textSize">@dimen/input_label_textSize</item>
     <item name="android:paddingTop">@dimen/input_label_paddingTop</item>
     <item name="android:paddingBottom">@dimen/input_label_paddingBottom</item>
     <item name="android:paddingStart">@dimen/input_label_paddingStart</item>

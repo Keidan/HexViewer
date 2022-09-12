@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@null"
-        android:textSize="@dimen/activity_line_update_lv_font_size"
+        android:textSize="@dimen/activity_line_update_lv_textSize"
         android:typeface="monospace"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_content8"
-        android:textSize="@dimen/activity_line_update_lv_font_size"
+        android:textSize="@dimen/activity_line_update_lv_textSize"
         android:typeface="monospace" />
     </LinearLayout>
 
@@ -113,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@null"
-        android:textSize="@dimen/activity_line_update_lv_font_size"
+        android:textSize="@dimen/activity_line_update_lv_textSize"
         android:typeface="monospace"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_content8"
-        android:textSize="@dimen/activity_line_update_lv_font_size"
+        android:textSize="@dimen/activity_line_update_lv_textSize"
         android:typeface="monospace" />
     </LinearLayout>
 
@@ -189,20 +189,20 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/tvLabel"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:hintEnabled="false"
-      android:layoutDirection="ltr">
+      app:hintEnabled="false">
 
       <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etInputHex"
         android:hint="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/activity_line_update_lv_font_size"
+        android:textSize="@dimen/activity_line_update_lv_textSize"
         android:importantForAutofill="no"
         android:inputType="textVisiblePassword|textMultiLine"
         android:typeface="monospace"
         android:gravity="top"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:textDirection="ltr"/>
     </com.google.android.material.textfield.TextInputLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
