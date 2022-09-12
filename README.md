@@ -61,27 +61,28 @@ About the style of the code: Try to respect the original style as much as possib
 You are invited to provide translations for the app. But there are some rules.
 * Please translate only if you're **familiar with the nomenclature of the Android system**. If you're not sure, check the official documentation and see how it should be done.
 * Contribute only if you commit to translating the **majority** of the strings. No one wants an application that is a mix of English and native language. I may remove translations, if they are not updated on new string resources.
+* So that I can integrate it correctly, please give me the translation of the new language.
 
 Translations can be provided via [Weblate][weblate].
 
-Note: In the settings, the list of languages is sorted as follows:
-*   en-US: English (always first)
-*   Other languages according to the alphabetical order of their codes, i.e.:
-    * ar: Arabic
-    * de-DE: German
-    * es-ES: Spanish
-    * fr-FR: French
-    * ja-JP: Japanese
-    * nb-NO: Norwegian Bokmål
-    * pt-BR: Portuguese (Brazil)
-    * ru-RU: Russian
-    * tr-TR: Turkish
-    * zh-CN: Chinese
+Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
+* ar: Arabic
+* de-DE: German
+* en-US: English
+* es-ES: Spanish
+* fr-FR: French
+* ja-JP: Japanese
+* nb-NO: Norwegian Bokmål
+* pt-BR: Portuguese (Brazil)
+* ru-RU: Russian
+* tr-TR: Turkish
+* zh-CN: Chinese
 
 The current status of the translations is as follows:
 
 [![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/strings/multi-auto.svg)][weblate]
 
+*   Arabic: [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/)
 *   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/]
 *   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
 *   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
@@ -92,7 +93,6 @@ The current status of the translations is as follows:
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
-*   Arabic: [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/)
 
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>

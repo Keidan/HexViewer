@@ -18,6 +18,7 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
 
   
 Translations:
+* Arabic: @sec.xyx
 * Chinese: @sr093906, @alchemillatruth, @hamburger1024
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
@@ -28,18 +29,16 @@ Translations:
 * Russian: @OmlineEditor, @AHOHNMYC
 * Spanish: @sguinetti, (+DeepL)
 * Turkish: @ersen0
-* Arabic: @sec.xyx
 
-Note: In the settings, the list of languages is sorted as follows:
-*   en-US: English (always first)
-*   Other languages according to the alphabetical order of their codes, i.e.:
-    * ar: Arabic
-    * de-DE: German
-    * es-ES: Spanish
-    * fr-FR: French
-    * ja-JP: Japanese
-    * nb-NO: Norwegian Bokmål
-    * pt-BR: Portuguese (Brazil)
-    * ru-RU: Russian
-    * tr-TR: Turkish
-    * zh-CN: Chinese
+Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
+* ar: Arabic
+* de-DE: German
+* en-US: English
+* es-ES: Spanish
+* fr-FR: French
+* ja-JP: Japanese
+* nb-NO: Norwegian Bokmål
+* pt-BR: Portuguese (Brazil)
+* ru-RU: Russian
+* tr-TR: Turkish
+* zh-CN: Chinese

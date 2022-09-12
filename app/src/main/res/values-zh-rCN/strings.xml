@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="arrays_languages_entries_arabic">阿拉伯语</string>
-    <string name="arrays_languages_entries_english">英文</string>
-    <string name="arrays_languages_entries_german">德文</string>
-    <string name="arrays_languages_entries_spanish">西班牙语</string>
-    <string name="arrays_languages_entries_french">法语</string>
-    <string name="arrays_languages_entries_japanese">日语</string>
-    <string name="arrays_languages_entries_russian">俄语</string>
-    <string name="arrays_languages_entries_chinese">中文</string>
-    <string name="arrays_languages_entries_turkish">土耳其语</string>
     <string name="arrays_screen_orientation_entries_automatic">自动</string>
     <string name="arrays_screen_orientation_entries_portrait">纵向</string>
     <string name="arrays_screen_orientation_entries_landscape">横向</string>
-    <string name="arrays_languages_entries_norwegian_bokmal">挪威语Bokmål</string>
-    <string name="arrays_languages_entries_portuguese_brazil">葡萄牙语(巴西)</string>
     <string name="search_title">搜索</string>
     <string name="search_hint">搜索…</string>
     <string name="action_open_title">打开…</string>

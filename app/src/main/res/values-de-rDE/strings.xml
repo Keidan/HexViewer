@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="arrays_languages_entries_arabic">Arabisch</string>
-    <string name="arrays_languages_entries_english">Englisch</string>
-    <string name="arrays_languages_entries_german">Deutsch</string>
-    <string name="arrays_languages_entries_spanish">Spanisch</string>
-    <string name="arrays_languages_entries_french">Französisch</string>
-    <string name="arrays_languages_entries_japanese">Japanisch</string>
-    <string name="arrays_languages_entries_russian">Russisch</string>
-    <string name="arrays_languages_entries_chinese">Chinesisch</string>
-    <string name="arrays_languages_entries_turkish">Türkisch</string>
-    <string name="arrays_languages_entries_norwegian_bokmal">Norwegisch Bokmål</string>
-    <string name="arrays_languages_entries_portuguese_brazil">Portugiesisch (Brasilien)</string>
     <string name="arrays_screen_orientation_entries_automatic">Automatische</string>
     <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
     <string name="arrays_screen_orientation_entries_landscape">Landschaft</string>
