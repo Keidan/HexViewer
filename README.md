@@ -82,7 +82,7 @@ The current status of the translations is as follows:
 
 [![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/strings/multi-auto.svg)][weblate]
 
-*   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/)
+*   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/]
 *   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
 *   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
 *   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), (+DeepL)
