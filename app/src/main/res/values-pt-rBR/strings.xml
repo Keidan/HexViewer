@@ -17,7 +17,6 @@
     <string name="settings_pref_title_row_height_auto">Altura automática</string>
     <string name="settings_pref_summary_screen_orientation">Definir orientação padrão da tela (somente tela principal).</string>
     <string name="decimal">decimal</string>
-    <string name="arrays_languages_entries_english">Inglês</string>
     <string name="action_open_title_button">Abrir</string>
     <string name="arrays_screen_orientation_entries_portrait">Retrato</string>
     <string name="arrays_screen_orientation_entries_landscape">Paisagem</string>
