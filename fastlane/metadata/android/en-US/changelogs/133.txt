@@ -1,0 +1,5 @@
+* Arabic translation added, thanks to sec.xyx.
+* Update of Turkish (thanks to @ersen0) and Chinese (thanks to @hamburger1024).
+* Modification of the interface for a better experience when viewing in RTL.
+* The languages are now offered directly in the language of the country.
+
