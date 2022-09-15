@@ -89,8 +89,8 @@ The current status of the translations is as follows:
 *   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), (+DeepL)
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
-*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC)
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
+*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
 
