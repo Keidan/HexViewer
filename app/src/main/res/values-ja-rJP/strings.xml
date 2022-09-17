@@ -114,6 +114,6 @@
     <string name="memory_threshold_description">ファイルのオープンが中断されるまでのメモリ制限のしきい値。</string>
     <string name="error_not_available">利用できません</string>
     <string name="dialog_restore_title">Restore</string>
-    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
-    <string name="dialog_restore_recent">Delete the list of recent files?</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values\?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files\?</string>
 </resources>
