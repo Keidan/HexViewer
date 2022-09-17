@@ -39,6 +39,13 @@ public class RecentlyOpened {
     mList = load();
   }
 
+  public void clear() {
+    SharedPreferences.Editor e = mApp.getPref(mApp).edit();
+    e.putString(SettingsKeys.CFG_RECENTLY_OPEN, "");
+    e.apply();
+    reload();
+  }
+
   private boolean migrate() {
     String content = mApp.getPref(mApp).getString(SettingsKeys.CFG_RECENTLY_OPEN, "");
     if (content.isEmpty() || content.startsWith(SEQUENTIAL_MASK))

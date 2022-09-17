@@ -26,4 +26,7 @@
 
   <!-- Preferences -->
   <dimen name="preferences_textSize">18sp</dimen>
+
+  <!-- content_dialog_restore -->
+  <dimen name="content_dialog_restore_textSize">22sp</dimen>
 </resources>

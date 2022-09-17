@@ -69,6 +69,8 @@
     <string name="settings_pref_summary_row_height">Listedeki satırın yüksekliği.</string>
     <string name="settings_pref_title_font_size">Yazı tipi boyutu</string>
     <string name="settings_category_about">Hakkında</string>
+    <string name="settings_pref_title_restore_default">Restore default values</string>
+    <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
     <string name="settings_category_general">Genel</string>
     <string name="not_enough_memory">Bu uygulama için yeterli bellek olmadığı için komut çalıştırılamıyor.</string>
     <string name="settings_pref_title_version">Sürüm</string>
@@ -111,4 +113,7 @@
     <string name="error_no_line_selected">Hiçbir satır seçilmedi</string>
     <string name="memory_threshold_description">Bir dosyanın açılması iptal edilmeden önceki bellek sınırı için eşik değeri.</string>
     <string name="partial_file_opening_description">Açmak istediğiniz alanın başlangıcını ve bitişini girin.</string>
+    <string name="dialog_restore_title">Restore</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files?</string>
 </resources>

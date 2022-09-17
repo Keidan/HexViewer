@@ -102,6 +102,7 @@
   <string name="settings_pref_title_font_size">Font size</string>
   <string name="settings_pref_summary_font_size">Font size of text in the list.</string>
   <string name="settings_category_about">About</string>
+  <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
   <string name="settings_pref_title_version">Version</string>
   <string name="settings_pref_title_license">Copylefted libre license</string>
   <string name="settings_pref_summary_license" translatable="false">GNU GPL v3 or later</string>
@@ -153,4 +154,8 @@
   <string name="memory_threshold_title">Memory threshold</string>
   <string name="memory_threshold_description">Amount of memory allowed before opening a file is aborted.</string>
   <string name="error_not_available">Not available</string>
+  <string name="settings_pref_title_restore_default">Restore default values</string>
+  <string name="dialog_restore_title">Restore</string>
+  <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+  <string name="dialog_restore_recent">Delete the list of recent files?</string>
 </resources>

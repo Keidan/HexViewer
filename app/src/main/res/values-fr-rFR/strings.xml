@@ -61,6 +61,8 @@
   <string name="settings_pref_title_font_size">Taille de la police</string>
   <string name="settings_pref_summary_font_size">Taille de la police des textes de la liste.</string>
   <string name="settings_category_about">A propos</string>
+  <string name="settings_pref_title_restore_default">Restaurer les valeurs par défaut</string>
+  <string name="settings_pref_summary_restore_default">Restaure les différentes valeurs de l\'application à leur état par défaut.</string>
   <string name="settings_pref_title_version">Version</string>
   <string name="settings_pref_title_license">Licence</string>
   <string name="settings_category_general">Général</string>
@@ -111,4 +113,7 @@
   <string name="memory_threshold_title">Seuil de mémoire</string>
   <string name="memory_threshold_description">Quantité de mémoire autorisée avant que l\'ouverture d\'un fichier soit interrompue.</string>
   <string name="error_not_available">Non disponible</string>
+  <string name="dialog_restore_title">Restaurer</string>
+  <string name="dialog_restore_question">Voulez-vous vraiment restaurer les valeurs par défaut ?</string>
+  <string name="dialog_restore_recent">Effacer la liste des fichiers récents ?</string>
 </resources>

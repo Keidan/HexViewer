@@ -48,4 +48,7 @@
 
   <!-- Preferences -->
   <dimen name="preferences_textSize">14sp</dimen>
+
+  <!-- content_dialog_restore -->
+  <dimen name="content_dialog_restore_textSize">18sp</dimen>
 </resources>

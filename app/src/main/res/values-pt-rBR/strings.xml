@@ -62,6 +62,8 @@
     <string name="settings_pref_title_row_height">Altura</string>
     <string name="settings_pref_summary_row_height">Altura da linha na lista.</string>
     <string name="settings_category_about">Sobre</string>
+    <string name="settings_pref_title_restore_default">Restore default values</string>
+    <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
     <string name="settings_pref_title_version">Versão</string>
     <string name="settings_pref_title_license">Licença livre de cópia de esquerda</string>
     <string name="settings_pref_title_font_size">Tamanho da fonte</string>
@@ -111,4 +113,7 @@
     <string name="memory_threshold_title">Limite de memória</string>
     <string name="memory_threshold_description">Quantidade de memória permitida antes de abrir um arquivo é abortada.</string>
     <string name="error_not_available">Não disponível</string>
+    <string name="dialog_restore_title">Restore</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files?</string>
 </resources>

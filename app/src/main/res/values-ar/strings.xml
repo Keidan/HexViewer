@@ -61,6 +61,8 @@
     <string name="settings_pref_title_font_size">حجم الخط</string>
     <string name="settings_pref_summary_font_size">حجم خط النص في القائمة.</string>
     <string name="settings_category_about">حول</string>
+    <string name="settings_pref_title_restore_default">Restore default values</string>
+    <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
     <string name="settings_pref_title_version">الاصدار</string>
     <string name="settings_pref_title_license">رخصة حرة متروكة الحقوق</string>
     <string name="settings_category_general">عام</string>
@@ -111,4 +113,7 @@
     <string name="memory_threshold_title">عتبة الذاكرة</string>
     <string name="memory_threshold_description">تم إحباط مقدار الذاكرة المسموح بها قبل فتح الملف.</string>
     <string name="error_not_available">غير متوفر</string>
+    <string name="dialog_restore_title">Restore</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files?</string>
 </resources>

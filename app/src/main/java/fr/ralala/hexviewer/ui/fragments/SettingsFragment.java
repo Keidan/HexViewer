@@ -1,10 +1,15 @@
 package fr.ralala.hexviewer.ui.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.widget.CheckBox;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -31,10 +36,13 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public class SettingsFragment extends AbstractSettingsFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+  private static final String GITHUB_URL = "https://github.com/Keidan/HexViewer";
+  private static final String GITHUB_LIC_URL = GITHUB_URL + "/blob/master/license.txt";
   protected Preference mSettingsListsPortrait;
   protected Preference mSettingsListsLandscape;
   protected Preference mLicense;
   protected Preference mVersion;
+  private Preference mRestoreDefault;
   private ListPreference mLanguage;
   private ListPreference mScreenOrientation;
   private ListPreference mNbBytesPerLine;
@@ -64,6 +72,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mLanguage = findPreference(SettingsKeys.CFG_LANGUAGE);
     mScreenOrientation = findPreference(SettingsKeys.CFG_SCREEN_ORIENTATION);
     mNbBytesPerLine = findPreference(SettingsKeys.CFG_NB_BYTES_PER_LINE);
+    mRestoreDefault = findPreference(SettingsKeys.CFG_RESTORE_DEFAULT);
 
     mSettingsListsPortrait.setOnPreferenceClickListener(this);
     mSettingsListsLandscape.setOnPreferenceClickListener(this);
@@ -72,6 +81,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mLanguage.setOnPreferenceChangeListener(this);
     mScreenOrientation.setOnPreferenceChangeListener(this);
     mNbBytesPerLine.setOnPreferenceChangeListener(this);
+    mRestoreDefault.setOnPreferenceClickListener(this);
 
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
@@ -117,15 +127,21 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   @Override
   public boolean onPreferenceClick(Preference preference) {
     if (preference.equals(mLicense)) {
-      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer/blob/master/license.txt"));
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_LIC_URL));
       startActivity(browserIntent);
     } else if (preference.equals(mVersion)) {
-      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Keidan/HexViewer"));
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL));
       startActivity(browserIntent);
     } else if (preference.equals(mSettingsListsPortrait)) {
       SettingsListsPortraitActivity.startActivity(mActivity);
     } else if (preference.equals(mSettingsListsLandscape)) {
       SettingsListsLandscapeActivity.startActivity(mActivity);
+    } else if (preference.equals(mRestoreDefault)) {
+      if (!((SettingsActivity) mActivity).isChanged()) {
+        restoreDefaultDialog();
+      } else {
+        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_language_change));
+      }
     }
     return false;
   }
@@ -159,5 +175,25 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       }
     }
     return false;
+  }
+
+  @SuppressLint("InflateParams")
+  private void restoreDefaultDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    builder.setCancelable(false)
+        .setTitle(R.string.dialog_restore_title)
+        .setPositiveButton(android.R.string.ok, null)
+        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+        });
+    LayoutInflater factory = LayoutInflater.from(mActivity);
+    builder.setView(factory.inflate(R.layout.content_dialog_restore, null));
+    final AlertDialog dialog = builder.create();
+    dialog.show();
+    final CheckBox cb = dialog.findViewById(R.id.deleteRecent);
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+      mApp.loadDefaultValues(cb != null && cb.isChecked());
+      mActivity.finish();
+      dialog.dismiss();
+    });
   }
 }

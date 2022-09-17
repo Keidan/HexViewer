@@ -61,6 +61,8 @@
     <string name="settings_pref_title_font_size">フォントサイズ</string>
     <string name="settings_pref_summary_font_size">リスト内テキストのフォントサイズ。</string>
     <string name="settings_category_about">このアプリについて</string>
+    <string name="settings_pref_title_restore_default">Restore default values</string>
+    <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
     <string name="settings_pref_title_version">バージョン</string>
     <string name="settings_pref_title_license">ライセンス</string>
     <string name="settings_category_general">一般</string>
@@ -111,4 +113,7 @@
     <string name="memory_threshold_title">メモリのしきい値</string>
     <string name="memory_threshold_description">ファイルのオープンが中断されるまでのメモリ制限のしきい値。</string>
     <string name="error_not_available">利用できません</string>
+    <string name="dialog_restore_title">Restore</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files?</string>
 </resources>

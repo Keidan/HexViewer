@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 
 import java.util.Locale;
 
@@ -139,6 +141,39 @@ public class ApplicationCtx extends Application {
     EmojiCompat.init(config);
     loadDefaultLocal();
     setApplicationLanguage(mLanguage);
+  }
+
+  /**
+   * Loads default values.
+   *
+   * @param recent Delete the list of recent files?
+   */
+  @SuppressWarnings("java:S1874")
+  public void loadDefaultValues(boolean recent) {
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
+      mLanguage = Resources.getSystem().getConfiguration().locale.getLanguage();
+    else
+      mLanguage = Resources.getSystem().getConfiguration().getLocales().get(0).getLanguage();
+    setApplicationLanguage(mLanguage);
+    SharedPreferences.Editor e = getPref(this).edit();
+    mListSettingsHexPortrait.loadDefaultValues(e);
+    mListSettingsHexLandscape.loadDefaultValues(e);
+    mListSettingsHexLineNumbersPortrait.loadDefaultValues(e);
+    mListSettingsHexLineNumbersLandscape.loadDefaultValues(e);
+    mListSettingsPlainPortrait.loadDefaultValues(e);
+    mListSettingsPlainLandscape.loadDefaultValues(e);
+    mListSettingsLineEditPortrait.loadDefaultValues(e);
+    mListSettingsLineEditLandscape.loadDefaultValues(e);
+    e.putBoolean(SettingsKeys.CFG_SMART_INPUT, mDefaultSmartInput);
+    e.putBoolean(SettingsKeys.CFG_OVERWRITE, mDefaultOverwrite);
+    e.putBoolean(SettingsKeys.CFG_LINES_NUMBER, mDefaultLinesNumber);
+    e.putString(SettingsKeys.CFG_SCREEN_ORIENTATION, mDefaultScreenOrientation);
+    e.putString(SettingsKeys.CFG_NB_BYTES_PER_LINE, mDefaultNbBytesPerLine);
+    e.putString(SettingsKeys.CFG_MEMORY_THRESHOLD, mDefaultMemoryThreshold);
+    e.putBoolean(SettingsKeys.CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED, mDefaultPartialOpenButWholeFileIsOpened);
+    e.apply();
+    if(recent)
+      mRecentlyOpened.clear();
   }
 
   public SharedPreferences getPref(final Context context) {

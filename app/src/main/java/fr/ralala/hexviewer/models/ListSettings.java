@@ -42,6 +42,18 @@ public class ListSettings {
   }
 
   /**
+   * Loads default values.
+   *
+   * @param e SharedPreferences.Editor
+   */
+  public void loadDefaultValues(SharedPreferences.Editor e) {
+    e.putString(mKeyFontSize, String.valueOf(mDefaultFontSize));
+    e.putString(mKeyDisplayDataColumn, String.valueOf(mDefaultDisplayDataColumn));
+    e.putString(mKeyRowHeightAuto, String.valueOf(mDefaultRowHeightAuto));
+    e.putString(mKeyRowHeight, String.valueOf(mDefaultRowHeight));
+  }
+
+  /**
    * Sets the default values.
    *
    * @param defaultDisplayDataColumn Xml rss
