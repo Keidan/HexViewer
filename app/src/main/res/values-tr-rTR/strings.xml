@@ -114,6 +114,6 @@
     <string name="memory_threshold_description">Bir dosyanın açılması iptal edilmeden önceki bellek sınırı için eşik değeri.</string>
     <string name="partial_file_opening_description">Açmak istediğiniz alanın başlangıcını ve bitişini girin.</string>
     <string name="dialog_restore_title">Restore</string>
-    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
-    <string name="dialog_restore_recent">Delete the list of recent files?</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values\?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files\?</string>
 </resources>

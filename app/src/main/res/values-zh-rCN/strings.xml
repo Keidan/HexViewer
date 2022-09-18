@@ -61,8 +61,8 @@
     <string name="settings_pref_title_font_size">字体大小</string>
     <string name="settings_pref_summary_font_size">列表中文本的字体大小。</string>
     <string name="settings_category_about">关于</string>
-  <string name="settings_pref_title_restore_default">Restore default values</string>
-  <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
+    <string name="settings_pref_title_restore_default">Restore default values</string>
+    <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
     <string name="settings_pref_title_version">版本号</string>
     <string name="settings_pref_title_license">Copylefted 自由许可证</string>
     <string name="settings_category_general">常规</string>
@@ -113,7 +113,7 @@
     <string name="memory_threshold_title">内存阈值</string>
     <string name="memory_threshold_description">打开文件操作中止前允许的内存量。</string>
     <string name="error_not_available">不可用</string>
-  <string name="dialog_restore_title">Restore</string>
-  <string name="dialog_restore_question">Do you really want to restore the default values?</string>
-  <string name="dialog_restore_recent">Delete the list of recent files?</string>
+    <string name="dialog_restore_title">Restore</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values\?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files\?</string>
 </resources>
