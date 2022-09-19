@@ -2,7 +2,7 @@
 <resources>
     <string name="arrays_screen_orientation_entries_automatic">Automatische</string>
     <string name="arrays_screen_orientation_entries_portrait">Portrait</string>
-    <string name="arrays_screen_orientation_entries_landscape">Landschaft</string>
+    <string name="arrays_screen_orientation_entries_landscape">Querformat</string>
     <string name="search_title">Suchen</string>
     <string name="search_hint">Suchen…</string>
     <string name="action_open_title">Öffnen…</string>
@@ -44,10 +44,10 @@
     <string name="error_invalid_value">Ungültiger Wert</string>
     <string name="settings_pref_category_portrait">Portraitmodus</string>
     <string name="settings_pref_title_lists_portrait">Höhe, Schriftgröße…</string>
-    <string name="settings_pref_summary_lists_portrait">Klicken Sie zum Bearbeiten</string>
-    <string name="settings_pref_category_landscape">Landschaftsmodus</string>
+    <string name="settings_pref_summary_lists_portrait">Antippen zum Bearbeiten</string>
+    <string name="settings_pref_category_landscape">Anzeige im Querformat</string>
     <string name="settings_pref_title_lists_landscape">Höhe, Schriftgröße…</string>
-    <string name="settings_pref_summary_lists_landscape">Klicken Sie zum Bearbeiten</string>
+    <string name="settings_pref_summary_lists_landscape">Antippen zum Bearbeiten</string>
     <string name="settings_category_hex">Text in hexadezimaler Darstellung (ohne Zeilennummern)</string>
     <string name="settings_category_hex_line_numbers">Text in hexadezimaler Darstellung (mit Zeilennummern)</string>
     <string name="settings_category_plain">Ansicht im Klartext</string>
