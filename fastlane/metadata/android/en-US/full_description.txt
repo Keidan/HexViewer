@@ -22,7 +22,7 @@ Translations:
 * Chinese: @sr093906, @alchemillatruth, @hamburger1024
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
-* German: @iNtEgraIR2021, (+DeepL)
+* German: @iNtEgraIR2021, @eUgEntOptIc44, (+DeepL)
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
 * Portuguese (Brazil): @Bardock88

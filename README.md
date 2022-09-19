@@ -86,7 +86,7 @@ The current status of the translations is as follows:
 *   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/]
 *   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
 *   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
-*   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), (+DeepL)
+*   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL)
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
