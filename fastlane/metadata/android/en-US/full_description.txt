@@ -23,6 +23,7 @@ Translations:
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
 * German: @iNtEgraIR2021, @eUgEntOptIc44, (+DeepL)
+* Hebrew: @Shopimisrel
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
 * Portuguese (Brazil): @Bardock88
@@ -36,6 +37,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * en-US: English
 * es-ES: Spanish
 * fr-FR: French
+* iw: Hebrew
 * ja-JP: Japanese
 * nb-NO: Norwegian Bokmål
 * pt-BR: Portuguese (Brazil)
