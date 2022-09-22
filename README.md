@@ -92,7 +92,7 @@ The current status of the translations is as follows:
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
-*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC)
+*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
 

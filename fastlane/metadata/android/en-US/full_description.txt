@@ -27,7 +27,7 @@ Translations:
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
 * Portuguese (Brazil): @Bardock88
-* Russian: @OmlineEditor, @AHOHNMYC
+* Russian: @OmlineEditor, @AHOHNMYC, @racingrebel
 * Spanish: @sguinetti, (+DeepL)
 * Turkish: @ersen0
 
