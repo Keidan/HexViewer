@@ -57,6 +57,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   private FileData mFileData = null;
   private ConstraintLayout mIdleView = null;
   private MenuItem mSearchMenu = null;
+  private MenuItem mEditEmptyMenu = null;
   private String mSearchQuery = "";
   private PayloadPlainSwipe mPayloadPlainSwipe = null;
   private LauncherLineUpdate mLauncherLineUpdate = null;
@@ -124,7 +125,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPopup.dismiss();
     mApp.applyApplicationLanguage(this);
     /* refresh */
-    findViewById(R.id.buttonRecentlyOpen).setEnabled(!((ApplicationCtx)getApplicationContext()).getRecentlyOpened().list().isEmpty());
+    findViewById(R.id.buttonRecentlyOpen).setEnabled(!((ApplicationCtx) getApplicationContext()).getRecentlyOpened().list().isEmpty());
     onOpenResult(!FileData.isEmpty(mFileData), false);
     if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.refreshAdapter();
@@ -151,6 +152,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
 
   /**
    * Processes the intent Uri.
+   *
    * @param uri Uri
    */
   private void processIntentUri(final Uri uri) {
@@ -161,7 +163,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       } else
         addRecent = FileHelper.takeUriPermissions(this, uri, false);
       FileData fd = new FileData(this, uri, true);
-      mApp.setSequential(true);
+      mApp.setSequential(fd.getRealSize() != 0);
       final Runnable r = () -> mLauncherOpen.processFileOpen(fd, null, addRecent);
       if (mUnDoRedo.isChanged()) {// a save operation is pending?
         UIHelper.confirmFileChanged(this, mFileData, r,
@@ -183,10 +185,24 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   public boolean onCreateOptionsMenu(final Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     MenuCompat.setGroupDividerEnabled(menu, true);
+    mEditEmptyMenu = menu.findItem(R.id.action_edit_empty);
+    mEditEmptyMenu.setVisible(!(mFileData == null || mFileData.getRealSize() != 0));
     mSearchMenu = menu.findItem(R.id.action_search);
     mSearchMenu.setVisible(false);
     setSearchView(mSearchMenu);
     return true;
+  }
+
+  /**
+   * Should the edit menu in case the file is empty be displayed?
+   */
+  private void updateEditEmptyMenu() {
+    if (mEditEmptyMenu != null) {
+      mEditEmptyMenu.setVisible(!FileData.isEmpty(mFileData) && mPayloadHexHelper.getAdapter().getEntries().getItems().isEmpty());
+      if(mEditEmptyMenu.isVisible()) {
+        mPayloadHexHelper.getAdapter().displayTitle();
+      }
+    }
   }
 
   /**
@@ -271,6 +287,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mFileData = null;
       mUnDoRedo.clear();
     }
+    updateEditEmptyMenu();
     refreshTitle();
   }
 
@@ -281,6 +298,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     UIHelper.setTitle(this, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
     if ((!FileData.isEmpty(mFileData) && !mFileData.isOpenFromAppIntent()))
       mPopup.setSaveMenuEnable(mUnDoRedo.isChanged());
+    updateEditEmptyMenu();
   }
 
 
@@ -355,6 +373,9 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     final int id = item.getItemId();
     if (id == R.id.action_more) {
       mPopup.show(findViewById(R.id.action_more));
+    } else if (id == R.id.action_edit_empty) {
+      mLauncherLineUpdate.startActivity(new ByteArrayOutputStream().toByteArray(), 0, 0,
+          mFileData.getShiftOffset(), 0);
     }
     return super.onOptionsItemSelected(item);
   }

@@ -64,17 +64,7 @@ public class UpdateCommand implements ICommand {
       updateExistingElements(adapter);
 
       /* Then we add the elements */
-      LineEntry prevLine = mPrevLines.get(mPrevLines.size() - 1);
-      for (int i = mRefNbLines, j = 1; i < size; i++, j++) {
-        LineEntry value = mList.get(i);
-        value.setIndex(prevLine.getIndex() + j);
-        value.setUpdated(mUnDoRedo.isChanged());
-        if (value.getIndex() < adapter.getEntries().getItems().size()) {
-          adapter.getEntries().addItem(value.getIndex(), mList.get(i));
-        } else {
-          adapter.getEntries().addItem(mList.get(i));
-        }
-      }
+      addElements(adapter, size);
 
       /* Finally we move the existing indexes */
       if ((mFirstPosition + size) < adapter.getEntries().getItems().size())
@@ -83,6 +73,44 @@ public class UpdateCommand implements ICommand {
     if (!query.isEmpty())
       adapter.manualFilterUpdate(query); /* restore filter */
     adapter.refresh();
+  }
+
+  /**
+   * Add the new elements.
+   *
+   * @param adapter The adapter.
+   * @param size    The number of elements
+   */
+  private void addElements(HexTextArrayAdapter adapter, int size) {
+    int index = mPrevLines.size() - 1;
+    if (index == -1) {
+      for (int i = 0; i < size; i++) {
+        addValue(adapter, i, i);
+      }
+    } else {
+      LineEntry prevLine = mPrevLines.get(mPrevLines.size() - 1);
+      for (int i = mRefNbLines, j = 1; i < size; i++, j++) {
+        addValue(adapter, i, prevLine.getIndex() + j);
+      }
+    }
+  }
+
+  /**
+   * Adds a value to the adapter.
+   *
+   * @param adapter    The adapter.
+   * @param listIndex  The index in the list to add.
+   * @param valueIndex The index of the value (LineEntry::setIndex).
+   */
+  private void addValue(HexTextArrayAdapter adapter, int listIndex, int valueIndex) {
+    LineEntry value = mList.get(listIndex);
+    value.setIndex(valueIndex);
+    value.setUpdated(mUnDoRedo.isChanged());
+    if (value.getIndex() < adapter.getEntries().getItems().size()) {
+      adapter.getEntries().addItem(value.getIndex(), mList.get(listIndex));
+    } else {
+      adapter.getEntries().addItem(mList.get(listIndex));
+    }
   }
 
   /**
@@ -102,15 +130,20 @@ public class UpdateCommand implements ICommand {
     } else {
       Log.i(getClass().getName(), "unExecute -> multiple elements");
       int diff = Math.abs(size - mRefNbLines);
-      LineEntry prevLine = mPrevLines.get(mPrevLines.size() - 1);
+      int index = mPrevLines.size() - 1;
+      if (index == -1)
+        adapter.getEntries().clear();
+      else {
+        LineEntry prevLine = mPrevLines.get(index);
 
-      /* First, we delete the elements */
-      for (int i = (prevLine.getIndex() + diff); i > prevLine.getIndex(); i--) {
-        adapter.getEntries().removeItem(i);
+        /* First, we delete the elements */
+        for (int i = (prevLine.getIndex() + diff); i > prevLine.getIndex(); i--) {
+          adapter.getEntries().removeItem(i);
+        }
+
+        /* Then we move the existing indexes - filtered */
+        adapter.getEntries().moveIndexes(prevLine.getIndex() + 1, diff, false);
       }
-
-      /* Then we move the existing indexes - filtered */
-      adapter.getEntries().moveIndexes(prevLine.getIndex() + 1, diff, false);
     }
     /* Finally we restores the existing elements */
     restoreExistingElements(adapter);

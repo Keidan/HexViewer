@@ -55,7 +55,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     mStartOffset = 0;
     mTitle = title;
     mSelectedItemsIds = new HashSet<>();
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
   }
 
   public void setStartOffset(final long startOffset) {
@@ -197,19 +197,22 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       v.setBackgroundColor(ContextCompat.getColor(getContext(), getContentBackgroundColor(position)));
     }
   }
+
   private int getContentTextColor(final LineEntry fd, final int position) {
-    if(fd.isUpdated())
+    if (fd.isUpdated())
       return R.color.colorTextUpdated;
     return isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor;
   }
+
   private int getContentBackgroundColor(final int position) {
     return isSelected(position) ? R.color.colorAccent : R.color.windowBackground;
   }
 
   /**
    * Update of the line numbers part.
-   * @param fd LineEntry
-   * @param holder Holder
+   *
+   * @param fd       LineEntry
+   * @param holder   Holder
    * @param position position
    */
   private void updateLineNumbers(final LineEntry fd, final HolderHex holder, final int position) {
@@ -217,7 +220,6 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
       String fmt = "%0" + maxLength + "X";
       final String s = String.format(fmt, getCurrentLine(fd.getIndex()));
-      final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
       final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
           isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
       holder.getLineNumbers().setText(s);
@@ -226,17 +228,30 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       holder.getLineNumbers().setVisibility(View.VISIBLE);
 
       if (position == 0) {
-        fmt = "%" + maxLength + "s";
-        mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
-        mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
-            R.string.title_content : R.string.title_content8));
-        mTitle.getTitleContent().setTextColor(colorTitle);
+        displayTitle();
       }
       applyUserConfig(mTitle.getTitleContent());
       applyUserConfig(mTitle.getTitleLineNumbers());
 
     } else {
       holder.getLineNumbers().setVisibility(View.GONE);
+    }
+  }
+
+  /**
+   * Displays the row with the columns (if the option is available).
+   */
+  public void displayTitle() {
+    if (mApp.isLineNumber()) {
+      final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
+      final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
+      final String fmt = "%" + maxLength + "s";
+      mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
+      mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
+          R.string.title_content : R.string.title_content8));
+      mTitle.getTitleContent().setTextColor(colorTitle);
+      applyUserConfig(mTitle.getTitleContent());
+      applyUserConfig(mTitle.getTitleLineNumbers());
     }
   }
 }

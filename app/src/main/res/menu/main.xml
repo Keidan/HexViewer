@@ -8,7 +8,10 @@
     android:title="@string/search_title"
     app:showAsAction="ifRoom"
     app:actionViewClass="android.widget.SearchView"/>
-
+  <item android:id="@+id/action_edit_empty"
+    android:icon="@drawable/ic_edit"
+    android:title="@null"
+    app:showAsAction="always"/>
   <item android:id="@+id/action_more"
     android:icon="@drawable/ic_more"
     android:title="@null"

@@ -1,7 +1,7 @@
 ---
 testspace:
 title: Open file
-sizes: ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
+sizes: 0B, ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
 ---
 
 {% if page %} {% assign spec = page %} {% endif %}
@@ -18,6 +18,7 @@ Open a file.\
    - **<ins>IMPORTANT:</ins> Repeat the operation with a file of {{ spec.sizes }}.**
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
+- If the file to be opened is empty, an edit icon will be available between the search icon and the dots icon.
 
 ## Menu
 - Open a file by clicking on the `Open...` menu in the contextual menu.
@@ -27,6 +28,7 @@ Open a file.\
 - Select a file.
 - A dialog box showing the loading progress is displayed.
 - The contents of the selected file are displayed.
+- If the file to be opened is empty, an edit icon will be available between the search icon and the dots icon.
 
 ## Open when a file is already open (no change)
 - Open a file by clicking on the `Open...` menu in the contextual menu OR by clicking on the `OPEN` button in the home view.

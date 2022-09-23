@@ -1,7 +1,7 @@
 ---
 testspace:
 title: Partial file opening
-sizes: ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
+sizes: 0B, ~100kb, ~500kb, ~1Mb, ~5Mb, ~10Mb, ~15Mb
 ---
 
 {% if page %} {% assign spec = page %} {% endif %}
@@ -30,6 +30,7 @@ Open a file using the partial opening feature.\
    - The content of the selected file is displayed.
    
 **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
+**Note 2: If the file to be opened is empty, it will not be possible to validate the selection.**
    
 
 ## Menu
@@ -51,6 +52,7 @@ Open a file using the partial opening feature.\
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
    - **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
+   - **Note 2: If the file to be opened is empty, it will not be possible to validate the selection.**
    
 ## Open when a file is already open (no change)
 - Open a file by clicking on the `Partial file opening...` menu in the contextual menu OR by clicking on the `PARTIAL FILE OPENING` button in the home view.
@@ -70,6 +72,7 @@ Open a file using the partial opening feature.\
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
    - **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
+   - **Note 2: If the file to be opened is empty, it will not be possible to validate the selection.**
 - Open a file by clicking on the `Open...` menu in the contextual menu.
 - The main view disappears.
 - A file picker appears.
@@ -95,6 +98,7 @@ Open a file using the partial opening feature.\
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
    - **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
+   - **Note 2: If the file to be opened is empty, it will not be possible to validate the selection.**
 - Click on a line.
 - A new window appears.
 - Check the `Plain text input` box.
@@ -127,6 +131,7 @@ Open a file using the partial opening feature.\
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
    - **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
+   - **Note 2: If the file to be opened is empty, it will not be possible to validate the selection.**
 - Click on a line.
 - A new window appears.
 - Check the `Plain text input` box.
@@ -163,6 +168,7 @@ Open a file using the partial opening feature.\
    - A dialog box showing the loading progress is displayed.
    - The content of the selected file is displayed.
    - **Note: If the open area is the entire file, the opening of the file is considered a normal opening (not a partial opening).**
+   - **Note 2: If the file to be opened is empty, it will not be possible to validate the selection.**
 - Click on a line.
 - A new window appears.
 - Check the `Plain text input` box.

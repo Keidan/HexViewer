@@ -120,7 +120,7 @@ public class LineEntries {
    * @param position The item.
    */
   public int getItemIndex(final int position) {
-    return mFilteredList.get(position);
+    return mFilteredList.isEmpty() ? 0 : mFilteredList.get(position);
   }
 
   /**
@@ -156,7 +156,7 @@ public class LineEntries {
   public LineEntry getItem(final int position) {
     if (mFilteredList != null && mFilteredList.size() > position) {
       final int pos = mFilteredList.get(position);
-      if(mEntryList.size() > pos)
+      if (mEntryList.size() > pos)
         return mEntryList.get(pos);
     }
     return null;
