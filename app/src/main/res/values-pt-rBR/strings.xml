@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="arrays_screen_orientation_entries_automatic">Auto</string>
-    <string name="search_hint">Procurando…</string>
-    <string name="action_open_title">Abrindo…</string>
+    <string name="arrays_screen_orientation_entries_automatic">Automático</string>
+    <string name="search_hint">Procurar…</string>
+    <string name="action_open_title">Abrir…</string>
     <string name="action_recently_open_title">Recentemente aberto</string>
     <string name="action_go_to_address">Ir para o endereço…</string>
     <string name="action_go_to_line">Ir para linha…</string>
@@ -40,7 +40,7 @@
     <string name="select_file_to_open">Selecione um arquivo para abrir.</string>
     <string name="error_no_file_manager">Por favor, Instale um gerenciador de arquivos primeiro.</string>
     <string name="install">Instalar</string>
-    <string name="please_open_file">Por favor, abra o arquivo</string>
+    <string name="please_open_file">Por favor, abra um arquivo</string>
     <string name="uri_exception">Exceção de URI</string>
     <string name="source">Fonte:</string>
     <string name="result">Resultado:</string>
@@ -62,8 +62,8 @@
     <string name="settings_pref_title_row_height">Altura</string>
     <string name="settings_pref_summary_row_height">Altura da linha na lista.</string>
     <string name="settings_category_about">Sobre</string>
-    <string name="settings_pref_title_restore_default">Restore default values</string>
-    <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
+    <string name="settings_pref_title_restore_default">Restaurar valores (padrão)</string>
+    <string name="settings_pref_summary_restore_default">Restaura os vários valores do aplicativo ao seu estado padrão.</string>
     <string name="settings_pref_title_version">Versão</string>
     <string name="settings_pref_title_license">Licença livre de cópia de esquerda</string>
     <string name="settings_pref_title_font_size">Tamanho da fonte</string>
@@ -71,7 +71,7 @@
     <string name="settings_pref_title_language">Idioma</string>
     <string name="settings_pref_summary_language">Alterar o idioma do aplicativo.</string>
     <string name="settings_pref_title_screen_orientation">Orientação da tela</string>
-    <string name="settings_pref_summary_nb_bytes">Permite mostrar 8 ou 16 por linha. A exibição de 8 bytes aumenta muito o consumo de memória.</string>
+    <string name="settings_pref_summary_nb_bytes">Permite mostrar 8 ou 16 por linha. A exibição de 8 bytes aumenta consideravelmente o consumo de memória.</string>
     <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Abertura parcial de arquivo</string>
     <string name="settings_pref_title_nb_bytes">Número de bytes a serem exibidos em uma linha</string>
     <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">Os arquivos são considerados abertos normalmente se o arquivo inteiro for aberto, mesmo que uma abertura parcial seja solicitada.</string>
@@ -95,10 +95,10 @@
     <string name="error_no_line_selected">Nenhuma linha foi selecionada</string>
     <string name="error_edition_search_in_progress">A edição de linha não é possível quando uma pesquisa está em andamento.</string>
     <string name="error_edition_continuous_selection">A edição de linha só é possível com uma seleção contínua.</string>
-    <string name="error_no_file_access">Sem acesso ao arquivo. Abra-o no menu.</string>
+    <string name="error_no_file_access">Sem acesso ao arquivo. Abra-o a partir do menu.</string>
     <string name="error_no_file">Arquivo ausente (excluído ou movido)</string>
     <string name="error_cant_exceed_xxx">Não é possível exceder %1$s</string>
-    <string name="action_open_sequential_title">Abrindo parcialmente o arquivo…</string>
+    <string name="action_open_sequential_title">Abertura parcial do arquivo…</string>
     <string name="action_open_sequential_title_button">Abertura parcial do arquivo</string>
     <string name="error_open_sequential_add_or_delete_data">Mudar para um modo diferente se quiser adicionar ou excluir dados</string>
     <string name="error_size_changed">O tamanho do arquivo mudou. Clique para especificar o novo tamanho de área para abrir.</string>
@@ -111,9 +111,9 @@
     <string name="partial_file_opening_description">Digite o início e o fim da área que deseja abrir.</string>
     <string name="not_enough_memory">Incapaz de executar o comando, porque não há memória suficiente para este aplicativo.</string>
     <string name="memory_threshold_title">Limite de memória</string>
-    <string name="memory_threshold_description">Quantidade de memória permitida antes de abrir um arquivo é abortada.</string>
+    <string name="memory_threshold_description">Quantidade de memória permitida, antes que seja interrompido um arquivo ao abri-lo.</string>
     <string name="error_not_available">Não disponível</string>
-    <string name="dialog_restore_title">Restore</string>
-    <string name="dialog_restore_question">Do you really want to restore the default values\?</string>
-    <string name="dialog_restore_recent">Delete the list of recent files\?</string>
+    <string name="dialog_restore_title">Restaurar</string>
+    <string name="dialog_restore_question">Deseja realmente restaurar os valores ao padrão\?</string>
+    <string name="dialog_restore_recent">Excluir a lista de arquivos recentes\?</string>
 </resources>
