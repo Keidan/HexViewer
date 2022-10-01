@@ -1,0 +1,5 @@
+* Update of the German translations (thanks to @eUgEntOptIc44).
+* Update of the Russian translations (thanks to @racingrebel).
+* Hebrew translation added, thanks to @Shopimisrel.
+* It's now possible to restore the default values of the application (from a menu at the bottom of the settings).
+* It's now possible to edit a file that is empty (not available via the partial opening view as it does not make sense).
