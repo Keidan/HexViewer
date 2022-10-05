@@ -1,0 +1,1 @@
+* Fix application crash if the user clicks on the trash icon in the line edit view, while the open file is empty. 
