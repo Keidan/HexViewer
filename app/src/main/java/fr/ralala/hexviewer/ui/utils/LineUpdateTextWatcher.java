@@ -258,6 +258,8 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   @NonNull
   public static String normalizeForEmoji(CharSequence charSequence) {
+    if(charSequence.length() == 0)
+      return "";
     CharSequence processed = EmojiCompat.get().process(charSequence, 0, charSequence.length() - 1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
     if (processed instanceof Spannable) {
       Spannable spannable = (Spannable) processed;
