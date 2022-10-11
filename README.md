@@ -77,6 +77,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * pt-BR: Portuguese (Brazil)
 * ru-RU: Russian
 * tr-TR: Turkish
+* vi-VN: Vietnamese
 * zh-CN: Chinese
 
 The current status of the translations is as follows:
@@ -95,6 +96,7 @@ The current status of the translations is as follows:
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
+*   Vietnamese: [@unbiaseduser](https://github.com/unbiaseduser)
 
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>

@@ -26,6 +26,7 @@
         <item>pt-BR</item>
         <item>ru-RU</item>
         <item>tr-TR</item>
+        <item>vi-VN</item>
         <item>zh-CN</item>
     </string-array>
 
@@ -41,6 +42,7 @@
         <item>Português (Brasil)</item>
         <item>Русский</item>
         <item>Türkçe</item>
+        <item>Tiếng Việt</item>
         <item>中文</item>
     </string-array>
 

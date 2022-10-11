@@ -30,6 +30,7 @@ Translations:
 * Russian: @OmlineEditor, @AHOHNMYC, @racingrebel
 * Spanish: @sguinetti, (+DeepL)
 * Turkish: @ersen0
+* Vietnamese: @unbiaseduser
 
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
 * ar: Arabic
@@ -43,4 +44,5 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * pt-BR: Portuguese (Brazil)
 * ru-RU: Russian
 * tr-TR: Turkish
+* vi-VN: Vietnamese
 * zh-CN: Chinese
