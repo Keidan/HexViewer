@@ -65,7 +65,7 @@
     <string name="settings_pref_title_restore_default">Restaurar valores (padrão)</string>
     <string name="settings_pref_summary_restore_default">Restaura os vários valores do aplicativo ao seu estado padrão.</string>
     <string name="settings_pref_title_version">Versão</string>
-    <string name="settings_pref_title_license">Licença livre de cópia de esquerda</string>
+    <string name="settings_pref_title_license">Licença livre aberta (Copylefted)</string>
     <string name="settings_pref_title_font_size">Tamanho da fonte</string>
     <string name="settings_category_general">Geral</string>
     <string name="settings_pref_title_language">Idioma</string>
