@@ -76,6 +76,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * ja-JP: Japanese
 * nb-NO: Norwegian Bokmål
 * pt-BR: Portuguese (Brazil)
+* pt-PT: Portuguese
 * ru-RU: Russian
 * tr-TR: Turkish
 * vi-VN: Vietnamese
@@ -95,6 +96,7 @@ The current status of the translations is as follows:
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
+*   Portuguese: [@SantosSi](https://github.com/SantosSi)
 *   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)

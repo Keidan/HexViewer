@@ -28,6 +28,7 @@ Translations:
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
 * Portuguese (Brazil): @Bardock88
+* Portuguese: @SantosSi
 * Russian: @OmlineEditor, @AHOHNMYC, @racingrebel
 * Spanish: @sguinetti, (+DeepL)
 * Turkish: @ersen0
@@ -44,6 +45,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * ja-JP: Japanese
 * nb-NO: Norwegian Bokmål
 * pt-BR: Portuguese (Brazil)
+* pt-PT: Portuguese
 * ru-RU: Russian
 * tr-TR: Turkish
 * vi-VN: Vietnamese
