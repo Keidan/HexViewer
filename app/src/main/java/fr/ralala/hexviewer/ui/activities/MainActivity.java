@@ -199,7 +199,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   private void updateEditEmptyMenu() {
     if (mEditEmptyMenu != null) {
       mEditEmptyMenu.setVisible(!FileData.isEmpty(mFileData) && mPayloadHexHelper.getAdapter().getEntries().getItems().isEmpty());
-      if(mEditEmptyMenu.isVisible()) {
+      if (mEditEmptyMenu.isVisible()) {
         mPayloadHexHelper.getAdapter().displayTitle();
       }
     }
@@ -394,7 +394,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     if (e == null)
       return;
     if (mPayloadPlainSwipe.isVisible()) {
-      UIHelper.toast(this, getString(R.string.error_not_supported_in_plain_text));
+      UIHelper.showErrorDialog(this, R.string.error_title, R.string.error_not_supported_in_plain_text);
       return;
     }
 
@@ -536,7 +536,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
    */
   private void popupActionSave() {
     if (FileData.isEmpty(mFileData)) {
-      UIHelper.toast(this, getString(R.string.open_a_file_before));
+      UIHelper.showErrorDialog(this, R.string.error_title, getString(R.string.open_a_file_before));
       return;
     }
     new TaskSave(this, this).execute(new TaskSave.Request(mFileData,
@@ -549,7 +549,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
    */
   private void popupActionSaveAs() {
     if (FileData.isEmpty(mFileData)) {
-      UIHelper.toast(this, getString(R.string.open_a_file_before));
+      UIHelper.showErrorDialog(this, R.string.error_title, getString(R.string.open_a_file_before));
       return;
     }
     mLauncherSave.startActivity();

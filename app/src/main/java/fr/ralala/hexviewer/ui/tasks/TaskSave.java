@@ -94,11 +94,11 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
           Log.e(this.getClass().getSimpleName(), "File delete error");
         }
       }
-      UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
+      UIHelper.showErrorDialog(mContext, R.string.error_title, mContext.getString(R.string.operation_canceled));
     } else if (result.exception == null)
       UIHelper.toast(mContext, mContext.getString(R.string.save_success));
     else
-      UIHelper.toast(mContext, mContext.getString(R.string.exception) + ": " + result.exception);
+      UIHelper.showErrorDialog(mContext, R.string.error_title, mContext.getString(R.string.exception) + ": " + result.exception);
     if (mListener != null)
       mListener.onSaveResult(result.fd, result.exception == null && !isCancelled(), result.runnable);
   }

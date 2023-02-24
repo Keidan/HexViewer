@@ -173,6 +173,28 @@ public class UIHelper {
   }
 
   /**
+   * Displays an error dialog.
+   *
+   * @param context The Android context.
+   * @param title   The dialog title.
+   * @param message The dialog message.
+   */
+  public static void showErrorDialog(final Context context, int title, String message) {
+    showErrorDialog(context, context.getString(title), message);
+  }
+
+  /**
+   * Displays an error dialog.
+   *
+   * @param context The Android context.
+   * @param title   The dialog title.
+   * @param message The dialog message.
+   */
+  public static void showErrorDialog(final Context context, int title, int message) {
+    showErrorDialog(context, context.getString(title), context.getString(message));
+  }
+
+  /**
    * Returns the view associated with a position
    *
    * @param position The position.

@@ -34,7 +34,7 @@ public class LauncherRecentlyOpen {
   private ActivityResultLauncher<Intent> activityResultLauncherRecentlyOpen;
 
   public LauncherRecentlyOpen(MainActivity activity) {
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
     mActivity = activity;
     register();
   }
@@ -52,14 +52,14 @@ public class LauncherRecentlyOpen {
     long endOffset = data.getLongExtra(RecentlyOpenActivity.RESULT_END_OFFSET, 0L);
     final FileData fd = new FileData(mActivity, uri, false, startOffset, endOffset);
     final String oldToString;
-    if(data.hasExtra(RecentlyOpenActivity.RESULT_OLD_TO_STRING))
+    if (data.hasExtra(RecentlyOpenActivity.RESULT_OLD_TO_STRING))
       oldToString = data.getStringExtra(RecentlyOpenActivity.RESULT_OLD_TO_STRING);
     else
       oldToString = null;
     if (FileHelper.isFileExists(mActivity.getContentResolver(), uri)) {
       processFile(fd, uri, oldToString);
     } else {
-      UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_not_found), FileHelper.getFileName(mApp, uri)));
+      UIHelper.showErrorDialog(mActivity, R.string.error_title, String.format(mActivity.getString(R.string.error_file_not_found), FileHelper.getFileName(mApp, uri)));
       mApp.getRecentlyOpened().remove(fd);
       FileHelper.releaseUriPermissions(mActivity, uri);
     }
@@ -68,7 +68,7 @@ public class LauncherRecentlyOpen {
   private void processFile(final FileData fd, final Uri uri, final String oldToString) {
     if (FileHelper.hasUriPermission(mActivity, uri, true)) {
       final Runnable r = () -> {
-        if(fd.getEndOffset() > fd.getRealSize())
+        if (fd.getEndOffset() > fd.getRealSize())
           mApp.setSequential(true);
         mActivity.getLauncherOpen().processFileOpen(fd, oldToString, true);
       };
@@ -78,7 +78,7 @@ public class LauncherRecentlyOpen {
       } else
         r.run();
     } else {
-      UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, uri)));
+      UIHelper.showErrorDialog(mActivity, R.string.error_title, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, uri)));
       mApp.getRecentlyOpened().remove(fd);
     }
   }

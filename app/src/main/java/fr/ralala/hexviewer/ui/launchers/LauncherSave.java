@@ -96,7 +96,8 @@ public class LauncherSave {
   private void processFileSave(final Uri uri, final String filename) {
     DocumentFile sourceDir = DocumentFile.fromTreeUri(mActivity, uri);
     if (sourceDir == null) {
-      UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
+      UIHelper.showErrorDialog(mActivity, R.string.error_title,
+          mActivity.getString(R.string.uri_exception) + ": '" + uri.toString() + "'");
       Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uri + "'");
       return;
     }
@@ -122,8 +123,9 @@ public class LauncherSave {
     } else {
       DocumentFile dFile = sourceDir.createFile("application/octet-stream", filename);
       if (dFile == null) {
-        UIHelper.toast(mActivity, mActivity.getString(R.string.uri_exception));
-        Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "'");
+        UIHelper.showErrorDialog(mActivity, R.string.error_title,
+            mActivity.getString(R.string.uri_exception) + ": '" + filename + "'");
+        Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "', filename: '" + filename + "'");
       } else {
         FileData fd = new FileData(mActivity, dFile.getUri(), false);
         mActivity.setFileData(fd);

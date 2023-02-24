@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
@@ -35,7 +36,7 @@ public class LauncherOpen {
 
   public LauncherOpen(MainActivity activity, LinearLayout mainLayout) {
     mActivity = activity;
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
     mMainLayout = mainLayout;
     register();
   }
@@ -60,7 +61,7 @@ public class LauncherOpen {
               if (FileHelper.takeUriPermissions(mActivity, data.getData(), false)) {
                 processFileOpen(new FileData(mActivity, data.getData(), false, 0L, 0L));
               } else
-                UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, data.getData())));
+                UIHelper.showErrorDialog(mActivity, R.string.error_title, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, data.getData())));
             } else {
               Log.e(getClass().getSimpleName(), "Null data!!!");
               mApp.setSequential(false);
@@ -96,7 +97,7 @@ public class LauncherOpen {
       else
         r.run();
     } else {
-      UIHelper.toast(mActivity, mActivity.getString(R.string.error_filename));
+      UIHelper.showErrorDialog(mActivity, R.string.error_title, mActivity.getString(R.string.error_filename));
     }
   }
 }

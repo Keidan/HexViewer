@@ -59,7 +59,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
                   final HexTextArrayAdapter adapter,
                   final OpenResultListener listener, final String oldToString, final boolean addRecent) {
     super(activity, true);
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
     mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
     mContext = activity;
     mContentResolver = activity.getContentResolver();
@@ -93,11 +93,11 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     super.onPostExecute(result);
     mMemoryMonitor.stop();
     if (mLowMemory.get())
-      UIHelper.toast(mContext, mContext.getString(R.string.not_enough_memory));
+      UIHelper.showErrorDialog(mContext, R.string.error_title, mContext.getString(R.string.not_enough_memory));
     else if (isCancelled())
       UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
     else if (result.exception != null)
-      UIHelper.toast(mContext, mContext.getString(R.string.exception) + ": " + result.exception);
+      UIHelper.showErrorDialog(mContext, R.string.error_title, mContext.getString(R.string.exception) + ": " + result.exception);
     else {
       if (result.listHex != null) {
         mAdapter.setStartOffset(result.startOffset);
@@ -130,10 +130,10 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   }
 
   private void processRead(final FileData fd,
-                              final List<LineEntry> list,
-                              final Result result,
-                              long totalSequential,
-                              int maxLength) throws IOException {
+                           final List<LineEntry> list,
+                           final Result result,
+                           long totalSequential,
+                           int maxLength) throws IOException {
     boolean first = true;
     int reads;
     boolean forceBreak = false;
@@ -155,7 +155,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         result.exception = iae.getMessage();
         forceBreak = true;
       }
-      if(forceBreak)
+      if (forceBreak)
         break;
     }
   }
@@ -188,8 +188,8 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         /* prepare result */
         if (result.exception == null) {
           result.listHex = list;
-          if(!mCancel.get()) {
-            if(mOldToString != null)
+          if (!mCancel.get()) {
+            if (mOldToString != null)
               mApp.getRecentlyOpened().remove(mOldToString);
             if (mAddRecent)
               mApp.getRecentlyOpened().add(fd);
