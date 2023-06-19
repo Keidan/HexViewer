@@ -99,8 +99,8 @@
     <string name="error_no_file_access">Nem lehet hozzáférni a fájlhoz. Nyissa meg a menüből.</string>
     <string name="error_no_file">Hiányzó fájl (törölve vagy elmozgatva)</string>
     <string name="error_cant_exceed_xxx">%1$s-tól(-től) nem lehet több</string>
-    <string name="action_open_sequential_title">Részleges fájlmegnyitás…</string>
-    <string name="action_open_sequential_title_button">Részleges fájlmegnyitás</string>
+    <string name="action_open_sequential_title">Fájl részleges megnyitása…</string>
+    <string name="action_open_sequential_title_button">Fájl részleges megnyitása</string>
     <string name="error_open_sequential_add_or_delete_data">Más módba váltson, ha adatot szeretne hozzáadni vagy törölni</string>
     <string name="error_size_changed">A fájlméret megváltozott. Kattintson ide a megnyitandó terület új méretének megadásához.</string>
     <string name="start_offset">Indít</string>
