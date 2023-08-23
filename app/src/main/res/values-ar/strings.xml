@@ -61,6 +61,8 @@
     <string name="settings_pref_title_font_size">حجم الخط</string>
     <string name="settings_pref_summary_font_size">حجم خط النص في القائمة.</string>
     <string name="settings_category_about">حول</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_title_restore_default">Restore default values</string>
     <string name="settings_pref_summary_restore_default">Restores the various values of the application to their default state.</string>
     <string name="settings_pref_title_version">الاصدار</string>

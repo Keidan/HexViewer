@@ -61,6 +61,8 @@
     <string name="settings_pref_title_font_size">Размер шрифта</string>
     <string name="settings_pref_summary_font_size">Размер шрифта текста при просмотре.</string>
     <string name="settings_category_about">О программе</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_title_restore_default">Сброс до значений по умолчанию</string>
     <string name="settings_pref_summary_restore_default">Сбросить до значений приложения по умолчанию.</string>
     <string name="settings_pref_title_version">Версия</string>

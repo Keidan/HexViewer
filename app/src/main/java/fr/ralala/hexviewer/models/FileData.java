@@ -47,8 +47,8 @@ public class FileData {
     if (isSequential())
       mSize = Math.abs(mEndOffset - mStartOffset);
     else
-      mSize = FileHelper.getFileSize(ctx.getContentResolver(), uri);
-    mRealSize = FileHelper.getFileSize(ctx.getContentResolver(), uri);
+      mSize = FileHelper.getFileSize(ctx, ctx.getContentResolver(), uri);
+    mRealSize = FileHelper.getFileSize(ctx, ctx.getContentResolver(), uri);
 
     /* We assume that if the file sizes are not <= 0, the file exists. */
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q && (mSize <= 0 || mRealSize <= 0)) {

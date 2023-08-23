@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import java.util.Locale;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
@@ -53,22 +55,22 @@ public class LauncherOpen {
    */
   private void register() {
     activityResultLauncherOpen = mActivity.registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            if (data != null) {
-              if (FileHelper.takeUriPermissions(mActivity, data.getData(), false)) {
-                processFileOpen(new FileData(mActivity, data.getData(), false, 0L, 0L));
-              } else
-                UIHelper.showErrorDialog(mActivity, R.string.error_title, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, data.getData())));
-            } else {
-              Log.e(getClass().getSimpleName(), "Null data!!!");
-              mApp.setSequential(false);
-            }
-          } else
+      new ActivityResultContracts.StartActivityForResult(),
+      result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+          Intent data = result.getData();
+          if (data != null) {
+            if (FileHelper.takeUriPermissions(mActivity, data.getData(), false)) {
+              processFileOpen(new FileData(mActivity, data.getData(), false, 0L, 0L));
+            } else
+              UIHelper.showErrorDialog(mActivity, R.string.error_title, String.format(mActivity.getString(R.string.error_file_permission), FileHelper.getFileName(mApp, data.getData())));
+          } else {
+            Log.e(getClass().getSimpleName(), "Null data!!!");
             mApp.setSequential(false);
-        });
+          }
+        } else
+          mApp.setSequential(false);
+      });
   }
 
   /**
@@ -90,6 +92,8 @@ public class LauncherOpen {
       mActivity.setFileData(fd);
       Runnable r = () -> {
         mActivity.getUnDoRedo().clear();
+        ApplicationCtx.addLog(mActivity, "Open",
+          String.format(Locale.US, "Open file: '%s'", mActivity.getFileData()));
         new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, oldToString, addRecent).execute(mActivity.getFileData());
       };
       if (mApp.isSequential())

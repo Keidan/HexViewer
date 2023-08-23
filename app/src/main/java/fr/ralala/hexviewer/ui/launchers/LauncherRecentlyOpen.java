@@ -56,7 +56,7 @@ public class LauncherRecentlyOpen {
       oldToString = data.getStringExtra(RecentlyOpenActivity.RESULT_OLD_TO_STRING);
     else
       oldToString = null;
-    if (FileHelper.isFileExists(mActivity.getContentResolver(), uri)) {
+    if (FileHelper.isFileExists(mActivity, mActivity.getContentResolver(), uri)) {
       processFile(fd, uri, oldToString);
     } else {
       UIHelper.showErrorDialog(mActivity, R.string.error_title, String.format(mActivity.getString(R.string.error_file_not_found), FileHelper.getFileName(mApp, uri)));

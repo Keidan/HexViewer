@@ -78,8 +78,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_main);
+    ApplicationCtx.addLog(this, "Main", "Application started.");
 
     mUnDoRedo = new UnDoRedo(this);
 

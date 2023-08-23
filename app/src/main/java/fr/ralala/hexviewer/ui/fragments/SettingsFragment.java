@@ -18,6 +18,7 @@ import androidx.preference.PreferenceScreen;
 import fr.ralala.hexviewer.BuildConfig;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.SettingsKeys;
+import fr.ralala.hexviewer.ui.activities.LogsActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsLandscapeActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsPortraitActivity;
@@ -43,6 +44,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   protected Preference mLicense;
   protected Preference mVersion;
   private Preference mRestoreDefault;
+  private Preference mLogs;
   private ListPreference mLanguage;
   private ListPreference mScreenOrientation;
   private ListPreference mNbBytesPerLine;
@@ -73,6 +75,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mScreenOrientation = findPreference(SettingsKeys.CFG_SCREEN_ORIENTATION);
     mNbBytesPerLine = findPreference(SettingsKeys.CFG_NB_BYTES_PER_LINE);
     mRestoreDefault = findPreference(SettingsKeys.CFG_RESTORE_DEFAULT);
+    mLogs = findPreference(SettingsKeys.CFG_LOGS);
 
     mSettingsListsPortrait.setOnPreferenceClickListener(this);
     mSettingsListsLandscape.setOnPreferenceClickListener(this);
@@ -82,6 +85,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mScreenOrientation.setOnPreferenceChangeListener(this);
     mNbBytesPerLine.setOnPreferenceChangeListener(this);
     mRestoreDefault.setOnPreferenceClickListener(this);
+    mLogs.setOnPreferenceClickListener(this);
 
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
@@ -142,6 +146,8 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       } else {
         UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_language_change));
       }
+    } else if (preference.equals(mLogs)) {
+      LogsActivity.startActivity(mActivity);
     }
     return false;
   }
@@ -181,10 +187,10 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   private void restoreDefaultDialog() {
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
     builder.setCancelable(false)
-        .setTitle(R.string.dialog_restore_title)
-        .setPositiveButton(android.R.string.ok, null)
-        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
-        });
+      .setTitle(R.string.dialog_restore_title)
+      .setPositiveButton(android.R.string.ok, null)
+      .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+      });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_restore, null));
     final AlertDialog dialog = builder.create();

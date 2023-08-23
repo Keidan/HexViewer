@@ -63,6 +63,8 @@
     <string name="settings_pref_title_font_size">Tamanho da fonte</string>
     <string name="settings_pref_summary_font_size">Tamanho da fonte do texto na lista.</string>
     <string name="settings_category_about">Sobre</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_summary_restore_default">Restaura os vários valores da aplicação ao estado padrão deles.</string>
     <string name="settings_pref_title_version">Versão</string>
     <string name="settings_pref_title_license">Licença livre aberta (Copylefted)</string>

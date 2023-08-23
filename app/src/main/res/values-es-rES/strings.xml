@@ -61,6 +61,8 @@
     <string name="settings_pref_title_font_size">Tamaño de letra</string>
     <string name="settings_pref_summary_font_size">Tamaño de letra de los textos de la lista.</string>
     <string name="settings_category_about">Acerca</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_title_restore_default">Restaurar los valores por defecto</string>
     <string name="settings_pref_summary_restore_default">Restablece los distintos valores de la aplicación a su estado por defecto.</string>
     <string name="settings_pref_title_version">Versión</string>

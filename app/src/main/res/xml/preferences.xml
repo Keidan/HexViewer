@@ -71,6 +71,11 @@
     android:title="@string/settings_category_about">
     <androidx.preference.Preference
       app:iconSpaceReserved="false"
+      android:key="logs"
+      android:title="@string/settings_pref_title_logs"
+      android:summary="@string/settings_pref_summary_logs" />
+    <androidx.preference.Preference
+      app:iconSpaceReserved="false"
       android:key="restoreDefault"
       android:title="@string/settings_pref_title_restore_default"
       android:summary="@string/settings_pref_summary_restore_default" />

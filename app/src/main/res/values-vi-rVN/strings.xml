@@ -62,6 +62,8 @@
     <string name="settings_pref_summary_row_height">Độ cao của dòng trong danh sách.</string>
     <string name="settings_pref_title_font_size">Cỡ chữ</string>
     <string name="settings_category_about">Giới thiệu</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_summary_restore_default">Khôi phục các giá trị của ứng dụng về trạng thái mặc định.</string>
     <string name="settings_pref_title_version">Phiên bản</string>
     <string name="settings_pref_title_license">Giấy phép tự do</string>

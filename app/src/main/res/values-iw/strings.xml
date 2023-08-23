@@ -63,6 +63,8 @@
     <string name="settings_pref_title_font_size">גודל גופן</string>
     <string name="settings_pref_summary_font_size">גודל גופן של טקסט ברשימה.</string>
     <string name="settings_category_about">אודות</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">קבצים נחשבים כפתוחים בדרך כלל אם כל הקובץ נפתח, גם אם מתבקשת פתיחה חלקית.</string>
     <string name="settings_pref_summary_restore_default">משחזר את הערכים השונים של היישום למצב ברירת המחדל שלהם.</string>
     <string name="settings_pref_title_version">גרסה</string>

@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  tools:context="fr.ralala.hexviewer.ui.activities.LogsActivity">
+  <item
+    android:id="@+id/action_share"
+    android:icon="@drawable/ic_share"
+    android:title="@null"
+    app:showAsAction="always"/>
+  <item
+    android:id="@+id/action_clear"
+    android:icon="@drawable/ic_clear_all"
+    android:title="@null"
+    app:showAsAction="ifRoom"/>
+</menu>

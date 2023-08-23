@@ -61,6 +61,8 @@
   <string name="settings_pref_title_font_size">Taille de la police</string>
   <string name="settings_pref_summary_font_size">Taille de la police des textes de la liste.</string>
   <string name="settings_category_about">A propos</string>
+  <string name="settings_pref_title_logs">Journaux</string>
+  <string name="settings_pref_summary_logs">Journeaux de l\'application.</string>
   <string name="settings_pref_title_restore_default">Restaurer les valeurs par défaut</string>
   <string name="settings_pref_summary_restore_default">Restaure les différentes valeurs de l\'application à leur état par défaut.</string>
   <string name="settings_pref_title_version">Version</string>

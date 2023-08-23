@@ -61,6 +61,8 @@
     <string name="settings_pref_title_font_size">字体大小</string>
     <string name="settings_pref_summary_font_size">列表中文本的字体大小。</string>
     <string name="settings_category_about">关于</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_title_restore_default">还原默认值</string>
     <string name="settings_pref_summary_restore_default">将应用值还原到默认状态。</string>
     <string name="settings_pref_title_version">版本号</string>

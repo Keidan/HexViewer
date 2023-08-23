@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -113,6 +114,10 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     intent.putExtra(ACTIVITY_EXTRA_SIZE, fd.getSize());
     intent.putExtra(ACTIVITY_EXTRA_START_OFFSET, fd.getStartOffset());
     intent.putExtra(ACTIVITY_EXTRA_END_OFFSET, fd.getEndOffset());
+
+    ApplicationCtx.addLog(c, "PartialOpen",
+      String.format(Locale.US,"Open file '%s', sequential: %b, rsize: %d, size: %d, start: %d, end: %d",
+      fd.getName(), fd.isSequential(), fd.getRealSize(), fd.getSize(), fd.getStartOffset(), fd.getEndOffset()));
     activityResultLauncher.launch(intent);
   }
 
@@ -176,7 +181,6 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       start = startOffset;
       end = endOffset;
       max = size;
-      real = mRealSize;
     } else {
       start = 0;
       end = mRealSize;

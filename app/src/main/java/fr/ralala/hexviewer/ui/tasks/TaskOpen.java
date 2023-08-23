@@ -17,8 +17,8 @@ import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.MemoryMonitor;
-import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
 import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
 
 /**
  * ******************************************************************************
@@ -142,7 +142,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     while (!isCancelled() && (reads = mRandomAccessFileChannel.read(buffer)) != -1) {
       try {
         SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
-            mApp.getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
+          mApp.getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
         first = false;
         buffer.clear();
         publishProgress((long) reads);
@@ -226,6 +226,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   }
 
   public void onLowAppMemory() {
+    ApplicationCtx.addLog(mContext, "Open", "Low memory detected");
     mLowMemory.set(true);
     mCancel.set(true);
   }

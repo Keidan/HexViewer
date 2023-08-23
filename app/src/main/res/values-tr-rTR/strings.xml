@@ -69,6 +69,8 @@
     <string name="settings_pref_summary_row_height">Listedeki satırın yüksekliği.</string>
     <string name="settings_pref_title_font_size">Yazı tipi boyutu</string>
     <string name="settings_category_about">Hakkında</string>
+    <string name="settings_pref_title_logs">Logs</string>
+    <string name="settings_pref_summary_logs">Application logs.</string>
     <string name="settings_pref_title_restore_default">Öntanımlı değerleri geri yükle</string>
     <string name="settings_pref_summary_restore_default">Uygulamanın çeşitli değerlerini öntanımlı durumlarına geri yükler.</string>
     <string name="settings_category_general">Genel</string>

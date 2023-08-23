@@ -49,6 +49,7 @@ public final class SettingsKeys {
   public static final String CFG_LICENSE = "license";
   public static final String CFG_LANGUAGE = "language";
   public static final String CFG_RESTORE_DEFAULT = "restoreDefault";
+  public static final String CFG_LOGS = "logs";
   public static final String CFG_LINES_NUMBER = "linesNumber";
   public static final String CFG_OVERWRITE = "overwrite";
   public static final String CFG_SCREEN_ORIENTATION = "screenOrientation";

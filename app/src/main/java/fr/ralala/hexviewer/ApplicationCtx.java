@@ -9,11 +9,18 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Queue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
+
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.models.RecentlyOpened;
@@ -32,6 +39,9 @@ import fr.ralala.hexviewer.models.SettingsKeys;
  * ******************************************************************************
  */
 public class ApplicationCtx extends Application {
+  private static final int   CIRCULAR_BUFFER_DEPTH = 2000;
+  private Queue<String> mLogs                  = null;
+  private Lock mLock                  = null;
   private SharedPreferences mSharedPreferences;
   private boolean mDefaultSmartInput;
   private boolean mDefaultOverwrite;
@@ -55,6 +65,7 @@ public class ApplicationCtx extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    mLock = new ReentrantLock();
     mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = new RecentlyOpened(this);
@@ -141,6 +152,29 @@ public class ApplicationCtx extends Application {
     EmojiCompat.init(config);
     loadDefaultLocal();
     setApplicationLanguage(mLanguage);
+  }
+
+  public Queue<String> getLogBuffer() {
+    if (mLogs == null)
+      mLogs = new CircularFifoQueue<>(CIRCULAR_BUFFER_DEPTH);
+    return mLogs;
+  }
+
+  /**
+   * Adds a new entry to the logs.
+   * @param c Android context.
+   * @param tag Log tag (can be null).
+   * @param msg Log message.
+   */
+  public static void addLog(final Context c, final String tag, final String msg) {
+    final ApplicationCtx ctx = (ApplicationCtx)c.getApplicationContext();
+    ctx.mLock.lock();
+    String head = new SimpleDateFormat("yyyyMMdd [hhmmssa]:\n",
+      Locale.US).format(new Date());
+    if(tag != null)
+      head += "(" + tag + ") -> ";
+    ctx.getLogBuffer().add(head + msg);
+    ctx.mLock.unlock();
   }
 
   /**
