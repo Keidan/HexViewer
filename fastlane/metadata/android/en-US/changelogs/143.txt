@@ -1,0 +1,2 @@
+* Fix for a '%' that was misinterpreted in Hungarian and crashed the application.
+* Add a logging system (Settings -> Logs; bottom of page).
