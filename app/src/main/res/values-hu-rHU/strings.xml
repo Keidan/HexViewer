@@ -112,7 +112,7 @@
     <string name="partial_file_opening_description">Adja meg a megnyitni kívánt terület kezdetét és végét.</string>
     <string name="not_enough_memory">Nem lehet végrehajtani a parancsot, mert nincs elég memória az alkalmazáshoz.</string>
     <string name="memory_threshold_title">Memóriaküszöb</string>
-    <string name="memory_threshold_description">A megadott % értékkel az engedélyezett memóriamennyiség elérése előtt, a fájl megnyitása megszakad.</string>
+    <string name="memory_threshold_description">A megadott \%% értékkel az engedélyezett memóriamennyiség elérése előtt, a fájl megnyitása megszakad.</string>
     <string name="error_not_available">Nem elérhető</string>
     <string name="settings_pref_title_restore_default">Az alapértelmezett értékek visszaállítása</string>
     <string name="dialog_restore_title">Visszaállítás</string>
