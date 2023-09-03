@@ -72,6 +72,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * es-ES: Spanish
 * fr-FR: French
 * hu-HU: Hungarian
+* it-IT: Italian
 * iw: Hebrew
 * ja-JP: Japanese
 * nb-NO: Norwegian Bokmål
@@ -91,6 +92,7 @@ The current status of the translations is as follows:
 *   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
 *   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
 *   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL)
+*   Italian: [@eUgEntOptIc44](https://github.com/eUgEntOptIc44)
 *   Hebrew: [@Shopimisrel](https://github.com/Shopimisrel)
 *   Hungarian: [@SziaTomi](https://github.com/SziaTomi)
 *   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
