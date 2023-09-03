@@ -63,8 +63,8 @@
     <string name="settings_pref_title_font_size">Betűméret</string>
     <string name="settings_pref_summary_font_size">A szöveg betűmérete a listában.</string>
     <string name="settings_category_about">Névjegy</string>
-    <string name="settings_pref_title_logs">Logs</string>
-    <string name="settings_pref_summary_logs">Application logs.</string>
+    <string name="settings_pref_title_logs">Naplók</string>
+    <string name="settings_pref_summary_logs">Alkalmazásnaplók.</string>
     <string name="settings_pref_summary_restore_default">Visszaállítja az alkalmazás különböző értékeit az alapértelmezett értékre.</string>
     <string name="settings_pref_title_version">Változat</string>
     <string name="settings_pref_title_license">Copylefted szabad licenc</string>
