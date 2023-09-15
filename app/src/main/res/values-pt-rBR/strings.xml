@@ -62,8 +62,8 @@
     <string name="settings_pref_title_row_height">Altura</string>
     <string name="settings_pref_summary_row_height">Altura da linha na lista.</string>
     <string name="settings_category_about">Sobre</string>
-    <string name="settings_pref_title_logs">Logs</string>
-    <string name="settings_pref_summary_logs">Application logs.</string>
+    <string name="settings_pref_title_logs">Registros</string>
+    <string name="settings_pref_summary_logs">Registros do aplicativo.</string>
     <string name="settings_pref_title_restore_default">Restaurar valores (padrão)</string>
     <string name="settings_pref_summary_restore_default">Restaura os vários valores do aplicativo ao seu estado padrão.</string>
     <string name="settings_pref_title_version">Versão</string>
