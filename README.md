@@ -99,7 +99,7 @@ The current status of the translations is as follows:
 *   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
 *   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
 *   Portuguese: [@SantosSi](https://github.com/SantosSi)
-*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel)
+*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123)
 *   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
 *   Turkish: [@ersen0](https://github.com/ersen0)
 *   Vietnamese: [@unbiaseduser](https://github.com/unbiaseduser)
