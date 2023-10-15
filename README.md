@@ -66,45 +66,29 @@ You are invited to provide translations for the app. But there are some rules.
 Translations can be provided via [Weblate][weblate].
 
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
-* ar: Arabic
-* de-DE: German
-* en-US: English
-* es-ES: Spanish
-* fr-FR: French
-* hu-HU: Hungarian
-* in-ID: Indonesian
-* it-IT: Italian
-* iw: Hebrew
-* ja-JP: Japanese
-* nb-NO: Norwegian Bokmål
-* pt-BR: Portuguese (Brazil)
-* pt-PT: Portuguese
-* ru-RU: Russian
-* tr-TR: Turkish
-* vi-VN: Vietnamese
-* zh-CN: Chinese
+| Code | Language | Contributors |
+| ---- | -------- | ------------ |
+| ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/) |
+| de-DE | German | [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL) |
+| en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
+| es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), (+DeepL) |
+| fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/) |
+| hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |
+| in-ID | Indonesian | [@Velorixen](https://github.com/Velorixen) |
+| it-IT | Italian | [@eUgEntOptIc44](https://github.com/eUgEntOptIc44) |
+| iw | Hebrew | [@Shopimisrel](https://github.com/Shopimisrel) |
+| ja-JP | Japanese | [@gnuhead-chieb](https://github.com/gnuhead-chieb) |
+| nb-NO | Norwegian Bokmål | [@comradekingu](https://github.com/comradekingu) |
+| pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88) |
+| pt-PT | Portuguese | [@SantosSi](https://github.com/SantosSi) |
+| ru-RU | Russian | [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123) |
+| tr-TR | Turkish | [@ersen0](https://github.com/ersen0) |
+| vi-VN | Vietnamese | [@unbiaseduser](https://github.com/unbiaseduser) |
+| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/) |
 
 The current status of the translations is as follows:
 
 [![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/strings/multi-auto.svg)][weblate]
-
-*   Arabic: [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/)
-*   Chinese: [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/)
-*   English: [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu)
-*   French: [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/)
-*   German: [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL)
-*   Indonesian: [@Velorixen](https://github.com/Velorixen)
-*   Italian: [@eUgEntOptIc44](https://github.com/eUgEntOptIc44)
-*   Hebrew: [@Shopimisrel](https://github.com/Shopimisrel)
-*   Hungarian: [@SziaTomi](https://github.com/SziaTomi)
-*   Japanese: [@gnuhead-chieb](https://github.com/gnuhead-chieb)
-*   Norwegian Bokmål: [@comradekingu](https://github.com/comradekingu)
-*   Portuguese (Brazil): [@Bardock88](https://github.com/Bardock88)
-*   Portuguese: [@SantosSi](https://github.com/SantosSi)
-*   Russian: [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123)
-*   Spanish: [@sguinetti](https://github.com/sguinetti), (+DeepL)
-*   Turkish: [@ersen0](https://github.com/ersen0)
-*   Vietnamese: [@unbiaseduser](https://github.com/unbiaseduser)
 
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>
