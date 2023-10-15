@@ -43,7 +43,7 @@
     <string name="partial_file_opening_description">Enter the beginning and end of the area you want to open.</string>
     <string name="action_go_to_address">Go to address…</string>
     <string name="action_open_title">Open…</string>
-    <string name="arrays_screen_orientation_entries_automatic">Auto</string>
+    <string name="arrays_screen_orientation_entries_automatic">Otomatis</string>
     <string name="on_double_back_exit_text">Press again to exit.</string>
     <string name="action_close_title">Close</string>
     <string name="settings_pref_summary_lists_landscape">Click to edit</string>
