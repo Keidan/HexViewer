@@ -1,63 +1,63 @@
 plugins {
-    id "org.sonarqube" version "3.3"
+  id "org.sonarqube" version "3.3"
 }
 apply plugin: 'com.android.application'
 
 final SONAR_PROJECT_VERSION = '1.46'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "30.0.2"
-    defaultConfig {
-        applicationId "fr.ralala.hexviewer"
-        minSdkVersion 23
-        targetSdkVersion 31
-        // F-Droid seems not to appreciate the use of variables
-        versionCode 146
-        versionName '1.46'
-    }
+  compileSdkVersion 31
+  buildToolsVersion "30.0.2"
+  defaultConfig {
+    applicationId "fr.ralala.hexviewer"
+    minSdkVersion 23
+    targetSdkVersion 31
+    // F-Droid seems not to appreciate the use of variables
+    versionCode 146
+    versionName '1.46'
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  buildTypes {
+    release {
+      minifyEnabled true
+      shrinkResources true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            // to debug ProGuard rules
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
-        }
+    debug {
+      // to debug ProGuard rules
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
     }
-    // This is important, it will run lint checks but won't abort build
-    lintOptions {
-        abortOnError false
+  }
+  // This is important, it will run lint checks but won't abort build
+  lintOptions {
+    abortOnError false
+  }
+  sonarqube {
+    properties {
+      property "sonar.projectKey", "Keidan_HexViewer"
+      property "sonar.organization", "keidan"
+      property "sonar.host.url", "https://sonarcloud.io"
+      property 'sonar.projectName', 'HexViewer'
+      property 'sonar.projectVersion', SONAR_PROJECT_VERSION
+      property 'sonar.coverage.exclusions', "**/**"
     }
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "Keidan_HexViewer"
-            property "sonar.organization", "keidan"
-            property "sonar.host.url", "https://sonarcloud.io"
-            property 'sonar.projectName', 'HexViewer'
-            property 'sonar.projectVersion', SONAR_PROJECT_VERSION
-            property 'sonar.coverage.exclusions', "**/**"
-        }
-    }
+  }
 }
 
 dependencies {
-    implementation 'org.apache.commons:commons-collections4:4.0'
-    implementation "androidx.appcompat:appcompat:1.4.2"
-    implementation "androidx.preference:preference:1.2.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.emoji:emoji:1.1.0"
-    implementation "com.android.support:support-emoji-bundled:$version"
-    implementation "com.google.android.material:material:1.6.1"
-    testImplementation "junit:junit:4.12"
+  implementation 'org.apache.commons:commons-collections4:4.0'
+  implementation "androidx.appcompat:appcompat:1.4.2"
+  implementation "androidx.preference:preference:1.2.0"
+  implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+  implementation "androidx.emoji:emoji:1.1.0"
+  implementation "com.android.support:support-emoji-bundled:$version"
+  implementation "com.google.android.material:material:1.6.1"
+  testImplementation "junit:junit:4.12"
 }
 // versionCode <-> versionName /////////////////////////////////////////////////////////////////////
 // I got the idea (code) below from the repository https://github.com/sal0max/currencie
@@ -66,33 +66,33 @@ dependencies {
  * Needed because of F-Droid: both have to be hard-coded and can't be assigned dynamically.
  * So at least check during build for them to match.
  */
-task checkVersion {
-    int versionCode = android.defaultConfig.versionCode
-    String versionName = android.defaultConfig.versionName
-    int correctVersionCode = generateVersionCode(android.defaultConfig.versionName)
-    if (versionCode != correctVersionCode)
-        throw new GradleException(
-            "versionCode and versionName don't match: " +
-                "versionCode should be $correctVersionCode. Is $versionCode."
-        )
-    if (versionName != SONAR_PROJECT_VERSION)
-        throw new GradleException(
-            "versionName and sonar.projectVersion don't match: " +
-                "sonar.projectVersion should be $versionName. Is $SONAR_PROJECT_VERSION."
-        )
+tasks.register('checkVersion') {
+  int versionCode = android.defaultConfig.versionCode
+  String versionName = android.defaultConfig.versionName
+  int correctVersionCode = generateVersionCode(android.defaultConfig.versionName)
+  if (versionCode != correctVersionCode)
+    throw new GradleException(
+      "versionCode and versionName don't match: " +
+        "versionCode should be $correctVersionCode. Is $versionCode."
+    )
+  if (versionName != SONAR_PROJECT_VERSION)
+    throw new GradleException(
+      "versionName and sonar.projectVersion don't match: " +
+        "sonar.projectVersion should be $versionName. Is $SONAR_PROJECT_VERSION."
+    )
 }
 assemble.dependsOn checkVersion
 
 /**
  * Checks if a fastlane changelog for the current version is present.
  */
-task checkFastlaneChangelog {
-    int versionCode = android.defaultConfig.versionCode
-    File changelogFile = file("$rootDir/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt")
-    if (!changelogFile.exists())
-        throw new GradleException(
-            "Fastlane changelog missing: expecting file '$changelogFile'"
-        )
+tasks.register('checkFastlaneChangelog') {
+  int versionCode = android.defaultConfig.versionCode
+  File changelogFile = file("$rootDir/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt")
+  if (!changelogFile.exists())
+    throw new GradleException(
+      "Fastlane changelog missing: expecting file '$changelogFile'"
+    )
 }
 build.dependsOn checkFastlaneChangelog
 
@@ -104,7 +104,7 @@ build.dependsOn checkFastlaneChangelog
  * @return e.g. 127 (-> 1 27)
  */
 private static int generateVersionCode(String semVer) {
-    return semVer.split('\\.')
-        .collect { Integer.parseInt(it) }
-        .inject { sum, value -> sum * 100 + value }
+  return semVer.split('\\.')
+    .collect { Integer.parseInt(it) }
+    .inject { sum, value -> sum * 100 + value }
 }
