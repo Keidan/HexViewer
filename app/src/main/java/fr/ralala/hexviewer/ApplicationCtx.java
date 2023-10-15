@@ -516,6 +516,8 @@ public class ApplicationCtx extends Application {
    */
   public void applyApplicationLanguage(Activity activity) {
     String cfg = getApplicationLanguage(this);
+    /* hack for indonesian */
+    if(cfg.equals("in")) cfg = "in_ID";
     String cfgLang = cfg.replace('-', '_');
     Locale locale = Locale.getDefault();
     if (!locale.toString().equals(cfgLang))

@@ -23,6 +23,7 @@ Translations:
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
 * German: @iNtEgraIR2021, @eUgEntOptIc44, (+DeepL)
+* Indonesian: @Velorixen
 * Italian: @eUgEntOptIc44
 * Hebrew: @Shopimisrel
 * Hungarian: @SziaTomi
@@ -42,6 +43,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * es-ES: Spanish
 * fr-FR: French
 * hu-HU: Hungarian
+* in-ID: Indonesian
 * it-IT: Italian
 * iw: Hebrew
 * ja-JP: Japanese
