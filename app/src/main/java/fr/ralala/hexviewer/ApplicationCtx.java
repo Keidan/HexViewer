@@ -244,14 +244,20 @@ public class ApplicationCtx extends Application {
   public int getMemoryThreshold() {
     try {
       String s = getPref(this).getString(SettingsKeys.CFG_MEMORY_THRESHOLD, mDefaultMemoryThreshold);
+      if(s.equals(getString(R.string.memory_thresholds_disable)))
+        return -1;
       if (s.startsWith("~"))
         s = s.substring(1);
       if (s.endsWith("%"))
         s = s.substring(0, s.length() - 1);
       return Integer.parseInt(s);
     } catch (Exception ignore) {
-      return Integer.parseInt(mDefaultMemoryThreshold);
+      return -1;
     }
+  }
+
+  public String getDefaultMemoryThreshold() {
+    return mDefaultMemoryThreshold;
   }
 
   /**

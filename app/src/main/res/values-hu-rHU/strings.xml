@@ -118,4 +118,5 @@
     <string name="dialog_restore_title">Visszaállítás</string>
     <string name="dialog_restore_question">Valóban visszaállítja az alapértelmezett értékeket\?</string>
     <string name="dialog_restore_recent">Törli a legutóbb megnyitott fájlok listáját\?</string>
+  <string name="memory_thresholds_disable">Disable</string>
 </resources>

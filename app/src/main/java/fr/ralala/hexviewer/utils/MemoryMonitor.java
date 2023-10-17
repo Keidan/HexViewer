@@ -23,7 +23,7 @@ public class MemoryMonitor implements Runnable {
   private MemoryListener mMemoryListener;
 
   public interface MemoryListener {
-    void onLowAppMemory();
+    void onLowAppMemory(boolean disabled, long available, long used, float percentUsed);
   }
 
   public MemoryMonitor(final float threshold, final int checkFrequencyMs) {
@@ -41,8 +41,14 @@ public class MemoryMonitor implements Runnable {
     stop();
     mMemoryListener = memoryListener;
     mAutoStop = autoStop;
-    mMemoryHandler = new Handler(Looper.getMainLooper());
-    run();
+    if (mMemoryListener != null) {
+      if (mThreshold == -1) {
+        mMemoryListener.onLowAppMemory(true, 0, 0, 0);
+      } else {
+        mMemoryHandler = new Handler(Looper.getMainLooper());
+        run();
+      }
+    }
   }
 
   /**
@@ -64,8 +70,7 @@ public class MemoryMonitor implements Runnable {
     // Check for & and handle low memory state
     float percentUsed = 100f * (1f - ((float) used / available));
     if (percentUsed <= mThreshold) {
-      if (mMemoryListener != null)
-        mMemoryListener.onLowAppMemory();
+      mMemoryListener.onLowAppMemory(false, available, used, percentUsed);
       if (mAutoStop)
         stop();
     }

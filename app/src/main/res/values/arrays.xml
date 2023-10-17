@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="memory_thresholds" translatable="false">
+        <item>@string/memory_thresholds_disable</item>
         <item>~5%</item>
         <item>~6%</item>
         <item>~7%</item>

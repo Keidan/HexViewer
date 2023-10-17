@@ -118,4 +118,5 @@
     <string name="dialog_restore_recent">Hapus daftar file terbaru\?</string>
     <string name="action_line_numbers_title">Baris nomor</string>
     <string name="error_no_file">File hilang (dihapus atau dipindah)</string>
+  <string name="memory_thresholds_disable">Disable</string>
 </resources>

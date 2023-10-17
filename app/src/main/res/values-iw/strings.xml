@@ -118,4 +118,5 @@
     <string name="dialog_restore_title">שחזור</string>
     <string name="dialog_restore_question">האם אתה באמת רוצה לשחזר את ערכי ברירת המחדל\?</string>
     <string name="dialog_restore_recent">למחוק את רשימת הקבצים האחרונים\?</string>
+  <string name="memory_thresholds_disable">Disable</string>
 </resources>

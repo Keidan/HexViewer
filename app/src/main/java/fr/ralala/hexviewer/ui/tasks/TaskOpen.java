@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
@@ -225,9 +226,14 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     }
   }
 
-  public void onLowAppMemory() {
-    ApplicationCtx.addLog(mContext, "Open", "Low memory detected");
-    mLowMemory.set(true);
-    mCancel.set(true);
+  public void onLowAppMemory(boolean disabled, long available, long used, float percentUsed) {
+    if (disabled) {
+      ApplicationCtx.addLog(mContext, "Open", "Low memory disabled");
+    } else {
+      ApplicationCtx.addLog(mContext, "Open",
+        String.format(Locale.US, "Low memory detected (a: %d, u: %d, pu: %f", available, used, percentUsed));
+      mLowMemory.set(true);
+      mCancel.set(true);
+    }
   }
 }

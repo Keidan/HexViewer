@@ -94,6 +94,12 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mScreenOrientation.setValue(mApp.getScreenOrientationStr());
     mNbBytesPerLine.setDefaultValue("" + mApp.getNbBytesPerLine());
 
+    String mem = mApp.getPref(getContext()).getString(SettingsKeys.CFG_MEMORY_THRESHOLD, mApp.getDefaultMemoryThreshold());
+    if (mem == null || !mem.startsWith("~")) {
+      ListPreference lp = findPreference(SettingsKeys.CFG_MEMORY_THRESHOLD);
+      if (lp != null)
+        lp.setValueIndex(0);
+    }
     refreshUiAccordingToOrientation(null);
 
   }

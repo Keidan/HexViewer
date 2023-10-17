@@ -118,4 +118,5 @@
   <string name="dialog_restore_title">Restaurer</string>
   <string name="dialog_restore_question">Voulez-vous vraiment restaurer les valeurs par défaut ?</string>
   <string name="dialog_restore_recent">Effacer la liste des fichiers récents ?</string>
+  <string name="memory_thresholds_disable">Désactiver</string>
 </resources>
