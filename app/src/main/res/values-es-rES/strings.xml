@@ -61,8 +61,8 @@
     <string name="settings_pref_title_font_size">Tamaño de letra</string>
     <string name="settings_pref_summary_font_size">Tamaño de letra de los textos de la lista.</string>
     <string name="settings_category_about">Acerca</string>
-    <string name="settings_pref_title_logs">Logs</string>
-    <string name="settings_pref_summary_logs">Application logs.</string>
+    <string name="settings_pref_title_logs">Registros</string>
+    <string name="settings_pref_summary_logs">Registros de la aplicación.</string>
     <string name="settings_pref_title_restore_default">Restaurar los valores por defecto</string>
     <string name="settings_pref_summary_restore_default">Restablece los distintos valores de la aplicación a su estado por defecto.</string>
     <string name="settings_pref_title_version">Versión</string>
@@ -74,7 +74,7 @@
     <string name="settings_pref_summary_screen_orientation">Configura la orientación de la pantalla por defecto (sólo pantalla principal).</string>
     <string name="settings_pref_title_nb_bytes">Número de bytes a mostrar en una línea</string>
     <string name="settings_pref_summary_nb_bytes">El número de bytes a mostrar por línea (8 o 16). Tenga en cuenta que la visualización de 8 bytes aumenta considerablemente el consumo de memoria.</string>
-    <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Apertura parcial de archivos</string>
+    <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Apertura parcial de los archivos</string>
     <string name="settings_pref_summary_partial_open_but_whole_file_is_opened">Si se solicita una apertura parcial, pero se abre todo el archivo, se considera que se abre normalmente.</string>
     <string name="error_file_open">No es posible cambiar el modo cuando un archivo está abierto.</string>
     <string name="smart_input">Entrada de texto simple</string>
@@ -101,7 +101,7 @@
     <string name="error_no_file_access">No hay acceso al archivo, ábralo desde el menú.</string>
     <string name="error_cant_exceed_xxx">No es posible superar %1$s</string>
     <string name="action_open_sequential_title">Apertura parcial de archivos…</string>
-    <string name="action_open_sequential_title_button">Apertura parcial de archivos</string>
+    <string name="action_open_sequential_title_button">Abrir parte del archivo</string>
     <string name="error_open_sequential_add_or_delete_data">En este modo no es posible añadir o eliminar datos</string>
     <string name="error_size_changed">El tamaño del archivo ha cambiado, haga clic para especificar el nuevo tamaño del área a abrir.</string>
     <string name="start_offset">Inicio</string>
@@ -118,5 +118,5 @@
     <string name="dialog_restore_title">Restaurar</string>
     <string name="dialog_restore_question">¿Realmente quieres restaurar los valores por defecto?</string>
     <string name="dialog_restore_recent">¿Borrar la lista de archivos recientes?</string>
-  <string name="memory_thresholds_disable">Disable</string>
+    <string name="memory_thresholds_disable">Desactivar</string>
 </resources>
