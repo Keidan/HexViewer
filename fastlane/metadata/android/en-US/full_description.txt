@@ -32,7 +32,7 @@ Translations:
 * Portuguese (Brazil): @Bardock88
 * Portuguese: @SantosSi
 * Russian: @OmlineEditor, @AHOHNMYC, @racingrebel, @Usland123
-* Spanish: @sguinetti, (+DeepL)
+* Spanish: @sguinetti, @gallegonovato, (+DeepL)
 * Turkish: @ersen0
 * Vietnamese: @unbiaseduser
 
