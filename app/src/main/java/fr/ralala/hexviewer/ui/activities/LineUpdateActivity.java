@@ -13,19 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -34,8 +34,8 @@ import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.holders.LineNumbersTitle;
 import fr.ralala.hexviewer.ui.utils.LineUpdateTextWatcher;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.MemoryMonitor;
 import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.memory.MemoryMonitor;
 
 /**
  * ******************************************************************************
@@ -91,7 +91,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
+    super.attachBaseContext(((ApplicationCtx) base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -104,7 +104,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_line_update);
-    mApp = (ApplicationCtx)getApplicationContext();
+    mApp = (ApplicationCtx) getApplicationContext();
     mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
     ListView lvSource = findViewById(R.id.lvSource);
     ListView lvResult = findViewById(R.id.lvResult);
@@ -203,7 +203,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
       mHex = mHex.substring(0, mHex.length() - 1);
     mEtInputHex.setText(mHex);
     mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(
-        mAdapterResult, mTilInputHex, mApp, mShiftOffset, maxLengthWithPartial, mSequential));
+      mAdapterResult, mTilInputHex, mApp, mShiftOffset, maxLengthWithPartial, mSequential));
 
   }
 
@@ -285,7 +285,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
         final byte[] buf = SysHelper.hexStringToByteArray(validate);
         if (mRefLength != buf.length) {
           UIHelper.showErrorDialog(this, getTitle(),
-              getString(R.string.error_open_sequential_add_or_delete_data));
+            getString(R.string.error_open_sequential_add_or_delete_data));
           return super.onOptionsItemSelected(item);
         }
       }
@@ -320,13 +320,13 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   private void animateVisibility(ImageView iv, View v) {
     if (v.getVisibility() == View.VISIBLE) {
       TransitionManager.beginDelayedTransition(findViewById(R.id.base_view),
-          new AutoTransition());
+        new AutoTransition());
       v.setVisibility(View.GONE);
       if (iv != null)
         iv.setImageResource(R.drawable.ic_expand_more);
     } else {
       TransitionManager.beginDelayedTransition(findViewById(R.id.base_view),
-          new AutoTransition());
+        new AutoTransition());
       v.setVisibility(View.VISIBLE);
       if (iv != null)
         iv.setImageResource(R.drawable.ic_expand_less);

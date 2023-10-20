@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.utils;
+package fr.ralala.hexviewer.utils.memory;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -21,14 +21,32 @@ public class MemoryMonitor implements Runnable {
   private final int mCheckFrequencyMs;
   private boolean mAutoStop = false;
   private MemoryListener mMemoryListener;
-
-  public interface MemoryListener {
-    void onLowAppMemory(boolean disabled, long available, long used, float percentUsed);
-  }
+  private final MemoryInfo mMemoryInfo;
 
   public MemoryMonitor(final float threshold, final int checkFrequencyMs) {
     mThreshold = threshold;
     mCheckFrequencyMs = checkFrequencyMs;
+    mMemoryInfo = new MemoryInfo();
+  }
+
+  /**
+   * Loads memory information.
+   */
+  private void loadMemoryInfo() {
+    Runtime r = Runtime.getRuntime();
+    mMemoryInfo.setTotalMemory(r.maxMemory());
+    mMemoryInfo.setUsedMemory(r.totalMemory() - r.freeMemory());
+    mMemoryInfo.setTotalFreeMemory(mMemoryInfo.getTotalMemory() - mMemoryInfo.getUsedMemory());
+    mMemoryInfo.setPercentUsed(mMemoryInfo.getUsedMemory() * 100.f / mMemoryInfo.getTotalMemory());
+  }
+
+  /**
+   * Returns the last known memory information.
+   *
+   * @return MemoryInfo
+   */
+  public MemoryInfo getLastMemoryInfo() {
+    return mMemoryInfo;
   }
 
   /**
@@ -41,9 +59,10 @@ public class MemoryMonitor implements Runnable {
     stop();
     mMemoryListener = memoryListener;
     mAutoStop = autoStop;
+    loadMemoryInfo();
     if (mMemoryListener != null) {
       if (mThreshold == -1) {
-        mMemoryListener.onLowAppMemory(true, 0, 0, 0);
+        mMemoryListener.onLowAppMemory(true, mMemoryInfo);
       } else {
         mMemoryHandler = new Handler(Looper.getMainLooper());
         run();
@@ -64,13 +83,9 @@ public class MemoryMonitor implements Runnable {
 
   public void run() {
     // Get app memory info
-    long available = Runtime.getRuntime().maxMemory();
-    long used = Runtime.getRuntime().totalMemory();
-
-    // Check for & and handle low memory state
-    float percentUsed = 100f * (1f - ((float) used / available));
-    if (percentUsed <= mThreshold) {
-      mMemoryListener.onLowAppMemory(false, available, used, percentUsed);
+    loadMemoryInfo();
+    if ((100.f - mMemoryInfo.getPercentUsed()) <= mThreshold) {
+      mMemoryListener.onLowAppMemory(false, mMemoryInfo);
       if (mAutoStop)
         stop();
     }

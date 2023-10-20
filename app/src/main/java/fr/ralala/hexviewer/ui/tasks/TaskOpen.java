@@ -3,6 +3,7 @@ package fr.ralala.hexviewer.ui.tasks;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.text.format.Formatter;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -17,9 +18,11 @@ import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.MemoryMonitor;
 import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
+import fr.ralala.hexviewer.utils.memory.MemoryInfo;
+import fr.ralala.hexviewer.utils.memory.MemoryListener;
+import fr.ralala.hexviewer.utils.memory.MemoryMonitor;
 
 /**
  * ******************************************************************************
@@ -33,7 +36,7 @@ import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
  * </p>
  * ******************************************************************************
  */
-public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.Result> implements MemoryMonitor.MemoryListener {
+public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.Result> implements MemoryListener {
   private final Context mContext;
   private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 20000;
   private final HexTextArrayAdapter mAdapter;
@@ -104,6 +107,14 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         mAdapter.setStartOffset(result.startOffset);
         mAdapter.addAll(result.listHex);
       }
+    }
+    if(!mLowMemory.get()) {
+      MemoryInfo mi = mMemoryMonitor.getLastMemoryInfo();
+      ApplicationCtx.addLog(mContext, "Open",
+        String.format(Locale.US, "Memory status, used: %s (%.02f%%), free: %s, max: %s",
+          Formatter.formatFileSize(mContext, mi.getUsedMemory()), mi.getPercentUsed(),
+          Formatter.formatFileSize(mContext, mi.getTotalFreeMemory()),
+          Formatter.formatFileSize(mContext, mi.getTotalMemory())));
     }
     if (mListener != null)
       mListener.onOpenResult(result.exception == null && !isCancelled() && !mLowMemory.get(), true);
@@ -226,12 +237,14 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     }
   }
 
-  public void onLowAppMemory(boolean disabled, long available, long used, float percentUsed) {
-    if (disabled) {
-      ApplicationCtx.addLog(mContext, "Open", "Low memory disabled");
-    } else {
-      ApplicationCtx.addLog(mContext, "Open",
-        String.format(Locale.US, "Low memory detected (a: %d, u: %d, pu: %f", available, used, percentUsed));
+  public void onLowAppMemory(boolean disabled, MemoryInfo mi) {
+    ApplicationCtx.addLog(mContext, "Open",
+      String.format(Locale.US, "Low memory %s, used: %s (%.02f%%), free: %s, max: %s",
+        disabled ? "disabled" : "detected",
+        Formatter.formatFileSize(mContext, mi.getUsedMemory()), mi.getPercentUsed(),
+        Formatter.formatFileSize(mContext, mi.getTotalFreeMemory()),
+        Formatter.formatFileSize(mContext, mi.getTotalMemory())));
+    if (!disabled) {
       mLowMemory.set(true);
       mCancel.set(true);
     }
