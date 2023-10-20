@@ -1,0 +1,6 @@
+* Improved "memory low" event detection.
+* More information will be recorded when the "memory low" event is triggered.
+* It's now possible to disable "memory low" detection, which seems to cause problems on some ROMs.
+* Update of the Spanish translation (thanks to @gallegonovato).
+
+NOTE: The application will crash if this option is disabled but the event is triggered by the system.
