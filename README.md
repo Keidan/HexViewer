@@ -71,7 +71,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/) |
 | de-DE | German | [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL) |
 | en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
-| es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), (+DeepL) |
+| es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), [@gallegonovato](https://hosted.weblate.org/user/gallegonovato/), (+DeepL) |
 | fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/) |
 | hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |
 | in-ID | Indonesian | [@Velorixen](https://github.com/Velorixen) |
