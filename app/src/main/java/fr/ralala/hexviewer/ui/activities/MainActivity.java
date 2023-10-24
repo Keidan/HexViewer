@@ -79,7 +79,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    ApplicationCtx.addLog(this, "Main", "Application started.");
+    ApplicationCtx.addLog(this, "Main", "Application started with language: '" +
+      ((ApplicationCtx)getApplicationContext()).getApplicationLanguage(this) + "'");
 
     mUnDoRedo = new UnDoRedo(this);
 
