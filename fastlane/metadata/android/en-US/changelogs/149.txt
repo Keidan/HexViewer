@@ -1,0 +1,3 @@
+* Update of the Hungarian translation (thanks to @SziaTomi).
+* Dutch translation added (thanks to @AudeBelgraver).
+* Add traces of system language settings and language settings used by the application.

@@ -3,7 +3,7 @@ plugins {
 }
 apply plugin: 'com.android.application'
 
-final SONAR_PROJECT_VERSION = '1.48'
+final SONAR_PROJECT_VERSION = '1.49'
 
 android {
   compileSdkVersion 31
@@ -13,8 +13,8 @@ android {
     minSdkVersion 23
     targetSdkVersion 31
     // F-Droid seems not to appreciate the use of variables
-    versionCode 148
-    versionName '1.48'
+    versionCode 149
+    versionName '1.49'
   }
 
   compileOptions {
