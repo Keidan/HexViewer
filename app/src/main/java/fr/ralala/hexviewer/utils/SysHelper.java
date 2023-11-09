@@ -155,11 +155,8 @@ public class SysHelper {
     String sf;
     String hex = (!addHex ? "" : "(0x" + Long.toHexString((long) f).toUpperCase() + ") ");
     if (f < 1000) {
-      String unit = "";
-      if (addUnit) {
-        unit = fullByteName ? ctx.getString(R.string.unit_bytes_full_lc) : ctx.getString(R.string.unit_byte);
-      }
-      sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, unit);
+      String unit = fullByteName ? ctx.getString(R.string.unit_bytes_full_lc) : ctx.getString(R.string.unit_byte);
+      sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, !addUnit ? "" : unit);
     } else if (f < 1000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1KB)),
         hex, !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
@@ -388,7 +385,7 @@ public class SysHelper {
       String s = currentLine;
       if (s.endsWith(" "))
         s = s.substring(0, s.length() - 1);
-      lines.add(new LineEntry(s + off.toString() + currentEndLine.trim(), new ArrayList<>(currentLineRaw)));
+      lines.add(new LineEntry(s + off + currentEndLine.trim(), new ArrayList<>(currentLineRaw)));
     }
   }
 

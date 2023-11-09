@@ -147,7 +147,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     } else if (preference.equals(mSettingsListsLandscape)) {
       SettingsListsLandscapeActivity.startActivity(mActivity);
     } else if (preference.equals(mRestoreDefault)) {
-      if (!((SettingsActivity) mActivity).isChanged()) {
+      if (((SettingsActivity) mActivity).isNotChanged()) {
         restoreDefaultDialog();
       } else {
         UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_language_change));
@@ -168,7 +168,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   @Override
   public boolean onPreferenceChange(Preference preference, Object newValue) {
     if (preference.equals(mLanguage)) {
-      if (!((SettingsActivity) mActivity).isChanged()) {
+      if (((SettingsActivity) mActivity).isNotChanged()) {
         mApp.setApplicationLanguage("" + newValue);
         mActivity.finish();
         return true;

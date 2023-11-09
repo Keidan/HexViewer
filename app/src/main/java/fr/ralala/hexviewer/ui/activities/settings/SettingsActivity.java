@@ -62,8 +62,8 @@ public class SettingsActivity extends AbstractSettingsActivity {
    *
    * @return boolean
    */
-  public boolean isChanged() {
-    return mChange;
+  public boolean isNotChanged() {
+    return !mChange;
   }
 
   /**

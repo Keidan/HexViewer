@@ -128,20 +128,21 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
 
   private boolean validateInputValue(EditText et, InputValidated<Float> iv, float nb,
                                      float minValue, float maxValue, boolean decimal) {
+    boolean result = false;
     if (nb < minValue) {
       UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
       et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
       et.selectAll();
-      return false;
     } else if (nb > maxValue) {
       UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
       et.setText(String.valueOf(!decimal ? (int) maxValue : maxValue));
       et.selectAll();
-      return false;
-    } else
+    } else {
+      result = true;
       et.setError(null);
-    iv.onValidated(nb);
-    return true;
+      iv.onValidated(nb);
+    }
+    return result;
   }
   /**
    * Validation of the input.
@@ -155,19 +156,19 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
    */
   protected boolean validInput(EditText et, float defaultValue, float minValue, float maxValue,
                                InputValidated<Float> iv, boolean decimal) {
+    boolean result = false;
     try {
       Editable s = et.getText();
-      if (s.length() == 0) {
-        return validateInputValue(et, iv, -1, minValue, maxValue, decimal);
-      } else {
-        float nb = Float.parseFloat(s.toString());
-        return validateInputValue(et, iv, nb, minValue, maxValue, decimal);
+      float nb = -1;
+      if (s.length() != 0) {
+        nb = Float.parseFloat(s.toString());
       }
+      result = validateInputValue(et, iv, nb, minValue, maxValue, decimal);
     } catch (Exception ex) {
       UIHelper.shakeError(et, ex.getMessage());
       et.setText(String.valueOf(!decimal ? (int) defaultValue : defaultValue));
       et.selectAll();
-      return false;
     }
+    return result;
   }
 }

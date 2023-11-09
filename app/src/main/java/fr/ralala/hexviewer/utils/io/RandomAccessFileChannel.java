@@ -16,7 +16,7 @@ import java.nio.channels.FileChannel;
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
  * Random access file channel.
- * See https://stackoverflow.com/questions/28698199/how-to-get-random-access-to-a-file-on-sd-card-by-means-of-api-presented-for-loll/28805474#28805474
+ * See <a href="https://stackoverflow.com/questions/28698199/how-to-get-random-access-to-a-file-on-sd-card-by-means-of-api-presented-for-loll/28805474#28805474">...</a>
  * </p>
  *
  * @author Keidan
@@ -120,28 +120,25 @@ public class RandomAccessFileChannel {
    * @param buffer The buffer to write.
    * @param offset The offset of the sub-array to be used; must be non-negative and no larger than buffer.length.
    * @param length The length of the sub-array to be used; must be non-negative and no larger than buffer.length - offset.
-   * @return The number of bytes written.
    * @throws IOException If an I/O error occurs.
    */
-  public int write(byte[] buffer, int offset, int length) throws IOException {
-    return write(ByteBuffer.wrap(buffer, offset, length));
+  public void write(byte[] buffer, int offset, int length) throws IOException {
+    write(ByteBuffer.wrap(buffer, offset, length));
   }
 
   /**
    * Writes a ByteBuffer to the file.
    *
    * @param buffer The buffer to write.
-   * @return The number of bytes written.
    * @throws IOException If an I/O error occurs.
    */
-  public int write(ByteBuffer buffer) throws IOException {
+  public void write(ByteBuffer buffer) throws IOException {
     if (mFileOutputStream == null)
-      return -1;
+      return;
     FileChannel fch = mFileOutputStream.getChannel();
     fch.position(mPosition);
-    int bytesWrite = fch.write(buffer);
+    fch.write(buffer);
     mPosition = fch.position();
-    return bytesWrite;
   }
 
   /**

@@ -76,11 +76,8 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
     }
 
     /* permissions */
-    boolean requestPermissions = true;
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-      ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-      requestPermissions = false;
-    }
+    boolean requestPermissions = Build.VERSION.SDK_INT > Build.VERSION_CODES.Q || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+      ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
     if (requestPermissions)
       ActivityCompat.requestPermissions(this, new String[]{
         Manifest.permission.WRITE_EXTERNAL_STORAGE,

@@ -102,7 +102,7 @@ public class LauncherSave {
     DocumentFile sourceDir = DocumentFile.fromTreeUri(mActivity, uri);
     if (sourceDir == null) {
       UIHelper.showErrorDialog(mActivity, R.string.error_title,
-        mActivity.getString(R.string.uri_exception) + ": '" + uri.toString() + "'");
+        mActivity.getString(R.string.uri_exception) + ": '" + uri + "'");
       Log.e(getClass().getSimpleName(), "1 - Uri exception: '" + uri + "'");
       return;
     }
