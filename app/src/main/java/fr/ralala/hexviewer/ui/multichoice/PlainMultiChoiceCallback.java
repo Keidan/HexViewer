@@ -1,8 +1,5 @@
 package fr.ralala.hexviewer.ui.multichoice;
 
-import android.content.ClipData;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -10,12 +7,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
-import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -62,20 +57,7 @@ public class PlainMultiChoiceCallback extends GenericMultiChoiceCallback {
       LineEntry ld = mAdapter.getItem(i);
       sb.append(SysHelper.ignoreNonDisplayedChar(ld.getPlain()));
     }
-    try {
-      ClipData clip = ClipData.newPlainText(mActivity.getString(R.string.app_name), sb);
-      mClipboard.setPrimaryClip(clip);
-    } catch (Exception exception) {
-      ApplicationCtx.addLog(mActivity, "CopyPlain",
-        "E: TransactionTooLargeException size: " + sb.toString().length());
-      displayError(R.string.error_too_many_text_copied);
-      return false;
-    }
-    UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.text_copied),
-      SysHelper.sizeToHuman(mActivity, sb.length(), true, true, false)));
-    // Close CAB
-    new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 500);
-    return true;
+    return copyAndClose("CopyPlain", mode, sb);
   }
 
   /**

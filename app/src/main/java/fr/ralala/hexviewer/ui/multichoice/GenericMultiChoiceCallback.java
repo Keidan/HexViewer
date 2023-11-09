@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.multichoice;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Handler;
@@ -20,10 +21,12 @@ import androidx.annotation.StringRes;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -42,7 +45,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   protected final SearchableListArrayAdapter mAdapter;
   protected final MainActivity mActivity;
   private final ImageView mRefreshActionViewSelectAll;
-  protected final ClipboardManager mClipboard;
+  private final ClipboardManager mClipboard;
   protected final LayoutInflater mLayoutInflater;
 
   @SuppressLint("InflateParams")
@@ -231,6 +234,30 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
         }
       }
     }, 1000);
+  }
+
+  /**
+   * Copy sb to Android clipboard then close action mode.
+   *
+   * @param logTitle Title in log.
+   * @param mode     ActionMode
+   * @param sb       String to copy.
+   * @return false in case on error
+   */
+  protected boolean copyAndClose(String logTitle, ActionMode mode, StringBuilder sb) {
+    try {
+      ClipData clip = ClipData.newPlainText(mActivity.getString(R.string.app_name), sb);
+      mClipboard.setPrimaryClip(clip);
+    } catch (Exception exception) {
+      ApplicationCtx.addLog(mActivity, logTitle,
+        "E: TransactionTooLargeException size: " + sb.toString().length());
+      displayError(R.string.error_too_many_text_copied);
+      return false;
+    }
+    UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.text_copied),
+      SysHelper.sizeToHuman(mActivity, sb.length(), true, true, false)));
+    closeActionMode(mode, true);
+    return true;
   }
 }
 
