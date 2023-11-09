@@ -52,21 +52,21 @@ public class MainPopupWindow {
     int width = popupView.getMeasuredWidth();
 
     mPopup = new PopupWindow(popupView,
-        width + 150,
-        ViewGroup.LayoutParams.WRAP_CONTENT, true);
+      width + 150,
+      ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
     mPopup.setElevation(5.0f);
     mPopup.setOutsideTouchable(true);
 
     mPlainText = new PopupCheckboxHelper(popupView,
-        R.id.action_plain_text_container,
-        R.id.action_plain_text_tv,
-        R.id.action_plain_text_cb);
+      R.id.action_plain_text_container,
+      R.id.action_plain_text_tv,
+      R.id.action_plain_text_cb);
 
     mLineNumbers = new PopupCheckboxHelper(popupView,
-        R.id.action_line_numbers_container,
-        R.id.action_line_numbers_tv,
-        R.id.action_line_numbers_cb);
+      R.id.action_line_numbers_container,
+      R.id.action_line_numbers_tv,
+      R.id.action_line_numbers_cb);
     mSaveAsMenu = popupView.findViewById(R.id.action_save_as);
     mSaveMenu = popupView.findViewById(R.id.action_save);
     mCloseMenu = popupView.findViewById(R.id.action_close);

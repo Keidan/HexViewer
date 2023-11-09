@@ -1,11 +1,11 @@
 package fr.ralala.hexviewer.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * ******************************************************************************

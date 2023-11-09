@@ -13,11 +13,11 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuCompat;
+
+import java.io.ByteArrayOutputStream;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -80,7 +80,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ApplicationCtx.addLog(this, "Main", "Application started with language: '" +
-      ((ApplicationCtx)getApplicationContext()).getApplicationLanguage(this) + "'");
+      ((ApplicationCtx) getApplicationContext()).getApplicationLanguage(this) + "'");
 
     mUnDoRedo = new UnDoRedo(this);
 
@@ -91,11 +91,11 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     mIdleView.setVisibility(View.VISIBLE);
 
     findViewById(R.id.buttonOpenFile).setOnClickListener(v ->
-        onPopupItemClick(R.id.action_open));
+      onPopupItemClick(R.id.action_open));
     findViewById(R.id.buttonPartialOpenFile).setOnClickListener(v ->
-        onPopupItemClick(R.id.action_open_sequential));
+      onPopupItemClick(R.id.action_open_sequential));
     findViewById(R.id.buttonRecentlyOpen).setOnClickListener(v ->
-        onPopupItemClick(R.id.action_recently_open));
+      onPopupItemClick(R.id.action_recently_open));
     findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
     mPayloadHexHelper = new PayloadHexHelper();
     mPayloadHexHelper.onCreate(this);
@@ -168,8 +168,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       final Runnable r = () -> mLauncherOpen.processFileOpen(fd, null, addRecent);
       if (mUnDoRedo.isChanged()) {// a save operation is pending?
         UIHelper.confirmFileChanged(this, mFileData, r,
-            () -> new TaskSave(this, this).execute(
-                new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+          () -> new TaskSave(this, this).execute(
+            new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
       } else {
         r.run();
       }
@@ -228,7 +228,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   public void doSearch(String queryStr) {
     mSearchQuery = queryStr;
     final SearchableListArrayAdapter laa = ((mPayloadPlainSwipe.isVisible()) ?
-        mPayloadPlainSwipe.getAdapter() : mPayloadHexHelper.getAdapter());
+      mPayloadPlainSwipe.getAdapter() : mPayloadHexHelper.getAdapter());
     laa.getFilter().filter(queryStr);
   }
 
@@ -376,7 +376,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       mPopup.show(findViewById(R.id.action_more));
     } else if (id == R.id.action_edit_empty) {
       mLauncherLineUpdate.startActivity(new ByteArrayOutputStream().toByteArray(), 0, 0,
-          mFileData.getShiftOffset(), 0);
+        mFileData.getShiftOffset(), 0);
     }
     return super.onOptionsItemSelected(item);
   }
@@ -403,7 +403,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     for (Byte b : e.getRaw())
       byteArrayOutputStream.write(b);
     mLauncherLineUpdate.startActivity(byteArrayOutputStream.toByteArray(), position, 1,
-        mFileData.getShiftOffset(), mPayloadHexHelper.getAdapter().getCurrentLine(position));
+      mFileData.getShiftOffset(), mPayloadHexHelper.getAdapter().getCurrentLine(position));
   }
 
   /**
@@ -414,8 +414,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       Runnable r = this::finish;
       UIHelper.confirmFileChanged(this, mFileData, r,
-          () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+        () -> new TaskSave(this, this).execute(
+          new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else {
       finish();
     }
@@ -526,8 +526,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
-          () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+        () -> new TaskSave(this, this).execute(
+          new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else
       r.run();
   }
@@ -541,7 +541,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
       return;
     }
     new TaskSave(this, this).execute(new TaskSave.Request(mFileData,
-        mPayloadHexHelper.getAdapter().getEntries().getItems(), null));
+      mPayloadHexHelper.getAdapter().getEntries().getItems(), null));
     refreshTitle();
   }
 
@@ -628,8 +628,8 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     };
     if (mUnDoRedo.isChanged()) {// a save operation is pending?
       UIHelper.confirmFileChanged(this, mFileData, r,
-          () -> new TaskSave(this, this).execute(
-              new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
+        () -> new TaskSave(this, this).execute(
+          new TaskSave.Request(mFileData, mPayloadHexHelper.getAdapter().getEntries().getItems(), r)));
     } else
       r.run();
   }

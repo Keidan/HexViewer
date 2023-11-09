@@ -41,7 +41,7 @@ public class SearchableFilterFactory {
                                  UserConfig userConfigPortrait,
                                  UserConfig userConfigLandscape) {
     mContext = context;
-    mApp = (ApplicationCtx)context.getApplicationContext();
+    mApp = (ApplicationCtx) context.getApplicationContext();
     mSearchFromHewView = searchFromHewView;
     mUserConfigLandscape = userConfigLandscape;
     mUserConfigPortrait = userConfigPortrait;
@@ -186,6 +186,7 @@ public class SearchableFilterFactory {
       Log.e(getClass().getSimpleName(), "Close exception: " + e.getMessage(), e);
     }
   }
+
   /**
    * Evaluates the result of the research.
    *

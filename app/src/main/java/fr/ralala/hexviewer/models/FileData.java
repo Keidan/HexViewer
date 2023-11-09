@@ -6,6 +6,7 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
+
 import fr.ralala.hexviewer.utils.io.FileHelper;
 
 /**
@@ -196,12 +197,12 @@ public class FileData {
    *
    * @param startOffset Start offset
    * @param endOffset   End offset
-   * @param refreshSize   Refresh the size?
+   * @param refreshSize Refresh the size?
    */
   public void setOffsets(long startOffset, long endOffset, boolean refreshSize) {
     mStartOffset = startOffset;
     mEndOffset = endOffset;
-    if(refreshSize)
+    if (refreshSize)
       mSize = Math.abs(mEndOffset - mStartOffset);
   }
 

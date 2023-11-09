@@ -108,7 +108,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         mAdapter.addAll(result.listHex);
       }
     }
-    if(!mLowMemory.get()) {
+    if (!mLowMemory.get()) {
       MemoryInfo mi = mMemoryMonitor.getLastMemoryInfo();
       ApplicationCtx.addLog(mContext, "Open",
         String.format(Locale.US, "Memory status, used: %s (%.02f%%), free: %s, max: %s",

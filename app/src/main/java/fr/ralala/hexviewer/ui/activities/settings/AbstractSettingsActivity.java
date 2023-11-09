@@ -34,7 +34,7 @@ public abstract class AbstractSettingsActivity extends AppCompatActivity {
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
+    super.attachBaseContext(((ApplicationCtx) base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -59,9 +59,9 @@ public abstract class AbstractSettingsActivity extends AppCompatActivity {
     AbstractSettingsFragment prefs = onUserCreate();
 
     getSupportFragmentManager()
-        .beginTransaction()
-        .replace(R.id.settings_container, prefs)
-        .commit();
+      .beginTransaction()
+      .replace(R.id.settings_container, prefs)
+      .commit();
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {

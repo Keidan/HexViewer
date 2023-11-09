@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -15,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -60,7 +60,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
    */
   @Override
   protected void attachBaseContext(Context base) {
-    super.attachBaseContext(((ApplicationCtx)base.getApplicationContext()).onAttach(base));
+    super.attachBaseContext(((ApplicationCtx) base.getApplicationContext()).onAttach(base));
   }
 
   /**
@@ -73,7 +73,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_recently_open);
-    mApp = (ApplicationCtx)getApplicationContext();
+    mApp = (ApplicationCtx) getApplicationContext();
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
@@ -127,7 +127,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     i.setData(ud.getFd().getUri());
     i.putExtra(RESULT_START_OFFSET, ud.getFd().getStartOffset());
     i.putExtra(RESULT_END_OFFSET, ud.getFd().getEndOffset());
-    if(ud.isSizeChanged())
+    if (ud.isSizeChanged())
       i.putExtra(RESULT_OLD_TO_STRING, ud.getFd().toString());
     setResult(RESULT_OK, i);
     finish();

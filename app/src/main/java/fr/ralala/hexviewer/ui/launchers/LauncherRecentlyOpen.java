@@ -74,7 +74,7 @@ public class LauncherRecentlyOpen {
       };
       if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
         UIHelper.confirmFileChanged(mActivity, mActivity.getFileData(), r, () -> new TaskSave(mActivity, mActivity).execute(
-            new TaskSave.Request(mActivity.getFileData(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), r)));
+          new TaskSave.Request(mActivity.getFileData(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), r)));
       } else
         r.run();
     } else {
@@ -88,17 +88,17 @@ public class LauncherRecentlyOpen {
    */
   private void register() {
     activityResultLauncherRecentlyOpen = mActivity.registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            mActivity.setOrphanDialog(null);
-            Intent data = result.getData();
-            if (data != null && data.getData() != null) {
-              processIntentData(data);
-            } else if (mApp.getRecentlyOpened().list().isEmpty())
-              mActivity.getMenuRecentlyOpen().setEnabled(false);
-          }
-        });
+      new ActivityResultContracts.StartActivityForResult(),
+      result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+          mActivity.setOrphanDialog(null);
+          Intent data = result.getData();
+          if (data != null && data.getData() != null) {
+            processIntentData(data);
+          } else if (mApp.getRecentlyOpened().list().isEmpty())
+            mActivity.getMenuRecentlyOpen().setEnabled(false);
+        }
+      });
   }
 
 }

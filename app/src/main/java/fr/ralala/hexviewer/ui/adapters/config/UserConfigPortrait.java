@@ -22,7 +22,7 @@ public class UserConfigPortrait implements UserConfig {
 
   public UserConfigPortrait(final Context ctx, boolean isHexList) {
     mIsHexList = isHexList;
-    mApp = (ApplicationCtx)ctx.getApplicationContext();
+    mApp = (ApplicationCtx) ctx.getApplicationContext();
   }
 
   @Override

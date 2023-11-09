@@ -36,7 +36,7 @@ public class LauncherPartialOpen {
 
   public LauncherPartialOpen(MainActivity activity) {
     mActivity = activity;
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
     register();
   }
 
@@ -64,25 +64,25 @@ public class LauncherPartialOpen {
       }
     };
     activityResultLauncherOpen = mActivity.registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          mApp.setSequential(false);
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            if (data != null) {
-              Bundle bundle = data.getExtras();
-              final long startOffset = bundle.getLong(PartialOpenActivity.RESULT_START_OFFSET);
-              final long endOffset = bundle.getLong(PartialOpenActivity.RESULT_END_OFFSET);
-              mActivity.getFileData().setOffsets(startOffset, endOffset, endOffset != 0L);
-              mActivity.getUnDoRedo().clear();
-              new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mOldToString, mAddRecent).execute(mActivity.getFileData());
-            } else {
-              Log.e(getClass().getSimpleName(), "LauncherPartialOpen -> Invalid data object!!!");
-              cancel.run();
-            }
+      new ActivityResultContracts.StartActivityForResult(),
+      result -> {
+        mApp.setSequential(false);
+        if (result.getResultCode() == Activity.RESULT_OK) {
+          Intent data = result.getData();
+          if (data != null) {
+            Bundle bundle = data.getExtras();
+            final long startOffset = bundle.getLong(PartialOpenActivity.RESULT_START_OFFSET);
+            final long endOffset = bundle.getLong(PartialOpenActivity.RESULT_END_OFFSET);
+            mActivity.getFileData().setOffsets(startOffset, endOffset, endOffset != 0L);
+            mActivity.getUnDoRedo().clear();
+            new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mOldToString, mAddRecent).execute(mActivity.getFileData());
           } else {
+            Log.e(getClass().getSimpleName(), "LauncherPartialOpen -> Invalid data object!!!");
             cancel.run();
           }
-        });
+        } else {
+          cancel.run();
+        }
+      });
   }
 }

@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.Locale;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+import java.util.Locale;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.UriData;
@@ -160,18 +160,18 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
       super.onChildDraw(c, recyclerView, viewHolder, dX,
-          dY, actionState, isCurrentlyActive);
+        dY, actionState, isCurrentlyActive);
       View itemView = viewHolder.itemView;
       int backgroundCornerOffset = 20;
 
       if (dX > 0) { // Swiping to the right
 
         mBackground.setBounds(itemView.getLeft(), itemView.getTop(),
-            itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
-            itemView.getBottom());
+          itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
+          itemView.getBottom());
       } else if (dX < 0) { // Swiping to the left
         mBackground.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-            itemView.getTop(), itemView.getRight(), itemView.getBottom());
+          itemView.getTop(), itemView.getRight(), itemView.getBottom());
       } else { // view is unSwiped
         mBackground.setBounds(0, 0, 0, 0);
       }

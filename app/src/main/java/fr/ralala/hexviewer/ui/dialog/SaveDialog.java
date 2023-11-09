@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-import com.google.android.material.textfield.TextInputLayout;
-
 import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -51,16 +51,16 @@ public class SaveDialog {
   public AlertDialog show(String defaultValue, DialogPositiveClick positiveClick) {
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
     builder.setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(mTitle)
-        .setPositiveButton(android.R.string.ok, null)
-        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
-        });
+      .setIcon(android.R.drawable.ic_dialog_alert)
+      .setTitle(mTitle)
+      .setPositiveButton(android.R.string.ok, null)
+      .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+      });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_save, null));
     AlertDialog dialog = builder.create();
     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
-        WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+      WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);
     TextInputLayout layout = dialog.findViewById(R.id.tilEditText);
@@ -69,7 +69,7 @@ public class SaveDialog {
       et.addTextChangedListener(UIHelper.getResetLayoutWatcher(layout, false));
     }
     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v ->
-        positiveClick.onClick(dialog, et, layout));
+      positiveClick.onClick(dialog, et, layout));
     return dialog;
   }
 

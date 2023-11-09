@@ -5,6 +5,10 @@ import android.text.Spannable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.emoji.text.EmojiCompat;
+import androidx.emoji.text.EmojiSpan;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -12,10 +16,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
-import androidx.emoji.text.EmojiCompat;
-import androidx.emoji.text.EmojiSpan;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -73,7 +73,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     mMaxLengthWithPartial = maxLengthWithPartial;
     mSequential = sequential;
     updateHelperText(Objects.requireNonNull(
-        layout.getEditText()).getText().toString().replace(" ", ""), true);
+      layout.getEditText()).getText().toString().replace(" ", ""), true);
   }
 
   /**
@@ -101,7 +101,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     final boolean validated = SysHelper.isValidHexLine(validate);
     if (!validated) {
       mLayout.setErrorTextAppearance(R.style.AppTheme_ErrorTextAppearance);
-      if(!mSequential)
+      if (!mSequential)
         mLayout.setError(" "); /* only for the color */
     } else {
       byte[] bytes = SysHelper.hex2bin(validate);
@@ -116,28 +116,30 @@ public class LineUpdateTextWatcher implements TextWatcher {
     }
     updateHelperText(validate, validated);
   }
+
   private void updateHelperTextNotEmpty(final String validate, final boolean validated, final String labelBytes) {
     float nbBytesFloat = (validate.length() / 2.0f);
     int nbBytes;
-    if(nbBytesFloat < mMaxLengthWithPartial)
+    if (nbBytesFloat < mMaxLengthWithPartial)
       nbBytes = (int) Math.floor(nbBytesFloat);
     else
       nbBytes = (int) Math.ceil(nbBytesFloat);
     String newHelper = nbBytes + " " + labelBytes + " / " + mMaxLengthWithPartial + " " + labelBytes;
-    if(nbBytesFloat == mMaxLengthWithPartial) {
+    if (nbBytesFloat == mMaxLengthWithPartial) {
       mLayout.setError(null);
       mLayout.setHelperText(newHelper);
     } else {
-      if(!validated)
+      if (!validated)
         newHelper += ": " + mApp.getString(R.string.error_invalid_value);
       mLayout.setError(newHelper);
     }
   }
+
   private void updateHelperText(final String validate, final boolean validated) {
-    if(mSequential) {
+    if (mSequential) {
       final String labelBytes = mApp.getString(R.string.unit_bytes_full_lc);
       mLayout.setErrorTextAppearance(R.style.AppTheme_ErrorTextAppearance);
-      if(validate.isEmpty()) {
+      if (validate.isEmpty()) {
         String newHelper = "0 " + mApp.getString(R.string.unit_byte_full) + " / " + mMaxLengthWithPartial + " " + labelBytes;
         mLayout.setError(newHelper);
       } else {
@@ -161,7 +163,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
   public void afterTextChanged(Editable s) {
     if (mIgnore)
       return;
-    if(!mSequential)
+    if (!mSequential)
       mLayout.setError(null);
     final String strNew = mNewString;
     final String strOld = mOldString;
@@ -258,7 +260,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   @NonNull
   public static String normalizeForEmoji(CharSequence charSequence) {
-    if(charSequence.length() == 0)
+    if (charSequence.length() == 0)
       return "";
     CharSequence processed = EmojiCompat.get().process(charSequence, 0, charSequence.length() - 1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
     if (processed instanceof Spannable) {
@@ -355,7 +357,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     pac.notChangedStart = localStart == 0 ? "" : mNewString.substring(0, localStart);
     pac.notChangedEnd = mNewString.substring(Math.min(start + count, mNewString.length()));
     pac.newChange = normalizeForEmoji(mNewString.substring(Math.max(0, localStart),
-        Math.min(localStart + count, mNewString.length())));
+      Math.min(localStart + count, mNewString.length())));
     return pac;
   }
 
@@ -412,7 +414,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
     String str;
     if (!mApp.isOverwrite()) {
-      str = (pac.notChangedStart + newChangeHex.toString() + pac.notChangedEnd).replace(" ", "");
+      str = (pac.notChangedStart + newChangeHex + pac.notChangedEnd).replace(" ", "");
       if (mAfterSpace)
         mStart--;
     } else {
@@ -455,6 +457,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     else
       mNewString = notChangedStart + newChange + (!notChangedEnd.isEmpty() ? notChangedEnd.substring(nbChars) : "");
   }
+
   /**
    * Management of text insertion in Overwrite mode without the SmartInput option.
    *
@@ -476,6 +479,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
       formatNewString();
     }
   }
+
   private void formatNewString() {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < mNewString.length(); i += 2) {

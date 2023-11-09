@@ -27,6 +27,7 @@ import java.nio.channels.FileChannel;
  */
 public class RandomAccessFileChannel {
   private static final String EXCEPTION_TAG = "Exception: ";
+
   private enum Mode {
     RO, /* read only */
     WO, /* write only */
@@ -174,7 +175,7 @@ public class RandomAccessFileChannel {
   }
 
   private void closeOutputStreams() {
-    if(mFileOutputStream != null) {
+    if (mFileOutputStream != null) {
       try {
         FileChannel fch = mFileOutputStream.getChannel();
         fch.close();

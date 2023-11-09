@@ -10,11 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -55,7 +55,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
     mListView = listView;
     mEntryList = objects;
     mTitle = title;
-    mApp = (ApplicationCtx)context.getApplicationContext();
+    mApp = (ApplicationCtx) context.getApplicationContext();
   }
 
   public void setStartOffset(final long startOffset) {
@@ -156,7 +156,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       final String s = String.format(fmt, UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
 
       final @ColorInt int color = ContextCompat.getColor(getContext(),
-          R.color.colorLineNumbers);
+        R.color.colorLineNumbers);
       holder.getLineNumbers().setText(s);
       holder.getLineNumbers().setTextColor(color);
       holder.getLineNumbers().setVisibility(View.VISIBLE);

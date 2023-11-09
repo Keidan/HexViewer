@@ -19,6 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -28,12 +34,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -116,8 +116,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     intent.putExtra(ACTIVITY_EXTRA_END_OFFSET, fd.getEndOffset());
 
     ApplicationCtx.addLog(c, "PartialOpen",
-      String.format(Locale.US,"Open file '%s', sequential: %b, rsize: %d, size: %d, start: %d, end: %d",
-      fd.getName(), fd.isSequential(), fd.getRealSize(), fd.getSize(), fd.getStartOffset(), fd.getEndOffset()));
+      String.format(Locale.US, "Open file '%s', sequential: %b, rsize: %d, size: %d, start: %d, end: %d",
+        fd.getName(), fd.isSequential(), fd.getRealSize(), fd.getSize(), fd.getStartOffset(), fd.getEndOffset()));
     activityResultLauncher.launch(intent);
   }
 
@@ -193,8 +193,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       units.add(getString(R.string.unit_mbyte));
       units.add(getString(R.string.unit_gbyte));
       ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-          android.R.layout.simple_spinner_item,
-          units);
+        android.R.layout.simple_spinner_item,
+        units);
       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       mSpUnit.setSelection(IDX_BYTES);
       mSpUnit.setAdapter(adapter);
@@ -205,8 +205,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
       base.add(getString(R.string.decimal));
       base.add(getString(R.string.hexadecimal));
       ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-          android.R.layout.simple_spinner_item,
-          base);
+        android.R.layout.simple_spinner_item,
+        base);
       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       mSpInputType.setSelection(IDX_DECIMAL);
       mSpInputType.setAdapter(adapter);
@@ -496,6 +496,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
 
   /**
    * Sets the text according to the converted value.
+   *
    * @param output TextInputEditText
    */
   private void updateText(TextInputEditText output) {
@@ -522,7 +523,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     }
     mTietStart.setTypeface(Typeface.MONOSPACE);
     mTietEnd.setTypeface(Typeface.MONOSPACE);
-    if(SysHelper.isRTL(this)) {
+    if (SysHelper.isRTL(this)) {
       mTietStart.setTextDirection(View.TEXT_DIRECTION_RTL);
       mTietEnd.setTextDirection(View.TEXT_DIRECTION_RTL);
     } else {
@@ -642,7 +643,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
 
   private void setErrorMessage(TextInputLayout til, @StringRes int textId, long size) {
     setErrorMessage(til, getString(textId) + " " +
-        SysHelper.sizeToHuman(this, size) + " (" + Long.toHexString(size).toUpperCase() + ")");
+      SysHelper.sizeToHuman(this, size) + " (" + Long.toHexString(size).toUpperCase() + ")");
   }
 
   private void setErrorMessage(TextInputLayout til, String message) {

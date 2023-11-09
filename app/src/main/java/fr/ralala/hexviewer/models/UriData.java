@@ -48,14 +48,13 @@ public class UriData {
       long size = fd.getSize();
       String detail;
       if (fd.isSequential()) {
-        if(fd.getEndOffset() > fd.getRealSize()) {
+        if (fd.getEndOffset() > fd.getRealSize()) {
           mDetail = ctx.getString(R.string.error_size_changed);
           mError = true;
           mClickable = true;
           mSizeChanged = true;
           return;
-        }
-        else {
+        } else {
           detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset(), true, true) + ", ";
           detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset(), true, true) + ", ";
           detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));

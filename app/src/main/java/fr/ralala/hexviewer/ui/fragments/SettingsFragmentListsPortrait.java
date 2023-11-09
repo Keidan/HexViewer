@@ -113,58 +113,58 @@ public class SettingsFragmentListsPortrait extends AbstractSettingsFragment impl
       mHexRowHeightPortrait.setEnabled(!mHexRowHeightAutoPortrait.isChecked());
     } else if (preference.equals(mHexRowHeightPortrait)) {
       displayDialog(mHexRowHeightPortrait.getTitle(),
-          mApp.getListSettingsHexPortrait().getRowHeight(),
-          MIN_HEX_ROW_HEIGHT,
-          MAX_HEX_ROW_HEIGHT,
-          n -> mApp.getListSettingsHexPortrait().setRowHeight(n));
+        mApp.getListSettingsHexPortrait().getRowHeight(),
+        MIN_HEX_ROW_HEIGHT,
+        MAX_HEX_ROW_HEIGHT,
+        n -> mApp.getListSettingsHexPortrait().setRowHeight(n));
     } else if (preference.equals(mHexFontSizePortrait)) {
       displayDialog(mHexFontSizePortrait.getTitle(),
-          mApp.getListSettingsHexPortrait().getFontSize(),
-          MIN_HEX_FONT_SIZE,
-          MAX_HEX_FONT_SIZE,
-          n -> mApp.getListSettingsHexPortrait().setFontSize(n), true);
+        mApp.getListSettingsHexPortrait().getFontSize(),
+        MIN_HEX_FONT_SIZE,
+        MAX_HEX_FONT_SIZE,
+        n -> mApp.getListSettingsHexPortrait().setFontSize(n), true);
     } else if (preference.equals(mHexRowHeightAutoLineNumbersPortrait)) {
       mHexRowHeightLineNumbersPortrait.setEnabled(!mHexRowHeightAutoLineNumbersPortrait.isChecked());
     } else if (preference.equals(mHexRowHeightLineNumbersPortrait)) {
       displayDialog(mHexRowHeightLineNumbersPortrait.getTitle(),
-          mApp.getListSettingsHexLineNumbersPortrait().getRowHeight(),
-          MIN_HEX_ROW_HEIGHT,
-          MAX_HEX_ROW_HEIGHT,
-          n -> mApp.getListSettingsHexLineNumbersPortrait().setRowHeight(n));
+        mApp.getListSettingsHexLineNumbersPortrait().getRowHeight(),
+        MIN_HEX_ROW_HEIGHT,
+        MAX_HEX_ROW_HEIGHT,
+        n -> mApp.getListSettingsHexLineNumbersPortrait().setRowHeight(n));
     } else if (preference.equals(mHexFontSizeLineNumbersPortrait)) {
       displayDialog(mHexFontSizeLineNumbersPortrait.getTitle(),
-          mApp.getListSettingsHexLineNumbersPortrait().getFontSize(),
-          MIN_HEX_FONT_SIZE,
-          MAX_HEX_FONT_SIZE,
-          n -> mApp.getListSettingsHexLineNumbersPortrait().setFontSize(n), true);
+        mApp.getListSettingsHexLineNumbersPortrait().getFontSize(),
+        MIN_HEX_FONT_SIZE,
+        MAX_HEX_FONT_SIZE,
+        n -> mApp.getListSettingsHexLineNumbersPortrait().setFontSize(n), true);
     } else if (preference.equals(mPlainRowHeightAutoPortrait)) {
       mPlainRowHeightPortrait.setEnabled(!mPlainRowHeightAutoPortrait.isChecked());
     } else if (preference.equals(mPlainRowHeightPortrait)) {
       displayDialog(mPlainRowHeightPortrait.getTitle(),
-          mApp.getListSettingsPlainPortrait().getRowHeight(),
-          MIN_PLAIN_ROW_HEIGHT,
-          MAX_PLAIN_ROW_HEIGHT,
-          n -> mApp.getListSettingsPlainPortrait().setRowHeight(n));
+        mApp.getListSettingsPlainPortrait().getRowHeight(),
+        MIN_PLAIN_ROW_HEIGHT,
+        MAX_PLAIN_ROW_HEIGHT,
+        n -> mApp.getListSettingsPlainPortrait().setRowHeight(n));
     } else if (preference.equals(mPlainFontSizePortrait)) {
       displayDialog(mPlainFontSizePortrait.getTitle(),
-          mApp.getListSettingsPlainPortrait().getFontSize(),
-          MIN_PLAIN_FONT_SIZE,
-          MAX_PLAIN_FONT_SIZE,
-          n -> mApp.getListSettingsPlainPortrait().setFontSize(n), true);
+        mApp.getListSettingsPlainPortrait().getFontSize(),
+        MIN_PLAIN_FONT_SIZE,
+        MAX_PLAIN_FONT_SIZE,
+        n -> mApp.getListSettingsPlainPortrait().setFontSize(n), true);
     } else if (preference.equals(mLineEditRowHeightAutoPortrait)) {
       mLineEditRowHeightPortrait.setEnabled(!mLineEditRowHeightAutoPortrait.isChecked());
     } else if (preference.equals(mLineEditRowHeightPortrait)) {
       displayDialog(mLineEditRowHeightPortrait.getTitle(),
-          mApp.getListSettingsLineEditPortrait().getRowHeight(),
-          MIN_PLAIN_ROW_HEIGHT,
-          MAX_PLAIN_ROW_HEIGHT,
-          n -> mApp.getListSettingsLineEditPortrait().setRowHeight(n));
+        mApp.getListSettingsLineEditPortrait().getRowHeight(),
+        MIN_PLAIN_ROW_HEIGHT,
+        MAX_PLAIN_ROW_HEIGHT,
+        n -> mApp.getListSettingsLineEditPortrait().setRowHeight(n));
     } else if (preference.equals(mLineEditFontSizePortrait)) {
       displayDialog(mLineEditFontSizePortrait.getTitle(),
-          mApp.getListSettingsLineEditPortrait().getFontSize(),
-          MIN_PLAIN_FONT_SIZE,
-          MAX_PLAIN_FONT_SIZE,
-          n -> mApp.getListSettingsLineEditPortrait().setFontSize(n), true);
+        mApp.getListSettingsLineEditPortrait().getFontSize(),
+        MIN_PLAIN_FONT_SIZE,
+        MAX_PLAIN_FONT_SIZE,
+        n -> mApp.getListSettingsLineEditPortrait().setFontSize(n), true);
     }
     return false;
   }

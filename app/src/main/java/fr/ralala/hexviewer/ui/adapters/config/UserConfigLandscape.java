@@ -22,7 +22,7 @@ public class UserConfigLandscape implements UserConfig {
 
   public UserConfigLandscape(final Context ctx, boolean isHexList) {
     mIsHexList = isHexList;
-    mApp = (ApplicationCtx)ctx.getApplicationContext();
+    mApp = (ApplicationCtx) ctx.getApplicationContext();
   }
 
   @Override

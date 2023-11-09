@@ -6,18 +6,18 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.documentfile.provider.DocumentFile;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import androidx.documentfile.provider.DocumentFile;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
 import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
 
 /**
  * ******************************************************************************

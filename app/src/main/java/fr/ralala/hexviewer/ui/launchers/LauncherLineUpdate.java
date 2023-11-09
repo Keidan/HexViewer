@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -40,7 +40,7 @@ public class LauncherLineUpdate {
 
   public LauncherLineUpdate(MainActivity activity) {
     mActivity = activity;
-    mApp = (ApplicationCtx)mActivity.getApplicationContext();
+    mApp = (ApplicationCtx) mActivity.getApplicationContext();
     register();
   }
 
@@ -116,16 +116,16 @@ public class LauncherLineUpdate {
    */
   private void register() {
     activityResultLauncherLineUpdate = mActivity.registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            if (data != null) {
-              processIntentData(data);
-            } else
-              Log.e(getClass().getSimpleName(), "Null data!!!");
-          }
-        });
+      new ActivityResultContracts.StartActivityForResult(),
+      result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+          Intent data = result.getData();
+          if (data != null) {
+            processIntentData(data);
+          } else
+            Log.e(getClass().getSimpleName(), "Null data!!!");
+        }
+      });
   }
 
 }

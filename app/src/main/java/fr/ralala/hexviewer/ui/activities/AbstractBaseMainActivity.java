@@ -78,13 +78,13 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
     /* permissions */
     boolean requestPermissions = true;
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+      ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
       requestPermissions = false;
     }
     if (requestPermissions)
       ActivityCompat.requestPermissions(this, new String[]{
-          Manifest.permission.WRITE_EXTERNAL_STORAGE,
-          Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
       }, 1);
   }
 
@@ -94,7 +94,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
     if (searchManager != null) {
       mSearchView = (SearchView) si.getActionView();
       mSearchView.setSearchableInfo(searchManager
-          .getSearchableInfo(getComponentName()));
+        .getSearchableInfo(getComponentName()));
       mSearchView.setTextDirection(SysHelper.isRTL(this) ? View.TEXT_DIRECTION_RTL : View.TEXT_DIRECTION_LTR);
       mSearchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
       mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

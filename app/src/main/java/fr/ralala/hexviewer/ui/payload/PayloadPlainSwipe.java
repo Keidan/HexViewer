@@ -6,11 +6,11 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -54,18 +54,18 @@ public class PayloadPlainSwipe {
     // Configure SwipeRefreshLayout
     mPayloadPlainSwipeRefreshLayout.setOnRefreshListener(this::refresh);
     mPayloadPlainSwipeRefreshLayout.setColorSchemeResources(
-        android.R.color.holo_blue_light,
-        android.R.color.holo_orange_light,
-        android.R.color.holo_green_light,
-        android.R.color.holo_red_light);
+      android.R.color.holo_blue_light,
+      android.R.color.holo_orange_light,
+      android.R.color.holo_green_light,
+      android.R.color.holo_red_light);
     mPayloadPlain.setVisibility(View.GONE);
 
     mUserConfigPortrait = new UserConfigPortrait(activity, false);
     mUserConfigLandscape = new UserConfigLandscape(activity, false);
     mAdapterPlain = new PlainTextListArrayAdapter(activity,
-        new ArrayList<>(),
-        mUserConfigPortrait,
-        mUserConfigLandscape);
+      new ArrayList<>(),
+      mUserConfigPortrait,
+      mUserConfigLandscape);
     mPayloadPlain.setAdapter(mAdapterPlain);
     mPayloadPlain.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
     PlainMultiChoiceCallback plainMultiChoiceCallback = new PlainMultiChoiceCallback(activity, mPayloadPlain, mAdapterPlain);

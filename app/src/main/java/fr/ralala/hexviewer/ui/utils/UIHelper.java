@@ -21,12 +21,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AlertDialog;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
@@ -165,11 +165,11 @@ public class UIHelper {
    */
   public static void showErrorDialog(final Context context, CharSequence title, String message) {
     new AlertDialog.Builder(context)
-        .setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(title)
-        .setMessage(message)
-        .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> dialog.dismiss()).show();
+      .setCancelable(false)
+      .setIcon(android.R.drawable.ic_dialog_alert)
+      .setTitle(title)
+      .setMessage(message)
+      .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> dialog.dismiss()).show();
   }
 
   /**
@@ -252,7 +252,7 @@ public class UIHelper {
   public static void openFilePickerInFileSelectionMode(final Context c, final ActivityResultLauncher<Intent> activityResultLauncher, final View snackBarLayout) {
     try {
       activityResultLauncher.launch(
-          Intent.createChooser(FileHelper.prepareForOpenFile(), c.getString(R.string.select_file_to_open)));
+        Intent.createChooser(FileHelper.prepareForOpenFile(), c.getString(R.string.select_file_to_open)));
     } catch (android.content.ActivityNotFoundException ex) {
       Snackbar customSnackBar = Snackbar.make(snackBarLayout, c.getString(R.string.error_no_file_manager), BaseTransientBottomBar.LENGTH_LONG);
       customSnackBar.setAction(c.getString(R.string.install), v -> {
@@ -296,15 +296,15 @@ public class UIHelper {
   public static void showConfirmDialog(final Context c, String title,
                                        String message, final View.OnClickListener yes) {
     new AlertDialog.Builder(c)
-        .setCancelable(false)
-        .setIcon(R.mipmap.ic_launcher_round)
-        .setTitle(title)
-        .setMessage(message)
-        .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {
-          if (yes != null) yes.onClick(null);
-        })
-        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
-        }).show();
+      .setCancelable(false)
+      .setIcon(R.mipmap.ic_launcher_round)
+      .setTitle(title)
+      .setMessage(message)
+      .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {
+        if (yes != null) yes.onClick(null);
+      })
+      .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+      }).show();
   }
 
   /**
@@ -364,18 +364,18 @@ public class UIHelper {
       return;
     }
     new AlertDialog.Builder(c)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(R.string.action_close_title)
-        .setMessage(String.format(c.getString(R.string.confirm_save), fd.getName()))
-        .setPositiveButton(R.string.yes, (dialog, which) -> {
-          runnableSave.run();
-          dialog.dismiss();
-        })
-        .setNegativeButton(R.string.no, (dialog, which) -> {
-          runnable.run();
-          dialog.dismiss();
-        })
-        .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-        .show();
+      .setIcon(android.R.drawable.ic_dialog_alert)
+      .setTitle(R.string.action_close_title)
+      .setMessage(String.format(c.getString(R.string.confirm_save), fd.getName()))
+      .setPositiveButton(R.string.yes, (dialog, which) -> {
+        runnableSave.run();
+        dialog.dismiss();
+      })
+      .setNegativeButton(R.string.no, (dialog, which) -> {
+        runnable.run();
+        dialog.dismiss();
+      })
+      .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+      .show();
   }
 }

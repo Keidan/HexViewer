@@ -13,13 +13,13 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -64,7 +64,7 @@ public class GoToDialog implements View.OnClickListener {
 
   public GoToDialog(MainActivity activity) {
     mActivity = activity;
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
   }
 
   /**
@@ -74,10 +74,10 @@ public class GoToDialog implements View.OnClickListener {
   public AlertDialog show(Mode mode) {
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
     builder.setCancelable(true)
-        .setTitle(R.string.action_go_to_address)
-        .setPositiveButton(android.R.string.ok, null)
-        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
-        });
+      .setTitle(R.string.action_go_to_address)
+      .setPositiveButton(android.R.string.ok, null)
+      .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+      });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));
     mDialog = builder.create();
@@ -85,7 +85,7 @@ public class GoToDialog implements View.OnClickListener {
       mDialog.dismiss();
     mMode = mode;
     mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
-        WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+      WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     String title1;
     String title2;
     if (mode == Mode.ADDRESS) {
@@ -124,7 +124,7 @@ public class GoToDialog implements View.OnClickListener {
 
   private boolean processPosition(final String text) {
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
-        mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+      mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
     SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter) lv.getAdapter());
     int position;
     if (mMode == Mode.ADDRESS) {
@@ -162,7 +162,7 @@ public class GoToDialog implements View.OnClickListener {
     String text = mEt.getText().toString();
     if (text.isEmpty())
       return;
-    if(!processPosition(text))
+    if (!processPosition(text))
       return;
     if (mMode == Mode.LINE_PLAIN)
       mPreviousGoToValueLinePlain = text;
@@ -236,6 +236,7 @@ public class GoToDialog implements View.OnClickListener {
     final String fmt = "%0" + maxLength + "X";
     return String.format(fmt, (max * nbBytesPerLines) + nbBytesPerLines - 1);
   }
+
   private String validatePositionModeLines(final String text, final AtomicInteger max, final AtomicInteger position) {
     try {
       position.set(Integer.parseInt(text) - 1);
@@ -264,7 +265,7 @@ public class GoToDialog implements View.OnClickListener {
     String sMax;
     if (mMode == Mode.ADDRESS) {
       sMax = validatePositionModeAddress(text, max.get(), position);
-      if(sMax.isEmpty())
+      if (sMax.isEmpty())
         return true;
     } else {
       sMax = validatePositionModeLines(text, max, position);
@@ -298,13 +299,13 @@ public class GoToDialog implements View.OnClickListener {
    */
   private void blinkBackground(int position) {
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
-        mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+      mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
     View v = UIHelper.getViewByPosition(position, lv);
     lv.setOnScrollListener(null);
     int windowBackground = ContextCompat.getColor(mActivity, R.color.windowBackground);
     int colorAccent = ContextCompat.getColor(mActivity, R.color.colorAccent);
     ObjectAnimator anim = ObjectAnimator.ofInt(v, "backgroundColor",
-        windowBackground, colorAccent, windowBackground);
+      windowBackground, colorAccent, windowBackground);
     anim.setDuration(1000);
     anim.setEvaluator(new ArgbEvaluator());
     anim.setRepeatMode(ValueAnimator.REVERSE);

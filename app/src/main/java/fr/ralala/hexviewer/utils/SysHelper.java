@@ -113,7 +113,7 @@ public class SysHelper {
         data[i / 2] = (byte) 0; /* nothing done */
       } else {
         data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
-            .digit(s.charAt(i + 1), 16));
+          .digit(s.charAt(i + 1), 16));
       }
     }
     return data;
@@ -156,7 +156,7 @@ public class SysHelper {
     String hex = (!addHex ? "" : "(0x" + Long.toHexString((long) f).toUpperCase() + ") ");
     if (f < 1000) {
       String unit = "";
-      if(addUnit) {
+      if (addUnit) {
         unit = fullByteName ? ctx.getString(R.string.unit_bytes_full_lc) : ctx.getString(R.string.unit_byte);
       }
       sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, unit);
@@ -276,7 +276,7 @@ public class SysHelper {
     if (cancel != null && cancel.get())
       return;
     formatBufferAlign(lines, currentIndex, currentLine.toString(),
-        currentEndLine.toString(), currentLineRaw, maxByRow);
+      currentEndLine.toString(), currentLineRaw, maxByRow);
     if (!lines.isEmpty())
       lines.get(0).setShiftOffset(shiftOffset);
   }
@@ -309,7 +309,7 @@ public class SysHelper {
    */
   public static String formatHex(char b, boolean upperCase) {
     return "" + (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0xF0) >> 4) +
-        (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0x0F));
+      (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0x0F));
   }
 
 
@@ -328,7 +328,7 @@ public class SysHelper {
     int max = isEven(len) ? len : len - 1;
     for (int i = 0; i < max; i += 2) {
       byte b = (byte) ((Character.digit(h.charAt(i), 16) << 4) + Character
-          .digit(h.charAt(i + 1), 16));
+        .digit(h.charAt(i + 1), 16));
       byteArrayOutputStream.write(b);
     }
     return byteArrayOutputStream.toByteArray();
@@ -353,7 +353,7 @@ public class SysHelper {
                                                      final int maxByRow) {
     if (currentIndex == maxByRow - 1) {
       lines.add(new LineEntry(currentLine + " " + currentEndLine,
-          new ArrayList<>(currentLineRaw)));
+        new ArrayList<>(currentLineRaw)));
       currentEndLine.setLength(0);
       currentLine.setLength(0);
       currentLineRaw.clear();

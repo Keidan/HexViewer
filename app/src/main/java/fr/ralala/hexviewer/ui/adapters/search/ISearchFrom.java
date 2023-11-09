@@ -1,4 +1,5 @@
 package fr.ralala.hexviewer.ui.adapters.search;
+
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
