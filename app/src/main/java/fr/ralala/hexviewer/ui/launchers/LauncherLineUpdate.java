@@ -122,8 +122,10 @@ public class LauncherLineUpdate {
           Intent data = result.getData();
           if (data != null) {
             processIntentData(data);
-          } else
+          } else {
             Log.e(getClass().getSimpleName(), "Null data!!!");
+            ApplicationCtx.addLog(mActivity, "LineUpdate", "Null intent data!");
+          }
         }
       });
   }

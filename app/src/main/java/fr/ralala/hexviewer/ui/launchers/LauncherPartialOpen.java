@@ -78,6 +78,7 @@ public class LauncherPartialOpen {
             new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mOldToString, mAddRecent).execute(mActivity.getFileData());
           } else {
             Log.e(getClass().getSimpleName(), "LauncherPartialOpen -> Invalid data object!!!");
+            ApplicationCtx.addLog(mActivity, "PartialOpen", "Null intent data!");
             cancel.run();
           }
         } else {

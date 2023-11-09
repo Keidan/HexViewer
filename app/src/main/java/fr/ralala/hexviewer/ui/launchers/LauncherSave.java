@@ -64,8 +64,10 @@ public class LauncherSave {
             if (!mActivity.getFileData().isOpenFromAppIntent())
               FileHelper.takeUriPermissions(mActivity, data.getData(), true);
             processFileSaveWithDialog(data.getData());
-          } else
+          } else {
             Log.e(getClass().getSimpleName(), "Null data!!!");
+            ApplicationCtx.addLog(mActivity, "Save", "Null intent data!");
+          }
         }
       });
   }
