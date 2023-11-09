@@ -9,15 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -42,7 +38,6 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   private static final int ID = R.layout.listview_hex_row;
-  private Set<Integer> mSelectedItemsIds;
   private final ApplicationCtx mApp;
   private final LineNumbersTitle mTitle;
   private long mStartOffset;
@@ -54,7 +49,6 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     super(activity, ID, objects, userConfigPortrait, userConfigLandscape);
     mStartOffset = 0;
     mTitle = title;
-    mSelectedItemsIds = new HashSet<>();
     mApp = (ApplicationCtx) activity.getApplicationContext();
   }
 
@@ -63,59 +57,13 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Returns true if the item is selected.
-   *
-   * @param position The position
-   * @return boolean
-   */
-  @Override
-  protected boolean isSelected(int position) {
-    return mSelectedItemsIds.contains(position);
-  }
-
-  /**
    * Test if we are from the hex view or the plain view.
    *
    * @return boolean
    */
-  public boolean isSearchNotFromHewView() {
+  public boolean isSearchNotFromHexView() {
     return false;
   }
-
-  /**
-   * Toggles the item selection.
-   *
-   * @param position Item position.
-   */
-  public void toggleSelection(int position, boolean checked) {
-    if (checked) {
-      mSelectedItemsIds.add(position);
-    } else {
-      mSelectedItemsIds.remove(position);
-    }
-    notifyDataSetChanged();
-  }
-
-  /**
-   * Removes the item selection.
-   */
-  public void removeSelection() {
-    mSelectedItemsIds = new HashSet<>();
-    notifyDataSetChanged();
-  }
-
-
-  /**
-   * Returns the selected ids.
-   *
-   * @return SparseBooleanArray
-   */
-  public List<Integer> getSelectedIds() {
-    List<Integer> li = new ArrayList<>(mSelectedItemsIds);
-    Collections.sort(li);
-    return li;
-  }
-
 
   /**
    * Inflate the view.
@@ -221,7 +169,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       String fmt = "%0" + maxLength + "X";
       final String s = String.format(fmt, getCurrentLine(fd.getIndex()));
       final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
-          isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
+        isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
       holder.getLineNumbers().setText(s);
       holder.getLineNumbers().setTextColor(colorLine);
       applyUserConfig(holder.getLineNumbers());
@@ -248,7 +196,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       final String fmt = "%" + maxLength + "s";
       mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
       mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
-          R.string.title_content : R.string.title_content8));
+        R.string.title_content : R.string.title_content8));
       mTitle.getTitleContent().setTextColor(colorTitle);
       applyUserConfig(mTitle.getTitleContent());
       applyUserConfig(mTitle.getTitleLineNumbers());

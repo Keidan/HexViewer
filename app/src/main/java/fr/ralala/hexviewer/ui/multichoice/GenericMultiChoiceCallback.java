@@ -1,6 +1,7 @@
-package fr.ralala.hexviewer.ui.utils;
+package fr.ralala.hexviewer.ui.multichoice;
 
 import android.annotation.SuppressLint;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,23 +16,19 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import androidx.annotation.StringRes;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
-import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
+import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
- * MultiChoiceModeListener implementation
+ * MultiChoiceModeListener implementation (generic view)
  * </p>
  *
  * @author Keidan
@@ -40,24 +37,31 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * </p>
  * ******************************************************************************
  */
-public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
+public abstract class GenericMultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
   private final ListView mListView;
-  private final HexTextArrayAdapter mAdapter;
-  private final MainActivity mActivity;
+  protected final SearchableListArrayAdapter mAdapter;
+  protected final MainActivity mActivity;
   private final ImageView mRefreshActionViewSelectAll;
-  private final ImageView mRefreshActionViewDelete;
+  protected final ClipboardManager mClipboard;
+  protected final LayoutInflater mLayoutInflater;
 
   @SuppressLint("InflateParams")
-  public MultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {
+  protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
     mActivity = mainActivity;
     mListView = listView;
     mAdapter = adapter;
     /* Attach a rotating ImageView to the refresh item as an ActionView */
-    LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    mRefreshActionViewSelectAll = (ImageView) inflater.inflate(R.layout.refresh_action_view_select_all, null);
-    mRefreshActionViewDelete = (ImageView) inflater.inflate(R.layout.refresh_action_view_delete, null);
-
+    mLayoutInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    mRefreshActionViewSelectAll = (ImageView) mLayoutInflater.inflate(R.layout.refresh_action_view_select_all, null);
+    mClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
   }
+
+  /**
+   * Returns the menu id.
+   *
+   * @return R.menu.xxx
+   */
+  public abstract int getMenuId();
 
   /**
    * Called when action mode is first created. The menu supplied will be used to generate action buttons for the action mode.
@@ -68,7 +72,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    */
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-    mode.getMenuInflater().inflate(R.menu.main_multi_choice, menu);
+    mode.getMenuInflater().inflate(getMenuId(), menu);
     return true;
   }
 
@@ -96,7 +100,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     if (item.getItemId() == R.id.action_clear) {
       if (mActivity.getFileData().isSequential()) {
         UIHelper.showErrorDialog(mActivity, mActivity.getFileData().getName(),
-            mActivity.getString(R.string.error_open_sequential_add_or_delete_data));
+          mActivity.getString(R.string.error_open_sequential_add_or_delete_data));
         return false;
       }
       actionClear(item, mode);
@@ -106,6 +110,8 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
       return true;
     } else if (item.getItemId() == R.id.action_edit) {
       return actionEdit(mode);
+    } else if (item.getItemId() == R.id.action_copy) {
+      return actionCopy(mode);
     }
     return false;
   }
@@ -136,29 +142,6 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   }
 
   /**
-   * Clear action.
-   *
-   * @param item The item that was clicked.
-   * @param mode The ActionMode providing the selection mode.
-   */
-  private void actionClear(MenuItem item, ActionMode mode) {
-    setActionView(item, mRefreshActionViewDelete, () -> {
-      final List<Integer> selected = mAdapter.getSelectedIds();
-      Map<Integer, LineEntry> map = new HashMap<>();
-      // Captures all selected ids with a loop
-      for (int i = selected.size() - 1; i >= 0; i--) {
-        int position = selected.get(i);
-        LineEntry lf = mAdapter.getItem(position);
-        map.put(position, lf);
-      }
-      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
-      mActivity.refreshTitle();
-      // Close CAB
-      mode.finish();
-    });
-  }
-
-  /**
    * Select all action.
    *
    * @param item The item that was clicked.
@@ -173,39 +156,40 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
   }
 
   /**
+   * Copy action.
+   *
+   * @param mode The ActionMode providing the selection mode.
+   * @return false on error.
+   */
+  protected abstract boolean actionCopy(ActionMode mode);
+
+  /**
+   * Clear action.
+   *
+   * @param item The item that was clicked.
+   * @param mode The ActionMode providing the selection mode.
+   */
+  protected abstract void actionClear(MenuItem item, ActionMode mode);
+
+  /**
    * Edit action.
    *
    * @param mode The ActionMode providing the selection mode.
    * @return false on error.
    */
-  private boolean actionEdit(ActionMode mode) {
-    if (!mActivity.getSearchQuery().trim().isEmpty()) {
-      displayError(R.string.error_edition_search_in_progress);
-      return false;
-    }
-    List<Integer> selected = new ArrayList<>(mAdapter.getSelectedIds());
-    if (selected.isEmpty()) {
-      displayError(R.string.error_no_line_selected);
-      return false;
-    }
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    int previous = selected.get(0);
-    for (Integer i : selected) {
-      if (previous != i && previous + 1 != i) {
-        displayError(R.string.error_edition_continuous_selection);
-        return false;
-      }
-      previous = i;
-      LineEntry ld = mAdapter.getItem(i);
-      for (Byte b : ld.getRaw())
-        byteArrayOutputStream.write(b);
-    }
-    mActivity.getLauncherLineUpdate().startActivity(byteArrayOutputStream.toByteArray(),
-        selected.get(0), selected.size(),
-        mActivity.getFileData().getShiftOffset(), mAdapter.getCurrentLine(selected.get(0)));
-    // Close CAB
-    new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 500);
-    return true;
+  protected abstract boolean actionEdit(ActionMode mode);
+
+  /**
+   * Closing the action mode.
+   *
+   * @param mode    The ActionMode providing the selection mode.
+   * @param delayed Delayed ?
+   */
+  protected void closeActionMode(ActionMode mode, boolean delayed) {
+    if (delayed)
+      new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 500);
+    else
+      mode.finish();
   }
 
   /**
@@ -213,7 +197,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    *
    * @param message The message.
    */
-  private void displayError(@StringRes int message) {
+  protected void displayError(@StringRes int message) {
     UIHelper.showErrorDialog(mActivity, mActivity.getString(R.string.error_title), mActivity.getString(message));
   }
 
@@ -224,11 +208,13 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
    * @param refreshActionView ImageView
    * @param action            Runnable
    */
-  private void setActionView(final MenuItem item, final ImageView refreshActionView, final Runnable action) {
+  protected void setActionView(final MenuItem item, final ImageView refreshActionView, final Runnable action) {
+    AtomicBoolean checkable = new AtomicBoolean(false);
     if (item != null) {
       refreshActionView.clearAnimation();
       Animation rotation = AnimationUtils.loadAnimation(mActivity, R.anim.clockwise_refresh);
       rotation.setRepeatCount(Animation.INFINITE);
+      checkable.set(item.isCheckable());
       item.setCheckable(false);// Do not accept any click events while scanning
       refreshActionView.startAnimation(rotation);
       item.setActionView(refreshActionView);
@@ -237,7 +223,7 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     handler.postDelayed(() -> {
       action.run();
       if (item != null) {
-        item.setCheckable(true);
+        item.setCheckable(checkable.get());
         View view = item.getActionView();
         if (view != null) {
           view.clearAnimation();
@@ -247,3 +233,4 @@ public class MultiChoiceCallback implements AbsListView.MultiChoiceModeListener 
     }, 1000);
   }
 }
+

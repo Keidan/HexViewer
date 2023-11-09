@@ -88,7 +88,7 @@ public class SearchableFilterFactory {
         withSpaces = false;
       }
     }
-    return new SearchResult(length, indexes.isEmpty() ? null : indexes, hexPart, withSpaces, mSearchFromHewView.isSearchNotFromHewView());
+    return new SearchResult(length, indexes.isEmpty() ? null : indexes, hexPart, withSpaces, mSearchFromHewView.isSearchNotFromHexView());
   }
 
   /**
@@ -148,7 +148,7 @@ public class SearchableFilterFactory {
                               final Set<Integer> tempList) {
     /* The word fits on 2 or more lines */
     final int lineWidth;
-    if (mSearchFromHewView.isSearchNotFromHewView())
+    if (mSearchFromHewView.isSearchNotFromHexView())
       lineWidth = UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1;
     else {
       lineWidth = mApp.getNbBytesPerLine();

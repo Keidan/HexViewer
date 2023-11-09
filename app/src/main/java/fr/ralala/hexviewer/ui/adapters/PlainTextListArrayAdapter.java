@@ -5,14 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import java.util.List;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
+import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -37,39 +38,14 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
   }
 
   /**
-   * Returns true if the item is selected.
-   *
-   * @param position The position
-   * @return boolean
-   */
-  @Override
-  protected boolean isSelected(int position) {
-    return false;
-  }
-
-  /**
    * Test if we aren't from the hex view or the plain view.
    *
    * @return boolean
    */
   @Override
-  public boolean isSearchNotFromHewView() {
+  public boolean isSearchNotFromHexView() {
     return true;
   }
-
-  /**
-   * Ignore non displayed char
-   *
-   * @param ref Ref string.
-   * @return Patched string.
-   */
-  private String ignoreNonDisplayedChar(final String ref) {
-    StringBuilder sb = new StringBuilder();
-    for (char c : ref.toCharArray())
-      sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
-    return sb.toString();
-  }
-
 
   /**
    * Inflate the view.
@@ -91,6 +67,14 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
     return v == null ? new View(getContext()) : v;
   }
 
+  private int getContentTextColor(final int position) {
+    return isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor;
+  }
+
+  private int getContentBackgroundColor(final int position) {
+    return isSelected(position) ? R.color.colorAccent : R.color.windowBackground;
+  }
+
   /**
    * Fills the view.
    *
@@ -102,10 +86,11 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
     if (v.getTag() != null) {
       final TextView holder = (TextView) v.getTag();
       LineEntry le = getItem(position);
-      if(le != null) {
-        holder.setText(ignoreNonDisplayedChar(le.getPlain()));
-        holder.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
+      if (le != null) {
+        holder.setText(SysHelper.ignoreNonDisplayedChar(le.getPlain()));
+        holder.setTextColor(ContextCompat.getColor(getContext(), getContentTextColor(position)));
         applyUserConfig(holder);
+        v.setBackgroundColor(ContextCompat.getColor(getContext(), getContentBackgroundColor(position)));
       }
     }
   }

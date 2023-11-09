@@ -16,7 +16,7 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
 import fr.ralala.hexviewer.ui.adapters.holders.LineNumbersTitle;
-import fr.ralala.hexviewer.ui.utils.MultiChoiceCallback;
+import fr.ralala.hexviewer.ui.multichoice.HexMultiChoiceCallback;
 
 /**
  * ******************************************************************************
@@ -39,6 +39,7 @@ public class PayloadHexHelper {
   private TextView mTitleLineNumbers = null;
   private TextView mTitleContent = null;
   private ApplicationCtx mApp = null;
+
   /**
    * Called when the activity is created.
    *
@@ -46,7 +47,7 @@ public class PayloadHexHelper {
    */
   public void onCreate(final MainActivity activity) {
     mActivity = activity;
-    mApp = (ApplicationCtx)activity.getApplicationContext();
+    mApp = (ApplicationCtx) activity.getApplicationContext();
     mPayloadViewContainer = activity.findViewById(R.id.payloadViewContainer);
     mTitle = activity.findViewById(R.id.title);
     mTitleLineNumbers = activity.findViewById(R.id.titleLineNumbers);
@@ -64,15 +65,15 @@ public class PayloadHexHelper {
     title.setTitleLineNumbers(mTitleLineNumbers);
 
     mAdapterHex = new HexTextArrayAdapter(activity,
-        new ArrayList<>(),
-        title,
-        new UserConfigPortrait(activity, true),
-        new UserConfigLandscape(activity,true));
+      new ArrayList<>(),
+      title,
+      new UserConfigPortrait(activity, true),
+      new UserConfigLandscape(activity, true));
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(activity);
     mPayloadHex.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-    MultiChoiceCallback multiChoiceCallback = new MultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
-    mPayloadHex.setMultiChoiceModeListener(multiChoiceCallback);
+    HexMultiChoiceCallback hexMultiChoiceCallback = new HexMultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
+    mPayloadHex.setMultiChoiceModeListener(hexMultiChoiceCallback);
   }
 
   /**

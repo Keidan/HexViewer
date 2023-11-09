@@ -118,5 +118,11 @@
     <string name="dialog_restore_title">שחזור</string>
     <string name="dialog_restore_question">האם אתה באמת רוצה לשחזר את ערכי ברירת המחדל\?</string>
     <string name="dialog_restore_recent">למחוק את רשימת הקבצים האחרונים\?</string>
-  <string name="memory_thresholds_disable">Disable</string>
+    <string name="memory_thresholds_disable">Disable</string>
+    <string name="text_copied">%1$s copied.</string>
+    <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
+    <string name="menu_select_all">Select all</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_copy">Copy</string>
 </resources>

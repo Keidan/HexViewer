@@ -3,6 +3,7 @@ package fr.ralala.hexviewer.ui.payload;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
+import fr.ralala.hexviewer.ui.multichoice.PlainMultiChoiceCallback;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
@@ -65,6 +67,9 @@ public class PayloadPlainSwipe {
         mUserConfigPortrait,
         mUserConfigLandscape);
     mPayloadPlain.setAdapter(mAdapterPlain);
+    mPayloadPlain.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+    PlainMultiChoiceCallback plainMultiChoiceCallback = new PlainMultiChoiceCallback(activity, mPayloadPlain, mAdapterPlain);
+    mPayloadPlain.setMultiChoiceModeListener(plainMultiChoiceCallback);
   }
 
   /**

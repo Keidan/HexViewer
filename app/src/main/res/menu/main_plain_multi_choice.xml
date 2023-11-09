@@ -3,18 +3,13 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context="fr.ralala.hexviewer.ui.activities.MainActivity">
 
-  <item android:id="@+id/action_edit"
-    android:icon="@drawable/ic_edit"
-    android:title="@null"
-    app:showAsAction="ifRoom"/>
-
-  <item android:id="@+id/action_clear"
-    android:icon="@drawable/ic_delete"
-    android:title="@null"
+  <item android:id="@+id/action_copy"
+    android:icon="@drawable/ic_copy"
+    android:title="@string/menu_copy"
     app:showAsAction="ifRoom"/>
 
   <item android:id="@+id/action_select_all"
     android:icon="@drawable/ic_select_all"
-    android:title="@null"
+    android:title="@string/menu_select_all"
     app:showAsAction="ifRoom"/>
 </menu>

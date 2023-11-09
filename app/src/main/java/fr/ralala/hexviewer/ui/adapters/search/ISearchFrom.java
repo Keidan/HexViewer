@@ -17,5 +17,5 @@ public interface ISearchFrom {
    *
    * @return boolean
    */
-  boolean isSearchNotFromHewView();
+  boolean isSearchNotFromHexView();
 }

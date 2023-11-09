@@ -138,23 +138,37 @@ public class SysHelper {
    * @return The String.
    */
   public static String sizeToHuman(Context ctx, float f, boolean addUnit, boolean addHex) {
+    return sizeToHuman(ctx, f, false, addUnit, addHex);
+  }
+
+  /**
+   * Converts a size into a humanly understandable string.
+   *
+   * @param ctx Android context.
+   * @param f   The size.
+   * @return The String.
+   */
+  public static String sizeToHuman(Context ctx, float f, boolean fullByteName, boolean addUnit, boolean addHex) {
     DecimalFormat df = new DecimalFormat("#.##");
     df.setRoundingMode(RoundingMode.FLOOR);
     df.setMinimumFractionDigits(2);
     String sf;
     String hex = (!addHex ? "" : "(0x" + Long.toHexString((long) f).toUpperCase() + ") ");
     if (f < 1000) {
-      sf = String.format(Locale.US, FORMAT_INT, (int) f,
-          hex, !addUnit ? "" : ctx.getString(R.string.unit_byte));
+      String unit = "";
+      if(addUnit) {
+        unit = fullByteName ? ctx.getString(R.string.unit_bytes_full_lc) : ctx.getString(R.string.unit_byte);
+      }
+      sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, unit);
     } else if (f < 1000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1KB)),
-          hex, !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
+        hex, !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
     } else if (f < 1000000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1MB)),
-          hex, !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
+        hex, !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
     } else {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1GB)),
-          hex, !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
+        hex, !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
     }
     return sf;
   }
@@ -398,5 +412,18 @@ public class SysHelper {
    */
   public static boolean isEven(final int num) {
     return (num % 2) == 0;
+  }
+
+  /**
+   * Ignore non displayed char
+   *
+   * @param ref Ref string.
+   * @return Patched string.
+   */
+  public static String ignoreNonDisplayedChar(final String ref) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : ref.toCharArray())
+      sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
+    return sb.toString();
   }
 }

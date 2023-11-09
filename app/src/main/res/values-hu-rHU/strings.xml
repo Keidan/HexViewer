@@ -119,4 +119,10 @@
     <string name="dialog_restore_question">Valóban visszaállítja az alapértelmezett értékeket\?</string>
     <string name="dialog_restore_recent">Törli a legutóbb megnyitott fájlok listáját\?</string>
     <string name="memory_thresholds_disable">Tiltás</string>
+    <string name="text_copied">%1$s copied.</string>
+    <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
+    <string name="menu_select_all">Select all</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_copy">Copy</string>
 </resources>

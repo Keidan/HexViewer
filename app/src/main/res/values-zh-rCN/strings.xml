@@ -47,7 +47,7 @@
     <string name="settings_pref_summary_lists_portrait">点击编辑</string>
     <string name="settings_pref_category_landscape">横屏</string>
     <string name="settings_pref_title_lists_landscape">高度、字体大小…</string>&gt;
-  <string name="settings_pref_summary_lists_landscape">点击编辑</string>
+    <string name="settings_pref_summary_lists_landscape">点击编辑</string>
     <string name="settings_category_hex">以 16 进制显示文本 (不含行号)</string>
     <string name="settings_category_hex_line_numbers">以 16 进制显示文本 (带行号)</string>
     <string name="settings_category_plain">查看纯文本</string>
@@ -118,5 +118,11 @@
     <string name="dialog_restore_title">还原</string>
     <string name="dialog_restore_question">你真想还原默认值吗？</string>
     <string name="dialog_restore_recent">删除最近文件列表吗？</string>
-  <string name="memory_thresholds_disable">Disable</string>
+    <string name="memory_thresholds_disable">Disable</string>
+    <string name="text_copied">%1$s copied.</string>
+    <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
+    <string name="menu_select_all">Select all</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_copy">Copy</string>
 </resources>

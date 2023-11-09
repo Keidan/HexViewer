@@ -119,4 +119,10 @@
   <string name="dialog_restore_question">Voulez-vous vraiment restaurer les valeurs par défaut ?</string>
   <string name="dialog_restore_recent">Effacer la liste des fichiers récents ?</string>
   <string name="memory_thresholds_disable">Désactiver</string>
+  <string name="text_copied">%1$s copiés.</string>
+  <string name="error_too_many_text_copied">Il n\'est pas possible de copier autant de texte</string>
+  <string name="menu_select_all">Sélectionner tout</string>
+  <string name="menu_delete">Supprimer</string>
+  <string name="menu_edit">Editer</string>
+  <string name="menu_copy">Copier</string>
 </resources>

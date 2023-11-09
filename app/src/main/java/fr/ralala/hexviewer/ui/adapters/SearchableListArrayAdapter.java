@@ -8,14 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
 
 import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -40,18 +40,63 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   protected final UserConfig mUserConfigPortrait;
   protected final UserConfig mUserConfigLandscape;
   private final LineEntries mLineEntries;
+  private Set<Integer> mSelectedItemsIds;
 
   protected SearchableListArrayAdapter(final Context context,
-                                    final int layoutId,
-                                    final List<LineEntry> objects,
-                                    UserConfig userConfigPortrait,
-                                    UserConfig userConfigLandscape) {
+                                       final int layoutId,
+                                       final List<LineEntry> objects,
+                                       UserConfig userConfigPortrait,
+                                       UserConfig userConfigLandscape) {
     super(context, layoutId, objects);
     mLineEntries = new LineEntries(objects);
     mUserConfigPortrait = userConfigPortrait;
     mUserConfigLandscape = userConfigLandscape;
     mEntryFilter = new EntryFilter(context, this, this, mLineEntries,
-        userConfigPortrait, userConfigLandscape);
+      userConfigPortrait, userConfigLandscape);
+    mSelectedItemsIds = new HashSet<>();
+  }
+
+  /**
+   * Returns true if the item is selected.
+   *
+   * @param position The position
+   * @return boolean
+   */
+  protected boolean isSelected(int position) {
+    return mSelectedItemsIds.contains(position);
+  }
+
+  /**
+   * Toggles the item selection.
+   *
+   * @param position Item position.
+   */
+  public void toggleSelection(int position, boolean checked) {
+    if (checked) {
+      mSelectedItemsIds.add(position);
+    } else {
+      mSelectedItemsIds.remove(position);
+    }
+    notifyDataSetChanged();
+  }
+
+  /**
+   * Removes the item selection.
+   */
+  public void removeSelection() {
+    mSelectedItemsIds = new HashSet<>();
+    notifyDataSetChanged();
+  }
+
+  /**
+   * Returns the selected ids.
+   *
+   * @return SparseBooleanArray
+   */
+  public List<Integer> getSelectedIds() {
+    List<Integer> li = new ArrayList<>(mSelectedItemsIds);
+    Collections.sort(li);
+    return li;
   }
 
   /**
@@ -175,14 +220,6 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       tv.setLayoutParams(lp);
     }
   }
-
-  /**
-   * Returns true if the item is selected.
-   *
-   * @param position The position
-   * @return boolean
-   */
-  protected abstract boolean isSelected(int position);
 
   // Filter part
 

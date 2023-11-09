@@ -119,4 +119,10 @@
     <string name="dialog_restore_recent">De lijst met recentelijk geopende bestanden verwijderen\?</string>
     <string name="action_line_numbers_title">Lijnnummers</string>
     <string name="error_no_file">Bestand mist (verwijderd of verplaatst)</string>
+    <string name="text_copied">%1$s copied.</string>
+    <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
+    <string name="menu_select_all">Select all</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_copy">Copy</string>
 </resources>
