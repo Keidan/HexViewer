@@ -7,6 +7,9 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
+import java.util.Locale;
+
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.utils.io.FileHelper;
 
 /**
@@ -45,11 +48,11 @@ public class FileData {
     mStartOffset = startOffset;
     mEndOffset = endOffset;
     mOpenFromAppIntent = openFromAppIntent;
+    mRealSize = FileHelper.getFileSize(ctx, ctx.getContentResolver(), uri);
     if (isSequential())
       mSize = Math.abs(mEndOffset - mStartOffset);
     else
-      mSize = FileHelper.getFileSize(ctx, ctx.getContentResolver(), uri);
-    mRealSize = FileHelper.getFileSize(ctx, ctx.getContentResolver(), uri);
+      mSize = mRealSize;
 
     /* We assume that if the file sizes are not <= 0, the file exists. */
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q && (mSize <= 0 || mRealSize <= 0)) {
@@ -76,6 +79,9 @@ public class FileData {
         mIsNotFound = false;
       }
     }
+    ApplicationCtx.addLog(ctx, "FileData", String.format(Locale.US,
+      "%s size: %d, r_size: %d, s_off: %d, e_off: %d, shift: %d, fromIntent: %b, notFound: %b, accessError: %b",
+      mName, mSize, mRealSize, mStartOffset, mEndOffset, mShiftOffset, mOpenFromAppIntent, mIsNotFound, mIsAccessError));
   }
 
   /**
