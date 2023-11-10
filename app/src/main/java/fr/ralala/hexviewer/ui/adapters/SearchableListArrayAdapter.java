@@ -42,17 +42,12 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   private final LineEntries mLineEntries;
   private Set<Integer> mSelectedItemsIds;
 
-  protected SearchableListArrayAdapter(final Context context,
-                                       final int layoutId,
-                                       final List<LineEntry> objects,
-                                       UserConfig userConfigPortrait,
-                                       UserConfig userConfigLandscape) {
+  protected SearchableListArrayAdapter(final Context context, final int layoutId, final List<LineEntry> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
     super(context, layoutId, objects);
     mLineEntries = new LineEntries(objects);
     mUserConfigPortrait = userConfigPortrait;
     mUserConfigLandscape = userConfigLandscape;
-    mEntryFilter = new EntryFilter(context, this, this, mLineEntries,
-      userConfigPortrait, userConfigLandscape);
+    mEntryFilter = new EntryFilter(context, this, this, mLineEntries, userConfigPortrait, userConfigLandscape);
     mSelectedItemsIds = new HashSet<>();
   }
 
@@ -97,6 +92,15 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     List<Integer> li = new ArrayList<>(mSelectedItemsIds);
     Collections.sort(li);
     return li;
+  }
+
+  /**
+   * Returns the selected count.
+   *
+   * @return count
+   */
+  public int getSelectedCount() {
+    return mSelectedItemsIds.size();
   }
 
   /**
@@ -173,8 +177,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    * @param convertView This value may be null.
    * @return The view.
    */
-  protected abstract @NonNull
-  View inflateView(final View convertView);
+  protected abstract @NonNull View inflateView(final View convertView);
 
   /**
    * Fills the view.
@@ -193,9 +196,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    * @return This value cannot be null.
    */
   @Override
-  public @NonNull
-  View getView(final int position, final View convertView,
-               @NonNull final ViewGroup parent) {
+  public @NonNull View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
     View v = inflateView(convertView);
     fillView(v, position);
     return v;

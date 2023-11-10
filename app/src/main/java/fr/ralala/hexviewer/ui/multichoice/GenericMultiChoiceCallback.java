@@ -16,8 +16,6 @@ import android.widget.ListView;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -42,6 +40,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   protected final SearchableListArrayAdapter mAdapter;
   protected final MainActivity mActivity;
   private final ClipboardManager mClipboard;
+  private int mFirstSelection = -1;
   private final AlertDialog mProgress;
 
   @SuppressLint("InflateParams")
@@ -138,6 +137,8 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     final int checkedCount = mListView.getCheckedItemCount();
     mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
     mAdapter.toggleSelection(position, checked);
+    if (checkedCount == 1)
+      mFirstSelection = mAdapter.getSelectedIds().get(0);
   }
 
   /**
@@ -146,10 +147,13 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    * @param item The item that was clicked.
    */
   private void actionSelectAll(MenuItem item) {
+    final boolean checked = mAdapter.getSelectedCount() != mAdapter.getCount();
     setActionView(item, () -> {
       final int count = mAdapter.getCount();
       for (int i = 0; i < count; i++) {
-        mListView.setItemChecked(i, true);
+        if (mFirstSelection == i && !checked)
+          continue;
+        mListView.setItemChecked(i, checked);
       }
     });
   }
@@ -208,12 +212,12 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   protected void setActionView(final MenuItem item, final Runnable action) {
     UIHelper.showCircularProgressDialog(mProgress);
-    AtomicBoolean checkable = new AtomicBoolean(false);
     final Handler handler = new Handler(Looper.getMainLooper());
     handler.postDelayed(() -> {
       action.run();
       if (item != null) {
-        item.setCheckable(checkable.get());
+        item.setCheckable(true);
+        item.setChecked(mAdapter.getSelectedCount() == mAdapter.getCount());
         View view = item.getActionView();
         if (view != null) {
           view.clearAnimation();
