@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Paint;
@@ -12,7 +13,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -47,6 +51,40 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  */
 public class UIHelper {
   private UIHelper() {
+  }
+
+  /**
+   * Show the progress dialog.
+   */
+  public static void showCircularProgressDialog(AlertDialog dialog) {
+    dialog.show();
+    Window window = dialog.getWindow();
+    if (window != null) {
+      window.setLayout(350, 350);
+      View v = window.getDecorView();
+      v.setBackgroundResource(R.drawable.rounded_border);
+    }
+  }
+
+  /**
+   * Displays a circular progress dialog.
+   *
+   * @param context The Android context.
+   * @param cancel  The cancel event callback (if null the dialog is not cancelable).
+   * @return AlertDialog
+   */
+  public static AlertDialog createCircularProgressDialog(Context context, DialogInterface.OnCancelListener cancel) {
+    LayoutInflater layoutInflater = LayoutInflater.from(context);
+    final ViewGroup nullParent = null;
+    View view = layoutInflater.inflate(R.layout.circular_progress, nullParent);
+    AlertDialog progress = new AlertDialog.Builder(context).create();
+    if (cancel != null) {
+      progress.setOnCancelListener(cancel);
+      progress.setCancelable(true);
+    } else
+      progress.setCancelable(false);
+    progress.setView(view);
+    return progress;
   }
 
   /**

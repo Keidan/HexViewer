@@ -7,17 +7,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -44,19 +41,16 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   private final ListView mListView;
   protected final SearchableListArrayAdapter mAdapter;
   protected final MainActivity mActivity;
-  private final ImageView mRefreshActionViewSelectAll;
   private final ClipboardManager mClipboard;
-  protected final LayoutInflater mLayoutInflater;
+  private final AlertDialog mProgress;
 
   @SuppressLint("InflateParams")
   protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
     mActivity = mainActivity;
     mListView = listView;
     mAdapter = adapter;
-    /* Attach a rotating ImageView to the refresh item as an ActionView */
-    mLayoutInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    mRefreshActionViewSelectAll = (ImageView) mLayoutInflater.inflate(R.layout.refresh_action_view_select_all, null);
     mClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+    mProgress = UIHelper.createCircularProgressDialog(mActivity, null);
   }
 
   /**
@@ -127,6 +121,8 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   @Override
   public void onDestroyActionMode(ActionMode mode) {
     mAdapter.removeSelection();
+    if (mProgress.isShowing())
+      mProgress.dismiss();
   }
 
   /**
@@ -150,7 +146,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    * @param item The item that was clicked.
    */
   private void actionSelectAll(MenuItem item) {
-    setActionView(item, mRefreshActionViewSelectAll, () -> {
+    setActionView(item, () -> {
       final int count = mAdapter.getCount();
       for (int i = 0; i < count; i++) {
         mListView.setItemChecked(i, true);
@@ -207,21 +203,12 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   /**
    * Sets the action view.
    *
-   * @param item              MenuItem
-   * @param refreshActionView ImageView
-   * @param action            Runnable
+   * @param item   MenuItem
+   * @param action Runnable
    */
-  protected void setActionView(final MenuItem item, final ImageView refreshActionView, final Runnable action) {
+  protected void setActionView(final MenuItem item, final Runnable action) {
+    UIHelper.showCircularProgressDialog(mProgress);
     AtomicBoolean checkable = new AtomicBoolean(false);
-    if (item != null) {
-      refreshActionView.clearAnimation();
-      Animation rotation = AnimationUtils.loadAnimation(mActivity, R.anim.clockwise_refresh);
-      rotation.setRepeatCount(Animation.INFINITE);
-      checkable.set(item.isCheckable());
-      item.setCheckable(false);// Do not accept any click events while scanning
-      refreshActionView.startAnimation(rotation);
-      item.setActionView(refreshActionView);
-    }
     final Handler handler = new Handler(Looper.getMainLooper());
     handler.postDelayed(() -> {
       action.run();
@@ -233,7 +220,8 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
           item.setActionView(null);
         }
       }
-    }, 1000);
+      mProgress.dismiss();
+    }, 500);
   }
 
   /**

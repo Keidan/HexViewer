@@ -3,7 +3,6 @@ package fr.ralala.hexviewer.ui.multichoice;
 import android.annotation.SuppressLint;
 import android.view.ActionMode;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.io.ByteArrayOutputStream;
@@ -30,12 +29,10 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * ******************************************************************************
  */
 public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
-  private final ImageView mRefreshActionViewDelete;
 
   @SuppressLint("InflateParams")
   public HexMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {
     super(mainActivity, listView, adapter);
-    mRefreshActionViewDelete = (ImageView) mLayoutInflater.inflate(R.layout.refresh_action_view_delete, null);
   }
 
   /**
@@ -74,7 +71,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    */
   protected void actionClear(MenuItem item, ActionMode mode) {
-    setActionView(item, mRefreshActionViewDelete, () -> {
+    setActionView(item, () -> {
       final List<Integer> selected = mAdapter.getSelectedIds();
       Map<Integer, LineEntry> map = new HashMap<>();
       // Captures all selected ids with a loop
