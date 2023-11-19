@@ -1,0 +1,7 @@
+* A progress dialog box for selecting and deleting all lines has been added.
+* It's now possible to deselect rows by clicking again on the "Select all" menu.
+* Update of the Spanish translation (thanks to @gallegonovato).
+* Update of the Hungarian translation (thanks to @SziaTomi).
+* After a long press on a line in the hexadecimal or plain view, it's now possible to copy the selected lines to the Android clipboard.
+
+NOTE: In the plain text display, non-displayable characters (other than the new line) will be replaced by a dot.
