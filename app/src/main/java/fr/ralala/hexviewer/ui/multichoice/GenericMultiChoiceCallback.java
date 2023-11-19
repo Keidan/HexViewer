@@ -42,6 +42,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   private final ClipboardManager mClipboard;
   private int mFirstSelection = -1;
   private final AlertDialog mProgress;
+  private MenuItem mMenuItemSelectAll;
 
   @SuppressLint("InflateParams")
   protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
@@ -69,6 +70,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
     mode.getMenuInflater().inflate(getMenuId(), menu);
+    mMenuItemSelectAll = menu.findItem(R.id.action_select_all);
     return true;
   }
 
@@ -139,6 +141,9 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     mAdapter.toggleSelection(position, checked);
     if (checkedCount == 1)
       mFirstSelection = mAdapter.getSelectedIds().get(0);
+    if (mMenuItemSelectAll != null)
+      mMenuItemSelectAll.setChecked(!mMenuItemSelectAll.isChecked() &&
+        mAdapter.getSelectedCount() == mAdapter.getCount());
   }
 
   /**
