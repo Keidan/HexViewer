@@ -27,6 +27,7 @@ Translations:
 * Indonesian: @Velorixen
 * Italian: @eUgEntOptIc44
 * Hebrew: @Shopimisrel
+* Hindi: @Scrambled777
 * Hungarian: @SziaTomi
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
@@ -43,6 +44,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * en-US: English
 * es-ES: Spanish
 * fr-FR: French
+* hi: Hindi
 * hu-HU: Hungarian
 * in-ID: Indonesian
 * it-IT: Italian

@@ -73,6 +73,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
 | es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), [@gallegonovato](https://hosted.weblate.org/user/gallegonovato/), (+DeepL) |
 | fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/) |
+| hi | Hindi | [@Shopimisrel](https://github.com/Scrambled777) |
 | hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |
 | in-ID | Indonesian | [@Velorixen](https://github.com/Velorixen) |
 | it-IT | Italian | [@eUgEntOptIc44](https://github.com/eUgEntOptIc44) |
