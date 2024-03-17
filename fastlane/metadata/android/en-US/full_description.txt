@@ -31,7 +31,7 @@ Translations:
 * Hungarian: @SziaTomi
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
-* Portuguese (Brazil): @Bardock88
+* Portuguese (Brazil): @Bardock88, @pedrolinharesmoreira
 * Portuguese: @SantosSi
 * Russian: @OmlineEditor, @AHOHNMYC, @racingrebel, @Usland123
 * Spanish: @sguinetti, @gallegonovato, (+DeepL)
