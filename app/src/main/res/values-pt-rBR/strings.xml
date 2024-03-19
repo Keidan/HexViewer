@@ -122,7 +122,7 @@
     <string name="text_copied">%1$s copiado.</string>
     <string name="error_too_many_text_copied">Não é possível copiar tanto texto</string>
     <string name="menu_select_all">Selecionar todos</string>
-    <string name="menu_delete">Delete</string>
+    <string name="menu_delete">Deletar</string>
     <string name="menu_edit">Editar</string>
     <string name="menu_copy">Copiar</string>
 </resources>
