@@ -8,9 +8,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +36,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
 public class FileHelper {
   private static final String FILE_HELPER_TAG = "FileHelper";
   private static final String EXCEPTION_TAG = "Exception: ";
+  private static final String BUCKET_ID = "?bucketId=";
 
   private FileHelper() {
   }
@@ -233,6 +236,7 @@ public class FileHelper {
   /**
    * Gets the file name from a Uri.
    *
+   * @param ctx Android context.
    * @param uri Uri
    * @return String
    */
@@ -241,7 +245,6 @@ public class FileHelper {
     ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
       String.format(Locale.US, "Get filename for uri: '%s'", uri));
     if (uri.getScheme().equals("content")) {
-
       ApplicationCtx.addLog(ctx, FILE_HELPER_TAG, "Uri scheme equals to content");
       try (Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null)) {
         if (cursor != null && cursor.moveToFirst()) {
@@ -260,16 +263,78 @@ public class FileHelper {
           String.format(Locale.US, "Get file name exception: '%s'", e.getMessage()));
       }
     }
+    if (result == null) {
+      result = extractName(getPathFromBucket(ctx, uri));
+    }
 
     if (result == null) {
-      result = uri.getPath();
+      result = extractName(uri.getPath());
+    }
+    ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
+      String.format(Locale.US, "Filename result: '%s'", result));
+    return result;
+  }
+
+  public static Uri adjustUri(final Context ctx, final Uri uri) {
+    String path = getPathFromBucket(ctx, uri);
+    if (path == null)
+      return uri;
+    return Uri.fromFile(new File(path));
+  }
+
+  /**
+   * File name extraction.
+   *
+   * @param name Full name.
+   * @return File name.
+   */
+  private static String extractName(final String name) {
+    String result = name;
+    if (result != null) {
       int cut = result.lastIndexOf('/');
       if (cut != -1) {
         result = result.substring(cut + 1);
       }
     }
-    ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
-      String.format(Locale.US, "Filename result: '%s'", result));
+    return result;
+  }
+
+  /**
+   * Extracting the path from a URI with bucket id.
+   *
+   * @param ctx Android context.
+   * @param uri Uri
+   * @return String
+   */
+  private static String getPathFromBucket(final Context ctx, final Uri uri) {
+    String result = null;
+    int bucketId = uri.toString().indexOf(BUCKET_ID);
+    if (bucketId != -1) {
+      String bid = uri.toString().substring(bucketId + BUCKET_ID.length());
+      ApplicationCtx.addLog(ctx, FILE_HELPER_TAG, "Bucket id mode: " + bid);
+      final String[] projectionBucket = {
+        MediaStore.MediaColumns.BUCKET_ID,
+        MediaStore.MediaColumns.DATA};
+      final String groupBy = "1) GROUP BY 1,(2";
+      final String orderBy = "MAX(" + MediaStore.MediaColumns.DATE_TAKEN + ") DESC";
+      try (Cursor cursor = ctx.getContentResolver().query(
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionBucket, groupBy, null, orderBy)) {
+        if (cursor != null && cursor.moveToFirst()) {
+          int dataColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+          int idColumn = cursor.getColumnIndex(MediaStore.MediaColumns.BUCKET_ID);
+          do {
+            String data = cursor.getString(dataColumn);
+            String id = cursor.getString(idColumn);
+            ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
+              String.format(Locale.US, "Bucket data '%s' id: %s", data, id));
+            if (id.equals(bid)) {
+              result = data;
+              break;
+            }
+          } while (cursor.moveToNext());
+        }
+      }
+    }
     return result;
   }
 
@@ -282,12 +347,13 @@ public class FileHelper {
   public static Uri getParentUri(final Context ctx, final Uri uri) {
     final String filename = getFileName(ctx, uri);
     final String encoded = uri.getEncodedPath();
-    final int length = encoded.length() - filename.length();
+    final int filenameLen = (filename == null ? 0 : filename.length());
+    final int length = encoded.length() - filenameLen;
     ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
       String.format(Locale.US, "Search for parent uri: '%s'", uri));
     String path;
     if (length > 0 && length < encoded.length()) {
-      String parent = encoded.substring(0, encoded.length() - filename.length());
+      String parent = encoded.substring(0, encoded.length() - filenameLen);
       ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
         String.format(Locale.US, "Parent raw: '%s'", parent));
       if (parent.endsWith("%2F")) {
