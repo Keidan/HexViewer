@@ -1,20 +1,24 @@
 plugins {
   id "org.sonarqube" version "3.3"
+  id 'com.android.application'
 }
-apply plugin: 'com.android.application'
 
 final SONAR_PROJECT_VERSION = '1.52'
 
 android {
-  compileSdkVersion 31
-  buildToolsVersion "30.0.2"
+  namespace 'com.example.myapplication'
+  compileSdk 34
+
   defaultConfig {
     applicationId "fr.ralala.hexviewer"
-    minSdkVersion 23
-    targetSdkVersion 31
+    minSdk 23
+    targetSdk 34
     // F-Droid seems not to appreciate the use of variables
     versionCode 152
     versionName '1.52'
+    vectorDrawables {
+      useSupportLibrary true
+    }
   }
 
   compileOptions {
@@ -33,6 +37,9 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
     }
   }
+  buildFeatures {
+    compose true
+  }
   // This is important, it will run lint checks but won't abort build
   lintOptions {
     abortOnError false
@@ -47,17 +54,18 @@ android {
       property 'sonar.coverage.exclusions', "**/**"
     }
   }
+  namespace 'fr.ralala.hexviewer'
 }
 
 dependencies {
   implementation 'org.apache.commons:commons-collections4:4.0'
-  implementation "androidx.appcompat:appcompat:1.4.2"
-  implementation "androidx.preference:preference:1.2.0"
+  implementation "androidx.appcompat:appcompat:1.6.1"
+  implementation "androidx.preference:preference:1.2.1"
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
   implementation "androidx.emoji:emoji:1.1.0"
   implementation "com.android.support:support-emoji-bundled:$version"
-  implementation "com.google.android.material:material:1.6.1"
-  testImplementation "junit:junit:4.12"
+  implementation "com.google.android.material:material:1.11.0"
+  testImplementation "junit:junit:4.13.2"
 }
 // versionCode <-> versionName /////////////////////////////////////////////////////////////////////
 // I got the idea (code) below from the repository https://github.com/sal0max/currencie
