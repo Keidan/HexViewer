@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -83,6 +84,13 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
       }, 1);
+    
+    getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+      @Override
+      public void handleOnBackPressed() {
+        back();
+      }
+    });
   }
 
   protected void setSearchView(MenuItem si) {
@@ -165,8 +173,7 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
   /**
    * Called to handle the click on the back button.
    */
-  @Override
-  public void onBackPressed() {
+  private void back() {
     if (mSearchView != null && !mSearchView.isIconified()) {
       cancelSearch();
     } else {
