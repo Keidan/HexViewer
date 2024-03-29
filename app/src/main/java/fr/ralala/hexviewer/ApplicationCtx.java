@@ -593,12 +593,10 @@ public class ApplicationCtx extends Application {
     String lang = getApplicationLanguage(context);
     mLanguage = lang;
     String[] split = lang.split("-");
-    Locale locale;
+    Locale.Builder builder = new Locale.Builder().setLanguage(split[0]);
     if (split.length == 2)
-      locale = new Locale(split[0], split[1]);
-    else
-      locale = new Locale(split[0]);
-
+      builder.setRegion(split[1]);
+    Locale locale = builder.build();
     Locale.setDefault(locale);
 
     Configuration configuration = context.getResources().getConfiguration();
