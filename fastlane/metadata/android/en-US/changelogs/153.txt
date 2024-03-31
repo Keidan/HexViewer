@@ -1,0 +1,4 @@
+* Update of the Portuguese (Brazil) translation (thanks to @Bardock88).
+* Update of the Hindi translation (thanks to @Scrambled777).
+* Fix a bug that made it impossible to open a file from the gallery on android 6.
+* Code improvement.
