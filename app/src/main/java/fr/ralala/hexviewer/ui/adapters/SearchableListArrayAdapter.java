@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
@@ -208,7 +209,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    * @param tv TextView
    */
   protected void applyUserConfig(final TextView tv) {
-    Configuration cfg = getContext().getResources().getConfiguration();
+    Configuration cfg = ((ApplicationCtx) getContext().getApplicationContext()).getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       tv.setTextSize(mUserConfigLandscape.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();

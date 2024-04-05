@@ -128,7 +128,8 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
 
     mEtInputHex = findViewById(R.id.etInputHex);
     mTilInputHex = findViewById(R.id.tilInputHex);
-    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+    Configuration cfg = mApp.getConfiguration();
+    if (cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       mEtInputHex.setTextSize(mApp.getListSettingsLineEditLandscape().getFontSize());
     } else {
       mEtInputHex.setTextSize(mApp.getListSettingsLineEditPortrait().getFontSize());
@@ -233,6 +234,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
+    mApp.setConfiguration(newConfig);
     mAdapterSource.notifyDataSetChanged();
     mAdapterResult.notifyDataSetChanged();
     // Checks the orientation of the screen

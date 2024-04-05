@@ -82,6 +82,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
     ApplicationCtx.addLog(this, "Main", "Application started with language: '" +
       ((ApplicationCtx) getApplicationContext()).getApplicationLanguage(this) + "'");
 
+    mApp.setConfiguration(getResources().getConfiguration());
     mUnDoRedo = new UnDoRedo(this);
 
     mPopup = new MainPopupWindow(this, mUnDoRedo, this::onPopupItemClick);
@@ -311,6 +312,7 @@ public class MainActivity extends AbstractBaseMainActivity implements AdapterVie
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
+    mApp.setConfiguration(newConfig);
     if (mPayloadPlainSwipe.isVisible()) {
       mPayloadPlainSwipe.refresh();
     } else if (mPayloadHexHelper.isVisible())

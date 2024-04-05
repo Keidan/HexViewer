@@ -61,6 +61,7 @@ public class ApplicationCtx extends Application {
   private boolean mSequential = false;
   private String mDefaultMemoryThreshold;
   private boolean mDefaultPartialOpenButWholeFileIsOpened;
+  private Configuration mConfiguration = null;
 
   @Override
   public void onCreate() {
@@ -151,6 +152,16 @@ public class ApplicationCtx extends Application {
     EmojiCompat.init(config);
     loadDefaultLocal();
     setApplicationLanguage(mLanguage);
+  }
+
+  public void setConfiguration(Configuration cfg) {
+    mConfiguration = cfg;
+  }
+
+  public Configuration getConfiguration() {
+    if (mConfiguration == null)
+      mConfiguration = getResources().getConfiguration();
+    return mConfiguration;
   }
 
   public Queue<String> getLogBuffer() {

@@ -32,6 +32,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
@@ -147,7 +148,8 @@ public class UIHelper {
     TextView tv = new TextView(context);
     tv.setText(text);
     tv.setTypeface(monospace);
-    Configuration cfg = context.getResources().getConfiguration();
+    ApplicationCtx app = (ApplicationCtx) context.getApplicationContext();
+    Configuration cfg = app.getConfiguration();
     if (landscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       fontSize = landscape.getFontSize();
     } else if (portrait != null) {

@@ -200,7 +200,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
    * @param tv TextView
    */
   private void applyUserConfig(final TextView tv) {
-    Configuration cfg = getContext().getResources().getConfiguration();
+    Configuration cfg = mApp.getConfiguration();
     ListSettings landscape = mApp.getListSettingsLineEditLandscape();
     ListSettings portrait = mApp.getListSettingsLineEditPortrait();
     if (landscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {

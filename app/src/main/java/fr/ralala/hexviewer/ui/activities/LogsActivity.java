@@ -2,12 +2,14 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,6 +39,7 @@ public class LogsActivity extends AppCompatActivity {
   private CircularFifoQueue<String> mCfq = null;
   private String mContent = null;
   private ListView mLogs = null;
+  private ApplicationCtx mApp = null;
 
   /**
    * Starts an activity.
@@ -55,7 +58,7 @@ public class LogsActivity extends AppCompatActivity {
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_logs);
-    ApplicationCtx app = (ApplicationCtx) getApplicationContext();
+    mApp = (ApplicationCtx) getApplicationContext();
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
@@ -65,7 +68,7 @@ public class LogsActivity extends AppCompatActivity {
 
     mLogs = findViewById(R.id.logs);
 
-    mCfq = (CircularFifoQueue<String>) app.getLogBuffer();
+    mCfq = (CircularFifoQueue<String>) mApp.getLogBuffer();
     final String[] lines = mCfq.toArray(new String[]{});
     final StringBuilder sb = new StringBuilder();
     for (final String s : lines)
@@ -74,6 +77,17 @@ public class LogsActivity extends AppCompatActivity {
     mLogs.setAdapter(null);
     mLogs.setAdapter(new ArrayAdapter<>(this,
       R.layout.listview_simple_row, R.id.label1, lines));
+  }
+
+  /**
+   * Detects the configuration changed.
+   *
+   * @param newConfig The new device configuration.
+   */
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mApp.setConfiguration(newConfig);
   }
 
   /**

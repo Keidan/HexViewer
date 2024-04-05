@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -84,13 +86,24 @@ public abstract class AbstractBaseMainActivity extends AppCompatActivity {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
       }, 1);
-    
+
     getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
       @Override
       public void handleOnBackPressed() {
         back();
       }
     });
+  }
+
+  /**
+   * Called by the system when the device configuration changes while your activity is running.
+   *
+   * @param newConfig The new device configuration. This value cannot be null.
+   */
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mApp.setConfiguration(newConfig);
   }
 
   protected void setSearchView(MenuItem si) {

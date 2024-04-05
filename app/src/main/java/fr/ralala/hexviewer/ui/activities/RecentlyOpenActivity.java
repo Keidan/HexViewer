@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -98,6 +99,17 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
     setTitle(getString(R.string.action_recently_open_title));
+  }
+
+  /**
+   * Called by the system when the device configuration changes while your activity is running.
+   *
+   * @param newConfig The new device configuration. This value cannot be null.
+   */
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mApp.setConfiguration(newConfig);
   }
 
   /**

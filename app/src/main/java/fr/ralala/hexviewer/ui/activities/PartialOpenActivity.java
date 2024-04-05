@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -234,6 +236,17 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     if (mTextSizePart != null)
       mTextSizePart.setText(SysHelper.sizeToHuman(this, max));
     evaluateSize();
+  }
+
+  /**
+   * Called by the system when the device configuration changes while your activity is running.
+   *
+   * @param newConfig The new device configuration. This value cannot be null.
+   */
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    ((ApplicationCtx) getApplicationContext()).setConfiguration(newConfig);
   }
 
   /**

@@ -113,7 +113,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    */
   protected String getTextAccordingToUserConfig(final String text) {
     String txt;
-    Configuration cfg = getContext().getResources().getConfiguration();
+    Configuration cfg = mApp.getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE && mUserConfigLandscape.isDataColumnNotDisplayed())
       txt = text.substring(0, mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8);
     else if (mUserConfigPortrait != null && cfg.orientation == Configuration.ORIENTATION_PORTRAIT && mUserConfigPortrait.isDataColumnNotDisplayed())

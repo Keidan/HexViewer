@@ -17,6 +17,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 
@@ -68,8 +69,8 @@ public class SysHelper {
    * @return boolean
    */
   public static boolean isRTL(final Context context) {
-    final Configuration config = context.getResources().getConfiguration();
-    return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    Configuration cfg = ((ApplicationCtx) context.getApplicationContext()).getConfiguration();
+    return cfg.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   /**
