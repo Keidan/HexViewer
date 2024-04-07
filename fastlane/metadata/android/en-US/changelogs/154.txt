@@ -1,0 +1,1 @@
+* Fix a regression that prevented screen rotation detection on the OPPO Fin X2 Lite (and probably other devices).
