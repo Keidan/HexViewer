@@ -3,7 +3,7 @@ plugins {
   id 'com.android.application'
 }
 
-final SONAR_PROJECT_VERSION = '1.55'
+final SONAR_PROJECT_VERSION = '1.56'
 
 android {
   namespace 'com.example.myapplication'
@@ -14,8 +14,8 @@ android {
     minSdk 23
     targetSdk 34
     // F-Droid seems not to appreciate the use of variables
-    versionCode 155
-    versionName '1.55'
+    versionCode 156
+    versionName '1.56'
     vectorDrawables {
       useSupportLibrary true
     }
