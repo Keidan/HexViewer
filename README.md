@@ -84,6 +84,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), [@pedrolinharesmoreira](https://github.com/pedrolinharesmoreira) |
 | pt-PT | Portuguese | [@SantosSi](https://github.com/SantosSi) |
 | ru-RU | Russian | [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123) |
+| ta-IN | Tamil | [@TamilNeram](https://github.com/TamilNeram) |
 | tr-TR | Turkish | [@ersen0](https://github.com/ersen0) |
 | vi-VN | Vietnamese | [@unbiaseduser](https://github.com/unbiaseduser) |
 | zh-CN | Chinese | [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/) |

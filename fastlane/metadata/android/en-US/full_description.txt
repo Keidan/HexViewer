@@ -35,6 +35,7 @@ Translations:
 * Portuguese: @SantosSi
 * Russian: @OmlineEditor, @AHOHNMYC, @racingrebel, @Usland123
 * Spanish: @sguinetti, @gallegonovato, (+DeepL)
+* Tamil: @TamilNeram
 * Turkish: @ersen0
 * Vietnamese: @unbiaseduser
 
@@ -55,6 +56,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * pt-BR: Portuguese (Brazil)
 * pt-PT: Portuguese
 * ru-RU: Russian
+* ta-IN: Tamil
 * tr-TR: Turkish
 * vi-VN: Vietnamese
 * zh-CN: Chinese
