@@ -68,7 +68,7 @@ Translations can be provided via [Weblate][weblate].
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
 | Code | Language | Contributors |
 | ---- | -------- | ------------ |
-| ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/) |
+| ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/), [@amro](https://hosted.weblate.org/user/amro/) |
 | de-DE | German | [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL) |
 | en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
 | es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), [@gallegonovato](https://hosted.weblate.org/user/gallegonovato/), (+DeepL) |
