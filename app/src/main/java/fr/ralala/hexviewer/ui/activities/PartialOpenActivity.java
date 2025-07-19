@@ -165,8 +165,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
     long startOffset = 0L;
     long endOffset = 0L;
     long size = 0L;
-
-    if (getIntent().getExtras() != null) {
+    Intent intent = getIntent();
+    if (intent != null && intent.getExtras() != null) {
       Bundle extras = getIntent().getExtras();
       isSequential = extras.getBoolean(ACTIVITY_EXTRA_IS_SEQUENTIAL);
       startOffset = extras.getLong(ACTIVITY_EXTRA_START_OFFSET);
@@ -295,6 +295,8 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    * Evaluates the size.
    */
   private void evaluateSize() {
+    if(mTextSizePart == null || mTietStart == null || mTietEnd == null)
+      return;
     mTextSizePart.setText("0");
     if (!checkValues())
       return;
