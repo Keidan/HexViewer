@@ -19,7 +19,7 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
   
 Translations:
 * Arabic: @sec.xyx, @amro
-* Chinese: @sr093906, @alchemillatruth, @hamburger1024
+* Chinese: @sr093906, @alchemillatruth, @hamburger1024, @inworless
 * Dutch: @AudeBelgraver
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
