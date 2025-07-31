@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#FF212121</color>
+  <color name="colorPrimaryDark">#FF000000</color>
+  <color name="navigationBarColor">#FF000000</color>
+  <color name="colorAccent">#FFFFC107</color>
+  <color name="textColorPrimary">#FFFFFFFF</color>
+  <color name="textColorSecondary">#FFC5C5C5</color>
+  <color name="actionMenuTextColor">#FFFFFFFF</color>
+  <color name="textColor">#FFFFFFFF</color>
+  <color name="windowBackground">#FF303030</color>
+  <color name="colorButtonNormal">#FF424242</color>
+  <color name="colorBackground">#FF424242</color>
+  <color name="colorControlNormal">#FFC5C5C5</color>
+  <color name="vectorDisabled">#FF9E9E9E</color>
+  <color name="textColorDisabled">#FF9E9E9E</color>
+  <color name="textColorPrimaryDisabled">#FF9E9E9E</color>
+  <color name="textColorSecondaryDisabled">#FF919191</color>
+  <color name="colorAccentDisabled">#FF816205</color>
+  <color name="colorResultError">#FFD34248</color>
+  <color name="colorResultWarning">#FFFF9800</color>
+  <color name="colorTextUpdated">#FFD34248</color>
+  <color name="colorLineNumbers">#FFFFC107</color>
+</resources>

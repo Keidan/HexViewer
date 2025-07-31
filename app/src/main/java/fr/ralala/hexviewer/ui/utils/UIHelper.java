@@ -78,7 +78,7 @@ public class UIHelper {
     LayoutInflater layoutInflater = LayoutInflater.from(context);
     final ViewGroup nullParent = null;
     View view = layoutInflater.inflate(R.layout.circular_progress, nullParent);
-    AlertDialog progress = new AlertDialog.Builder(context).create();
+    AlertDialog progress = new AlertDialog.Builder(context, R.style.AppTheme_DialogTheme).create();
     if (cancel != null) {
       progress.setOnCancelListener(cancel);
       progress.setCancelable(true);
@@ -203,13 +203,28 @@ public class UIHelper {
    * @param title   The dialog title.
    * @param message The dialog message.
    */
-  public static void showErrorDialog(final Context context, CharSequence title, String message) {
-    new AlertDialog.Builder(context)
+  public static void showErrorDialog(final Context context, CharSequence title, String message, View.OnClickListener click) {
+    new AlertDialog.Builder(context, R.style.AppTheme_DialogTheme)
       .setCancelable(false)
       .setIcon(android.R.drawable.ic_dialog_alert)
       .setTitle(title)
       .setMessage(message)
-      .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> dialog.dismiss()).show();
+      .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {
+        if(click != null)
+          click.onClick(null);
+        dialog.dismiss();
+      }).show();
+  }
+
+  /**
+   * Displays an error dialog.
+   *
+   * @param context The Android context.
+   * @param title   The dialog title.
+   * @param message The dialog message.
+   */
+  public static void showErrorDialog(final Context context, CharSequence title, String message) {
+    showErrorDialog(context, title, message, null);
   }
 
   /**
@@ -335,7 +350,7 @@ public class UIHelper {
    */
   public static void showConfirmDialog(final Context c, String title,
                                        String message, final View.OnClickListener yes) {
-    new AlertDialog.Builder(c)
+    new AlertDialog.Builder(c, R.style.AppTheme_DialogTheme)
       .setCancelable(false)
       .setIcon(R.mipmap.ic_launcher_round)
       .setTitle(title)
@@ -403,7 +418,7 @@ public class UIHelper {
       runnable.run();
       return;
     }
-    new AlertDialog.Builder(c)
+    new AlertDialog.Builder(c, R.style.AppTheme_DialogTheme)
       .setIcon(android.R.drawable.ic_dialog_alert)
       .setTitle(R.string.action_close_title)
       .setMessage(String.format(c.getString(R.string.confirm_save), fd.getName()))

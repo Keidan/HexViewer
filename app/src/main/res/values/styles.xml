@@ -1,35 +1,14 @@
 <resources>
-
-  <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/accent_color_enabled</item>
-    <item name="android:textColorSecondary">@color/text_color_secondary_enabled</item>
-    <item name="android:textColorPrimary">@color/text_color_primary_enabled</item>
-    <item name="android:actionMenuTextColor">@color/actionMenuTextColor</item>
-    <item name="android:navigationBarColor">@color/navigationBarColor</item>
-    <item name="actionMenuTextColor">@color/actionMenuTextColor</item>
-    <item name="android:windowBackground">@color/windowBackground</item>
-    <item name="android:textColor">@color/text_color_enabled</item>
-    <item name="android:colorButtonNormal">@color/colorButtonNormal</item>
-    <item name="colorControlNormal">@color/colorControlNormal</item>
-    <item name="android:itemBackground">@color/windowBackground</item>
-    <item name="android:colorBackground">@color/colorBackground</item>
-    <item name="alertDialogTheme">@style/AppTheme.DialogTheme</item>
-    <item name="android:alertDialogTheme">@style/AppTheme.DialogTheme</item>
-    <item name="android:textColorHint">@color/text_color_primary_enabled</item>
-    <item name="android:checkboxStyle">@style/AppTheme.CheckBoxStyle</item>
-    <item name="android:radioButtonStyle">@style/AppTheme.RadioButtonStyle</item>
-    <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
-  </style>
-
+  <!-- Application theme extensions -->
   <style name="AppTheme.PreferenceTheme" parent="@style/PreferenceThemeOverlay">
     <item name="android:textSize">@dimen/preferences_textSize</item>
   </style>
-
-  <style name="AppTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+  <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.DayNight.ActionBar">
+    <item name="android:textColorPrimary">@color/actionMenuTextColor</item>
+    <item name="android:background">@color/colorPrimary</item>
+    <item name="android:stateListAnimator">@null</item>
+  </style>
+  <style name="AppTheme.DialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
     <item name="android:background">@color/colorBackground</item>
     <item name="android:textColor">@color/text_color_enabled</item>
     <item name="android:colorAccent">@color/accent_color_enabled</item>
@@ -42,25 +21,36 @@
     <item name="textColorAlertDialogListItem">@color/text_color_enabled</item>
   </style>
 
+  <!-- Button styles -->
   <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
     <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
+
   <style name="NeutralButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
     <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
+
   <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
     <item name="android:textColor">@color/accent_color_enabled</item>
     <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
+  <!-- Form controls -->
   <style name="AppTheme.CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
     <item name="android:textColor">@color/text_color_enabled</item>
     <item name="buttonTint">@color/accent_color_enabled</item>
     <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
+  <style name="AppTheme.RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+    <item name="android:textColor">@color/text_color_enabled</item>
+    <item name="buttonTint">@color/accent_color_enabled</item>
+    <item name="android:textSize">@dimen/controls_textSize</item>
+  </style>
+
+  <!-- Miscellaneous -->
   <style name="AppTheme.ErrorTextAppearance" parent="@android:style/TextAppearance">
     <item name="android:textColor">@color/colorResultError</item>
     <item name="android:textSize">@dimen/app_theme_error_text_appearance_textSize</item>
@@ -75,13 +65,6 @@
     <item name="android:textSize">@dimen/controls_textSize</item>
   </style>
 
-
-  <style name="AppTheme.RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
-    <item name="android:textColor">@color/text_color_enabled</item>
-    <item name="buttonTint">@color/accent_color_enabled</item>
-    <item name="android:textSize">@dimen/controls_textSize</item>
-  </style>
-
   <style name="AppTheme.InputLabel" parent="TextAppearance.AppCompat.Caption">
     <item name="android:textColor">@color/textColor</item>
     <item name="android:textSize">@dimen/input_label_textSize</item>
@@ -90,5 +73,4 @@
     <item name="android:paddingStart">@dimen/input_label_paddingStart</item>
     <item name="android:paddingEnd">@dimen/input_label_paddingEnd</item>
   </style>
-
 </resources>

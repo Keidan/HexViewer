@@ -1,0 +1,39 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Base application theme -->
+  <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <item name="windowActionModeOverlay">true</item>
+    <item name="android:actionModeBackground">@color/colorPrimary</item>
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <!-- Primary colors -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/accent_color_enabled</item>
+    <!-- Text colors -->
+    <item name="android:textColorPrimary">@color/text_color_primary_enabled</item>
+    <item name="android:textColorSecondary">@color/text_color_secondary_enabled</item>
+    <item name="android:textColor">@color/text_color_enabled</item>
+    <item name="android:textColorHint">@color/text_color_primary_enabled</item>
+    <item name="android:actionMenuTextColor">@color/actionMenuTextColor</item>
+    <item name="actionMenuTextColor">@color/actionMenuTextColor</item>
+
+    <!-- Background and navigation -->
+    <item name="android:windowBackground">@color/windowBackground</item>
+    <item name="android:navigationBarColor">@color/navigationBarColor</item>
+    <item name="android:colorBackground">@color/colorBackground</item>
+    <item name="android:itemBackground">@color/windowBackground</item>
+
+    <!-- Controls and buttons -->
+    <item name="android:colorButtonNormal">@color/colorButtonNormal</item>
+    <item name="colorControlNormal">@color/colorControlNormal</item>
+
+    <!-- Dialogs and preferences -->
+    <item name="alertDialogTheme">@style/AppTheme.DialogTheme</item>
+    <item name="android:alertDialogTheme">@style/AppTheme.DialogTheme</item>
+    <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
+
+    <!-- Custom components -->
+    <item name="android:checkboxStyle">@style/AppTheme.CheckBoxStyle</item>
+    <item name="android:radioButtonStyle">@style/AppTheme.RadioButtonStyle</item>
+  </style>
+</resources>

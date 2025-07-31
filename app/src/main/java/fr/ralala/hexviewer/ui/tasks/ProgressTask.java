@@ -30,7 +30,7 @@ public abstract class ProgressTask<C, P, T> extends TaskRunner<C, P, Long, T> {
 
   ProgressTask(final Activity activity, boolean loading) {
     progressText = activity.getString(loading ? R.string.loading : R.string.saving) + " ";
-    mDialog = new AlertDialog.Builder(activity).create();
+    mDialog = new AlertDialog.Builder(activity, R.style.AppTheme_DialogTheme).create();
     mDialog.setCancelable(false);
     final View v = activity.getLayoutInflater().inflate(R.layout.progress_dialog, null);
     mTextView = v.findViewById(R.id.text);

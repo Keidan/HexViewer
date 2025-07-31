@@ -45,7 +45,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
 
   protected AbstractSettingsFragment(AppCompatActivity owner) {
     mActivity = owner;
-    mApp = (ApplicationCtx)owner.getApplicationContext();
+    mApp = (ApplicationCtx) owner.getApplicationContext();
   }
 
   /* ----------------------------- */
@@ -78,12 +78,12 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
    */
   @SuppressLint("InflateParams")
   protected void displayDialog(CharSequence title, float defaultValue, float minValue, float maxValue, InputValidated<Float> iv, boolean decimal) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppTheme_DialogTheme);
     builder.setCancelable(false)
-        .setTitle(title)
-        .setPositiveButton(android.R.string.ok, null)
-        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
-        });
+      .setTitle(title)
+      .setPositiveButton(android.R.string.ok, null)
+      .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+      });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_pref_input, null));
     final AlertDialog dialog = builder.create();
@@ -144,6 +144,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     }
     return result;
   }
+
   /**
    * Validation of the input.
    *

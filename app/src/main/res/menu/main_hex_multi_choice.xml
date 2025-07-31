@@ -6,21 +6,25 @@
   <item android:id="@+id/action_copy"
     android:icon="@drawable/ic_copy"
     android:title="@string/menu_copy"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="ifRoom"
+    app:iconTint="@color/textColor"/>
 
   <item android:id="@+id/action_edit"
     android:icon="@drawable/ic_edit"
     android:title="@string/menu_edit"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="ifRoom"
+    app:iconTint="@color/textColor"/>
 
   <item android:id="@+id/action_clear"
     android:icon="@drawable/ic_delete"
     android:title="@string/menu_delete"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="ifRoom"
+    app:iconTint="@color/actionMenuTextColor"/>
 
   <item android:id="@+id/action_select_all"
     android:icon="@drawable/ic_select_all"
     android:title="@string/menu_select_all"
     android:checkable="true"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="ifRoom"
+    app:iconTint="@color/actionMenuTextColor"/>
 </menu>

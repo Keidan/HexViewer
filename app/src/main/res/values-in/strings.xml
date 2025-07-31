@@ -3,7 +3,7 @@
     <string name="size">Ukuran</string>
     <string name="settings_pref_category_portrait">Potret</string>
     <string name="operation_canceled">Operasi dibatalkan</string>
-    <string name="control_language_change">Silakan simpan hasil anda terlebih dahulu.</string>
+    <string name="control_save_change">Silakan simpan hasil anda terlebih dahulu.</string>
     <string name="settings_pref_title_nb_bytes">Jumlah byte yang akan ditampilkan dalam satu baris</string>
     <string name="settings_pref_title_display_data">Tampilan kolom data</string>
     <string name="error_cant_exceed_xxx">Tidak dapat melebihi %1$s</string>
@@ -125,4 +125,10 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_copy">Copy</string>
+    <string name="arrays_theme_light">Light</string>
+    <string name="arrays_theme_dark">Dark</string>
+    <string name="arrays_theme_system">Let the system decide</string>
+    <string name="settings_pref_title_theme">Theme</string>
+    <string name="settings_pref_summary_theme">Change the theme of the application.</string>
+    <string name="settings_pref_notice_theme">If you change the theme at the system level, the application will need to be restarted for the new theme to take effect.</string>
 </resources>

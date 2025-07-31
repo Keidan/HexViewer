@@ -82,7 +82,7 @@
     <string name="error_file_permission">Для файла %1$s не предоставлено разрешение</string>
     <string name="items_selected">%1$d выбрано</string>
     <string name="confirm_save">Сохранить файл "%1$s"?</string>
-    <string name="control_language_change">Пожалуйста, сначала сохраните свою работу.</string>
+    <string name="control_save_change">Пожалуйста, сначала сохраните свою работу.</string>
     <string name="overwrite">Pежим вставки</string>
     <string name="size">Размер</string>
     <string name="unit_bytes_full_lc">байтов</string>
@@ -125,4 +125,10 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_copy">Copy</string>
+    <string name="arrays_theme_light">Light</string>
+    <string name="arrays_theme_dark">Dark</string>
+    <string name="arrays_theme_system">Let the system decide</string>
+    <string name="settings_pref_title_theme">Theme</string>
+    <string name="settings_pref_summary_theme">Change the theme of the application.</string>
+    <string name="settings_pref_notice_theme">If you change the theme at the system level, the application will need to be restarted for the new theme to take effect.</string>
 </resources>

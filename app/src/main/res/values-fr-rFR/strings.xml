@@ -82,7 +82,7 @@
   <string name="error_file_permission">Aucune permission n\'a été accordée pour le fichier %1$s</string>
   <string name="items_selected">%1$d Sélectionné(s)</string>
   <string name="confirm_save">Enregistrer le fichier "%1$s" ?</string>
-  <string name="control_language_change">Veuillez d\'abord sauvegarder votre travail.</string>
+  <string name="control_save_change">Veuillez d\'abord sauvegarder votre travail.</string>
   <string name="overwrite">Mode insertion</string>
   <string name="size">Taille</string>
   <string name="unit_bytes_full_lc">octets</string>
@@ -125,4 +125,10 @@
   <string name="menu_delete">Supprimer</string>
   <string name="menu_edit">Editer</string>
   <string name="menu_copy">Copier</string>
+  <string name="arrays_theme_light">Clair</string>
+  <string name="arrays_theme_dark">Sombre</string>
+  <string name="arrays_theme_system">Laisser le système décider</string>
+  <string name="settings_pref_title_theme">Thème</string>
+  <string name="settings_pref_summary_theme">Modifier le thème de l\'application.</string>
+  <string name="settings_pref_notice_theme">Si vous modifiez le thème au niveau du système, l\'application devra être redémarrée pour que le nouveau thème prenne effet.</string>
 </resources>

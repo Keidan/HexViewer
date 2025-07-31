@@ -2,14 +2,12 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +33,7 @@ import fr.ralala.hexviewer.ui.adapters.RecentlyOpenRecyclerAdapter;
  * </p>
  * ******************************************************************************
  */
-public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyOpenRecyclerAdapter.OnEventListener {
+public class RecentlyOpenActivity extends BaseActivity implements RecentlyOpenRecyclerAdapter.OnEventListener {
   private ApplicationCtx mApp = null;
   public static final String RESULT_START_OFFSET = "startOffset";
   public static final String RESULT_END_OFFSET = "endOffset";
@@ -73,7 +71,7 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_recently_open);
+    setLayout(R.layout.activity_recently_open);
     mApp = (ApplicationCtx) getApplicationContext();
 
     ActionBar actionBar = getSupportActionBar();
@@ -99,17 +97,6 @@ public class RecentlyOpenActivity extends AppCompatActivity implements RecentlyO
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
     setTitle(getString(R.string.action_recently_open_title));
-  }
-
-  /**
-   * Called by the system when the device configuration changes while your activity is running.
-   *
-   * @param newConfig The new device configuration. This value cannot be null.
-   */
-  @Override
-  public void onConfigurationChanged(@NonNull Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    mApp.setConfiguration(newConfig);
   }
 
   /**

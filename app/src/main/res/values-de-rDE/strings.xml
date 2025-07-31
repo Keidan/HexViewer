@@ -82,7 +82,7 @@
     <string name="error_file_permission">Für die Datei %1$s wurde die benötigte Berechtigung nicht erteilt</string>
     <string name="items_selected">%1$d ausgewählt</string>
     <string name="confirm_save">Datei "%1$s" speichern?</string>
-    <string name="control_language_change">Bitte speichern Sie Ihre Arbeit zuerst.</string>
+    <string name="control_save_change">Bitte speichern Sie Ihre Arbeit zuerst.</string>
     <string name="overwrite">Einfügemodus</string>
     <string name="size">Größe</string>
     <string name="unit_bytes_full_lc">bytes</string>
@@ -125,4 +125,10 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_copy">Copy</string>
+    <string name="arrays_theme_light">Light</string>
+    <string name="arrays_theme_dark">Dark</string>
+    <string name="arrays_theme_system">Let the system decide</string>
+    <string name="settings_pref_title_theme">Theme</string>
+    <string name="settings_pref_summary_theme">Change the theme of the application.</string>
+    <string name="settings_pref_notice_theme">If you change the theme at the system level, the application will need to be restarted for the new theme to take effect.</string>
 </resources>

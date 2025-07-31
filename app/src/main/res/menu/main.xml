@@ -7,13 +7,16 @@
     android:icon="@drawable/ic_search"
     android:title="@string/search_title"
     app:showAsAction="ifRoom"
-    app:actionViewClass="android.widget.SearchView"/>
+    app:actionViewClass="android.widget.SearchView"
+    app:iconTint="@color/actionMenuTextColor"/>
   <item android:id="@+id/action_edit_empty"
     android:icon="@drawable/ic_edit"
     android:title="@null"
-    app:showAsAction="always"/>
+    app:showAsAction="always"
+    app:iconTint="@color/actionMenuTextColor"/>
   <item android:id="@+id/action_more"
     android:icon="@drawable/ic_more"
     android:title="@null"
-    app:showAsAction="always"/>
+    app:showAsAction="always"
+    app:iconTint="@color/actionMenuTextColor"/>
 </menu>
