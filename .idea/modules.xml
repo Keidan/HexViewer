@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HexViewer.iml" filepath="$PROJECT_DIR$/.idea/modules/HexViewer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HexViewer.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HexViewer.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HexViewer.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HexViewer.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HexViewer.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HexViewer.app.main.iml" />
