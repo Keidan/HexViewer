@@ -1,19 +1,14 @@
 package fr.ralala.hexviewer.ui.activities.settings;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.activities.BaseActivity;
 import fr.ralala.hexviewer.ui.fragments.AbstractSettingsFragment;
 
 /**
@@ -28,9 +23,7 @@ import fr.ralala.hexviewer.ui.fragments.AbstractSettingsFragment;
  * </p>
  * ******************************************************************************
  */
-public abstract class AbstractSettingsActivity extends AppCompatActivity {
-
-  private ApplicationCtx mApp;
+public abstract class AbstractSettingsActivity extends BaseActivity {
 
   /**
    * Set the base context for this ContextWrapper.
@@ -58,12 +51,7 @@ public abstract class AbstractSettingsActivity extends AppCompatActivity {
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    mApp = ((ApplicationCtx) getApplication());
-    mApp.applyThemeFromSettings();
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_base);
-    Toolbar toolbar = findViewById(R.id.base_toolbar);
-    setSupportActionBar(toolbar);
 
     setLayout(R.layout.activity_settings);
 
@@ -80,30 +68,6 @@ public abstract class AbstractSettingsActivity extends AppCompatActivity {
       actionBar.setDisplayShowHomeEnabled(true);
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
-  }
-
-  public void setLayout(final @LayoutRes int layoutId) {
-    LayoutInflater.from(this).inflate(layoutId, findViewById(R.id.content_frame), true);
-  }
-
-  /**
-   * Dispatch onResume() to fragments. Note that for better inter-operation with older versions of the platform, at the point of this call the fragments attached to the activity are not resumed.
-   */
-  @Override
-  protected void onResume() {
-    mApp.applyThemeFromSettings();
-    super.onResume();
-  }
-
-  /**
-   * Called by the system when the device configuration changes while your activity is running.
-   *
-   * @param newConfig The new device configuration. This value cannot be null.
-   */
-  @Override
-  public void onConfigurationChanged(@NonNull Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    mApp.setConfiguration(newConfig);
   }
 
   /**
