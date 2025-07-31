@@ -39,6 +39,7 @@ import fr.ralala.hexviewer.models.SettingsKeys;
  * </p>
  * ******************************************************************************
  */
+// For now, I don't have the courage to change everything.
 @SuppressWarnings("java:S7091")
 public class ApplicationCtx extends Application {
   private static final int CIRCULAR_BUFFER_DEPTH = 2000;
@@ -221,6 +222,7 @@ public class ApplicationCtx extends Application {
    *
    * @param recent Delete the list of recent files?
    */
+// For now, I don't have the courage to change everything.
   @SuppressWarnings("java:S1874")
   public void loadDefaultValues(boolean recent) {
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)

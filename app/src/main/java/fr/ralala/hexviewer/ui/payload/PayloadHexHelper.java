@@ -30,6 +30,7 @@ import fr.ralala.hexviewer.ui.multichoice.HexMultiChoiceCallback;
  * </p>
  * ******************************************************************************
  */
+// For now, I don't have the courage to change everything.
 @SuppressWarnings("java:S7091")
 public class PayloadHexHelper {
   private MainActivity mActivity;

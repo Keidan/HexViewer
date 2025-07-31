@@ -63,6 +63,7 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  * </p>
  * ******************************************************************************
  */
+// For now, I don't have the courage to change everything.
 @SuppressWarnings("java:S7091")
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
   private FileData mFileData = null;

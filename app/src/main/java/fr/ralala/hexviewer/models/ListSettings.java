@@ -18,6 +18,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
  * </p>
  * ******************************************************************************
  */
+// For now, I don't have the courage to change everything.
 @SuppressWarnings("java:S7091")
 public class ListSettings {
   private final String mKeyDisplayDataColumn;
