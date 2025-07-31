@@ -1,13 +1,47 @@
+# Android Studio & IntelliJ
+.idea/*
+!.idea/codeStyles/
+!.idea/runConfigurations/
+!.idea/modules.xml
+.externalNativeBuild/
+.cxx/
+.navigation/
+
+# Gradle
+.gradle/
+build/
+*/build/
+
+# Dependency caches
+**/local.properties
+**/gradle.properties
+
+# Test & coverage
 *.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
+*.hprof
+*.log
+*.tmp
+*.bak
+
+# Android specific
+/output.json
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+
+# Misc
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.idea/jarRepositories.xml
-.idea/deploymentTargetDropDown.xml
-.idea/caches/build_file_checksums.ser
-.idea/sonarlint*
+Thumbs.db
+*.swp
+*~
+
+# Security
+*.jks
+*.keystore
+google-services.json
+
