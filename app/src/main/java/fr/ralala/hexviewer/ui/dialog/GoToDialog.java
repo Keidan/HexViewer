@@ -72,7 +72,7 @@ public class GoToDialog implements View.OnClickListener {
    */
   @SuppressLint("InflateParams")
   public AlertDialog show(Mode mode) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppTheme_DialogTheme);
     builder.setCancelable(true)
       .setTitle(R.string.action_go_to_address)
       .setPositiveButton(android.R.string.ok, null)

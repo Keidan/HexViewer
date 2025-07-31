@@ -2,7 +2,6 @@ package fr.ralala.hexviewer.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,10 +20,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -55,7 +52,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public class PartialOpenActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, TextWatcher {
+public class PartialOpenActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, TextWatcher {
   public static final String RESULT_START_OFFSET = "startOffset";
   public static final String RESULT_END_OFFSET = "endOffset";
   private static final String ACTIVITY_EXTRA_IS_SEQUENTIAL = "ACTIVITY_EXTRA_IS_SEQUENTIAL";
@@ -144,7 +141,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_partial_open);
+    setLayout(R.layout.activity_partial_open);
 
     TextView textFileSize = findViewById(R.id.textSize);
     mTextSizePart = findViewById(R.id.textSizePart);
@@ -239,17 +236,6 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
   }
 
   /**
-   * Called by the system when the device configuration changes while your activity is running.
-   *
-   * @param newConfig The new device configuration. This value cannot be null.
-   */
-  @Override
-  public void onConfigurationChanged(@NonNull Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    ((ApplicationCtx) getApplicationContext()).setConfiguration(newConfig);
-  }
-
-  /**
    * Called when the options menu is clicked.
    *
    * @param menu The selected menu.
@@ -295,7 +281,7 @@ public class PartialOpenActivity extends AppCompatActivity implements AdapterVie
    * Evaluates the size.
    */
   private void evaluateSize() {
-    if(mTextSizePart == null || mTietStart == null || mTietEnd == null)
+    if (mTextSizePart == null || mTietStart == null || mTietEnd == null)
       return;
     mTextSizePart.setText("0");
     if (!checkValues())

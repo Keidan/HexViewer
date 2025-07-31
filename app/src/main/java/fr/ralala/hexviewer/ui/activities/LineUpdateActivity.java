@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
@@ -49,7 +48,7 @@ import fr.ralala.hexviewer.utils.memory.MemoryMonitor;
  * </p>
  * ******************************************************************************
  */
-public class LineUpdateActivity extends AppCompatActivity implements View.OnClickListener {
+public class LineUpdateActivity extends BaseActivity implements View.OnClickListener {
   public static final String ACTIVITY_EXTRA_TEXTS = "ACTIVITY_EXTRA_TEXTS";
   public static final String ACTIVITY_EXTRA_POSITION = "ACTIVITY_EXTRA_POSITION";
   public static final String ACTIVITY_EXTRA_NB_LINES = "ACTIVITY_EXTRA_NB_LINES";
@@ -103,7 +102,7 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_line_update);
+    setLayout(R.layout.activity_line_update);
     mApp = (ApplicationCtx) getApplicationContext();
     mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
     ListView lvSource = findViewById(R.id.lvSource);
@@ -234,7 +233,6 @@ public class LineUpdateActivity extends AppCompatActivity implements View.OnClic
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    mApp.setConfiguration(newConfig);
     mAdapterSource.notifyDataSetChanged();
     mAdapterResult.notifyDataSetChanged();
     // Checks the orientation of the screen

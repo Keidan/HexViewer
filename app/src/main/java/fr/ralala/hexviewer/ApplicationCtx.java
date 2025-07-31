@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.emoji.bundled.BundledEmojiCompatConfig;
 import androidx.emoji.text.EmojiCompat;
 import androidx.preference.PreferenceManager;
@@ -63,10 +64,19 @@ public class ApplicationCtx extends Application {
   private boolean mDefaultPartialOpenButWholeFileIsOpened;
   private Configuration mConfiguration = null;
 
+  private String mDefaultThemeLight;
+  private String mDefaultThemeDark;
+  private String mDefaultThemeSystem;
+  private String mPreviousTheme = null;
+
   @Override
   public void onCreate() {
     super.onCreate();
     mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    mDefaultThemeLight = getString(R.string.default_theme_light);
+    mDefaultThemeDark = getString(R.string.default_theme_dark);
+    mDefaultThemeSystem = getString(R.string.default_theme_system);
+    applyThemeFromSettings();
     mDefaultSmartInput = Boolean.parseBoolean(getString(R.string.default_smart_input));
     mRecentlyOpened = new RecentlyOpened(this);
     mDefaultLinesNumber = Boolean.parseBoolean(getString(R.string.default_lines_number));
@@ -152,6 +162,19 @@ public class ApplicationCtx extends Application {
     EmojiCompat.init(config);
     loadDefaultLocal();
     setApplicationLanguage(mLanguage);
+  }
+
+  public void applyThemeFromSettings() {
+    String theme = getPref(this).getString(SettingsKeys.CFG_THEME, mDefaultThemeSystem);
+    if (mPreviousTheme == null || !mPreviousTheme.equals(theme)) {
+      mPreviousTheme = theme;
+      if (theme.equals(mDefaultThemeLight))
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+      else if (theme.equals(mDefaultThemeDark))
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+      else
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    }
   }
 
   public void setConfiguration(Configuration cfg) {
@@ -565,6 +588,28 @@ public class ApplicationCtx extends Application {
    */
   public String getApplicationLanguage(final Context context) {
     return getPref(context).getString(SettingsKeys.CFG_LANGUAGE, mLanguage);
+  }
+
+  /**
+   * Sets the application theme (config only).
+   *
+   * @param theme The new theme.
+   */
+  public void setApplicationTheme(final String theme) {
+    SharedPreferences sp = getPref(this);
+    SharedPreferences.Editor e = sp.edit();
+    e.putString(SettingsKeys.CFG_THEME, theme);
+    e.apply();
+  }
+
+  /**
+   * Returns the application theme.
+   *
+   * @param context Context.
+   * @return String.
+   */
+  public String getApplicationTheme(final Context context) {
+    return getPref(context).getString(SettingsKeys.CFG_THEME, mDefaultThemeSystem);
   }
 
   /**

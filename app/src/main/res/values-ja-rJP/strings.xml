@@ -82,7 +82,7 @@
     <string name="error_file_permission">ファイル %1$s に対する許可がありません</string>
     <string name="items_selected">%1$d 件選択済み</string>
     <string name="confirm_save">ファイル "%1$s"を保存しますか？</string>
-    <string name="control_language_change">最初に変更を保存してください。</string>
+    <string name="control_save_change">最初に変更を保存してください。</string>
     <string name="overwrite">挿入モード</string>
     <string name="size">サイズ</string>
     <string name="unit_bytes_full_lc">バイト</string>
@@ -125,4 +125,10 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_copy">Copy</string>
+    <string name="arrays_theme_light">Light</string>
+    <string name="arrays_theme_dark">Dark</string>
+    <string name="arrays_theme_system">Let the system decide</string>
+    <string name="settings_pref_title_theme">Theme</string>
+    <string name="settings_pref_summary_theme">Change the theme of the application.</string>
+    <string name="settings_pref_notice_theme">If you change the theme at the system level, the application will need to be restarted for the new theme to take effect.</string>
 </resources>

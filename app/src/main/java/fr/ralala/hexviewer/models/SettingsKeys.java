@@ -13,6 +13,7 @@ package fr.ralala.hexviewer.models;
  * ******************************************************************************
  */
 public final class SettingsKeys {
+  public static final String CFG_THEME = "theme";
   public static final String CFG_LISTS_PORTRAIT = "listsPortrait";
   public static final String CFG_LISTS_LANDSCAPE = "listsLandscape";
   public static final String CFG_PORTRAIT_HEX_DISPLAY_DATA = "hexDisplayData";

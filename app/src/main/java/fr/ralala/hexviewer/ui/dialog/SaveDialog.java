@@ -49,7 +49,7 @@ public class SaveDialog {
    */
   @SuppressLint("InflateParams")
   public AlertDialog show(String defaultValue, DialogPositiveClick positiveClick) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppTheme_DialogTheme);
     builder.setCancelable(false)
       .setIcon(android.R.drawable.ic_dialog_alert)
       .setTitle(mTitle)

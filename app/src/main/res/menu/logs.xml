@@ -6,10 +6,12 @@
     android:id="@+id/action_share"
     android:icon="@drawable/ic_share"
     android:title="@null"
-    app:showAsAction="always"/>
+    app:showAsAction="always"
+    app:iconTint="@color/actionMenuTextColor"/>
   <item
     android:id="@+id/action_clear"
     android:icon="@drawable/ic_clear_all"
     android:title="@null"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="ifRoom"
+    app:iconTint="@color/actionMenuTextColor"/>
 </menu>

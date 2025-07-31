@@ -48,6 +48,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   private ListPreference mLanguage;
   private ListPreference mScreenOrientation;
   private ListPreference mNbBytesPerLine;
+  private ListPreference mTheme;
 
   public SettingsFragment(AppCompatActivity owner) {
     super(owner);
@@ -76,6 +77,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mNbBytesPerLine = findPreference(SettingsKeys.CFG_NB_BYTES_PER_LINE);
     mRestoreDefault = findPreference(SettingsKeys.CFG_RESTORE_DEFAULT);
     mLogs = findPreference(SettingsKeys.CFG_LOGS);
+    mTheme = findPreference(SettingsKeys.CFG_THEME);
 
     mSettingsListsPortrait.setOnPreferenceClickListener(this);
     mSettingsListsLandscape.setOnPreferenceClickListener(this);
@@ -86,6 +88,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mNbBytesPerLine.setOnPreferenceChangeListener(this);
     mRestoreDefault.setOnPreferenceClickListener(this);
     mLogs.setOnPreferenceClickListener(this);
+    mTheme.setOnPreferenceChangeListener(this);
 
     mVersion.setSummary(BuildConfig.VERSION_NAME);
 
@@ -93,6 +96,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     mScreenOrientation.setDefaultValue(mApp.getScreenOrientationStr());
     mScreenOrientation.setValue(mApp.getScreenOrientationStr());
     mNbBytesPerLine.setDefaultValue("" + mApp.getNbBytesPerLine());
+    mTheme.setDefaultValue(mApp.getApplicationTheme(getContext()));
 
     String mem = mApp.getPref(getContext()).getString(SettingsKeys.CFG_MEMORY_THRESHOLD, mApp.getDefaultMemoryThreshold());
     if (mem == null || !mem.startsWith("~")) {
@@ -150,7 +154,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       if (((SettingsActivity) mActivity).isNotChanged()) {
         restoreDefaultDialog();
       } else {
-        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_language_change));
+        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_save_change));
       }
     } else if (preference.equals(mLogs)) {
       LogsActivity.startActivity(mActivity);
@@ -173,7 +177,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
         mActivity.finish();
         return true;
       } else {
-        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_language_change));
+        UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_save_change));
       }
     } else if (preference.equals(mScreenOrientation)) {
       refreshUiAccordingToOrientation("" + newValue);
@@ -185,13 +189,33 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       } else {
         UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.error_file_open));
       }
+    } else if (preference.equals(mTheme)) {
+      return validateTheme(preference, newValue);
+    }
+    return false;
+  }
+
+  private boolean validateTheme(Preference preference, Object newValue) {
+    if (((SettingsActivity) mActivity).isNotChanged()) {
+      String value = "" + newValue;
+      mApp.setApplicationTheme(value);
+      if(value.equals(getString(R.string.default_theme_system))) {
+        UIHelper.showErrorDialog(mActivity, preference.getTitle(),
+          mActivity.getString(R.string.settings_pref_notice_theme), v -> requireActivity().finish());
+      }
+      else {
+        mActivity.finish();
+        return true;
+      }
+    } else {
+      UIHelper.showErrorDialog(mActivity, preference.getTitle(), mActivity.getString(R.string.control_save_change));
     }
     return false;
   }
 
   @SuppressLint("InflateParams")
   private void restoreDefaultDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppTheme_DialogTheme);
     builder.setCancelable(false)
       .setTitle(R.string.dialog_restore_title)
       .setPositiveButton(android.R.string.ok, null)
