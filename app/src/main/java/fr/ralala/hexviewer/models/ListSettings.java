@@ -18,6 +18,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class ListSettings {
   private final String mKeyDisplayDataColumn;
   private final String mKeyRowHeight;

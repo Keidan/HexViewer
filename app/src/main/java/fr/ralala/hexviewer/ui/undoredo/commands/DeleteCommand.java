@@ -23,6 +23,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class DeleteCommand implements ICommand {
   private final Map<Integer, LineEntry> mList;
   private final MainActivity mActivity;

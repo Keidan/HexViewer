@@ -28,6 +28,7 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
 
   @SuppressLint("InflateParams")

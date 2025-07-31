@@ -52,6 +52,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class PartialOpenActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, TextWatcher {
   public static final String RESULT_START_OFFSET = "startOffset";
   public static final String RESULT_END_OFFSET = "endOffset";

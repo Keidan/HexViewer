@@ -36,6 +36,7 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class SettingsFragment extends AbstractSettingsFragment implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
   private static final String GITHUB_URL = "https://github.com/Keidan/HexViewer";
   private static final String GITHUB_LIC_URL = GITHUB_URL + "/blob/master/license.txt";

@@ -29,6 +29,7 @@ import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class UnDoRedo {
   private static final int CONTROL_UNDO = 0;
   private static final int CONTROL_REDO = 1;

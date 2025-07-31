@@ -39,6 +39,7 @@ import fr.ralala.hexviewer.models.SettingsKeys;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class ApplicationCtx extends Application {
   private static final int CIRCULAR_BUFFER_DEPTH = 2000;
   private Queue<String> mLogs = null;

@@ -33,6 +33,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * <p>
  * ******************************************************************************
  */
+@SuppressWarnings("java:S7091")
 public class LauncherLineUpdate {
   private final MainActivity mActivity;
   private final ApplicationCtx mApp;

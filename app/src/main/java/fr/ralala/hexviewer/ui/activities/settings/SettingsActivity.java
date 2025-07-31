@@ -19,7 +19,7 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
  * </p>
  * ******************************************************************************
  */
-@SuppressWarnings("java:S110")
+@SuppressWarnings({"java:S110", "java:S7091"})
 public class SettingsActivity extends AbstractSettingsActivity {
   private static final String ACTIVITY_EXTRA_CHANGE = "ACTIVITY_EXTRA_CHANGE";
   private static final String ACTIVITY_EXTRA_OPEN = "ACTIVITY_EXTRA_OPEN";
