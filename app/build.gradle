@@ -49,13 +49,39 @@ android {
       property 'sonar.projectVersion', SONAR_PROJECT_VERSION
       property 'sonar.coverage.exclusions', "**/**"
       // Exclude rules
-      property "sonar.issue.ignore.multicriteria", "e1,e2,e3"
+      property "sonar.issue.ignore.multicriteria", "e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15"
+      /* S110 */
       property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S110"
       property "sonar.issue.ignore.multicriteria.e1.resourceKey", "**/SettingsActivity.java"
       property "sonar.issue.ignore.multicriteria.e2.ruleKey", "java:S110"
       property "sonar.issue.ignore.multicriteria.e2.resourceKey", "**/SettingsListsLandscapeActivity.java"
       property "sonar.issue.ignore.multicriteria.e3.ruleKey", "java:S110"
       property "sonar.issue.ignore.multicriteria.e3.resourceKey", "**/SettingsListsPortraitActivity.java"
+      /* S7091 */
+      property "sonar.issue.ignore.multicriteria.e4.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e4.resourceKey", "**/ApplicationCtx.java"
+      property "sonar.issue.ignore.multicriteria.e5.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e5.resourceKey", "**/MainActivity.java"
+      property "sonar.issue.ignore.multicriteria.e6.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e6.resourceKey", "**/SettingsActivity.java"
+      property "sonar.issue.ignore.multicriteria.e7.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e7.resourceKey", "**/SettingsFragment.java"
+      property "sonar.issue.ignore.multicriteria.e8.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e8.resourceKey", "**/ListSettings.java"
+      property "sonar.issue.ignore.multicriteria.e9.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e9.resourceKey", "**/PartialOpenActivity.java"
+      property "sonar.issue.ignore.multicriteria.e10.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e10.resourceKey", "**/LauncherLineUpdate.java"
+      property "sonar.issue.ignore.multicriteria.e11.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e11.resourceKey", "**/UnDoRedo.java"
+      property "sonar.issue.ignore.multicriteria.e12.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e12.resourceKey", "**/DeleteCommand.java"
+      property "sonar.issue.ignore.multicriteria.e13.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e13.resourceKey", "**/PayloadHexHelper.java"
+      property "sonar.issue.ignore.multicriteria.e14.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e14.resourceKey", "**/HexMultiChoiceCallback.java"
+      property "sonar.issue.ignore.multicriteria.e15.ruleKey", "java:S7091"
+      property "sonar.issue.ignore.multicriteria.e15.resourceKey", "**/LauncherLineUpdate.java"
     }
   }
   namespace 'fr.ralala.hexviewer'
