@@ -48,6 +48,14 @@ android {
       property 'sonar.projectName', 'HexViewer'
       property 'sonar.projectVersion', SONAR_PROJECT_VERSION
       property 'sonar.coverage.exclusions', "**/**"
+      // Exclude rules
+      property "sonar.issue.ignore.multicriteria", "e1,e2,e3"
+      property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S110"
+      property "sonar.issue.ignore.multicriteria.e1.resourceKey", "**/SettingsActivity.java"
+      property "sonar.issue.ignore.multicriteria.e2.ruleKey", "java:S110"
+      property "sonar.issue.ignore.multicriteria.e2.resourceKey", "**/SettingsListsLandscapeActivity.java"
+      property "sonar.issue.ignore.multicriteria.e3.ruleKey", "java:S110"
+      property "sonar.issue.ignore.multicriteria.e3.resourceKey", "**/SettingsListsPortraitActivity.java"
     }
   }
   namespace 'fr.ralala.hexviewer'
