@@ -11,8 +11,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
-import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
 
 /**
  * ******************************************************************************
