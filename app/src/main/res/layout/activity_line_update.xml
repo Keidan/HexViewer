@@ -55,7 +55,7 @@
         android:paddingStart="2dp"/>
       <TextView
         android:id="@+id/titleContentSource"
-        android:textColor="@color/colorLineNumbers"
+        android:textColor="@color/colorNumbers"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
         android:paddingStart="2dp"/>
       <TextView
         android:id="@+id/titleContentResult"
-        android:textColor="@color/colorLineNumbers"
+        android:textColor="@color/colorNumbers"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

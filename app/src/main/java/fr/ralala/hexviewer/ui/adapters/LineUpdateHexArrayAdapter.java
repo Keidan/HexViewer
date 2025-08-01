@@ -156,7 +156,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       final String s = String.format(fmt, UIHelper.getCurrentLine(position, mStartOffset, SysHelper.MAX_BY_ROW_8));
 
       final @ColorInt int color = ContextCompat.getColor(getContext(),
-        R.color.colorLineNumbers);
+        R.color.colorNumbers);
       holder.getLineNumbers().setText(s);
       holder.getLineNumbers().setTextColor(color);
       holder.getLineNumbers().setVisibility(View.VISIBLE);

@@ -153,7 +153,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   }
 
   private int getContentBackgroundColor(final int position) {
-    return isSelected(position) ? R.color.colorAccent : R.color.windowBackground;
+    return isSelected(position) ? R.color.colorSelectedLine : R.color.windowBackground;
   }
 
   /**
@@ -169,7 +169,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       String fmt = "%0" + maxLength + "X";
       final String s = String.format(fmt, getCurrentLine(fd.getIndex()));
       final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
-        isSelected(position) ? R.color.colorAccentDisabled : R.color.colorLineNumbers);
+        isSelected(position) ? R.color.colorSelectedNumbers : R.color.colorNumbers);
       holder.getLineNumbers().setText(s);
       holder.getLineNumbers().setTextColor(colorLine);
       applyUserConfig(holder.getLineNumbers());
@@ -191,7 +191,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    */
   public void displayTitle() {
     if (mApp.isLineNumber()) {
-      final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorLineNumbers);
+      final @ColorInt int colorTitle = ContextCompat.getColor(getContext(), R.color.colorNumbers);
       final int maxLength = String.format("%X", getCurrentLine(getEntries().getItemsCount())).length();
       final String fmt = "%" + maxLength + "s";
       mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));

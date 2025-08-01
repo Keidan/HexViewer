@@ -20,5 +20,7 @@
   <color name="colorResultError">#FFD32D2F</color>
   <color name="colorResultWarning">#FFED6C02</color>
   <color name="colorTextUpdated">#FFD32D2F</color>
-  <color name="colorLineNumbers">#FFFF6D00</color>
+  <color name="colorSelectedLine">#FFFFAB00</color>
+  <color name="colorNumbers">#FFFF6D00</color>
+  <color name="colorSelectedNumbers">#FFDD2C00</color>
 </resources>
