@@ -43,6 +43,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   private int mFirstSelection = -1;
   private final AlertDialog mProgress;
   private MenuItem mMenuItemSelectAll;
+  protected boolean mFromAll = false;
 
   @SuppressLint("InflateParams")
   protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
@@ -104,7 +105,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       actionClear(item, mode);
       return true;
     } else if (item.getItemId() == R.id.action_select_all) {
-      actionSelectAll(item);
+      actionSelectAll(item, mode);
       return true;
     } else if (item.getItemId() == R.id.action_edit) {
       return actionEdit(mode);
@@ -126,6 +127,13 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       mProgress.dismiss();
   }
 
+  private void updateTitle(ActionMode mode) {
+    if(mode != null) {
+      final int checkedCount = mListView.getCheckedItemCount();
+      mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
+    }
+  }
+  
   /**
    * Called when an item is checked or unchecked during selection mode.
    *
@@ -137,11 +145,12 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   @Override
   public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
     final int checkedCount = mListView.getCheckedItemCount();
-    mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
-    mAdapter.toggleSelection(position, checked);
+    if(!mFromAll)
+      updateTitle(mode);
+    mAdapter.toggleSelection(position, checked, !mFromAll);
     if (checkedCount == 1)
       mFirstSelection = mAdapter.getSelectedIds().get(0);
-    if (mMenuItemSelectAll != null)
+    if (mMenuItemSelectAll != null && !mFromAll)
       mMenuItemSelectAll.setChecked(!mMenuItemSelectAll.isChecked() &&
         mAdapter.getSelectedCount() == mAdapter.getCount());
   }
@@ -151,14 +160,14 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    *
    * @param item The item that was clicked.
    */
-  private void actionSelectAll(MenuItem item) {
+  private void actionSelectAll(MenuItem item, ActionMode mode) {
     final boolean checked = mAdapter.getSelectedCount() != mAdapter.getCount();
-    setActionView(item, () -> {
+    mFromAll = true;
+    setActionView(item, mode, () -> {
       final int count = mAdapter.getCount();
       for (int i = 0; i < count; i++) {
-        if (mFirstSelection == i && !checked)
-          continue;
-        mListView.setItemChecked(i, checked);
+        if (mFirstSelection != i  || checked)
+          mListView.setItemChecked(i, checked);
       }
     });
   }
@@ -215,11 +224,14 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    * @param item   MenuItem
    * @param action Runnable
    */
-  protected void setActionView(final MenuItem item, final Runnable action) {
+  protected void setActionView(final MenuItem item, final ActionMode mode, final Runnable action) {
     UIHelper.showCircularProgressDialog(mProgress);
     final Handler handler = new Handler(Looper.getMainLooper());
     handler.postDelayed(() -> {
       action.run();
+      mAdapter.notifyDataSetChanged();
+      updateTitle(mode);
+      mFromAll = false;
       if (item != null) {
         item.setCheckable(true);
         item.setChecked(mAdapter.getSelectedCount() == mAdapter.getCount());
