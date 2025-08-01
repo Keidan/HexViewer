@@ -26,7 +26,7 @@
 
     <activity
       android:name=".ui.activities.MainActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:exported="true"
       android:icon="@mipmap/ic_launcher_round"
       android:launchMode="singleTask">
@@ -55,7 +55,7 @@
 
     <activity
       android:name=".ui.activities.LineUpdateActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -65,7 +65,7 @@
 
     <activity
       android:name=".ui.activities.RecentlyOpenActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -75,7 +75,7 @@
 
     <activity
       android:name=".ui.activities.PartialOpenActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -85,7 +85,7 @@
 
     <activity
       android:name=".ui.activities.settings.SettingsActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -95,7 +95,7 @@
 
     <activity
       android:name=".ui.activities.settings.SettingsListsPortraitActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -105,7 +105,7 @@
 
     <activity
       android:name=".ui.activities.settings.SettingsListsLandscapeActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -115,7 +115,7 @@
 
     <activity
       android:name=".ui.activities.LogsActivity"
-      android:configChanges="locale|orientation|screenSize"
+      android:configChanges="locale|orientation|screenSize|uiMode"
       android:launchMode="singleTask">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"

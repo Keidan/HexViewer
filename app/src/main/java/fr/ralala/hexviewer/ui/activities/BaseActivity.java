@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
+import fr.ralala.hexviewer.ui.fragments.SettingsFragment;
 
 /**
  * ******************************************************************************
@@ -64,5 +66,10 @@ public class BaseActivity extends AppCompatActivity {
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     mApp.setConfiguration(newConfig);
+    int mask = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+    if(mask == Configuration.UI_MODE_NIGHT_YES)
+      mApp.setApplicationTheme(getString(R.string.default_theme_dark));
+    else if(mask == Configuration.UI_MODE_NIGHT_NO)
+      mApp.setApplicationTheme(getString(R.string.default_theme_light));
   }
 }
