@@ -51,7 +51,8 @@ public class BaseActivity extends AppCompatActivity {
    */
   @Override
   protected void onResume() {
-    mApp.applyThemeFromSettings();
+    if(mApp.applyThemeFromSettings())
+      recreate();
     super.onResume();
   }
 

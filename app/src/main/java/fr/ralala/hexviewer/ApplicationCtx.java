@@ -166,7 +166,7 @@ public class ApplicationCtx extends Application {
     setApplicationLanguage(mLanguage);
   }
 
-  public void applyThemeFromSettings() {
+  public boolean applyThemeFromSettings() {
     String theme = getPref(this).getString(SettingsKeys.CFG_THEME, mDefaultThemeSystem);
     if (mPreviousTheme == null || !mPreviousTheme.equals(theme)) {
       mPreviousTheme = theme;
@@ -176,7 +176,9 @@ public class ApplicationCtx extends Application {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
       else
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+      return true;
     }
+    return false;
   }
 
   public void setConfiguration(Configuration cfg) {
