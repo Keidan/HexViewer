@@ -67,13 +67,14 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    *
    * @param position Item position.
    */
-  public void toggleSelection(int position, boolean checked) {
+  public void toggleSelection(int position, boolean checked, boolean refresh) {
     if (checked) {
       mSelectedItemsIds.add(position);
     } else {
       mSelectedItemsIds.remove(position);
     }
-    notifyDataSetChanged();
+    if(refresh)
+      notifyDataSetChanged();
   }
 
   /**

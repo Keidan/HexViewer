@@ -73,7 +73,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    */
   protected void actionClear(MenuItem item, ActionMode mode) {
-    setActionView(item, () -> {
+    setActionView(item, null, () -> {
       final List<Integer> selected = mAdapter.getSelectedIds();
       Map<Integer, LineEntry> map = new HashMap<>();
       // Captures all selected ids with a loop
