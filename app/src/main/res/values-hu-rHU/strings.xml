@@ -122,13 +122,13 @@
     <string name="text_copied">%1$s másolva.</string>
     <string name="error_too_many_text_copied">Ilyen sok szöveget nem lehet másolni</string>
     <string name="menu_select_all">Összes kiválasztása</string>
-    <string name="menu_delete">Delete</string>
+    <string name="menu_delete">Törlés</string>
     <string name="menu_edit">Szerkesztés</string>
     <string name="menu_copy">Másolás</string>
-    <string name="arrays_theme_light">Light</string>
-    <string name="arrays_theme_dark">Dark</string>
-    <string name="arrays_theme_system">Let the system decide</string>
-    <string name="settings_pref_title_theme">Theme</string>
-    <string name="settings_pref_summary_theme">Change the theme of the application.</string>
-    <string name="settings_pref_notice_theme">If you change the theme at the system level, the application will need to be restarted for the new theme to take effect.</string>
+    <string name="arrays_theme_light">Világos</string>
+    <string name="arrays_theme_dark">Sötét</string>
+    <string name="arrays_theme_system">A rendszer témájának használata</string>
+    <string name="settings_pref_title_theme">Téma</string>
+    <string name="settings_pref_summary_theme">Az alkalmazás témájának módosítása.</string>
+    <string name="settings_pref_notice_theme">Ha rendszerszinten módosítja a témát, az alkalmazást újra kell indítani ahhoz, hogy az új téma érvénybe lépjen.</string>
 </resources>
