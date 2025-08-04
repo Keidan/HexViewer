@@ -32,41 +32,19 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Disable shallow clone
-      - name: set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'zulu'
+      - uses: ./.github/actions/setup-gradle
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
-          path: ~/.sonar/cache
+          path: ${{ env.HOME }}/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - name: Build the app
         run: ./gradlew build
       - name: Build the tests
         run: ./gradlew test
-
-  # Analyse job: Static code analysis with SonarQube
-  analyse:
-    needs: compile
-    runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' # Skip analysis on pull requests
-    steps:
       - name: Build and analyze (master)
+        if: github.event_name != 'pull_request' # Skip analysis on pull requests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required for PR context
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarCloud auth
@@ -78,6 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/') # Only for tags (versioned releases)
     steps:
+      - uses: ./.github/actions/setup-gradle
       - name: Build Unsigned APK
         run: ./gradlew assembleRelease
       - name: Copy Unsigned APK to root and rename
@@ -101,6 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.setup.outputs.should_run == 'true' # Controlled via setup checks
     steps:
+      - uses: ./.github/actions/setup-gradle
       - name: Inject keystore.properties
         run: |
           printf "%s\n" "${{ secrets.KEYSTORE_PROPERTIES }}" > ./keystore.properties

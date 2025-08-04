@@ -1,0 +1,15 @@
+# .github/actions/setup-gradle/action.yml
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'zulu'
+    - uses: actions/cache@v4
+      with:
+        path: ${{ env.HOME }}/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: ${{ runner.os }}-gradle
+    - run: chmod +x ./gradlew
