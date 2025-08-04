@@ -2,7 +2,6 @@
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
         java-version: '21'

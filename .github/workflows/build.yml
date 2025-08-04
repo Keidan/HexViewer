@@ -32,6 +32,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
@@ -56,6 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/') # Only for tags (versioned releases)
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
       - name: Build Unsigned APK
         run: ./gradlew assembleRelease
@@ -80,6 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.setup.outputs.should_run == 'true' # Controlled via setup checks
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
       - name: Inject keystore.properties
         run: |
