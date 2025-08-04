@@ -34,12 +34,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
+      - name: Ensure Sonar cache directory exists
+        run: mkdir -p ${{ env.HOME }}/.sonar/cache
+        shell: bash
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ${{ env.HOME }}/.sonar/cache
-          key: ${{ runner.os }}-sonar
+          key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-sonar
+      - name: Debug Sonar cache content
+        run: ls -la ${{ env.HOME }}/.sonar/cache
+        shell: bash
       - name: Build the app
         run: ./gradlew build
       - name: Build the tests
