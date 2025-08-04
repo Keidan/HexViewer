@@ -1,7 +1,0 @@
-title: Spec Preview
-defaults:
-  -
-    values:
-      layout: "default"
-theme: just-the-docs
-remote_theme: pmarsceill/just-the-docs

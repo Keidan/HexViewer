@@ -1,4 +1,0 @@
-# Jekyll local building artifacts
-_site
-.jekyll-cache
-Gemfile.lock
