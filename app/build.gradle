@@ -5,12 +5,33 @@ plugins {
 
 final SONAR_PROJECT_VERSION = '1.58'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+// Load signing config only if needed
+def props = new Properties()
+def propsFile = rootProject.file("keystore.properties")
+def signingEnabled = gradle.startParameter.taskNames.any { it.toLowerCase().contains("signedrelease") }
+
+if (signingEnabled) {
+  if (!propsFile.exists()) {
+    throw new GradleException("Missing 'keystore.properties' file.")
+  }
+
+  propsFile.withInputStream { props.load(it) }
+
+  def requiredKeys = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword']
+  requiredKeys.each {
+    if (!props.containsKey(it) || props[it].trim().isEmpty()) {
+      throw new GradleException("Missing or empty property: '${it}' in 'keystore.properties'.")
+    }
+  }
+
+  def keystorePath = rootProject.file(props['storeFile'].trim())
+  if (!keystorePath.exists()) {
+    throw new GradleException("Keystore file not found at: ${keystorePath}")
+  }
+}
 
 android {
-  namespace 'com.example.myapplication'
+  namespace 'fr.ralala.hexviewer'
   compileSdk 34
 
   defaultConfig {
@@ -27,13 +48,15 @@ android {
 
   signingConfigs {
     github {
-      storeFile file(keystoreProperties['storeFile'])
-      storePassword keystoreProperties['storePassword']
-      keyAlias keystoreProperties['keyAlias']
-      keyPassword keystoreProperties['keyPassword']
-      v1SigningEnabled true
-      v2SigningEnabled true
-      enableV4Signing  true
+      if (signingEnabled) {
+        storeFile rootProject.file(props['storeFile'].trim())
+        storePassword props['storePassword'].trim()
+        keyAlias props['keyAlias'].trim()
+        keyPassword props['keyPassword'].trim()
+        v1SigningEnabled true
+        v2SigningEnabled true
+        enableV4Signing true
+      }
     }
   }
 
@@ -51,7 +74,9 @@ android {
     signedRelease {
       initWith release
       matchingFallbacks = ['release']
-      signingConfig signingConfigs.github
+      if (signingEnabled) {
+        signingConfig signingConfigs.github
+      }
     }
   }
   buildFeatures {
@@ -80,7 +105,6 @@ android {
       property "sonar.issue.ignore.multicriteria.e3.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsListsPortraitActivity.java"
     }
   }
-  namespace 'fr.ralala.hexviewer'
 }
 
 dependencies {
