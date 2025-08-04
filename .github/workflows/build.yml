@@ -1,32 +1,41 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Build
 
-# Controls when the workflow will run
+# Trigger conditions
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches:
-      - master
+    branches: [ master ] # Trigger on push to the master branch
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened] # Trigger when PR is created or updated
+  workflow_dispatch: # Manual trigger from the GitHub UI
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # Setup job: Determines if signed release should run
+  setup:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    outputs:
+      should_run: ${{ steps.set.outputs.should_run }} # Export decision to downstream jobs
+    steps:
+      - name: Set should_run output
+        id: set
+        run: |
+          if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]] && \
+              [[ "${{ secrets.SIGNING_KEY }}" != "" ]] && \
+              [[ "${{ secrets.KEYSTORE_PASSWORD }}" != "" ]] && \
+              [[ "${{ secrets.KEY_PASSWORD }}" != "" ]] && \
+              [[ "${{ secrets.ALIAS }}" != "" ]]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+  # Compile job: Build and test the app
+  compile:
+    needs: setup
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
         with:
-            fetch-depth: 0
+          fetch-depth: 0 # Disable shallow clone
       - name: set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -50,12 +59,69 @@ jobs:
         run: ./gradlew build
       - name: Build the tests
         run: ./gradlew test
+
+  # Analyse job: Static code analysis with SonarQube
+  analyse:
+    needs: compile
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' # Skip analysis on pull requests
+    steps:
       - name: Build and analyze (master)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required for PR context
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarCloud auth
         run: ./gradlew build sonarqube --info
-        if: github.event_name != 'pull_request'
-      - name: Build and analyze (PR)
-        run: echo 'Temporarily disabled'
-        if: github.event_name == 'pull_request'
+
+  # Release job: Unsigned APK generation and upload
+  release-unsigned:
+    needs: compile
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') # Only for tags (versioned releases)
+    steps:
+      - name: Build Unsigned APK
+        run: ./gradlew assembleRelease
+      - name: Copy Unsigned APK to root and rename
+        run: |
+          if [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
+            cp app/build/outputs/apk/release/app-release-unsigned.apk ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
+            echo "APK Unsigned copied and renamed successfully."
+          else
+            ls -R app/build/outputs/apk
+            exit 1
+          fi
+      - name: Upload Unsigned APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HexViewer-release-unsigned-${{ github.ref_name }}
+          path: ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
+          
+  # Release job: Signed APK generation and upload
+  release-signed:
+    needs: [setup, compile]
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.should_run == 'true' # Controlled via setup checks
+    steps:
+      - name: Inject keystore.properties
+        run: |
+          printf "%s\n" "${{ secrets.KEYSTORE_PROPERTIES }}" > ./keystore.properties
+      - name: Inject keystore.jks
+        run: |
+          echo "${{ secrets.SIGNING_KEY }}" | base64 -d > ./app/keystore.jks
+      - name: Check keystore file size
+        run: stat ./app/keystore.jks # Quick integrity check
+      - name: Build Signed APK
+        run: ./gradlew assembleSignedRelease
+      - name: Copy Signed APK to root and rename
+        run: |
+          if [ -f "app/build/outputs/apk/signedRelease/app-signedRelease.apk" ]; then
+            cp app/build/outputs/apk/signedRelease/app-signedRelease.apk ./HexViewer-release-signed-${{ github.ref_name }}.apk
+            echo "APK Signed copied and renamed successfully."
+          else
+            ls -R app/build/outputs/apk
+            exit 1
+          fi
+      - name: Upload Signed APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HexViewer-release-signed-${{ github.ref_name }}
+          path: ./HexViewer-release-signed-${{ github.ref_name }}.apk

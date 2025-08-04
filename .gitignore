@@ -43,5 +43,8 @@ Thumbs.db
 # Security
 *.jks
 *.keystore
+*.b64
+keystore.properties
+keystore.sh
 google-services.json
 

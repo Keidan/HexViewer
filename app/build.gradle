@@ -5,6 +5,10 @@ plugins {
 
 final SONAR_PROJECT_VERSION = '1.58'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
   namespace 'com.example.myapplication'
   compileSdk 34
@@ -21,6 +25,18 @@ android {
     }
   }
 
+  signingConfigs {
+    github {
+      storeFile file(keystoreProperties['storeFile'])
+      storePassword keystoreProperties['storePassword']
+      keyAlias keystoreProperties['keyAlias']
+      keyPassword keystoreProperties['keyPassword']
+      v1SigningEnabled true
+      v2SigningEnabled true
+      enableV4Signing  true
+    }
+  }
+
   buildTypes {
     release {
       minifyEnabled true
@@ -31,6 +47,11 @@ android {
       // to debug ProGuard rules
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
+    }
+    signedRelease {
+      initWith release
+      matchingFallbacks = ['release']
+      signingConfig signingConfigs.github
     }
   }
   buildFeatures {
