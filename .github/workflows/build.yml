@@ -11,62 +11,62 @@ on:
 
 jobs:
   # Compile job: Build and test the app
-  compile:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-gradle
-      - name: Ensure Sonar cache directory exists
-        run: mkdir -p ~/.sonar/cache
-        shell: bash
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Debug Sonar cache content
-        run: ls -la ~/.sonar/cache
-        shell: bash
-      - name: Build the app
-        run: ./gradlew build
-      - name: Build the tests
-        run: ./gradlew test
-      - name: Build and analyze (master)
-        if: github.event_name != 'pull_request' # Skip analysis on pull requests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required for PR context
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarCloud auth
-        run: ./gradlew build sonarqube --info
+#  compile:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: ./.github/actions/setup-gradle
+#      - name: Ensure Sonar cache directory exists
+#        run: mkdir -p ~/.sonar/cache
+#        shell: bash
+#      - name: Cache SonarCloud packages
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.gradle') }}
+#          restore-keys: ${{ runner.os }}-sonar
+#      - name: Debug Sonar cache content
+#        run: ls -la ~/.sonar/cache
+#        shell: bash
+#      - name: Build the app
+#        run: ./gradlew build
+#      - name: Build the tests
+#        run: ./gradlew test
+#      - name: Build and analyze (master)
+#        if: github.event_name != 'pull_request' # Skip analysis on pull requests
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required for PR context
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarCloud auth
+#        run: ./gradlew build sonarqube --info
 
   # Release job: Unsigned APK generation and upload
-  release-unsigned:
-    needs: compile
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') # Only for tags (versioned releases)
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-gradle
-      - name: Build Unsigned APK
-        run: ./gradlew assembleRelease
-      - name: Copy Unsigned APK to root and rename
-        run: |
-          if [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
-            cp app/build/outputs/apk/release/app-release-unsigned.apk ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
-            echo "APK Unsigned copied and renamed successfully."
-          else
-            ls -R app/build/outputs/apk
-            exit 1
-          fi
-      - name: Upload Unsigned APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: HexViewer-release-unsigned-${{ github.ref_name }}
-          path: ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
+#  release-unsigned:
+#    needs: compile
+#    runs-on: ubuntu-latest
+#    if: startsWith(github.ref, 'refs/tags/') # Only for tags (versioned releases)
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: ./.github/actions/setup-gradle
+#      - name: Build Unsigned APK
+#        run: ./gradlew assembleRelease
+#      - name: Copy Unsigned APK to root and rename
+#        run: |
+#          if [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
+#            cp app/build/outputs/apk/release/app-release-unsigned.apk ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
+#            echo "APK Unsigned copied and renamed successfully."
+#          else
+#            ls -R app/build/outputs/apk
+#            exit 1
+#          fi
+#      - name: Upload Unsigned APK artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: HexViewer-release-unsigned-${{ github.ref_name }}
+#          path: ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
           
   # Release job: Signed APK generation and upload
   release-signed:
-    needs: [compile]
+#    needs: [compile]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
@@ -80,19 +80,36 @@ jobs:
           echo "${{ secrets.SIGNING_KEY }}" | base64 -d > ./keystore.jks
       - name: Check keystore file size
         run: stat ./keystore.jks # Quick integrity check
-      - name: Build Signed APK
-        run: ./gradlew assembleSignedRelease
-      - name: Copy Signed APK to root and rename
+      - name: Extract props
+        id: props
         run: |
-          if [ -f "app/build/outputs/apk/signedRelease/app-signedRelease.apk" ]; then
-            cp app/build/outputs/apk/signedRelease/app-signedRelease.apk ./HexViewer-release-signed-${{ github.ref_name }}.apk
-            echo "APK Signed copied and renamed successfully."
-          else
-            ls -R app/build/outputs/apk
-            exit 1
-          fi
-      - name: Upload Signed APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: HexViewer-release-signed-${{ github.ref_name }}
-          path: ./HexViewer-release-signed-${{ github.ref_name }}.apk
+          while IFS='=' read -r key value; do
+            key=$(echo "$key" | xargs)
+            value=$(echo "$value" | xargs)
+            case "$key" in
+              storePassword) echo "storePassword=$value" >> $GITHUB_OUTPUT ;;
+              keyAlias) echo "keyAlias=$value" >> $GITHUB_OUTPUT ;;
+            esac
+          done < ./keystore.properties
+      - name:Check keystore
+        run: |
+          echo "Check alias '${{ steps.props.outputs.keyAlias }}'..."
+          keytool -list -v -keystore ./keystore.jks \
+            -storepass "${{ steps.props.outputs.storePassword }}" \
+            -alias "${{ steps.props.outputs.keyAlias }}"
+#      - name: Build Signed APK
+#        run: ./gradlew assembleSignedRelease
+#      - name: Copy Signed APK to root and rename
+#        run: |
+#          if [ -f "app/build/outputs/apk/signedRelease/app-signedRelease.apk" ]; then
+#            cp app/build/outputs/apk/signedRelease/app-signedRelease.apk ./HexViewer-release-signed-${{ github.ref_name }}.apk
+#            echo "APK Signed copied and renamed successfully."
+#          else
+#            ls -R app/build/outputs/apk
+#            exit 1
+#          fi
+#      - name: Upload Signed APK artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: HexViewer-release-signed-${{ github.ref_name }}
+#          path: ./HexViewer-release-signed-${{ github.ref_name }}.apk
