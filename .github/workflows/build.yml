@@ -13,14 +13,14 @@ jobs:
   # Setup job: Determines if signed release should run
   setup:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     outputs:
       should_run: ${{ steps.set.outputs.should_run }} # Export decision to downstream jobs
     steps:
       - name: Set should_run output
         id: set
         run: |
-          if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]] && \
-              [[ "${{ secrets.SIGNING_KEY }}" != "" ]] && \
+          if [[ "${{ secrets.SIGNING_KEY }}" != "" ]] && \
               [[ "${{ secrets.KEYSTORE_PASSWORD }}" != "" ]] && \
               [[ "${{ secrets.KEY_PASSWORD }}" != "" ]] && \
               [[ "${{ secrets.ALIAS }}" != "" ]]; then
