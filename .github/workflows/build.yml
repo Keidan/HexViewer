@@ -10,24 +10,6 @@ on:
   workflow_dispatch: # Manual trigger from the GitHub UI
 
 jobs:
-  # Setup job: Determines if signed release should run
-  setup:
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    outputs:
-      should_run: ${{ steps.set.outputs.should_run }} # Export decision to downstream jobs
-    steps:
-      - name: Set should_run output
-        id: set
-        run: |
-          if [[ "${{ secrets.SIGNING_KEY }}" != "" ]] && \
-              [[ "${{ secrets.KEYSTORE_PASSWORD }}" != "" ]] && \
-              [[ "${{ secrets.KEY_PASSWORD }}" != "" ]] && \
-              [[ "${{ secrets.ALIAS }}" != "" ]]; then
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_run=false" >> $GITHUB_OUTPUT
-          fi
   # Compile job: Build and test the app
   compile:
     runs-on: ubuntu-latest
@@ -86,7 +68,7 @@ jobs:
   release-signed:
     needs: [setup, compile]
     runs-on: ubuntu-latest
-    if: needs.setup.outputs.should_run == 'true' # Controlled via setup checks
+    if: startsWith(github.ref, 'refs/tags/') && secrets.SIGNING_KEY != '' && secrets.KEYSTORE_PROPERTIES != ''
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
