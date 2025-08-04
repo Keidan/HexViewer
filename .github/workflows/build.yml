@@ -84,17 +84,17 @@ jobs:
         run: |
           sha256sum keystore.properties
           sha256sum keystore.jks
-#      - name: Build Signed APK
-#        run: ./gradlew assembleSignedRelease
-#      - name: Copy Signed APK to root and rename
-#        run: |
-#          if [ -f "app/build/outputs/apk/signedRelease/app-signedRelease.apk" ]; then
-#            cp app/build/outputs/apk/signedRelease/app-signedRelease.apk ./HexViewer-release-signed-${{ github.ref_name }}.apk
-#            echo "APK Signed copied and renamed successfully."
-#          else
-#            ls -R app/build/outputs/apk
-#            exit 1
-#          fi
+      - name: Build Signed APK
+        run: ./gradlew assembleSignedRelease
+      - name: Copy Signed APK to root and rename
+        run: |
+          if [ -f "app/build/outputs/apk/signedRelease/app-signedRelease.apk" ]; then
+            cp app/build/outputs/apk/signedRelease/app-signedRelease.apk ./HexViewer-release-signed-${{ github.ref_name }}.apk
+            echo "APK Signed copied and renamed successfully."
+          else
+            ls -R app/build/outputs/apk
+            exit 1
+          fi
 #      - name: Upload Signed APK artifact
 #        uses: actions/upload-artifact@v4
 #        with:
