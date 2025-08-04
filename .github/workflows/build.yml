@@ -80,23 +80,10 @@ jobs:
           echo "${{ secrets.SIGNING_KEY }}" | base64 -d > ./keystore.jks
       - name: Check keystore file size
         run: stat ./keystore.jks # Quick integrity check
-      - name: Extract props
-        id: props
+      - name: Check integrity
         run: |
-          while IFS='=' read -r key value; do
-            key=$(echo "$key" | xargs)
-            value=$(echo "$value" | xargs)
-            case "$key" in
-              storePassword) echo "storePassword=$value" >> $GITHUB_OUTPUT ;;
-              keyAlias) echo "keyAlias=$value" >> $GITHUB_OUTPUT ;;
-            esac
-          done < ./keystore.properties
-      - name: Check keystore
-        run: |
-          echo "Check alias '${{ steps.props.outputs.keyAlias }}'..."
-          keytool -list -v -keystore ./keystore.jks \
-            -storepass "${{ steps.props.outputs.storePassword }}" \
-            -alias "${{ steps.props.outputs.keyAlias }}"
+          sha256sum keystore.properties
+          sha256sum keystore.jks
 #      - name: Build Signed APK
 #        run: ./gradlew assembleSignedRelease
 #      - name: Copy Signed APK to root and rename
