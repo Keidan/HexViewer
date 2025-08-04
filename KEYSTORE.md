@@ -17,11 +17,12 @@ keytool -genkeypair -v \
 
 Create the following keys in Settings > Secrets and variables > Actions > New repository secret:
 * `SIGNING_KEY` -> Base64-encoded content of the keystore.jks file.
-* `KEYSTORE_PROPERTIES` -> The contents of the properties file (see Local section).
+* `KEYSTORE_PROPERTIES` -> Base64-encoded content of the keystore.properties file.
 
 To convert the jks file to base64:
 
-```base64 -w 0 keystore.jks > keystore.b64```
+```base64 -w 0 keystore.jks > keystore.jks.b64```
+```base64 -w 0 keystore.properties > keystore.properties.b64```
 
 ## Local
 
@@ -32,3 +33,5 @@ storePassword=Password for the keystore.
 keyAlias=Alias of the key.
 keyPassword=Password for the key.
 ```
+
+Please use Unix line end encoding (LF).
