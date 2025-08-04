@@ -68,7 +68,7 @@ jobs:
   release-signed:
 #    needs: [compile]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+#    if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
