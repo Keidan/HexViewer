@@ -4,6 +4,7 @@ name: Build
 on:
   push:
     branches: [ master ] # Trigger on push to the master branch
+    tags: [ '*' ] # Trigger when any tag is pushed, including lightweight tags
   pull_request:
     types: [opened, synchronize, reopened] # Trigger when PR is created or updated
   workflow_dispatch: # Manual trigger from the GitHub UI
