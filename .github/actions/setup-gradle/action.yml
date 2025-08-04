@@ -12,3 +12,4 @@ runs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
     - run: chmod +x ./gradlew
+      shell: bash
