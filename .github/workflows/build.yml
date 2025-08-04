@@ -91,7 +91,7 @@ jobs:
               keyAlias) echo "keyAlias=$value" >> $GITHUB_OUTPUT ;;
             esac
           done < ./keystore.properties
-      - name:Check keystore
+      - name: Check keystore
         run: |
           echo "Check alias '${{ steps.props.outputs.keyAlias }}'..."
           keytool -list -v -keystore ./keystore.jks \
