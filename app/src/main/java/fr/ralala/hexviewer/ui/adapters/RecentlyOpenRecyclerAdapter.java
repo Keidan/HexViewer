@@ -136,7 +136,7 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
 
 
   /* -------------------------------------------------------------- */
-  class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+  public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private final ColorDrawable mBackground;
 
 
