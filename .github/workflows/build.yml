@@ -35,12 +35,13 @@ jobs:
       valid: ${{ steps.check.outputs.valid }}
     steps:
       - name: Print tag
-        run: echo "Tag is: $GITHUB_REF"
+        run: |
+          echo "Tag is: $GITHUB_REF"
       - name: Check tag format
         id: check
         run: |
-          TAG="${GITHUB_REF}"
-          if [[ "$TAG" =~ ^refs/tags/v[0-9]+(\.[0-9]+){1,2}$ ]]; then
+          TAG="${GITHUB_REF#refs/tags/}"
+          if [[ "$TAG" =~ ^v[0-9]+(\.[0-9]+){1,2}$ ]]; then
             echo "valid=true" >> $GITHUB_OUTPUT
           else
             echo "valid=false" >> $GITHUB_OUTPUT
