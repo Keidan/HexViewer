@@ -2,11 +2,14 @@
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
       with:
         java-version: '21'
         distribution: 'zulu'
-    - uses: actions/cache@v4
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
       with:
         path: |
           ~/.gradle/caches
@@ -15,10 +18,12 @@ runs:
         restore-keys: |
           gradle-${{ runner.os }}-${{ github.repository }}-
           gradle-${{ runner.os }}-
-    - run: |
+
+    - name: Make gradlew executable
+      shell: bash
+      run: |
         if [ ! -f ./gradlew ]; then
           echo "::error::gradlew not found"
           exit 1
         fi
         chmod +x ./gradlew
-      shell: bash
