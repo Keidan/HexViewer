@@ -5,7 +5,7 @@
 ```
 keytool -genkeypair -v \
   -keystore keystore.jks \
-  -alias HexViewer \
+  -alias hexviewer \
   -storetype JKS \
   -keyalg RSA \
   -keysize 2048 \
@@ -15,14 +15,14 @@ keytool -genkeypair -v \
 
 ## GitHub Actions
 
-Create the following keys in Settings > Secrets and variables > Actions > New repository secret:
+Create the following keys in Create the following keys in the `GitHub web project > Secrets and variables > Actions > New repository secret`:
 * `SIGNING_KEY` -> Base64-encoded content of the keystore.jks file.
 * `KEYSTORE_PROPERTIES` -> Base64-encoded content of the keystore.properties file.
 
 To convert the jks file to base64:
 
-```base64 -w 0 keystore.jks > keystore.jks.b64```
-```base64 -w 0 keystore.properties > keystore.properties.b64```
+```base64 -w 0 keystore.jks > keystore-jks.b64```
+```base64 -w 0 keystore.properties > keystore-properties.b64```
 
 ## Local
 
