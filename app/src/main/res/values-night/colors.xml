@@ -18,7 +18,6 @@
   <color name="textColorSecondaryDisabled">#FF919191</color>
   <color name="colorAccentDisabled">#FF816205</color>
   <color name="colorResultError">#FFD34248</color>
-  <color name="colorResultWarning">#FFFF9800</color>
   <color name="colorTextUpdated">#FFD34248</color>
   <color name="colorSelectedLine">#FFFFC107</color>
   <color name="colorNumbers">#FFFFC107</color>
