@@ -4,73 +4,56 @@ name: Build
 on:
   push:
     branches: [ master ] # Trigger on push to the master branch
-    tags: [ '*' ] # Trigger when any tag is pushed, including lightweight tags
+    tags:
+      - 'v*.*'           # match v1.2, v12.34, v1.2.3...
+      - 'v*.*.*'         # match v1.2.3, v0.10.12, etc.
   pull_request:
     types: [opened, synchronize, reopened] # Trigger when PR is created or updated
   workflow_dispatch: # Manual trigger from the GitHub UI
-
+  
 jobs:
   # Compile job: Build and test the app
   compile:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
-      - name: Ensure Sonar cache directory exists
-        run: mkdir -p ~/.sonar/cache
-        shell: bash
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Debug Sonar cache content
-        run: ls -la ~/.sonar/cache
-        shell: bash
       - name: Build the app
         run: ./gradlew build
       - name: Build the tests
         run: ./gradlew test
-      - name: Build and analyze (master)
-        if: github.event_name != 'pull_request' # Skip analysis on pull requests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required for PR context
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarCloud auth
-        run: ./gradlew build sonarqube --info
-
-  # Release job: Unsigned APK generation and upload
-  release-unsigned:
-    needs: compile
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') # Only for tags (versioned releases)
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-gradle
-      - name: Build Unsigned APK
-        run: ./gradlew assembleRelease
-      - name: Copy Unsigned APK to root and rename
-        run: |
-          if [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
-            cp app/build/outputs/apk/release/app-release-unsigned.apk ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
-            echo "APK Unsigned copied and renamed successfully."
-          else
-            ls -R app/build/outputs/apk
-            exit 1
-          fi
-      - name: Upload Unsigned APK artifact
-        uses: actions/upload-artifact@v4
+      - uses: ./.github/actions/analyze-with-sonar
+        if: github.event_name != 'pull_request' && secrets.SONAR_TOKEN != ''
         with:
-          name: HexViewer-release-unsigned-${{ github.ref_name }}
-          path: ./HexViewer-release-unsigned-${{ github.ref_name }}.apk
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
           
+  # Check tag pattern
+  check-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      valid: ${{ steps.check.outputs.valid }}
+    steps:
+      - name: Print tag
+        run: echo "Tag is: $GITHUB_REF"
+      - name: Check tag format
+        id: check
+        run: |
+          TAG="${GITHUB_REF}"
+          if [[ "$TAG" =~ ^refs/tags/v[0-9]+(\.[0-9]+){1,2}$ ]]; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "valid=false" >> $GITHUB_OUTPUT
+          fi
+
   # Release job: Signed APK generation and upload
   release-signed:
-    needs: [compile]
+    needs: [compile, check-tag]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: needs.check-tag.outputs.valid == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
       - name: Inject keystore.properties
         run: |
@@ -86,12 +69,18 @@ jobs:
           sha256sum keystore.properties
       - name: Build Signed APK
         run: ./gradlew assembleSignedRelease
+      - name: Cleanup keystore files
+        if: always()
+        run: rm -f keystore.jks keystore.properties
       - name: Copy Signed APK to root and rename
         run: |
-          if [ -f "app/build/outputs/apk/signedRelease/app-signedRelease.apk" ]; then
-            cp app/build/outputs/apk/signedRelease/app-signedRelease.apk ./HexViewer-release-signed-${{ github.ref_name }}.apk
-            echo "APK Signed copied and renamed successfully."
+          APK_PATH="app/build/outputs/apk/signedRelease/app-signedRelease.apk"
+          if [ -f "$APK_PATH" ]; then
+            DEST="HexViewer-release-signed-${{ github.ref_name }}.apk"
+            cp "$APK_PATH" "./$DEST"
+            echo "APK copied to $DEST"
           else
+            echo "::error::Signed APK not found at $APK_PATH"
             ls -R app/build/outputs/apk
             exit 1
           fi
@@ -100,3 +89,45 @@ jobs:
         with:
           name: HexViewer-release-signed-${{ github.ref_name }}
           path: ./HexViewer-release-signed-${{ github.ref_name }}.apk
+  
+
+  # Publish release
+  publish-release:
+    permissions:
+      contents: write
+    needs: release-signed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Export versionCode from Gradle
+        run: ./gradlew exportVersionCode
+      - name: Extract tag name
+        run: echo "TAG_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
+      - name: Parse version number
+        run: |
+          TAG_NAME=${{ github.ref_name }}
+          VERSION_CODE=$(cat app/build/versionCode.txt)
+          echo "VERSION_NUMBER=${TAG_NAME#v}" >> $GITHUB_ENV
+          echo "CHANGELOG_FILE=fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" >> $GITHUB_ENV
+      - name: Read changelog content
+        id: changelog
+        run: |
+          if [ ! -f "$CHANGELOG_FILE" ]; then
+            echo "::error::Changelog file not found: $CHANGELOG_FILE"
+            exit 1
+          fi
+          CONTENT=$(cat "$CHANGELOG_FILE")
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "# Changelog" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: Version ${{ env.VERSION_NUMBER }}
+          body: ${{ steps.changelog.outputs.content }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          make_latest: true
+          prerelease: false

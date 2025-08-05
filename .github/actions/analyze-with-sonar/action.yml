@@ -1,0 +1,37 @@
+# .github/actions/analyze-with-sonar/action.yml
+name: Analyze with Sonar
+description: Run sonar analysis
+inputs:
+  sonar-token:
+    required: true
+    description: SonarCloud token
+
+runs:
+  using: "composite"
+  steps:
+    - name: Ensure Sonar cache directory exists
+      run: mkdir -p ~/.sonar/cache
+      shell: bash
+
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: ${{ runner.os }}-sonar
+
+    - name: Debug Sonar cache content
+      run: |
+        if [ "$(ls -A ~/.sonar/cache)" ]; then
+          echo "Sonar cache restored"
+        else
+          echo "::warning::Sonar cache is empty"
+        fi
+      shell: bash
+
+    - name: Run SonarQube analysis
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        SONAR_TOKEN: ${{ inputs.sonar-token }}
+      run: ./gradlew build sonarqube --info
+      shell: bash

@@ -8,8 +8,17 @@ runs:
         distribution: 'zulu'
     - uses: actions/cache@v4
       with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-        restore-keys: ${{ runner.os }}-gradle
-    - run: chmod +x ./gradlew
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-${{ runner.os }}-${{ github.repository }}-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties', 'settings.gradle*', 'buildSrc/**/*', 'gradle/libs.versions.toml') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-${{ github.repository }}-
+          gradle-${{ runner.os }}-
+    - run: |
+        if [ ! -f ./gradlew ]; then
+          echo "::error::gradlew not found"
+          exit 1
+        fi
+        chmod +x ./gradlew
       shell: bash
