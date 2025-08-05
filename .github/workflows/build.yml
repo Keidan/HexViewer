@@ -24,7 +24,7 @@ jobs:
       - name: Build the tests
         run: ./gradlew test
       - uses: ./.github/actions/analyze-with-sonar
-        if: github.event_name != 'pull_request' && secrets.SONAR_TOKEN != ''
+        if: ${{ github.event_name != 'pull_request' && secrets.SONAR_TOKEN != '' }}
         with:
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           
