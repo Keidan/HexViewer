@@ -9,6 +9,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Check token
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.sonar-token }}" ]; then
+          echo "::error::SONAR_TOKEN is required but not provided"
+          exit 1
+        fi
+
     - name: Ensure Sonar cache directory exists
       run: mkdir -p ~/.sonar/cache
       shell: bash
@@ -21,13 +29,13 @@ runs:
         restore-keys: ${{ runner.os }}-sonar
 
     - name: Debug Sonar cache content
+      shell: bash
       run: |
         if [ "$(ls -A ~/.sonar/cache)" ]; then
           echo "Sonar cache restored"
         else
           echo "::warning::Sonar cache is empty"
         fi
-      shell: bash
 
     - name: Run SonarQube analysis
       env:
