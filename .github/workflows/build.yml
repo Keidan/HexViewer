@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Debug GitHub context
-        run: echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
+        run: |
+          echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: ./.github/actions/setup-gradle
