@@ -22,5 +22,5 @@
   <color name="colorTextUpdated">#FFD32D2F</color>
   <color name="colorSelectedLine">#FFFFAB00</color>
   <color name="colorNumbers">#FFFF6D00</color>
-  <color name="colorSelectedNumbers">#FFDD2C00</color>
+  <color name="colorSelectedNumbers">#FFFDFDA0</color>
 </resources>
