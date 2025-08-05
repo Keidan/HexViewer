@@ -117,6 +117,14 @@ dependencies {
   implementation "com.google.android.material:material:1.11.0"
   testImplementation "junit:junit:4.13.2"
 }
+
+tasks.register('exportVersionCode') {
+  doLast {
+    def file = layout.buildDirectory.file("versionCode.txt").get().asFile
+    file.text = android.defaultConfig.versionCode.toString()
+  }
+}
+
 // versionCode <-> versionName /////////////////////////////////////////////////////////////////////
 // I got the idea (code) below from the repository https://github.com/sal0max/currencie
 /**
