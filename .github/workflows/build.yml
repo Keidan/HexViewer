@@ -105,14 +105,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Export versionCode from Gradle
-        run: ./gradlew exportVersionCode
       - name: Extract tag name
         run: echo "TAG_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Parse version number
         run: |
           TAG_NAME=${{ github.ref_name }}
-          VERSION_CODE=$(cat app/build/versionCode.txt)
+          VERSION_CODE=$(grep -E '^\s*versionCode\s+[0-9]+' app/build.gradle | awk '{print $2}' | tr -d '\n')
+          if [ -z "$VERSION_CODE" ]; then
+            echo "::error::versionCode not found"
+            exit 1
+          fi
           echo "VERSION_NUMBER=${TAG_NAME#v}" >> $GITHUB_ENV
           echo "CHANGELOG_FILE=fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" >> $GITHUB_ENV
       - name: Read changelog content
@@ -123,10 +125,7 @@ jobs:
             exit 1
           fi
           CONTENT=$(cat "$CHANGELOG_FILE")
-          echo "content<<EOF" >> $GITHUB_OUTPUT
-          echo "# Changelog" >> $GITHUB_OUTPUT
-          echo "$CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          printf "content<<EOF\n# Changelog\n%s\nEOF\n" "$CONTENT" >> $GITHUB_OUTPUT
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
