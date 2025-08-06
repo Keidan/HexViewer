@@ -39,6 +39,7 @@ captures/
 Thumbs.db
 *.swp
 *~
+/utils_no_commit
 
 # Security
 *.jks
