@@ -21,8 +21,10 @@ Create the following keys in Create the following keys in the `GitHub web projec
 
 To convert the jks file to base64:
 
-```base64 -w 0 keystore.jks > keystore-jks.b64```
-```base64 -w 0 keystore.properties > keystore-properties.b64```
+```
+base64 -w 0 keystore.jks > keystore-jks.b64
+base64 -w 0 keystore.properties > keystore-properties.b64
+```
 
 ## Local
 
