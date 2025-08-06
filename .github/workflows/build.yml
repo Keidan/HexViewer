@@ -94,6 +94,7 @@ jobs:
         with:
           name: HexViewer-release-signed-${{ github.ref_name }}
           path: ./HexViewer-release-signed-${{ github.ref_name }}.apk
+          if-no-files-found: error
   
 
   # Publish release
