@@ -1,0 +1,36 @@
+# Treat source code and configuration files as text
+*.java     text=auto
+*.kt       text=auto
+*.xml      text=auto
+*.gradle   text=auto
+*.md       text=auto
+*.txt      text=auto
+*.yml      text=auto
+*.yaml     text=auto
+*.json     text=auto
+
+# Handle binary files (no end-of-line normalization)
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.webp     binary
+*.ico      binary
+*.mp3      binary
+*.mp4      binary
+*.ogg      binary
+*.wav      binary
+*.apk      binary
+*.keystore binary
+*.jar      binary
+*.so       binary
+*.ttf      binary
+*.otf      binary
+
+# Ensure correct line endings for scripts
+*.sh       text eol=lf
+*.bat      text eol=crlf
+
+# Avoid merge conflicts in lock files
+*.lock     merge=union
+
