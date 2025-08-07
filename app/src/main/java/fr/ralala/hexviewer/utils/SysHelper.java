@@ -58,7 +58,7 @@ public class SysHelper {
    * @return boolean
    */
   public static boolean isRTL(final View view) {
-    final int layoutDirection = ViewCompat.getLayoutDirection(view);
+    final int layoutDirection = view.getLayoutDirection();
     return layoutDirection == View.LAYOUT_DIRECTION_RTL;
   }
 
