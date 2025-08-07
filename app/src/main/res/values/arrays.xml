@@ -40,7 +40,7 @@
     </string-array>
 
     <string-array name="languages_entries" translatable="false">
-        <item>عربي</item>
+        <item>العربية</item>
         <item>Deutsch</item>
         <item>English</item>
         <item>Español</item>
@@ -48,14 +48,14 @@
         <item>Français</item>
         <item>हिन्दी</item>
         <item>Magyar</item>
-        <item>Indonesia</item>
+        <item>Bahasa Indonesia</item>
         <item>Italiano</item>
-        <item>עִבְרִית</item>
+        <item>עברית</item>
         <item>日本語</item>
         <item>Norsk Bokmål</item>
         <item>Nederlands</item>
         <item>Português (Brasil)</item>
-        <item>Português</item>
+        <item>Português (Portugal)</item>
         <item>Русский</item>
         <item>தமிழ்</item>
         <item>Türkçe</item>
