@@ -31,6 +31,7 @@ Translations:
 * Hungarian: @SziaTomi
 * Japanese: @gnuhead-chieb
 * Norwegian Bokmål: @comradekingu
+* Persian: @qaria185-blip
 * Portuguese (Brazil): @Bardock88, @pedrolinharesmoreira
 * Portuguese: @SantosSi
 * Russian: @OmlineEditor, @AHOHNMYC, @racingrebel, @Usland123
@@ -44,6 +45,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * de-DE: German
 * en-US: English
 * es-ES: Spanish
+* fa: Persian
 * fr-FR: French
 * hi: Hindi
 * hu-HU: Hungarian
