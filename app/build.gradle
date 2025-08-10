@@ -6,29 +6,8 @@ plugins {
 final SONAR_PROJECT_VERSION = '1.58'
 
 // Load signing config only if needed
-def props = new Properties()
-def propsFile = rootProject.file("keystore.properties")
 def signingEnabled = gradle.startParameter.taskNames.any { it.toLowerCase().contains("signedrelease") }
-
-if (signingEnabled) {
-  if (!propsFile.exists()) {
-    throw new GradleException("Missing 'keystore.properties' file.")
-  }
-
-  propsFile.withInputStream { props.load(it) }
-
-  def requiredKeys = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword']
-  requiredKeys.each {
-    if (!props.containsKey(it) || props[it].trim().isEmpty()) {
-      throw new GradleException("Missing or empty property: '${it}' in 'keystore.properties'.")
-    }
-  }
-
-  def keystorePath = rootProject.file(props['storeFile'].trim())
-  if (!keystorePath.exists()) {
-    throw new GradleException("Keystore file not found at: ${keystorePath}")
-  }
-}
+def props = loadSigningConfig(signingEnabled)
 
 android {
   namespace 'fr.ralala.hexviewer'
@@ -118,6 +97,32 @@ dependencies {
   implementation "com.android.support:support-emoji-bundled:28.0.0"
   implementation "com.google.android.material:material:1.12.0"
   testImplementation "junit:junit:4.13.2"
+}
+
+private Properties loadSigningConfig(boolean signingEnabled) {
+  if (signingEnabled) {
+    def props = new Properties()
+    def propsFile = rootProject.file("keystore.properties")
+    if (!propsFile.exists()) {
+      throw new GradleException("Missing 'keystore.properties' file.")
+    }
+
+    propsFile.withInputStream { props.load(it) }
+
+    def requiredKeys = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword']
+    requiredKeys.each {
+      if (!props.containsKey(it) || props[it].trim().isEmpty()) {
+        throw new GradleException("Missing or empty property: '${it}' in 'keystore.properties'.")
+      }
+    }
+
+    def keystorePath = rootProject.file(props['storeFile'].trim())
+    if (!keystorePath.exists()) {
+      throw new GradleException("Keystore file not found at: ${keystorePath}")
+    }
+    return props
+  }
+  return null
 }
 
 // versionCode <-> versionName /////////////////////////////////////////////////////////////////////
