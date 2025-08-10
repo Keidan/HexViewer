@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Objects;
 
 /**
  * ******************************************************************************
@@ -89,11 +90,11 @@ public class RandomAccessFileChannel {
     mMode = mode;
     if (mode == Mode.RO || mode == Mode.RW) {
       mFdInput = contentResolver.openFileDescriptor(fileUri, "r");
-      mFileInputStream = new FileInputStream(mFdInput.getFileDescriptor());
+      mFileInputStream = new FileInputStream(Objects.requireNonNull(mFdInput).getFileDescriptor());
     }
     if (mode == Mode.WO || mode == Mode.RW) {
       mFdOutput = contentResolver.openFileDescriptor(fileUri, "rw" + (resetOnWrite ? "t" : ""));
-      mFileOutputStream = new FileOutputStream(mFdOutput.getFileDescriptor());
+      mFileOutputStream = new FileOutputStream(Objects.requireNonNull(mFdOutput).getFileDescriptor());
     }
   }
 
@@ -132,6 +133,7 @@ public class RandomAccessFileChannel {
    * @param buffer The buffer to write.
    * @throws IOException If an I/O error occurs.
    */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void write(ByteBuffer buffer) throws IOException {
     if (mFileOutputStream == null)
       return;

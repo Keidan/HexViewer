@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -183,7 +184,7 @@ public class FileHelper {
       String.format(Locale.US, "File exists for uri: '%s'", uri));
     try {
       pfd = cr.openFileDescriptor(uri, "r");
-      pfd.close();
+      Objects.requireNonNull(pfd).close();
       exists = true;
     } catch (Exception e) {
       Log.e(SysHelper.class.getSimpleName(), EXCEPTION_TAG + e.getMessage(), e);
@@ -210,7 +211,7 @@ public class FileHelper {
     long size;
     try {
       pfd = cr.openFileDescriptor(uri, "r");
-      long sz = pfd.getStatSize();
+      long sz = Objects.requireNonNull(pfd).getStatSize();
       pfd.close();
       size = sz;
     } catch (Exception e) {
@@ -244,7 +245,7 @@ public class FileHelper {
     String result = null;
     ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
       String.format(Locale.US, "Get filename for uri: '%s'", uri));
-    if (uri.getScheme().equals("content")) {
+    if (uri.getScheme() != null && uri.getScheme().equals("content")) {
       ApplicationCtx.addLog(ctx, FILE_HELPER_TAG, "Uri scheme equals to content");
       try (Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null)) {
         if (cursor != null && cursor.moveToFirst()) {
@@ -347,12 +348,13 @@ public class FileHelper {
   public static Uri getParentUri(final Context ctx, final Uri uri) {
     final String filename = getFileName(ctx, uri);
     final String encoded = uri.getEncodedPath();
+    final int encoded_length = encoded == null ? 0 : encoded.length();
     final int filenameLen = (filename == null ? 0 : filename.length());
-    final int length = encoded.length() - filenameLen;
+    final int length = encoded_length - filenameLen;
     ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
       String.format(Locale.US, "Search for parent uri: '%s'", uri));
     String path;
-    if (length > 0 && length < encoded.length()) {
+    if (length > 0 && length < encoded_length) {
       String parent = encoded.substring(0, encoded.length() - filenameLen);
       ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
         String.format(Locale.US, "Parent raw: '%s'", parent));

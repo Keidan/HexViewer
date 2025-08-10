@@ -95,13 +95,15 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    * @param fd FilterData
    */
   private void applyUpdated(final TextView tv, final LineEntry fd) {
-    String str = getTextAccordingToUserConfig(fd.getPlain());
-    if (fd.isUpdated()) {
-      SpannableString spanString = new SpannableString(str);
-      spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
-      tv.setText(spanString);
-    } else {
-      tv.setText(str);
+    if (fd != null) {
+      String str = getTextAccordingToUserConfig(fd.getPlain());
+      if (fd.isUpdated()) {
+        SpannableString spanString = new SpannableString(str);
+        spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+        tv.setText(spanString);
+      } else {
+        tv.setText(str);
+      }
     }
   }
 
@@ -147,7 +149,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   }
 
   private int getContentTextColor(final LineEntry fd, final int position) {
-    if (fd.isUpdated())
+    if (fd != null && fd.isUpdated())
       return R.color.colorTextUpdated;
     return isSelected(position) ? R.color.colorPrimaryDark : R.color.textColor;
   }

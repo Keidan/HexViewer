@@ -61,7 +61,8 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
     StringBuilder sb = new StringBuilder();
     for (Integer i : selected) {
       LineEntry ld = mAdapter.getItem(i);
-      sb.append(ld.getPlain()).append("\n");
+      if(ld != null)
+        sb.append(ld.getPlain()).append("\n");
     }
     return copyAndClose("CopyHex", mode, sb);
   }
@@ -113,8 +114,9 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
       }
       previous = i;
       LineEntry ld = mAdapter.getItem(i);
-      for (Byte b : ld.getRaw())
-        byteArrayOutputStream.write(b);
+      if(ld != null)
+        for (Byte b : ld.getRaw())
+          byteArrayOutputStream.write(b);
     }
     mActivity.getLauncherLineUpdate().startActivity(byteArrayOutputStream.toByteArray(),
       selected.get(0), selected.size(),

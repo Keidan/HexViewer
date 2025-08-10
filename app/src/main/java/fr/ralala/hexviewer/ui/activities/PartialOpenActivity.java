@@ -145,14 +145,11 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
 
     setLayout(R.layout.activity_partial_open);
 
-    TextView textFileSize = findViewById(R.id.textSize);
     mTextSizePart = findViewById(R.id.textSizePart);
     mSpUnit = findViewById(R.id.spUnit);
     mSpInputType = findViewById(R.id.spInputType);
     mTilStart = findViewById(R.id.tilStart);
-    TextInputEditText tietStart = findViewById(R.id.tietStart);
     mTilEnd = findViewById(R.id.tilEnd);
-    TextInputEditText tietEnd = findViewById(R.id.tietEnd);
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
@@ -167,13 +164,21 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
     Intent intent = getIntent();
     if (intent != null && intent.getExtras() != null) {
       Bundle extras = getIntent().getExtras();
-      isSequential = extras.getBoolean(ACTIVITY_EXTRA_IS_SEQUENTIAL);
-      startOffset = extras.getLong(ACTIVITY_EXTRA_START_OFFSET);
-      endOffset = extras.getLong(ACTIVITY_EXTRA_END_OFFSET);
-      size = extras.getLong(ACTIVITY_EXTRA_SIZE);
-      mRealSize = extras.getLong(ACTIVITY_EXTRA_REAL_SIZE);
+      if (extras != null) {
+        isSequential = extras.getBoolean(ACTIVITY_EXTRA_IS_SEQUENTIAL);
+        startOffset = extras.getLong(ACTIVITY_EXTRA_START_OFFSET);
+        endOffset = extras.getLong(ACTIVITY_EXTRA_END_OFFSET);
+        size = extras.getLong(ACTIVITY_EXTRA_SIZE);
+        mRealSize = extras.getLong(ACTIVITY_EXTRA_REAL_SIZE);
+      }
     }
+    apply(isSequential, startOffset, endOffset, size);
+  }
 
+  private void apply(boolean isSequential, long startOffset, long endOffset, long size) {
+    TextView textFileSize = findViewById(R.id.textSize);
+    TextInputEditText tietStart = findViewById(R.id.tietStart);
+    TextInputEditText tietEnd = findViewById(R.id.tietEnd);
     long max;
     long start;
     long end;

@@ -55,7 +55,8 @@ public class PlainMultiChoiceCallback extends GenericMultiChoiceCallback {
     StringBuilder sb = new StringBuilder();
     for (Integer i : selected) {
       LineEntry ld = mAdapter.getItem(i);
-      sb.append(SysHelper.ignoreNonDisplayedChar(ld.getPlain()));
+      if (ld != null)
+        sb.append(SysHelper.ignoreNonDisplayedChar(ld.getPlain()));
     }
     return copyAndClose("CopyPlain", mode, sb);
   }

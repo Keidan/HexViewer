@@ -162,12 +162,14 @@ public class UpdateCommand implements ICommand {
     for (int i = 0; i < mRefNbLines; i++) {
       final LineEntry le = adapter.getItem(mFirstPosition + i);
       final LineEntry oldVal = new LineEntry(mPrevLines.get(i));
-      if (!le.toString().equals(oldVal.toString())) {
+      if (le != null && !le.toString().equals(oldVal.toString())) {
         oldVal.setUpdated(false);
         le.setValues(oldVal.getPlain(), oldVal.getRaw());
         LineEntry ld = adapter.getItem(le.getIndex());
-        ld.setValues(oldVal.getPlain(), oldVal.getRaw());
-        ld.setUpdated(oldVal.isUpdated());
+        if (ld != null) {
+          ld.setValues(oldVal.getPlain(), oldVal.getRaw());
+          ld.setUpdated(oldVal.isUpdated());
+        }
       }
     }
   }
@@ -180,14 +182,18 @@ public class UpdateCommand implements ICommand {
   private void updateExistingElements(HexTextArrayAdapter adapter) {
     for (int i = 0; i < mRefNbLines; i++) {
       final LineEntry le = adapter.getItem(mFirstPosition + i);
-      mPrevLines.add(new LineEntry(le));
-      final LineEntry newVal = new LineEntry(mList.get(i));
-      if (!le.toString().equals(newVal.toString())) {
-        newVal.setUpdated(mUnDoRedo.isChanged());
-        le.setValues(newVal.getPlain(), newVal.getRaw());
-        LineEntry ld = adapter.getItem(le.getIndex());
-        ld.setValues(le.getPlain(), le.getRaw());
-        ld.setUpdated(newVal.isUpdated());
+      if (le != null) {
+        mPrevLines.add(new LineEntry(le));
+        final LineEntry newVal = new LineEntry(mList.get(i));
+        if (!le.toString().equals(newVal.toString())) {
+          newVal.setUpdated(mUnDoRedo.isChanged());
+          le.setValues(newVal.getPlain(), newVal.getRaw());
+          LineEntry ld = adapter.getItem(le.getIndex());
+          if (ld != null) {
+            ld.setValues(le.getPlain(), le.getRaw());
+            ld.setUpdated(newVal.isUpdated());
+          }
+        }
       }
     }
   }

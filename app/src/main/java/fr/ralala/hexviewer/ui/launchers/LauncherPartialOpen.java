@@ -69,7 +69,7 @@ public class LauncherPartialOpen {
         mApp.setSequential(false);
         if (result.getResultCode() == Activity.RESULT_OK) {
           Intent data = result.getData();
-          if (data != null) {
+          if (data != null && data.getExtras() != null) {
             Bundle bundle = data.getExtras();
             final long startOffset = bundle.getLong(PartialOpenActivity.RESULT_START_OFFSET);
             final long endOffset = bundle.getLong(PartialOpenActivity.RESULT_END_OFFSET);

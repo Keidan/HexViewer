@@ -157,7 +157,7 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
     if (getIntent().getExtras() != null) {
       Bundle extras = getIntent().getExtras();
       byte[] array = extras.getByteArray(ACTIVITY_EXTRA_TEXTS);
-      mRefLength = array.length;
+      mRefLength = array == null ? 0 : array.length;
       mShiftOffset = extras.getInt(ACTIVITY_EXTRA_SHIFT_OFFSET);
       mStartOffset = extras.getLong(ACTIVITY_EXTRA_START_OFFSET);
       mPosition = extras.getInt(ACTIVITY_EXTRA_POSITION);
@@ -177,7 +177,7 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
         list.add(s);
         sbHex.append(s.substring(0, 23).trim()).append(" ");
       }
-      maxLengthWithPartial = array.length;
+      maxLengthWithPartial = mRefLength;
     }
     mAdapterSource = new LineUpdateHexArrayAdapter(this, lvSource, titleSource, list);
     mAdapterResult = new LineUpdateHexArrayAdapter(this, lvResult, titleResult, new ArrayList<>(list));
@@ -191,7 +191,10 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
     chkOverwrite.setChecked(mApp.isOverwrite());
     chkOverwrite.setOnCheckedChangeListener((comp, isChecked) -> mApp.setOverwrite(isChecked));
 
+    apply(sbHex, maxLengthWithPartial);
+  }
 
+  private void apply(StringBuilder sbHex, int maxLengthWithPartial) {
     if (mFile != null) {
       UIHelper.setTitle(this, mFile, mChange);
     }
@@ -204,7 +207,6 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
     mEtInputHex.setText(mHex);
     mEtInputHex.addTextChangedListener(new LineUpdateTextWatcher(
       mAdapterResult, mTilInputHex, mApp, mShiftOffset, maxLengthWithPartial, mSequential));
-
   }
 
   /**

@@ -81,11 +81,8 @@ public class GoToDialog implements View.OnClickListener {
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_go_to, null));
     mDialog = builder.create();
-    if (mDialog.isShowing())
-      mDialog.dismiss();
+    initDialog();
     mMode = mode;
-    mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
-      WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     String title1;
     String title2;
     if (mode == Mode.ADDRESS) {
@@ -120,6 +117,14 @@ public class GoToDialog implements View.OnClickListener {
     mDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(this);
     mDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> mDialog.dismiss());
     return mDialog;
+  }
+
+  private void initDialog() {
+    if (mDialog.isShowing())
+      mDialog.dismiss();
+    if (mDialog.getWindow() != null)
+      mDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+        WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
   }
 
   private boolean processPosition(final String text) {

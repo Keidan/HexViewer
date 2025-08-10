@@ -73,7 +73,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     } else {
       mSelectedItemsIds.remove(position);
     }
-    if(refresh)
+    if (refresh)
       notifyDataSetChanged();
   }
 
@@ -232,7 +232,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    * @return filter
    */
   @Override
-  public Filter getFilter() {
+  public @NonNull Filter getFilter() {
     return mEntryFilter;
   }
 

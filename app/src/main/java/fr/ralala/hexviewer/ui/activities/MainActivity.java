@@ -714,6 +714,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
     if (searchManager != null) {
       mSearchView = (SearchView) si.getActionView();
+      if (mSearchView == null)
+        return;
       mSearchView.setSearchableInfo(searchManager
         .getSearchableInfo(getComponentName()));
       mSearchView.setTextDirection(SysHelper.isRTL(this) ? View.TEXT_DIRECTION_RTL : View.TEXT_DIRECTION_LTR);

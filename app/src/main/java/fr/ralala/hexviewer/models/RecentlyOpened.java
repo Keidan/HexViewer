@@ -52,7 +52,7 @@ public class RecentlyOpened {
       return false;
     final List<FileData> uris = new ArrayList<>();
     String[] split = content.split("\\|");
-    if (split.length != 0 && !split[0].equals(""))
+    if (split.length != 0 && !split[0].isEmpty())
       for (String s : split) {
         uris.add(decode(mApp, s));
       }
@@ -161,7 +161,7 @@ public class RecentlyOpened {
     if (content.startsWith(SEQUENTIAL_MASK))
       content = content.substring(SEQUENTIAL_MASK.length());
     String[] split = content.split("\\|");
-    if (split.length != 0 && !split[0].equals(""))
+    if (split.length != 0 && !split[0].isEmpty())
       for (String s : split) {
         uris.add(decode(mApp, s));
       }

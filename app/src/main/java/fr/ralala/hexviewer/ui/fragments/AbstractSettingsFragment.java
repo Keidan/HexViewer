@@ -112,7 +112,8 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
       }
     }
     final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    if (dialog.getWindow() != null)
+      dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
       if (et != null && validInput(et, defaultValue, minValue, maxValue, iv, decimal)) {
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);

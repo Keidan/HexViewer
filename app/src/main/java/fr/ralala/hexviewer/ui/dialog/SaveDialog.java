@@ -59,8 +59,9 @@ public class SaveDialog {
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_save, null));
     AlertDialog dialog = builder.create();
-    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
-      WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    if (dialog.getWindow() != null)
+      dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+        WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     dialog.show();
     EditText et = dialog.findViewById(R.id.editText);
     TextInputLayout layout = dialog.findViewById(R.id.tilEditText);

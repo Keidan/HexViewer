@@ -5,8 +5,6 @@ import android.content.res.Configuration;
 import android.util.Log;
 import android.view.View;
 
-import androidx.core.view.ViewCompat;
-
 import java.io.ByteArrayOutputStream;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
