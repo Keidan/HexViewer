@@ -95,7 +95,7 @@ android {
       property 'sonar.projectVersion', SONAR_PROJECT_VERSION
       property 'sonar.coverage.exclusions', "**/**"
       // Exclude rules
-      property "sonar.issue.ignore.multicriteria", "e1,e2,e3"
+      property "sonar.issue.ignore.multicriteria", "e1,e2,e3,e4"
       /* S110 */
       property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S110"
       property "sonar.issue.ignore.multicriteria.e1.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsActivity.java"
@@ -103,6 +103,8 @@ android {
       property "sonar.issue.ignore.multicriteria.e2.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsListsLandscapeActivity.java"
       property "sonar.issue.ignore.multicriteria.e3.ruleKey", "java:S110"
       property "sonar.issue.ignore.multicriteria.e3.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsListsPortraitActivity.java"
+      property "sonar.issue.ignore.multicriteria.e4.ruleKey", "xml:S5604"
+      property "sonar.issue.ignore.multicriteria.e4.resourceKey", "**/AndroidManifest.xml"
     }
   }
 }
