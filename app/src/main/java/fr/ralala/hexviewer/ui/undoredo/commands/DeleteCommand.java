@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.undoredo.commands;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
-import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
@@ -43,8 +43,7 @@ public class DeleteCommand implements ICommand {
     String query = mActivity.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
-    List<Integer> list = SysHelper.getMapKeys(mList);
-
+    List<Integer> list = new ArrayList<>(mList.keySet());
     adapter.getEntries().removeItems(list);
     /* rebuilds origin indexes */
     adapter.getEntries().reloadAllIndexes(0);
@@ -63,7 +62,8 @@ public class DeleteCommand implements ICommand {
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
 
-    for (Integer i : SysHelper.getMapKeys(mList)) {
+    List<Integer> list = new ArrayList<>(mList.keySet());
+    for (Integer i : list) {
       LineEntry ld = mList.get(i);
       if (ld != null) {
         adapter.getEntries().addItem(ld.getIndex(), ld);

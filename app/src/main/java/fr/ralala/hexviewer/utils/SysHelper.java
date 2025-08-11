@@ -9,10 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.ApplicationCtx;
@@ -69,17 +67,6 @@ public class SysHelper {
   public static boolean isRTL(final Context context) {
     Configuration cfg = ((ApplicationCtx) context.getApplicationContext()).getConfiguration();
     return cfg.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-  }
-
-  /**
-   * Sorts keys.
-   *
-   * @return List<Integer>
-   */
-  public static <T> List<Integer> getMapKeys(final Map<Integer, T> map) {
-    List<Integer> sortedKeys = new ArrayList<>(map.keySet());
-    Collections.sort(sortedKeys);
-    return sortedKeys;
   }
 
   /**

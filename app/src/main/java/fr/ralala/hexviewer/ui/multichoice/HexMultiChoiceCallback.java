@@ -7,9 +7,9 @@ import android.widget.ListView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -76,7 +76,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
   protected void actionClear(MenuItem item, ActionMode mode) {
     setActionView(item, null, () -> {
       final List<Integer> selected = mAdapter.getSelectedIds();
-      Map<Integer, LineEntry> map = new HashMap<>();
+      Map<Integer, LineEntry> map = new TreeMap<>();
       // Captures all selected ids with a loop
       for (int i = selected.size() - 1; i >= 0; i--) {
         int position = selected.get(i);

@@ -10,10 +10,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -100,7 +100,7 @@ public class LauncherLineUpdate {
     SysHelper.formatBuffer(li, buf, buf.length, null, nbBytesPerLine);
     HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
     if (li.isEmpty()) {
-      Map<Integer, LineEntry> map = new HashMap<>();
+      Map<Integer, LineEntry> map = new TreeMap<>();
       for (int i = position; i < position + nbLines; i++) {
         map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
       }
@@ -108,7 +108,7 @@ public class LauncherLineUpdate {
     } else if (li.size() >= nbLines) {
       mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, nbLines, li).execute();
     } else {
-      Map<Integer, LineEntry> map = new HashMap<>();
+      Map<Integer, LineEntry> map = new TreeMap<>();
       for (int i = position + li.size(); i < position + nbLines; i++) {
         map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
       }
