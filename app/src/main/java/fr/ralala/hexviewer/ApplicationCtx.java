@@ -206,8 +206,8 @@ public class ApplicationCtx extends Application {
    */
   public static void addLog(final Context c, final String tag, final String msg) {
     ApplicationCtx ctx;
-    if (c instanceof ApplicationCtx)
-      ctx = (ApplicationCtx) c;
+    if (c instanceof ApplicationCtx applicationctx)
+      ctx = applicationctx;
     else
       ctx = (ApplicationCtx) c.getApplicationContext();
     ctx.mLock.lock();
