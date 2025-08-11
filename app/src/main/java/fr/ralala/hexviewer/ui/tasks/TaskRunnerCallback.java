@@ -46,7 +46,7 @@ public interface TaskRunnerCallback<C, P, I, R> {
    * @return A result, defined by the subclass of this task.
    */
   @Nullable
-  R doInBackground(@Nullable C config, @Nullable P param) throws TaskRunnerException;
+  R doInBackground(@Nullable C config, @Nullable P param);
 
   /**
    * Called when the async task is cancelled.
