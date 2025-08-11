@@ -94,6 +94,40 @@ public class LineEntries {
   }
 
   /**
+   * Removes items.
+   *
+   * @param positions The items position.
+   */
+  public void removeItems(List<Integer> positions) {
+    // 1. Mark the positions to be deleted
+    boolean[] toRemove = new boolean[mFilteredList.size()];
+    for (int pos : positions) {
+      if (pos >= 0 && pos < toRemove.length) {
+        toRemove[pos] = true;
+      }
+    }
+
+    // 2. Rebuild mFilteredList and mEntryList in a single pass
+    List<Integer> newFilteredList = new ArrayList<>(mFilteredList.size() - positions.size());
+    List<LineEntry> newEntryList = new ArrayList<>(mEntryList.size());
+
+    for (int i = 0; i < mFilteredList.size(); i++) {
+      if (!toRemove[i]) {
+        int entryIndex = mFilteredList.get(i);
+        newFilteredList.add(entryIndex);
+        newEntryList.add(mEntryList.get(entryIndex));
+      }
+    }
+
+    // 3. Replace old lists
+    mFilteredList.clear();
+    mFilteredList.addAll(newFilteredList);
+
+    mEntryList.clear();
+    mEntryList.addAll(newEntryList);
+  }
+
+  /**
    * Adds an item.
    *
    * @param position The item position.

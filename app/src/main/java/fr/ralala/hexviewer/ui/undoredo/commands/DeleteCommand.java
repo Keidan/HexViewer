@@ -45,10 +45,7 @@ public class DeleteCommand implements ICommand {
       adapter.manualFilterUpdate(""); /* reset filter */
     List<Integer> list = SysHelper.getMapKeys(mList);
 
-    for (int i = list.size() - 1; i >= 0; i--) {
-      int position = list.get(i);
-      adapter.getEntries().removeItem(position);
-    }
+    adapter.getEntries().removeItems(list);
     /* rebuilds origin indexes */
     adapter.getEntries().reloadAllIndexes(0);
     if (!query.isEmpty())
