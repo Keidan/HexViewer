@@ -2,6 +2,7 @@ package fr.ralala.hexviewer.ui.utils;
 
 import android.text.Editable;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
@@ -226,8 +227,9 @@ public class LineUpdateTextWatcher implements TextWatcher {
   public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     if (mIgnore) /* avoid unnecessary treatments */
       return;
-    mAfterSpace = s.length() > 0 && s.charAt(Math.max(0, start - 1)) == ' ';
-    boolean beforeSpace = start == 0 || s.length() > 0 && s.charAt(Math.max(0, Math.min(start, s.length() - 1))) == ' ';
+    boolean notEmpty = !TextUtils.isEmpty(s);
+    mAfterSpace = notEmpty && s.charAt(Math.max(0, start - 1)) == ' ';
+    boolean beforeSpace = start == 0 || notEmpty && s.charAt(Math.max(0, Math.min(start, s.length() - 1))) == ' ';
     mBetweenDigits = start != s.length() && !mAfterSpace && !beforeSpace;
     mOldString = s.toString();
   }
@@ -260,11 +262,10 @@ public class LineUpdateTextWatcher implements TextWatcher {
 
   @NonNull
   public static String normalizeForEmoji(CharSequence charSequence) {
-    if (charSequence.length() == 0)
+    if (TextUtils.isEmpty(charSequence))
       return "";
     CharSequence processed = EmojiCompat.get().process(charSequence, 0, charSequence.length() - 1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
-    if (processed instanceof Spannable) {
-      Spannable spannable = (Spannable) processed;
+    if (processed instanceof Spannable spannable) {
       EmojiSpan[] emojiSpans = spannable.getSpans(0, spannable.length() - 1, EmojiSpan.class);
       StringBuilder sb = new StringBuilder();
       int oldStart = 0;
