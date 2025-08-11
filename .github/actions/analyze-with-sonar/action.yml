@@ -41,5 +41,6 @@ runs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
         SONAR_TOKEN: ${{ inputs.sonar-token }}
-      run: ./gradlew build sonarqube --info
+      run: ./gradlew build sonarqube
       shell: bash
+      continue-on-error: false
