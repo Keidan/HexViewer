@@ -21,6 +21,8 @@ jobs:
           echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup-gradle
       - name: Build the app
         run: ./gradlew build
