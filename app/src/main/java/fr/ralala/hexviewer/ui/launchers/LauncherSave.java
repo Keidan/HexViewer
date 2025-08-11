@@ -81,12 +81,12 @@ public class LauncherSave {
   private void processFileSaveWithDialog(final Uri uri) {
     mActivity.setOrphanDialog(mSaveDialog.show(mActivity.getFileData().getName(), (dialog, content, layout) -> {
       mActivity.setOrphanDialog(null);
-      final String s_file = content.getText().toString();
-      if (s_file.trim().isEmpty()) {
+      final String sFile = content.getText().toString();
+      if (sFile.trim().isEmpty()) {
         layout.setError(mActivity.getString(R.string.error_filename));
         return;
       }
-      processFileSave(uri, s_file);
+      processFileSave(uri, sFile);
       dialog.dismiss();
     }));
   }
