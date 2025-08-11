@@ -1,5 +1,6 @@
 package fr.ralala.hexviewer.ui.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +56,21 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  */
 public class UIHelper {
   private UIHelper() {
+  }
+
+  /**
+   * Starts refresh animation.
+   *
+   * @param c Android Context
+   * @return ImageView
+   */
+  public static ImageView startRefreshAnimation(Context c) {
+    LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    @SuppressLint("InflateParams") ImageView iv = (ImageView) inflater.inflate(R.layout.imageview_refresh, null);
+    Animation rotation = AnimationUtils.loadAnimation(c, R.anim.clockwise_refresh);
+    rotation.setRepeatCount(Animation.INFINITE);
+    iv.startAnimation(rotation);
+    return iv;
   }
 
   /**
@@ -210,7 +229,7 @@ public class UIHelper {
       .setTitle(title)
       .setMessage(message)
       .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {
-        if(click != null)
+        if (click != null)
           click.onClick(null);
         dialog.dismiss();
       }).show();

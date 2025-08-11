@@ -133,7 +133,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
     }
   }
-  
+
   /**
    * Called when an item is checked or unchecked during selection mode.
    *
@@ -226,20 +226,19 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   protected void setActionView(final MenuItem item, final ActionMode mode, final Runnable action) {
     UIHelper.showCircularProgressDialog(mProgress);
+    item.setActionView(UIHelper.startRefreshAnimation(mActivity));
     final Handler handler = new Handler(Looper.getMainLooper());
     handler.postDelayed(() -> {
       action.run();
       mAdapter.notifyDataSetChanged();
       updateTitle(mode);
       mFromAll = false;
-      if (item != null) {
-        item.setCheckable(true);
-        item.setChecked(mAdapter.getSelectedCount() == mAdapter.getCount());
-        View view = item.getActionView();
-        if (view != null) {
-          view.clearAnimation();
-          item.setActionView(null);
-        }
+      item.setCheckable(true);
+      item.setChecked(mAdapter.getSelectedCount() == mAdapter.getCount());
+      View view = item.getActionView();
+      if (view != null) {
+        view.clearAnimation();
+        item.setActionView(null);
       }
       mProgress.dismiss();
     }, 500);
