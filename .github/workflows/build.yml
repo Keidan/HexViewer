@@ -1,4 +1,3 @@
-# .github/workflows/build.yml
 name: Build
 
 # Trigger conditions
@@ -22,16 +21,14 @@ jobs:
           echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: ./.github/actions/setup-gradle
       - name: Build the app
         run: ./gradlew build
       - name: Build the tests
         run: ./gradlew test
       - uses: ./.github/actions/analyze-with-sonar
+        if: github.event_name != 'pull_request'
         with:
-          project-base-dir: 'app'
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           
   # Check tag pattern

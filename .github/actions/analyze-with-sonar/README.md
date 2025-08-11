@@ -12,5 +12,3 @@ It sets up Sonar cache, runs the analysis with the correct environment variables
 - uses: ./.github/actions/analyze-with-sonar
   with:
     sonar-token: ${{ secrets.SONAR_TOKEN }}
-	project-base-dir: 'app'
-
