@@ -164,13 +164,14 @@ build.dependsOn checkFastlaneChangelog
 
 /**
  * Generates a versionCode based on the given semVer String.
- * See e.g. https://proandroiddev.com/keep-salinity-with-your-versioncode-db2089b640b9
- *
  * @param semVer e.g. 1.27
  * @return e.g. 127 (-> 1 27)
+ *
+ * 1.58 -> 158
+ * 1.58.0 -> 15800
+ * 1.0.0 -> 10000
  */
 private static int generateVersionCode(String semVer) {
-  return semVer.split('\\.')
-    .collect { Integer.parseInt(it) }
-    .inject { sum, value -> sum * 100 + value }
+  def parts = semVer.tokenize('.').collect { it.toInteger() }
+  parts.inject(0) { code, part -> code * 100 + part }
 }
