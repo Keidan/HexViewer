@@ -36,6 +36,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public abstract class GenericMultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
+  protected static final int DELAYED_POST_MS = 500;
   private final ListView mListView;
   protected final SearchableListArrayAdapter mAdapter;
   protected final MainActivity mActivity;
@@ -44,6 +45,20 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   private final AlertDialog mProgress;
   private MenuItem mMenuItemSelectAll;
   protected boolean mFromAll = false;
+  private ActionMode mActionMode;
+
+  /**
+   * Functional interface representing an asynchronous action
+   * that accepts a Runnable callback to signal completion.
+   */
+  protected interface AsyncAction {
+    /**
+     * Runs the asynchronous action.
+     *
+     * @param done Runnable to be executed when the action is complete.
+     */
+    void run(Runnable done);
+  }
 
   @SuppressLint("InflateParams")
   protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
@@ -70,6 +85,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    mActionMode = mode;
     mode.getMenuInflater().inflate(getMenuId(), menu);
     mMenuItemSelectAll = menu.findItem(R.id.action_select_all);
     return true;
@@ -96,7 +112,8 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   @Override
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-    if (item.getItemId() == R.id.action_clear) {
+    int id = item.getItemId();
+    if (id == R.id.action_clear) {
       if (mActivity.getFileData().isSequential()) {
         UIHelper.showErrorDialog(mActivity, mActivity.getFileData().getName(),
           mActivity.getString(R.string.error_open_sequential_add_or_delete_data));
@@ -104,12 +121,12 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       }
       actionClear(item, mode);
       return true;
-    } else if (item.getItemId() == R.id.action_select_all) {
+    } else if (id == R.id.action_select_all) {
       actionSelectAll(item, mode);
       return true;
-    } else if (item.getItemId() == R.id.action_edit) {
+    } else if (id == R.id.action_edit) {
       return actionEdit(mode);
-    } else if (item.getItemId() == R.id.action_copy) {
+    } else if (id == R.id.action_copy) {
       return actionCopy(mode);
     }
     return false;
@@ -122,13 +139,14 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   @Override
   public void onDestroyActionMode(ActionMode mode) {
+    mActionMode = null;
     mAdapter.removeSelection();
     if (mProgress.isShowing())
       mProgress.dismiss();
   }
 
   private void updateTitle(ActionMode mode) {
-    if(mode != null) {
+    if (mode != null) {
       final int checkedCount = mListView.getCheckedItemCount();
       mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
     }
@@ -145,31 +163,192 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   @Override
   public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
     final int checkedCount = mListView.getCheckedItemCount();
-    if(!mFromAll)
+    if (!mFromAll) {
       updateTitle(mode);
-    mAdapter.toggleSelection(position, checked, !mFromAll);
-    if (checkedCount == 1)
-      mFirstSelection = mAdapter.getSelectedIds().get(0);
-    if (mMenuItemSelectAll != null && !mFromAll)
-      mMenuItemSelectAll.setChecked(!mMenuItemSelectAll.isChecked() &&
-        mAdapter.getSelectedCount() == mAdapter.getCount());
+
+      mAdapter.toggleSelection(position, checked, true);
+
+      // Only update firstSelection if NOT in mass selection mode
+      if (checkedCount == 1 && !mAdapter.getSelectedIds().isEmpty())
+        mFirstSelection = mAdapter.getSelectedIds().get(0);
+
+      if (mMenuItemSelectAll != null)
+        mMenuItemSelectAll.setChecked(
+          !mMenuItemSelectAll.isChecked() &&
+            mAdapter.getSelectedCount() == mAdapter.getCount()
+        );
+    } else
+      // When fromAll is true, just toggle without updating firstSelection or UI
+      mAdapter.toggleSelection(position, checked, false);
   }
 
   /**
-   * Select all action.
+   * Handles the "Select All" action in batches asynchronously
+   * to avoid blocking the UI thread.
    *
-   * @param item The item that was clicked.
+   * @param item The menu item that triggered the action.
+   * @param mode The current ActionMode providing selection context.
    */
   private void actionSelectAll(MenuItem item, ActionMode mode) {
-    final boolean checked = mAdapter.getSelectedCount() != mAdapter.getCount();
+    // Get total number of items in adapter
+    final int totalCount = mAdapter.getCount();
+    // Get number of currently selected items
+    final int selectedCount = mAdapter.getSelectedCount();
+    // Determine whether to select all or deselect all based on current selection
+    final boolean selectAll = selectedCount != totalCount;
+
+    // Lock flag to prevent triggering onItemCheckedStateChanged during batch processing
     mFromAll = true;
-    setActionView(item, mode, () -> {
-      final int count = mAdapter.getCount();
-      for (int i = 0; i < count; i++) {
-        if (mFirstSelection != i  || checked)
-          mListView.setItemChecked(i, checked);
-      }
+
+    // Use setActionView to perform the batch selection asynchronously
+    setActionView(item, mode, done -> {
+      // Evaluate batch size dynamically based on total count
+      final int batchSize = evaluateBatch(totalCount);
+
+      // Create a handler for running batched tasks on the main thread
+      Handler handler = new Handler(Looper.getMainLooper());
+
+      // Index to track current batch start
+      final int[] index = {0};
+
+      // Runnable to perform selection in batches
+      Runnable batchRunnable = new Runnable() {
+        @Override
+        public void run() {
+          // Calculate the end index for the current batch
+          int end = Math.min(index[0] + batchSize, totalCount);
+
+          // Iterate over the current batch and set checked state
+          for (int i = index[0]; i < end; i++) {
+            // Skip the first selected item to preserve its state
+            if (mFirstSelection == i) continue;
+
+            // Set item checked state on ListView
+            mListView.setItemChecked(i, selectAll);
+
+            // Toggle selection state in the adapter without triggering callbacks
+            mAdapter.toggleSelection(i, selectAll, false);
+          }
+
+          // After batch loop, ensure first selection remains checked if valid
+          if (mFirstSelection >= 0 && mFirstSelection < totalCount) {
+            mListView.setItemChecked(mFirstSelection, true);
+          }
+
+          // Update index to next batch start
+          index[0] = end;
+
+          // If there are more items to process, post this runnable again with a short delay
+          if (index[0] < totalCount) {
+            handler.postDelayed(this, 1);
+          } else {
+            // All batches processed, signal completion
+            done.run();
+          }
+        }
+      };
+
+      // Start processing the first batch immediately
+      handler.postDelayed(batchRunnable, DELAYED_POST_MS);
     });
+  }
+
+  public void refresh() {
+    if (mActionMode != null && mAdapter.getSelectedCount() != mAdapter.getCount() && mMenuItemSelectAll != null && mMenuItemSelectAll.isChecked()) {
+      // Inconsistency detected, refresh is launched to correct the selection
+      doRefreshOrCorrection();
+    }
+    // No inconsistencies, we avoid repeating heavy treatment unnecessarily.
+  }
+
+  public void doRefreshOrCorrection() {
+    // Exit if there is no active ActionMode
+    if (mActionMode == null) return;
+
+    // Get the total number of items in the adapter
+    final int totalCount = mAdapter.getCount();
+    final boolean selectAllChecked = true;
+
+    // Prevent triggering onItemCheckedStateChanged during the batch process
+    mFromAll = true;
+
+    // Show the progress dialog
+    UIHelper.showCircularProgressDialog(mProgress);
+    // Show the refresh animation in the "Select All" menu item if available
+    mMenuItemSelectAll.setActionView(UIHelper.startRefreshAnimation(mActivity));
+
+    // Clear all current selections
+    mAdapter.removeSelection();
+    mListView.clearChoices();
+
+
+    // Dynamically adjust batch size based on totalCount to improve performance
+    final int dynamicBatchSize = evaluateBatch(totalCount);
+
+    // Handler to run tasks on the main thread
+    Handler handler = new Handler(Looper.getMainLooper());
+    final int[] index = {0}; // Track current batch processing index
+
+    Runnable batchRunnable = new Runnable() {
+      @Override
+      public void run() {
+        // Calculate the end index for the current batch
+        int end = Math.min(index[0] + dynamicBatchSize, totalCount);
+
+        // Apply selection state to each item in the batch
+        for (int i = index[0]; i < end; i++) {
+          mAdapter.toggleSelection(i, selectAllChecked, false);
+          mListView.setItemChecked(i, selectAllChecked);
+        }
+
+        // Update the index for the next batch
+        index[0] = end;
+
+        // Continue with the next batch if there are remaining items
+        if (index[0] < totalCount) {
+          handler.postDelayed(this, 1); // Small delay to keep UI smooth
+        } else {
+          // All batches are complete, refresh the adapter once
+          mAdapter.notifyDataSetChanged();
+          // Update the ActionMode title with the final count
+          int checkedCount = mAdapter.getSelectedCount();
+          mActionMode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
+
+          // Update the "Select All" menu item state
+          boolean allSelected = (checkedCount == totalCount) && (totalCount > 0);
+          mMenuItemSelectAll.setChecked(allSelected);
+          mMenuItemSelectAll.setCheckable(true);
+
+          // Stop animation
+          View view = mMenuItemSelectAll.getActionView();
+          if (view != null) {
+            view.clearAnimation();
+            mMenuItemSelectAll.setActionView(null);
+          }
+          // Hide the progress dialog
+          if (mProgress.isShowing()) {
+            mProgress.dismiss();
+          }
+          // Unlock the mFromAll flag
+          mFromAll = false;
+        }
+      }
+    };
+
+    // Start the batch process
+    handler.postDelayed(batchRunnable, DELAYED_POST_MS);
+  }
+
+  protected int evaluateBatch(int totalCount) {
+    final int batchSize;
+    if (totalCount <= 1000) {
+      batchSize = totalCount; // small list → single batch
+    } else if (totalCount <= 5000) {
+      batchSize = 2000; // medium list → bigger batch
+    } else {
+      batchSize = Math.max(2000, totalCount / 5); // large dataset → ~5 batches
+    }
+    return batchSize;
   }
 
   /**
@@ -204,7 +383,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   protected void closeActionMode(ActionMode mode, boolean delayed) {
     if (delayed)
-      new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 500);
+      new Handler(Looper.getMainLooper()).postDelayed(mode::finish, DELAYED_POST_MS);
     else
       mode.finish();
   }
@@ -219,29 +398,50 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   }
 
   /**
-   * Sets the action view.
+   * Sets an action view with a progress animation while performing
+   * an asynchronous action. Once the action completes, updates the UI accordingly.
    *
-   * @param item   MenuItem
-   * @param action Runnable
+   * @param item   The menu item on which to set the action view.
+   * @param mode   The current ActionMode.
+   * @param action The asynchronous action to run, which accepts a completion callback.
    */
-  protected void setActionView(final MenuItem item, final ActionMode mode, final Runnable action) {
+  protected void setActionView(final MenuItem item, final ActionMode mode, final AsyncAction action) {
+    // Show the circular progress dialog
     UIHelper.showCircularProgressDialog(mProgress);
+    // Start the refresh animation on the menu item
     item.setActionView(UIHelper.startRefreshAnimation(mActivity));
-    final Handler handler = new Handler(Looper.getMainLooper());
-    handler.postDelayed(() -> {
-      action.run();
+
+    // Run the async action and pass a Runnable to execute when done
+    action.run(() -> {
+      // Notify adapter that data set has changed to refresh UI
       mAdapter.notifyDataSetChanged();
+
+      // Update the action mode title with the current selection count
       updateTitle(mode);
+
+      // Reset flag indicating batch operation has finished
       mFromAll = false;
+
+      // Make menu item checkable again
       item.setCheckable(true);
+
+      // Set menu item checked if all items are selected
       item.setChecked(mAdapter.getSelectedCount() == mAdapter.getCount());
+
+      // Get the current action view (animation view) of the menu item
       View view = item.getActionView();
+
+      // If there is an animation view, stop and clear it
       if (view != null) {
         view.clearAnimation();
         item.setActionView(null);
       }
-      mProgress.dismiss();
-    }, 500);
+
+      // Dismiss the progress dialog if still showing
+      if (mProgress.isShowing()) {
+        mProgress.dismiss();
+      }
+    });
   }
 
   /**
@@ -268,4 +468,3 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     return true;
   }
 }
-

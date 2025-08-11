@@ -41,6 +41,7 @@ public class PayloadPlainSwipe {
   private final AtomicBoolean mCancelPayloadPlainSwipeRefresh = new AtomicBoolean(false);
   private UserConfigPortrait mUserConfigPortrait;
   private UserConfigLandscape mUserConfigLandscape;
+  private PlainMultiChoiceCallback mPlainMultiChoiceCallback;
 
   /**
    * Called when the activity is created.
@@ -68,8 +69,8 @@ public class PayloadPlainSwipe {
       mUserConfigLandscape);
     mPayloadPlain.setAdapter(mAdapterPlain);
     mPayloadPlain.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-    PlainMultiChoiceCallback plainMultiChoiceCallback = new PlainMultiChoiceCallback(activity, mPayloadPlain, mAdapterPlain);
-    mPayloadPlain.setMultiChoiceModeListener(plainMultiChoiceCallback);
+    mPlainMultiChoiceCallback = new PlainMultiChoiceCallback(activity, mPayloadPlain, mAdapterPlain);
+    mPayloadPlain.setMultiChoiceModeListener(mPlainMultiChoiceCallback);
   }
 
   /**
@@ -132,6 +133,7 @@ public class PayloadPlainSwipe {
       }
       mPayloadPlainSwipeRefreshLayout.setRefreshing(false);
       mCancelPayloadPlainSwipeRefresh.set(false);
+      mPlainMultiChoiceCallback.refresh();
     }, 100);
   }
 

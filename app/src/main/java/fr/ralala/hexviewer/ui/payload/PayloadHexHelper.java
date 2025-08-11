@@ -41,6 +41,7 @@ public class PayloadHexHelper {
   private TextView mTitleLineNumbers = null;
   private TextView mTitleContent = null;
   private ApplicationCtx mApp = null;
+  private HexMultiChoiceCallback mHexMultiChoiceCallback;
 
   /**
    * Called when the activity is created.
@@ -74,8 +75,8 @@ public class PayloadHexHelper {
     mPayloadHex.setAdapter(mAdapterHex);
     mPayloadHex.setOnItemClickListener(activity);
     mPayloadHex.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-    HexMultiChoiceCallback hexMultiChoiceCallback = new HexMultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
-    mPayloadHex.setMultiChoiceModeListener(hexMultiChoiceCallback);
+    mHexMultiChoiceCallback = new HexMultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
+    mPayloadHex.setMultiChoiceModeListener(mHexMultiChoiceCallback);
   }
 
   /**
@@ -157,5 +158,13 @@ public class PayloadHexHelper {
    */
   public ListView getListView() {
     return mPayloadHex;
+  }
+
+  /**
+   * Functions called to refresh the list.
+   */
+  public void refresh() {
+    getAdapter().notifyDataSetChanged();
+    mHexMultiChoiceCallback.refresh();
   }
 }

@@ -1,6 +1,8 @@
 package fr.ralala.hexviewer.ui.multichoice;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -61,7 +63,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
     StringBuilder sb = new StringBuilder();
     for (Integer i : selected) {
       LineEntry ld = mAdapter.getItem(i);
-      if(ld != null)
+      if (ld != null)
         sb.append(ld.getPlain()).append("\n");
     }
     return copyAndClose("CopyHex", mode, sb);
@@ -74,18 +76,44 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    */
   protected void actionClear(MenuItem item, ActionMode mode) {
-    setActionView(item, null, () -> {
+    setActionView(item, null, done -> {
       final List<Integer> selected = mAdapter.getSelectedIds();
-      Map<Integer, LineEntry> map = new TreeMap<>();
-      // Captures all selected ids with a loop
-      for (int i = selected.size() - 1; i >= 0; i--) {
-        int position = selected.get(i);
-        LineEntry lf = mAdapter.getItem(position);
-        map.put(position, lf);
-      }
-      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
-      mActivity.refreshTitle();
-      closeActionMode(mode, false);
+      final int totalSelected = selected.size();
+      final int batchSize = evaluateBatch(totalSelected);
+
+      // Map to hold positions and corresponding LineEntry for deletion
+      final Map<Integer, LineEntry> map = new TreeMap<>();
+
+      final Handler handler = new Handler(Looper.getMainLooper());
+      final int[] index = {0};
+
+      Runnable batchRunnable = new Runnable() {
+        @Override
+        public void run() {
+          int end = Math.min(index[0] + batchSize, totalSelected);
+
+          // Process current batch: capture selected positions and entries
+          for (int i = index[0]; i < end; i++) {
+            int position = selected.get(i);
+            LineEntry lf = mAdapter.getItem(position);
+            map.put(position, lf);
+          }
+
+          index[0] = end;
+
+          if (index[0] < totalSelected) {
+            handler.postDelayed(this, 1);
+          } else {
+            // Once all batches processed, execute deletion and UI update
+            mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
+            mActivity.refreshTitle();
+            closeActionMode(mode, false);
+            done.run();
+          }
+        }
+      };
+
+      handler.postDelayed(batchRunnable, DELAYED_POST_MS);
     });
   }
 
@@ -114,7 +142,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
       }
       previous = i;
       LineEntry ld = mAdapter.getItem(i);
-      if(ld != null)
+      if (ld != null)
         for (Byte b : ld.getRaw())
           byteArrayOutputStream.write(b);
     }

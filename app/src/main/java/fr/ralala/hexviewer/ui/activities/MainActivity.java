@@ -377,7 +377,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     if (mPayloadPlainSwipe.isVisible()) {
       mPayloadPlainSwipe.refresh();
     } else if (mPayloadHexHelper.isVisible())
-      mPayloadHexHelper.getAdapter().notifyDataSetChanged();
+      mPayloadHexHelper.refresh();
     // Checks the orientation of the screen
     if (!FileData.isEmpty(mFileData)) {
       refreshTitle();
