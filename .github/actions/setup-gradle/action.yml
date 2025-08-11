@@ -2,11 +2,11 @@
 runs:
   using: "composite"
   steps:
-    - name: Set up JDK 21
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
-        distribution: 'zulu'
+        java-version: '17'
+        distribution: 'temurin'
 
     - name: Cache Gradle packages
       uses: actions/cache@v4
