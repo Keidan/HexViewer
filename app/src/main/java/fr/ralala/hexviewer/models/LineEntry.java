@@ -24,7 +24,7 @@ public class LineEntry {
 
   public LineEntry(final String plain, final List<Byte> raw) {
     mPlain = plain;
-    mRaw = raw;
+    mRaw = raw == null ? null : new ArrayList<>(raw);
     mShiftOffset = 0;
   }
 

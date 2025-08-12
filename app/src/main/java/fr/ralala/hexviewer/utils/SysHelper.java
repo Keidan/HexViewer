@@ -31,8 +31,6 @@ import fr.ralala.hexviewer.models.LineEntry;
  */
 public class SysHelper {
   @SuppressWarnings("SpellCheckingInspection")
-  private static final String HEX_UPPERCASE = "0123456789ABCDEF";
-  @SuppressWarnings("SpellCheckingInspection")
   private static final String HEX_LOWERCASE = "0123456789abcdef";
   public static final float SIZE_1KB = 0x400;
   public static final float SIZE_1MB = 0x100000;
@@ -106,6 +104,27 @@ public class SysHelper {
   }
 
   /**
+   * Converts hex string to a binary array.
+   *
+   * @param hex The hex string.
+   * @return String
+   */
+  public static byte[] hex2bin(final String hex) {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    final String h = hex.replace(" ", "");
+    int len = h.length();
+    if (len == 0)
+      return byteArrayOutputStream.toByteArray();
+    int max = isEven(len) ? len : len - 1;
+    for (int i = 0; i < max; i += 2) {
+      byte b = (byte) ((Character.digit(h.charAt(i), 16) << 4) + Character
+        .digit(h.charAt(i + 1), 16));
+      byteArrayOutputStream.write(b);
+    }
+    return byteArrayOutputStream.toByteArray();
+  }
+
+  /**
    * Converts a size into a humanly understandable string.
    *
    * @param ctx Android context.
@@ -113,7 +132,7 @@ public class SysHelper {
    * @return The String.
    */
   public static String sizeToHuman(Context ctx, float f) {
-    return sizeToHuman(ctx, f, true, false);
+    return sizeToHuman(ctx, f, false, true, false);
   }
 
   /**
@@ -139,19 +158,19 @@ public class SysHelper {
     df.setRoundingMode(RoundingMode.FLOOR);
     df.setMinimumFractionDigits(2);
     String sf;
-    String hex = (!addHex ? "" : "(0x" + Long.toHexString((long) f).toUpperCase() + ") ");
+    String hex = (addHex ? "(0x" + Long.toHexString((long) f).toUpperCase(Locale.US) + ") " : "");
     if (f < 1000) {
       String unit = fullByteName ? ctx.getString(R.string.unit_bytes_full_lc) : ctx.getString(R.string.unit_byte);
       sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, !addUnit ? "" : unit);
     } else if (f < 1000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1KB)),
-        hex, !addUnit ? "" : ctx.getString(R.string.unit_kbyte));
+        hex, addUnit ? ctx.getString(R.string.unit_kbyte) : "");
     } else if (f < 1000000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1MB)),
-        hex, !addUnit ? "" : ctx.getString(R.string.unit_mbyte));
+        hex, addUnit ? ctx.getString(R.string.unit_mbyte) : "");
     } else {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1GB)),
-        hex, !addUnit ? "" : ctx.getString(R.string.unit_gbyte));
+        hex, addUnit ? ctx.getString(R.string.unit_gbyte) : "");
     }
     return sf;
   }
@@ -170,6 +189,7 @@ public class SysHelper {
     try {
       lines = formatBuffer(buffer, buffer.length, cancel, maxByRow);
     } catch (IllegalArgumentException iae) {
+      Log.e(SysHelper.class.getSimpleName(), iae.getMessage(), iae);
       lines = new ArrayList<>();
     }
     return lines;
@@ -246,7 +266,8 @@ public class SysHelper {
       if (cancel != null && cancel.get())
         break;
       final byte c = buffer[bufferIndex++];
-      currentLine.append(formatHex((char) c, false)).append(" ");
+      formatHex((char) c, currentLine);
+      currentLine.append(" ");
       currentLineRaw.add(c);
       /* only the visible char */
       currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char) c : (char) 0x2e); /* 0x2e = . */
@@ -258,8 +279,8 @@ public class SysHelper {
     }
     if (cancel != null && cancel.get())
       return;
-    formatBufferAlign(lines, currentIndex, currentLine.toString(),
-      currentEndLine.toString(), currentLineRaw, maxByRow);
+    formatBufferAlign(lines, currentIndex, currentLine,
+      currentEndLine, currentLineRaw, maxByRow);
     if (!lines.isEmpty())
       lines.get(0).setShiftOffset(shiftOffset);
   }
@@ -287,34 +308,11 @@ public class SysHelper {
    * Note: Using String.format("%02X") is ~50x slower.
    *
    * @param b         The character.
-   * @param upperCase Uppercase ?
-   * @return The string.
+   * @param sb StringBuilder (out)
    */
-  public static String formatHex(char b, boolean upperCase) {
-    return "" + (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0xF0) >> 4) +
-      (upperCase ? HEX_UPPERCASE : HEX_LOWERCASE).charAt((b & 0x0F));
-  }
-
-
-  /**
-   * Converts hex string to a binary array.
-   *
-   * @param hex The hex string.
-   * @return String
-   */
-  public static byte[] hex2bin(final String hex) {
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    final String h = hex.replace(" ", "");
-    int len = h.length();
-    if (len == 0)
-      return byteArrayOutputStream.toByteArray();
-    int max = isEven(len) ? len : len - 1;
-    for (int i = 0; i < max; i += 2) {
-      byte b = (byte) ((Character.digit(h.charAt(i), 16) << 4) + Character
-        .digit(h.charAt(i + 1), 16));
-      byteArrayOutputStream.write(b);
-    }
-    return byteArrayOutputStream.toByteArray();
+  private static void formatHex(char b, StringBuilder sb) {
+    sb.append(HEX_LOWERCASE.charAt((b >>> 4) & 0x0F));
+    sb.append(HEX_LOWERCASE.charAt(b & 0x0F));
   }
 
   /**
@@ -335,8 +333,12 @@ public class SysHelper {
                                                      final List<Byte> currentLineRaw,
                                                      final int maxByRow) {
     if (currentIndex == maxByRow - 1) {
-      lines.add(new LineEntry(currentLine + " " + currentEndLine,
-        new ArrayList<>(currentLineRaw)));
+      @SuppressWarnings("StringBufferReplaceableByString")
+      StringBuilder sb = new StringBuilder(currentLine.length() + currentEndLine.length() + 1);
+      sb.append(currentLine);
+      sb.append(" ");
+      sb.append(currentEndLine);
+      lines.add(new LineEntry(sb.toString(), currentLineRaw));
       currentEndLine.setLength(0);
       currentLine.setLength(0);
       currentLineRaw.clear();
@@ -357,8 +359,8 @@ public class SysHelper {
    */
   private static void formatBufferAlign(final List<LineEntry> lines,
                                         int currentIndex,
-                                        final String currentLine,
-                                        final String currentEndLine,
+                                        final StringBuilder currentLine,
+                                        final StringBuilder currentEndLine,
                                         final List<Byte> currentLineRaw,
                                         final int maxByRow) {
     /* align 'line' */
@@ -368,10 +370,35 @@ public class SysHelper {
       while (i++ <= maxByRow - 1)
         off.append("   "); /* 3 spaces ex: "00 " */
       off.append("  "); /* 1 or 2 spaces separator */
-      String s = currentLine;
+      String s = currentLine.toString();
       if (s.endsWith(" "))
         s = s.substring(0, s.length() - 1);
-      lines.add(new LineEntry(s + off + currentEndLine.trim(), new ArrayList<>(currentLineRaw)));
+      trimStringBuilder(currentEndLine);
+      @SuppressWarnings("StringBufferReplaceableByString")
+      StringBuilder sb = new StringBuilder(s.length() + off.length() + currentEndLine.length());
+      sb.append(s);
+      sb.append(off);
+      sb.append(currentEndLine);
+      lines.add(new LineEntry(sb.toString(), currentLineRaw));
+    }
+  }
+
+  private static void trimStringBuilder(StringBuilder sb) {
+    // Find the start and end indexes
+    int start = 0;
+    int end = sb.length() - 1;
+
+    while (start <= end && Character.isWhitespace(sb.charAt(start))) {
+      start++;
+    }
+    while (end >= start && Character.isWhitespace(sb.charAt(end))) {
+      end--;
+    }
+
+    // Remove unnecessary spaces
+    if (start > 0 || end < sb.length() - 1) {
+      sb.delete(end + 1, sb.length()); // Delete the end
+      sb.delete(0, start); // Delete the beginning
     }
   }
 
@@ -382,9 +409,7 @@ public class SysHelper {
    * @return True if the line is valid
    */
   public static boolean isValidHexLine(final String line) {
-    if (line.isEmpty())
-      return true;
-    return line.matches("\\p{XDigit}+") && isEven(line.length());
+    return line.isEmpty() || (line.matches("\\p{XDigit}+") && isEven(line.length()));
   }
 
   /**
@@ -394,7 +419,7 @@ public class SysHelper {
    * @return Returns true if the number is even
    */
   public static boolean isEven(final int num) {
-    return (num % 2) == 0;
+    return (num & 1) == 0;
   }
 
   /**
