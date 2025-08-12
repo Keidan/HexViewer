@@ -114,6 +114,7 @@
       android:layout_below="@id/title"
       android:padding="1dp"
       android:textSize="@dimen/activity_main_payload_view_textSize"
+      android:scrollbarSize="@dimen/activity_main_payload_view_scrollbarSize"
       android:typeface="monospace" />
   </RelativeLayout>
 
@@ -129,6 +130,7 @@
       android:fastScrollEnabled="true"
       android:padding="1dp"
       android:textSize="@dimen/activity_main_payload_plain_swipe_refresh_layout_textSize"
-      android:typeface="monospace" />
+      android:scrollbarSize="@dimen/activity_main_payload_view_scrollbarSize"
+      android:typeface="monospace"/>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
