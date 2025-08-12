@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.adapters.search;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
@@ -44,7 +45,7 @@ public class EntryFilter extends Filter {
   }
 
   public void apply(CharSequence constraint, final Set<Integer> tempList) {
-    boolean clear = (constraint == null || constraint.length() == 0);
+    boolean clear = TextUtils.isEmpty(constraint);
     String query = "";
     final Locale loc = Locale.getDefault();
     if (!clear)

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -106,7 +107,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
       et.setText(def);
       et.requestFocus();
       Editable text = et.getText();
-      if (text.length() > 0) {
+      if (!TextUtils.isEmpty(text)) {
         text.replace(0, 1, text.subSequence(0, 1), 0, 1);
         et.selectAll();
       }
@@ -162,7 +163,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     try {
       Editable s = et.getText();
       float nb = -1;
-      if (s.length() != 0) {
+      if (!TextUtils.isEmpty(s)) {
         nb = Float.parseFloat(s.toString());
       }
       result = validateInputValue(et, iv, nb, minValue, maxValue, decimal);

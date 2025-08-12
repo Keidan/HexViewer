@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,7 +108,7 @@ public class GoToDialog implements View.OnClickListener {
         mEt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         mEt.setText(mode == Mode.LINE_HEX ? mPreviousGoToValueLineHex : mPreviousGoToValueLinePlain);
       }
-      if (mEt.getText().length() == 0)
+      if (TextUtils.isEmpty(mEt.getText()))
         mLayout.setError(" "); /* only for the color */
       mEt.addTextChangedListener(UIHelper.getResetLayoutWatcher(mLayout, true));
       mEt.setSelection(0, mEt.getText().length());

@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -411,7 +412,7 @@ public class UIHelper {
 
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (errorIfEmpty && s.length() == 0)
+        if (errorIfEmpty && TextUtils.isEmpty(s))
           layout.setError(" "); /* only for the color */
         else
           layout.setError(null);
