@@ -49,6 +49,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   private MenuItem mMenuItemSelectAll;
   protected boolean mFromAll = false;
   private ActionMode mActionMode;
+  private int mPreviousCount = 0;
 
   /**
    * Functional interface representing an asynchronous action
@@ -88,6 +89,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    mPreviousCount = mAdapter.getCount();
     mActionMode = mode;
     mode.getMenuInflater().inflate(getMenuId(), menu);
     mMenuItemSelectAll = menu.findItem(R.id.action_select_all);
@@ -257,7 +259,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   }
 
   public void refresh() {
-    if (isActionMode() && mAdapter.getSelectedCount() != mAdapter.getCount()) {
+    if (isActionMode()) {
       // Inconsistency detected, refresh is launched to correct the selection
       doRefreshOrCorrection();
     }
@@ -273,6 +275,10 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
 
     // Get the total number of items in the adapter
     final int totalCount = mAdapter.getCount();
+    if(mPreviousCount == totalCount)
+      return;
+    mPreviousCount = totalCount;
+
     final Set<Integer> items = new HashSet<>(mAdapter.getSelectedItemsIds());
 
     // Prevent triggering onItemCheckedStateChanged during the batch process
