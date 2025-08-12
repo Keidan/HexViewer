@@ -42,6 +42,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   protected final UserConfig mUserConfigLandscape;
   private final LineEntries mLineEntries;
   private Set<Integer> mSelectedItemsIds;
+  private boolean mLockRefresh = false;
 
   protected SearchableListArrayAdapter(final Context context, final int layoutId, final List<LineEntry> objects, UserConfig userConfigPortrait, UserConfig userConfigLandscape) {
     super(context, layoutId, objects);
@@ -77,12 +78,21 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       notifyDataSetChanged();
   }
 
+  public void setLockRefresh(boolean lock) {
+    mLockRefresh = lock;
+  }
+
   /**
    * Removes the item selection.
    */
   public void removeSelection() {
     mSelectedItemsIds = new HashSet<>();
-    notifyDataSetChanged();
+    if(!mLockRefresh)
+      notifyDataSetChanged();
+  }
+
+  public Set<Integer> getSelectedItemsIds() {
+    return mSelectedItemsIds;
   }
 
   /**
@@ -152,7 +162,8 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   @Override
   public void clear() {
     mLineEntries.clear();
-    notifyDataSetChanged();
+    if(!mLockRefresh)
+      notifyDataSetChanged();
   }
 
   /**
@@ -170,7 +181,8 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   @Override
   public void addAll(@NonNull Collection<? extends LineEntry> collection) {
     mLineEntries.addAll(collection);
-    notifyDataSetChanged();
+    if(!mLockRefresh)
+      notifyDataSetChanged();
   }
 
   /**

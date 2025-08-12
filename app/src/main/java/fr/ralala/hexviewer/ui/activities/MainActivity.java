@@ -375,7 +375,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     if (mPayloadPlainSwipe.isVisible()) {
-      mPayloadPlainSwipe.refresh();
+      mPayloadPlainSwipe.refresh(true);
     } else if (mPayloadHexHelper.isVisible())
       mPayloadHexHelper.refresh();
     // Checks the orientation of the screen

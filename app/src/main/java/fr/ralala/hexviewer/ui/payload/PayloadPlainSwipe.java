@@ -53,7 +53,7 @@ public class PayloadPlainSwipe {
     mPayloadPlain = activity.findViewById(R.id.payloadPlain);
     mPayloadPlainSwipeRefreshLayout = activity.findViewById(R.id.payloadPlainSwipeRefreshLayout);
     // Configure SwipeRefreshLayout
-    mPayloadPlainSwipeRefreshLayout.setOnRefreshListener(this::refresh);
+    mPayloadPlainSwipeRefreshLayout.setOnRefreshListener(() -> refresh(false));
     mPayloadPlainSwipeRefreshLayout.setColorSchemeResources(
       android.R.color.holo_blue_light,
       android.R.color.holo_orange_light,
@@ -77,7 +77,7 @@ public class PayloadPlainSwipe {
    * Called to refresh the adapter.
    */
   public void refreshAdapter() {
-    refresh();
+    refresh(false);
     mAdapterPlain.refresh();
   }
 
@@ -109,7 +109,7 @@ public class PayloadPlainSwipe {
     if (b) {
       new Handler(Looper.getMainLooper()).postDelayed(() -> {
         mPayloadPlainSwipeRefreshLayout.setRefreshing(true);
-        refresh();
+        refresh(false);
       }, 100);
     }
   }
@@ -118,13 +118,14 @@ public class PayloadPlainSwipe {
   /**
    * Functions called to refresh the list.
    */
-  public void refresh() {
+  public void refresh(boolean fromOrientation) {
     mCancelPayloadPlainSwipeRefresh.set(true);
     new Handler(Looper.getMainLooper()).postDelayed(() -> {
       mCancelPayloadPlainSwipeRefresh.set(false);
       final List<LineEntry> list = refreshPlain(mCancelPayloadPlainSwipeRefresh);
       if (!mCancelPayloadPlainSwipeRefresh.get()) {
         mActivity.runOnUiThread(() -> {
+          mAdapterPlain.setLockRefresh(fromOrientation && mPlainMultiChoiceCallback.isActionMode());
           mAdapterPlain.clear();
           mAdapterPlain.addAll(list);
           if (!mActivity.getSearchQuery().isEmpty())

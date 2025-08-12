@@ -16,6 +16,9 @@ import android.widget.ListView;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
@@ -254,20 +257,23 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   }
 
   public void refresh() {
-    if (mActionMode != null && mAdapter.getSelectedCount() != mAdapter.getCount() && mMenuItemSelectAll != null && mMenuItemSelectAll.isChecked()) {
+    if (isActionMode() && mAdapter.getSelectedCount() != mAdapter.getCount()) {
       // Inconsistency detected, refresh is launched to correct the selection
       doRefreshOrCorrection();
     }
     // No inconsistencies, we avoid repeating heavy treatment unnecessarily.
   }
 
+
+  public boolean isActionMode() {
+    return (mActionMode != null);
+  }
+
   public void doRefreshOrCorrection() {
-    // Exit if there is no active ActionMode
-    if (mActionMode == null) return;
 
     // Get the total number of items in the adapter
     final int totalCount = mAdapter.getCount();
-    final boolean selectAllChecked = true;
+    final Set<Integer> items = new HashSet<>(mAdapter.getSelectedItemsIds());
 
     // Prevent triggering onItemCheckedStateChanged during the batch process
     mFromAll = true;
@@ -278,9 +284,9 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     mMenuItemSelectAll.setActionView(UIHelper.startRefreshAnimation(mActivity));
 
     // Clear all current selections
+    mAdapter.setLockRefresh(true);
     mAdapter.removeSelection();
     mListView.clearChoices();
-
 
     // Dynamically adjust batch size based on totalCount to improve performance
     final int dynamicBatchSize = evaluateBatch(totalCount);
@@ -296,10 +302,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
         int end = Math.min(index[0] + dynamicBatchSize, totalCount);
 
         // Apply selection state to each item in the batch
-        for (int i = index[0]; i < end; i++) {
-          mAdapter.toggleSelection(i, selectAllChecked, false);
-          mListView.setItemChecked(i, selectAllChecked);
-        }
+        applySelectionState(items, index[0], end);
 
         // Update the index for the next batch
         index[0] = end;
@@ -309,6 +312,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
           handler.postDelayed(this, 1); // Small delay to keep UI smooth
         } else {
           // All batches are complete, refresh the adapter once
+          mAdapter.setLockRefresh(false);
           mAdapter.notifyDataSetChanged();
           // Update the ActionMode title with the final count
           int checkedCount = mAdapter.getSelectedCount();
@@ -337,6 +341,16 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
 
     // Start the batch process
     handler.postDelayed(batchRunnable, DELAYED_POST_MS);
+  }
+
+  private void applySelectionState(Set<Integer> items, int index, int end) {
+    for (int i = index; i < end; i++) {
+      boolean selected = mMenuItemSelectAll != null && mMenuItemSelectAll.isChecked();
+      if(items.contains(i))
+        selected = true;
+      mAdapter.toggleSelection(i, selected, false);
+      mListView.setItemChecked(i, selected);
+    }
   }
 
   protected int evaluateBatch(int totalCount) {
