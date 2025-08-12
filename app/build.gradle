@@ -104,30 +104,36 @@ dependencies {
   testImplementation "junit:junit:4.13.2"
 }
 
-private Properties loadSigningConfig(boolean signingEnabled) {
-  if (signingEnabled) {
-    def props = new Properties()
-    def propsFile = rootProject.file("keystore.properties")
-    if (!propsFile.exists()) {
-      throw new GradleException("Missing 'keystore.properties' file.")
-    }
-
-    propsFile.withInputStream { props.load(it) }
-
-    def requiredKeys = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword']
-    requiredKeys.each {
-      if (!props.containsKey(it) || props[it].trim().isEmpty()) {
-        throw new GradleException("Missing or empty property: '${it}' in 'keystore.properties'.")
-      }
-    }
-
-    def keystorePath = rootProject.file(props['storeFile'].trim())
-    if (!keystorePath.exists()) {
-      throw new GradleException("Keystore file not found at: ${keystorePath}")
-    }
-    return props
+/* Tasks */
+tasks.withType(Test).configureEach { testTask ->
+  testLogging {
+    events "passed", "skipped", "failed"
+    exceptionFormat "full"
+    showStandardStreams = true
   }
-  return null
+  def totalDuration = 0L
+  def list = new ArrayList<String>()
+
+  doLast {
+    logger.lifecycle("Tests finished.")
+  }
+
+  afterTest { descriptor, result ->
+    long duration = result.endTime - result.startTime
+    list << "Test ${descriptor.name} took ${duration} ms"
+    totalDuration += duration
+  }
+
+  afterSuite { desc, result ->
+    if (!desc.parent) { // root suite
+      logger.lifecycle("")
+      list.each { li ->
+        logger.lifecycle(li)
+      }
+      logger.lifecycle("Test summary: ${result.testCount} tests, ${result.successfulTestCount} succeeded, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped")
+      logger.lifecycle("Total time: ${totalDuration} ms")
+    }
+  }
 }
 
 // versionCode <-> versionName /////////////////////////////////////////////////////////////////////
@@ -166,6 +172,33 @@ tasks.register('checkFastlaneChangelog') {
     )
 }
 build.dependsOn checkFastlaneChangelog
+
+/* functions */
+private Properties loadSigningConfig(boolean signingEnabled) {
+  if (signingEnabled) {
+    def props = new Properties()
+    def propsFile = rootProject.file("keystore.properties")
+    if (!propsFile.exists()) {
+      throw new GradleException("Missing 'keystore.properties' file.")
+    }
+
+    propsFile.withInputStream { props.load(it) }
+
+    def requiredKeys = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword']
+    requiredKeys.each {
+      if (!props.containsKey(it) || props[it].trim().isEmpty()) {
+        throw new GradleException("Missing or empty property: '${it}' in 'keystore.properties'.")
+      }
+    }
+
+    def keystorePath = rootProject.file(props['storeFile'].trim())
+    if (!keystorePath.exists()) {
+      throw new GradleException("Keystore file not found at: ${keystorePath}")
+    }
+    return props
+  }
+  return null
+}
 
 /**
  * Generates a versionCode based on the given semVer String.
