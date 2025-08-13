@@ -1,5 +1,5 @@
 plugins {
-  id "org.sonarqube" version "3.3"
+  id "org.sonarqube" version "6.2.0.5505"
   id 'com.android.application'
 }
 
