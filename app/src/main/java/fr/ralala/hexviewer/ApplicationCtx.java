@@ -635,12 +635,30 @@ public class ApplicationCtx extends Application {
   private void loadDefaultLocal() {
     if (mLanguage == null) {
       Locale loc = Locale.getDefault();
-      mLanguage = loc.getLanguage();
+      mLanguage = fixCodeForAPI35(loc.getLanguage());
       loc.getCountry();
       if (!loc.getCountry().isEmpty())
         mLanguage += "-" + loc.getCountry();
       addLog(this, "Application", "Default system locale: '" + mLanguage + "'");
     }
+  }
+
+  /**
+   * Maps modern language codes to their legacy equivalents for API 35 compatibility.
+   * Hebrew (he) -> iw
+   * Yiddish (yi) -> ji
+   * Indonesian (id) -> in
+   */
+  private String fixCodeForAPI35(String code) {
+    return switch (code) {
+      /* Hebrew */
+      case "he" -> "iw";
+      /* Yiddish */
+      case "yi" -> "ji";
+      /* Indonesian */
+      case "id" -> "in";
+      default -> code;
+    };
   }
 
   /**
