@@ -15,11 +15,14 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
@@ -412,12 +415,37 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
   }
 
   /**
+   * Test whether we are in plain text implementation or not
+   *
+   * @return boolean
+   */
+  protected abstract boolean isFromPlainText();
+
+  /**
    * Copy action.
    *
    * @param mode The ActionMode providing the selection mode.
    * @return false on error.
    */
-  protected abstract boolean actionCopy(ActionMode mode);
+  private boolean actionCopy(ActionMode mode) {
+    boolean plain = isFromPlainText();
+    List<Integer> selected = new ArrayList<>(mAdapter.getSelectedIds());
+    if (selected.isEmpty()) {
+      displayError(R.string.error_no_line_selected);
+      return false;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (Integer i : selected) {
+      LineEntry ld = mAdapter.getItem(i);
+      if (ld != null) {
+        if (plain)
+          sb.append(SysHelper.ignoreNonDisplayedChar(ld.getPlain()));
+        else
+          sb.append(ld.getPlain()).append("\n");
+      }
+    }
+    return copyAndClose(plain ? "CopyPlain" : "CopyHex", mode, sb);
+  }
 
   /**
    * Clear action.

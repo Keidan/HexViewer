@@ -48,28 +48,6 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
   }
 
   /**
-   * Copy action.
-   *
-   * @param mode The ActionMode providing the selection mode.
-   * @return false on error.
-   */
-  @Override
-  protected boolean actionCopy(ActionMode mode) {
-    List<Integer> selected = new ArrayList<>(mAdapter.getSelectedIds());
-    if (selected.isEmpty()) {
-      displayError(R.string.error_no_line_selected);
-      return false;
-    }
-    StringBuilder sb = new StringBuilder();
-    for (Integer i : selected) {
-      LineEntry ld = mAdapter.getItem(i);
-      if (ld != null)
-        sb.append(ld.getPlain()).append("\n");
-    }
-    return copyAndClose("CopyHex", mode, sb);
-  }
-
-  /**
    * Clear action.
    *
    * @param item The item that was clicked.
@@ -155,4 +133,12 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
     return true;
   }
 
+  /**
+   * Test whether we are in plain text implementation or not
+   *
+   * @return boolean
+   */
+  protected boolean isFromPlainText() {
+    return false;
+  }
 }
