@@ -220,17 +220,31 @@ public class ApplicationCtx extends Application {
   }
 
   /**
+   * Returns the current language.
+   * @return String
+   */
+  // For now, I don't have the courage to change everything.
+  @SuppressWarnings("squid:S1874")
+  private String getCurrentLanguage() {
+    Configuration config = Resources.getSystem().getConfiguration();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      return config.getLocales().get(0).getLanguage();
+    } else {
+      @SuppressWarnings("deprecation")
+      Locale oldLocale = config.locale;
+      return oldLocale.getLanguage();
+    }
+  }
+
+  /**
    * Loads default values.
    *
    * @param recent Delete the list of recent files?
    */
-// For now, I don't have the courage to change everything.
+  // For now, I don't have the courage to change everything.
   @SuppressWarnings("squid:S1874")
   public void loadDefaultValues(boolean recent) {
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
-      mLanguage = Resources.getSystem().getConfiguration().locale.getLanguage();
-    else
-      mLanguage = Resources.getSystem().getConfiguration().getLocales().get(0).getLanguage();
+    mLanguage = getCurrentLanguage();
     setApplicationLanguage(mLanguage);
     SharedPreferences.Editor e = getPref(this).edit();
     mListSettingsHexPortrait.loadDefaultValues(e);
