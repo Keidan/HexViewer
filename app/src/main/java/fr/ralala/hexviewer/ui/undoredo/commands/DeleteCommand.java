@@ -24,7 +24,7 @@ import fr.ralala.hexviewer.ui.undoredo.ICommand;
  * ******************************************************************************
  */
 // For now, I don't have the courage to change everything.
-@SuppressWarnings("java:S7091")
+@SuppressWarnings("squid:S7091")
 public class DeleteCommand implements ICommand {
   private final Map<Integer, LineEntry> mList;
   private final MainActivity mActivity;

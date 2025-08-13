@@ -40,7 +40,7 @@ import fr.ralala.hexviewer.models.SettingsKeys;
  * ******************************************************************************
  */
 // For now, I don't have the courage to change everything.
-@SuppressWarnings("java:S7091")
+@SuppressWarnings("squid:S7091")
 public class ApplicationCtx extends Application {
   private static final int CIRCULAR_BUFFER_DEPTH = 2000;
   private Queue<String> mLogs = null;
@@ -225,7 +225,7 @@ public class ApplicationCtx extends Application {
    * @param recent Delete the list of recent files?
    */
 // For now, I don't have the courage to change everything.
-  @SuppressWarnings("java:S1874")
+  @SuppressWarnings("squid:S1874")
   public void loadDefaultValues(boolean recent) {
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
       mLanguage = Resources.getSystem().getConfiguration().locale.getLanguage();

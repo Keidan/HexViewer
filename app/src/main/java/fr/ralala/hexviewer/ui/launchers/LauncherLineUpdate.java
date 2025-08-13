@@ -35,7 +35,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 // For now, I don't have the courage to change everything.
-@SuppressWarnings("java:S7091")
+@SuppressWarnings("squid:S7091")
 public class LauncherLineUpdate {
   private final MainActivity mActivity;
   private final ApplicationCtx mApp;

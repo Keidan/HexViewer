@@ -31,7 +31,7 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
  * ******************************************************************************
  */
 // For now, I don't have the courage to change everything.
-@SuppressWarnings("java:S7091")
+@SuppressWarnings("squid:S7091")
 public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
 
   public HexMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {

@@ -19,7 +19,7 @@ import fr.ralala.hexviewer.ui.fragments.SettingsFragmentListsLandscape;
  * ******************************************************************************
  */
 // For now, I don't have the courage to change everything.
-@SuppressWarnings("java:S110")
+@SuppressWarnings("squid:S110")
 public class SettingsListsLandscapeActivity extends AbstractSettingsActivity {
 
   /**

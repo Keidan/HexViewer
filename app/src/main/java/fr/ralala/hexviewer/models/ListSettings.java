@@ -19,7 +19,7 @@ import fr.ralala.hexviewer.ApplicationCtx;
  * ******************************************************************************
  */
 // For now, I don't have the courage to change everything.
-@SuppressWarnings("java:S7091")
+@SuppressWarnings("squid:S7091")
 public class ListSettings {
   private final String mKeyDisplayDataColumn;
   private final String mKeyRowHeight;
