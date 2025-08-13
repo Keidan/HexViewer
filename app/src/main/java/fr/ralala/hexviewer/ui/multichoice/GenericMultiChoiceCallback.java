@@ -77,7 +77,8 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
   private void setListViewListeners(final ListView listView) {
     listView.setOnItemClickListener((parent, view, position, id) -> {
       if (mMultiSelectMode) {
-        final boolean currentlySelected = mAdapter.getSelectedItemsIds().contains(position);
+        final Integer pos = position;
+        final boolean currentlySelected = mAdapter.getSelectedItemsIds().contains(pos);
         onItemCheckedStateChanged(mActionMode, position, !currentlySelected);
       } else {
         mActivity.onLineItemClick(position);
@@ -378,8 +379,9 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
 
   private void applySelectionState(Set<Integer> items, int index, int end) {
     for (int i = index; i < end; i++) {
+      final Integer pos = i;
       boolean selected = mMenuItemSelectAll != null && mMenuItemSelectAll.isChecked();
-      if (items.contains(i))
+      if (items.contains(pos))
         selected = true;
       mAdapter.toggleSelection(i, selected, false);
     }
