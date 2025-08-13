@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.ui.payload;
 
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -73,10 +72,7 @@ public class PayloadHexHelper {
       new UserConfigPortrait(activity, true),
       new UserConfigLandscape(activity, true));
     mPayloadHex.setAdapter(mAdapterHex);
-    mPayloadHex.setOnItemClickListener(activity);
-    mPayloadHex.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
     mHexMultiChoiceCallback = new HexMultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
-    mPayloadHex.setMultiChoiceModeListener(mHexMultiChoiceCallback);
   }
 
   /**
@@ -89,7 +85,7 @@ public class PayloadHexHelper {
     mAdapterHex.getEntries().clearFilteredUpdated();
     if (!query.isEmpty())
       mAdapterHex.manualFilterUpdate(query);
-    mAdapterHex.notifyDataSetChanged();
+    mAdapterHex.refresh();
   }
 
   /**
@@ -104,7 +100,7 @@ public class PayloadHexHelper {
    */
   public void refreshLineNumbers() {
     refreshLineNumbersVisibility();
-    mAdapterHex.notifyDataSetChanged();
+    mAdapterHex.refresh();
   }
 
   /**
@@ -164,7 +160,7 @@ public class PayloadHexHelper {
    * Functions called to refresh the list.
    */
   public void refresh() {
-    getAdapter().notifyDataSetChanged();
+    getAdapter().refresh();
     mHexMultiChoiceCallback.refresh();
   }
 }

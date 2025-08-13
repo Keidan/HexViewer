@@ -110,10 +110,11 @@
       android:visibility="gone"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:fastScrollEnabled="true"
       android:layout_below="@id/title"
       android:padding="1dp"
       android:textSize="@dimen/activity_main_payload_view_textSize"
+      android:fastScrollEnabled="true"
+      android:scrollbarStyle="outsideOverlay"
       android:scrollbarSize="@dimen/activity_main_payload_view_scrollbarSize"
       android:typeface="monospace" />
   </RelativeLayout>
@@ -127,9 +128,10 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:visibility="gone"
-      android:fastScrollEnabled="true"
       android:padding="1dp"
       android:textSize="@dimen/activity_main_payload_plain_swipe_refresh_layout_textSize"
+      android:fastScrollEnabled="true"
+      android:scrollbarStyle="outsideOverlay"
       android:scrollbarSize="@dimen/activity_main_payload_view_scrollbarSize"
       android:typeface="monospace"/>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -6,15 +6,14 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ActionMode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,9 +37,7 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * </p>
  * ******************************************************************************
  */
-public abstract class GenericMultiChoiceCallback implements AbsListView.MultiChoiceModeListener {
-  protected static final int DELAYED_POST_MS = 500;
-  private final ListView mListView;
+public abstract class GenericMultiChoiceCallback implements ActionMode.Callback {
   protected final SearchableListArrayAdapter mAdapter;
   protected final MainActivity mActivity;
   private final ClipboardManager mClipboard;
@@ -50,6 +47,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   protected boolean mFromAll = false;
   private ActionMode mActionMode;
   private int mPreviousCount = 0;
+  private boolean mMultiSelectMode = false;
 
   /**
    * Functional interface representing an asynchronous action
@@ -67,10 +65,34 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
   @SuppressLint("InflateParams")
   protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
     mActivity = mainActivity;
-    mListView = listView;
     mAdapter = adapter;
     mClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     mProgress = UIHelper.createCircularProgressDialog(mActivity, null);
+    setListViewListeners(listView);
+  }
+
+  private void setListViewListeners(final ListView listView) {
+    listView.setOnItemClickListener((parent, view, position, id) -> {
+      if (mMultiSelectMode) {
+        final boolean currentlySelected = mAdapter.getSelectedItemsIds().contains(position);
+        onItemCheckedStateChanged(mActionMode, position, !currentlySelected);
+      } else {
+        mActivity.onLineItemClick(position);
+      }
+    });
+    listView.setOnItemLongClickListener((parent, view, position, id) -> {
+      if (mActionMode == null) {
+        mActionMode = mActivity.startSupportActionMode(this);
+        mAdapter.toggleSelection(position, true, true);
+        updateTitle(mActionMode);
+        mFirstSelection = position;
+      }
+      return true;
+    });
+  }
+
+  protected SearchableListArrayAdapter getAdapter() {
+    return mAdapter;
   }
 
   /**
@@ -89,6 +111,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   @Override
   public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    setMultiSelectMode(true);
     mPreviousCount = mAdapter.getCount();
     mActionMode = mode;
     mode.getMenuInflater().inflate(getMenuId(), menu);
@@ -144,7 +167,9 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   @Override
   public void onDestroyActionMode(ActionMode mode) {
+    setMultiSelectMode(false);
     mActionMode = null;
+    mFromAll = false;
     mAdapter.removeSelection();
     if (mProgress.isShowing())
       mProgress.dismiss();
@@ -152,7 +177,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
 
   private void updateTitle(ActionMode mode) {
     if (mode != null) {
-      final int checkedCount = mListView.getCheckedItemCount();
+      final int checkedCount = mAdapter.getSelectedCount();
       mode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
     }
   }
@@ -162,16 +187,17 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    *
    * @param mode     The ActionMode providing the selection mode.
    * @param position Adapter position of the item that was checked or unchecked.
-   * @param id       Adapter ID of the item that was checked or unchecked.
    * @param checked  true if the item is now checked, false if the item is now unchecked.
    */
-  @Override
-  public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-    final int checkedCount = mListView.getCheckedItemCount();
+  public void onItemCheckedStateChanged(ActionMode mode, int position, boolean checked) {
+    final int checkedCount = mAdapter.getSelectedCount();
     if (!mFromAll) {
-      updateTitle(mode);
-
       mAdapter.toggleSelection(position, checked, true);
+      updateTitle(mode);
+      if (mAdapter.getSelectedCount() == 0) {
+        mode.finish();
+        return;
+      }
 
       // Only update firstSelection if NOT in mass selection mode
       if (checkedCount == 1 && !mAdapter.getSelectedIds().isEmpty())
@@ -228,16 +254,14 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
             // Skip the first selected item to preserve its state
             if (mFirstSelection == i) continue;
 
-            // Set item checked state on ListView
-            mListView.setItemChecked(i, selectAll);
-
             // Toggle selection state in the adapter without triggering callbacks
             mAdapter.toggleSelection(i, selectAll, false);
           }
 
+
           // After batch loop, ensure first selection remains checked if valid
           if (mFirstSelection >= 0 && mFirstSelection < totalCount) {
-            mListView.setItemChecked(mFirstSelection, true);
+            mAdapter.toggleSelection(mFirstSelection, true, false);
           }
 
           // Update index to next batch start
@@ -254,7 +278,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       };
 
       // Start processing the first batch immediately
-      handler.postDelayed(batchRunnable, DELAYED_POST_MS);
+      handler.postDelayed(batchRunnable, getOverlayDelay(totalCount));
     });
   }
 
@@ -275,7 +299,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
 
     // Get the total number of items in the adapter
     final int totalCount = mAdapter.getCount();
-    if(mPreviousCount == totalCount)
+    if (mPreviousCount == totalCount)
       return;
     mPreviousCount = totalCount;
 
@@ -292,7 +316,6 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     // Clear all current selections
     mAdapter.setLockRefresh(true);
     mAdapter.removeSelection();
-    mListView.clearChoices();
 
     // Dynamically adjust batch size based on totalCount to improve performance
     final int dynamicBatchSize = evaluateBatch(totalCount);
@@ -302,6 +325,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     final int[] index = {0}; // Track current batch processing index
 
     Runnable batchRunnable = new Runnable() {
+      @SuppressLint("NotifyDataSetChanged")
       @Override
       public void run() {
         // Calculate the end index for the current batch
@@ -346,16 +370,15 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
     };
 
     // Start the batch process
-    handler.postDelayed(batchRunnable, DELAYED_POST_MS);
+    handler.postDelayed(batchRunnable, getOverlayDelay(totalCount));
   }
 
   private void applySelectionState(Set<Integer> items, int index, int end) {
     for (int i = index; i < end; i++) {
       boolean selected = mMenuItemSelectAll != null && mMenuItemSelectAll.isChecked();
-      if(items.contains(i))
+      if (items.contains(i))
         selected = true;
       mAdapter.toggleSelection(i, selected, false);
-      mListView.setItemChecked(i, selected);
     }
   }
 
@@ -369,6 +392,23 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       batchSize = Math.max(2000, totalCount / 5); // large dataset → ~5 batches
     }
     return batchSize;
+  }
+
+  /**
+   * Returns the delay before showing the overlay in milliseconds
+   * based on the total number of items.
+   */
+  protected long getOverlayDelay(int totalCount) {
+    if (totalCount <= 5000) {
+      // Small lists → long delay to avoid flickering
+      return 300;
+    } else if (totalCount <= 50000) {
+      // Medium lists → medium delay
+      return 100;
+    } else {
+      // Large lists → show immediately
+      return 0;
+    }
   }
 
   /**
@@ -403,7 +443,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    */
   protected void closeActionMode(ActionMode mode, boolean delayed) {
     if (delayed)
-      new Handler(Looper.getMainLooper()).postDelayed(mode::finish, DELAYED_POST_MS);
+      new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 100);
     else
       mode.finish();
   }
@@ -425,6 +465,7 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
    * @param mode   The current ActionMode.
    * @param action The asynchronous action to run, which accepts a completion callback.
    */
+  @SuppressLint("NotifyDataSetChanged")
   protected void setActionView(final MenuItem item, final ActionMode mode, final AsyncAction action) {
     // Show the circular progress dialog
     UIHelper.showCircularProgressDialog(mProgress);
@@ -486,5 +527,16 @@ public abstract class GenericMultiChoiceCallback implements AbsListView.MultiCho
       SysHelper.sizeToHuman(mActivity, sb.length(), true, true, false)));
     closeActionMode(mode, true);
     return true;
+  }
+
+  /* CLICKS */
+
+  /**
+   * Enables or disables multi-select mode.
+   * This is called by the ActionMode.Callback implementation.
+   */
+  public void setMultiSelectMode(boolean enabled) {
+    mMultiSelectMode = enabled;
+    mAdapter.notifyDataSetChanged();
   }
 }

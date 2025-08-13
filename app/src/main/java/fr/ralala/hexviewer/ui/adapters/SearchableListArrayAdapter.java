@@ -87,7 +87,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    */
   public void removeSelection() {
     mSelectedItemsIds = new HashSet<>();
-    if(!mLockRefresh)
+    if (!mLockRefresh)
       notifyDataSetChanged();
   }
 
@@ -162,7 +162,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   @Override
   public void clear() {
     mLineEntries.clear();
-    if(!mLockRefresh)
+    if (!mLockRefresh)
       notifyDataSetChanged();
   }
 
@@ -181,7 +181,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   @Override
   public void addAll(@NonNull Collection<? extends LineEntry> collection) {
     mLineEntries.addAll(collection);
-    if(!mLockRefresh)
+    if (!mLockRefresh)
       notifyDataSetChanged();
   }
 

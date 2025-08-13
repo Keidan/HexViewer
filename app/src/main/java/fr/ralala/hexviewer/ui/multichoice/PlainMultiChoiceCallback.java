@@ -1,8 +1,9 @@
 package fr.ralala.hexviewer.ui.multichoice;
 
-import android.view.ActionMode;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import androidx.appcompat.view.ActionMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class PlainMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    * @return false on error.
    */
+  @Override
   protected boolean actionCopy(ActionMode mode) {
     List<Integer> selected = new ArrayList<>(mAdapter.getSelectedIds());
     if (selected.isEmpty()) {
@@ -67,6 +69,7 @@ public class PlainMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param item The item that was clicked.
    * @param mode The ActionMode providing the selection mode.
    */
+  @Override
   protected void actionClear(MenuItem item, ActionMode mode) {
     // nothing
   }
@@ -77,6 +80,7 @@ public class PlainMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    * @return false on error.
    */
+  @Override
   protected boolean actionEdit(ActionMode mode) {
     return false;
   }

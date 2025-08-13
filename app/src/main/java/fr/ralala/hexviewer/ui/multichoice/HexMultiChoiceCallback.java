@@ -1,11 +1,11 @@
 package fr.ralala.hexviewer.ui.multichoice;
 
-import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.ActionMode;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import androidx.appcompat.view.ActionMode;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 @SuppressWarnings("java:S7091")
 public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
 
-  @SuppressLint("InflateParams")
   public HexMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {
     super(mainActivity, listView, adapter);
   }
@@ -54,6 +53,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    * @return false on error.
    */
+  @Override
   protected boolean actionCopy(ActionMode mode) {
     List<Integer> selected = new ArrayList<>(mAdapter.getSelectedIds());
     if (selected.isEmpty()) {
@@ -75,6 +75,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param item The item that was clicked.
    * @param mode The ActionMode providing the selection mode.
    */
+  @Override
   protected void actionClear(MenuItem item, ActionMode mode) {
     setActionView(item, null, done -> {
       final List<Integer> selected = mAdapter.getSelectedIds();
@@ -113,7 +114,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
         }
       };
 
-      handler.postDelayed(batchRunnable, DELAYED_POST_MS);
+      handler.postDelayed(batchRunnable, getOverlayDelay(totalSelected));
     });
   }
 
@@ -123,6 +124,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    * @param mode The ActionMode providing the selection mode.
    * @return false on error.
    */
+  @Override
   protected boolean actionEdit(ActionMode mode) {
     if (!mActivity.getSearchQuery().trim().isEmpty()) {
       displayError(R.string.error_edition_search_in_progress);

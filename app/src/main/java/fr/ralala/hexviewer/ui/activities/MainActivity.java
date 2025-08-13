@@ -13,7 +13,6 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -65,7 +64,7 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  */
 // For now, I don't have the courage to change everything.
 @SuppressWarnings("java:S7091")
-public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
+public class MainActivity extends BaseActivity implements TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
   private FileData mFileData = null;
   private ConstraintLayout mIdleView = null;
   private MenuItem mSearchMenu = null;
@@ -445,15 +444,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
   }
 
   /**
-   * Callback method to be invoked when an item in this AdapterView has been clicked.
-   *
-   * @param parent   The AdapterView where the click happened.
-   * @param view     The view within the AdapterView that was clicked (this will be a view provided by the adapter).
-   * @param position The position of the view in the adapter.
-   * @param id       The row id of the item that was clicked.
+   * Method to be invoked when a line has been clicked.
    */
-  @Override
-  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+  public void onLineItemClick(int position) {
     LineEntry e = mPayloadHexHelper.getAdapter().getItem(position);
     if (e == null)
       return;
