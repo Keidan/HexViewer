@@ -10,7 +10,6 @@ import androidx.documentfile.provider.DocumentFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
@@ -132,47 +131,75 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    */
   @Override
   public Result doInBackground(final ContentResolver contentResolver, final Request request) {
+    // Create a result object to store the outcome of the task
     final Result result = new Result();
+
+    // Validate input request
     if (request == null) {
       result.exception = "Invalid param!";
       return result;
     }
+
+    // Store file data and optional runnable from the request
     result.fd = request.mFd;
     result.runnable = request.mRunnable;
+
+    // Initialize progress
     publishProgress(0L);
     try {
+      // Open the file channel in write-only mode
       mRandomAccessFileChannel = RandomAccessFileChannel.openForWriteOnly(contentResolver, result.fd.getUri(), !result.fd.isSequential());
-      List<Byte> bytes = new ArrayList<>();
-      for (LineEntry entry : request.mEntries)
-        bytes.addAll(entry.getRaw());
-      final byte[] data = SysHelper.toByteArray(bytes, mCancel);
-      if (!isCancelled()) {
-        mTotalSize = data.length;
-        int maxLength = MAX_LENGTH;
-        AtomicLong position = new AtomicLong(result.fd.getStartOffset());
-        mRandomAccessFileChannel.setPosition(position.get());
-        if (result.fd.isSequential()) {
-          maxLength = result.fd.getSize() < MAX_LENGTH ? (int) result.fd.getSize() : MAX_LENGTH;
-        }
-        final long count = mTotalSize / maxLength;
-        final long remain = mTotalSize - (count * maxLength);
 
-        long offset = 0;
-        for (long i = 0; i < count && !isCancelled(); i++) {
-          mRandomAccessFileChannel.write(data, (int) offset, maxLength);
-          publishProgress((long) maxLength);
-          offset += maxLength;
-        }
-        if (!isCancelled() && remain > 0) {
-          mRandomAccessFileChannel.write(data, (int) offset, (int) remain);
-          publishProgress(remain);
+      // Set the maximum batch size
+      int maxLength = MAX_LENGTH;
+
+      // Set initial file position for writing
+      mRandomAccessFileChannel.setPosition(result.fd.getStartOffset());
+
+      // Adjust maxLength for sequential files if file size is smaller
+      if (result.fd.isSequential()) {
+        maxLength = (int) Math.min(result.fd.getSize(), MAX_LENGTH);
+      }
+
+      // Temporary storage for a batch of bytes
+      List<Byte> batch = new ArrayList<>();
+
+      // Iterate over all line entries
+      for (LineEntry entry : request.mEntries) {
+        // Add the raw bytes of the current entry to the batch
+        batch.addAll(entry.getRaw());
+
+        // If batch reaches maxLength, write it to the file
+        if (batch.size() >= maxLength) {
+          byte[] data = SysHelper.toByteArray(batch, mCancel);
+          mRandomAccessFileChannel.write(data, 0, data.length);
+
+          // Update progress on UI thread
+          publishProgress((long) data.length);
+
+          // Clear batch for next iteration
+          batch.clear();
+
+          // Stop if the task was cancelled
+          if (isCancelled()) break;
         }
       }
+
+      // Write any remaining bytes in the last batch
+      if (!isCancelled() && !batch.isEmpty()) {
+        byte[] data = SysHelper.toByteArray(batch, mCancel);
+        mRandomAccessFileChannel.write(data, 0, data.length);
+        // Update progress on UI thread
+        publishProgress((long) data.length);
+      }
     } catch (final Exception e) {
+      // Capture any exception in the result
       result.exception = e.getMessage();
     } finally {
+      // Ensure the file channel is closed at the end
       close();
     }
+    // Return the final result object
     return result;
   }
 }

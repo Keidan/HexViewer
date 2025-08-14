@@ -75,6 +75,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
 
   /**
    * Called before the execution of the task.
+   * Initialize memory monitoring and clear the adapter.
    *
    * @return The Config.
    */
@@ -89,6 +90,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
 
   /**
    * Called after the execution of the task.
+   * Handle result, memory status, and UI feedback.
    *
    * @param result The result.
    */
@@ -96,18 +98,23 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   public void onPostExecute(final Result result) {
     super.onPostExecute(result);
     mMemoryMonitor.stop();
+    // Show low memory error if detected
     if (mLowMemory.get())
       UIHelper.showErrorDialog(mContext, R.string.error_title, mContext.getString(R.string.not_enough_memory));
+      // Show cancellation toast
     else if (isCancelled())
       UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
+      // Show exception if any
     else if (result.exception != null)
       UIHelper.showErrorDialog(mContext, R.string.error_title, mContext.getString(R.string.exception) + ": " + result.exception);
+      // Update adapter with loaded hex lines
     else {
       if (result.listHex != null) {
         mAdapter.setStartOffset(result.startOffset);
         mAdapter.addAll(result.listHex);
       }
     }
+    // Log memory status if task completed normally
     if (!mLowMemory.get()) {
       MemoryInfo mi = mMemoryMonitor.getLastMemoryInfo();
       ApplicationCtx.addLog(mContext, "Open",
@@ -116,13 +123,14 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
           Formatter.formatFileSize(mContext, mi.getTotalFreeMemory()),
           Formatter.formatFileSize(mContext, mi.getTotalMemory())));
     }
+    // Notify listener
     if (mListener != null)
       mListener.onOpenResult(result.exception == null && !isCancelled() && !mLowMemory.get(), true);
     super.onPostExecute(result);
   }
 
   /**
-   * Closes the stream.
+   * Closes the file channel safely.
    */
   private void close() {
     if (mRandomAccessFileChannel != null) {
@@ -141,6 +149,10 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       mListener.onOpenResult(false, true);
   }
 
+  /**
+   * Reads data from the file in batches using ByteBuffer.
+   * Each read is processed and formatted into LineEntry objects.
+   */
   private void processRead(final FileData fd,
                            final List<LineEntry> list,
                            final Result result,
@@ -149,15 +161,20 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
     boolean first = true;
     int reads;
     boolean forceBreak = false;
-    /* read data */
+    // Allocate a buffer for batching reads
     ByteBuffer buffer = ByteBuffer.allocate(maxLength);
+    // Read the file in chunks until EOF or cancellation
     while (!isCancelled() && (reads = mRandomAccessFileChannel.read(buffer)) != -1) {
       try {
+        // Convert raw bytes into LineEntry objects
         SysHelper.formatBuffer(list, buffer.array(), reads, mCancel,
           mApp.getNbBytesPerLine(), first ? fd.getShiftOffset() : 0);
+
         first = false;
         buffer.clear();
         publishProgress((long) reads);
+
+        // Track sequential reads and enforce end offset
         if (fd.isSequential()) {
           totalSequential += reads;
           if (totalSequential >= fd.getEndOffset())
@@ -187,7 +204,10 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       result.startOffset = fd.getStartOffset();
       /* Size + stream */
       mTotalSize = fd.getSize();
+      // Publish initial progress
       publishProgress(0L);
+
+      // Open file channel for read-only
       mRandomAccessFileChannel = RandomAccessFileChannel.openForReadOnly(contentResolver, fd.getUri());
 
       int maxLength = moveCursorIfSequential(fd, result);
@@ -196,10 +216,14 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         /* prepare buffer */
         long totalSequential = fd.getStartOffset();
         evaluateShiftOffset(fd, totalSequential);
+
+        // Read file data in batches
         processRead(fd, list, result, totalSequential, maxLength);
-        /* prepare result */
+
+        // Prepare the result
         if (result.exception == null) {
           result.listHex = list;
+
           if (!mCancel.get()) {
             if (mOldToString != null)
               mApp.getRecentlyOpened().remove(mOldToString);
@@ -209,10 +233,13 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
         }
       }
     } catch (final Exception e) {
+      // Capture any exception in the result
       result.exception = e.getMessage();
     } finally {
+      // Ensure the file channel is closed at the end
       close();
     }
+    // Return the final result object
     return result;
   }
 
@@ -223,7 +250,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
       if (mRandomAccessFileChannel.getPosition() != fd.getStartOffset()) {
         result.exception = "Unable to skip file data!";
       }
-      maxLength = fd.getSize() < MAX_LENGTH ? (int) fd.getSize() : MAX_LENGTH;
+      maxLength = (int) Math.min(fd.getSize(), MAX_LENGTH);
     }
     return maxLength;
   }
@@ -231,9 +258,7 @@ public class TaskOpen extends ProgressTask<ContentResolver, FileData, TaskOpen.R
   private void evaluateShiftOffset(FileData fd, long totalSequential) {
     if (totalSequential != 0) {
       final int nbBytesPerLine = mApp.getNbBytesPerLine();
-      final long count = totalSequential / nbBytesPerLine;
-      final long remain = totalSequential - (count * nbBytesPerLine);
-      fd.setShiftOffset((int) remain);
+      fd.setShiftOffset((int) (totalSequential % nbBytesPerLine));
     }
   }
 
