@@ -11,7 +11,7 @@
   <color name="windowBackground">#FF303030</color>
   <color name="colorButtonNormal">#FF424242</color>
   <color name="colorBackground">#FF424242</color>
-  <color name="colorControlNormal">#FFC5C5C5</color>
+  <color name="colorControlNormal">#FFFFFFFF</color>
   <color name="vectorDisabled">#FF9E9E9E</color>
   <color name="textColorDisabled">#FF9E9E9E</color>
   <color name="textColorPrimaryDisabled">#FF9E9E9E</color>
