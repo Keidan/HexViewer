@@ -1,7 +1,6 @@
 package fr.ralala.hexviewer.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.annotation.Nullable;
 
 /**
  * ******************************************************************************
@@ -17,20 +16,21 @@ import java.util.List;
  */
 public class LineEntry {
   private String mPlain;
-  private List<Byte> mRaw;
+  private byte[] mRaw;
   private int mIndex;
   private boolean mUpdated;
   private int mShiftOffset;
 
-  public LineEntry(final String plain, final List<Byte> raw) {
-    mPlain = plain;
-    mRaw = raw == null ? null : new ArrayList<>(raw);
+  public LineEntry(final String plain, @Nullable final RawBuffer buffer) {
+    if (buffer == null)
+      setValues(plain, null, 0);
+    else
+      setValues(plain, buffer.getBytes(), buffer.size());
     mShiftOffset = 0;
   }
 
   public LineEntry(LineEntry le) {
-    mPlain = le.mPlain;
-    mRaw = new ArrayList<>(le.mRaw);
+    setValues(le.mPlain, le.mRaw, le.mRaw == null ? 0 : le.mRaw.length);
     mIndex = le.mIndex;
     mUpdated = le.mUpdated;
     mShiftOffset = le.mShiftOffset;
@@ -57,12 +57,27 @@ public class LineEntry {
   /**
    * Sets the values.
    *
+   * @param plain  Plain text
+   * @param raw    Raw data.
+   * @param length Raw data length.
+   */
+  public void setValues(String plain, final byte[] raw, int length) {
+    mPlain = plain;
+    if (raw != null && length != 0) {
+      mRaw = new byte[length];
+      System.arraycopy(raw, 0, mRaw, 0, mRaw.length);
+    } else
+      mRaw = null;
+  }
+
+  /**
+   * Sets the values.
+   *
    * @param plain Plain text
    * @param raw   Raw data.
    */
-  public void setValues(String plain, List<Byte> raw) {
-    mPlain = plain;
-    mRaw = new ArrayList<>(raw);
+  public void setValues(String plain, final byte[] raw) {
+    setValues(plain, raw, raw == null ? 0 : raw.length);
   }
 
   @SuppressWarnings("NullableProblems")
@@ -83,9 +98,9 @@ public class LineEntry {
   /**
    * Returns the raw value.
    *
-   * @return List<Byte>
+   * @return byte[]
    */
-  public List<Byte> getRaw() {
+  public byte[] getRaw() {
     return mRaw;
   }
 

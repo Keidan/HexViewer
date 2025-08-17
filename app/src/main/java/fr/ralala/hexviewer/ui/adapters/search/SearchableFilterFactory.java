@@ -184,9 +184,7 @@ public class SearchableFilterFactory {
   private void insertByteList(LineEntry s) {
     byte[] bytes;
     if (s.getRaw() != null) {
-      List<Byte> list = s.getRaw();
-      bytes = new byte[list.size()];
-      for (int i = 0; i < bytes.length; i++) bytes[i] = list.get(i);
+      bytes = s.getRaw();
     } else {
       char[] chars = s.getPlain().toCharArray();
       bytes = new byte[chars.length];

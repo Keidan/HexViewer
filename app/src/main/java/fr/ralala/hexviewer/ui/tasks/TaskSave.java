@@ -8,12 +8,13 @@ import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
@@ -138,6 +139,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    * @param request         Request.
    * @return The result.
    */
+  @SuppressWarnings("squid:S2093")
   @Override
   public Result doInBackground(final ContentResolver contentResolver, final Request request) {
     // Create a result object to store the outcome of the task
@@ -172,7 +174,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
       }
 
       // Temporary storage for a batch of bytes
-      List<Byte> batch = new ArrayList<>();
+      RawBuffer batch = new RawBuffer(2048);
 
       // Iterate over all line entries
       for (LineEntry entry : request.mEntries) {
@@ -181,7 +183,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
 
         // If batch reaches maxLength, write it to the file
         if (batch.size() >= maxLength) {
-          byte[] data = SysHelper.toByteArray(batch, mCancel);
+          byte[] data = batch.array();
           mRandomAccessFileChannel.write(data, 0, data.length);
 
           // Update progress on UI thread
@@ -196,8 +198,8 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
       }
 
       // Write any remaining bytes in the last batch
-      if (!isCancelled() && !batch.isEmpty()) {
-        byte[] data = SysHelper.toByteArray(batch, mCancel);
+      if (!isCancelled() && batch.size() != 0) {
+        byte[] data = batch.array();
         mRandomAccessFileChannel.write(data, 0, data.length);
         // Update progress on UI thread
         publishProgress((long) data.length);

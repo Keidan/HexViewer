@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.RawBuffer;
 
 /**
  * ******************************************************************************
@@ -250,7 +251,7 @@ public class SysHelper {
       throw new IllegalArgumentException("length > buffer.length");
     StringBuilder currentLine = new StringBuilder();
     StringBuilder currentEndLine = new StringBuilder();
-    final List<Byte> currentLineRaw = new ArrayList<>();
+    RawBuffer raw = new RawBuffer(MAX_BY_ROW_16);
     int currentIndex = 0;
     int bufferIndex = 0;
     if (shiftOffset != 0) {
@@ -268,11 +269,11 @@ public class SysHelper {
       final byte b = buffer[bufferIndex++];
       formatHex(b, currentLine);
       currentLine.append(" ");
-      currentLineRaw.add(b);
+      raw.add(b);
       /* only the visible char */
       currentEndLine.append((b >= 0x20 && b <= 0x7e) ? (char) b : (char) 0x2e); /* 0x2e = . */
       /* Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted. */
-      currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine, currentLineRaw, maxByRow);
+      currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine, raw, maxByRow);
 
       /* next */
       len--;
@@ -280,7 +281,7 @@ public class SysHelper {
     if (cancel != null && cancel.get())
       return;
     formatBufferAlign(lines, currentIndex, currentLine,
-      currentEndLine, currentLineRaw, maxByRow);
+      currentEndLine, raw, maxByRow);
     if (!lines.isEmpty())
       lines.get(0).setShiftOffset(shiftOffset);
   }
@@ -322,7 +323,7 @@ public class SysHelper {
    * @param currentIndex   The current index.
    * @param currentLine    The current line.
    * @param currentEndLine The end of the current line.
-   * @param currentLineRaw The current line in raw.
+   * @param raw            The current line in raw.
    * @param maxByRow       Max bytes by row.
    * @return The nex index.
    */
@@ -330,7 +331,7 @@ public class SysHelper {
                                                      final int currentIndex,
                                                      final StringBuilder currentLine,
                                                      final StringBuilder currentEndLine,
-                                                     final List<Byte> currentLineRaw,
+                                                     final RawBuffer raw,
                                                      final int maxByRow) {
     if (currentIndex == maxByRow - 1) {
       @SuppressWarnings("StringBufferReplaceableByString")
@@ -338,10 +339,10 @@ public class SysHelper {
       sb.append(currentLine);
       sb.append(" ");
       sb.append(currentEndLine);
-      lines.add(new LineEntry(sb.toString(), currentLineRaw));
+      lines.add(new LineEntry(sb.toString(), raw));
       currentEndLine.setLength(0);
       currentLine.setLength(0);
-      currentLineRaw.clear();
+      raw.clear();
       return 0;
     }
     return currentIndex + 1;
@@ -361,7 +362,7 @@ public class SysHelper {
                                         int currentIndex,
                                         final StringBuilder currentLine,
                                         final StringBuilder currentEndLine,
-                                        final List<Byte> currentLineRaw,
+                                        final RawBuffer raw,
                                         final int maxByRow) {
     /* align 'line' */
     int i = currentIndex;
@@ -379,7 +380,7 @@ public class SysHelper {
       sb.append(s);
       sb.append(off);
       sb.append(currentEndLine);
-      lines.add(new LineEntry(sb.toString(), currentLineRaw));
+      lines.add(new LineEntry(sb.toString(), raw));
     }
   }
 
@@ -438,10 +439,10 @@ public class SysHelper {
   public static LineEntry formatBufferFast(byte[] buffer, int length) {
     StringBuilder hexPart = new StringBuilder(length * 3);
     StringBuilder textPart = new StringBuilder(length);
-    List<Byte> rawBytes = new ArrayList<>(length);
+    RawBuffer raw = new RawBuffer(length);
     for (int i = 0; i < length; i++) {
       final byte b = buffer[i];
-      rawBytes.add(b);
+      raw.add(b);
       // hex
       formatHex(b, hexPart);
       hexPart.append(' ');
@@ -451,6 +452,6 @@ public class SysHelper {
       textPart.append(c);
     }
     hexPart.append(textPart);
-    return new LineEntry(hexPart.toString(), rawBytes);
+    return new LineEntry(hexPart.toString(), raw);
   }
 }

@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
@@ -144,14 +145,16 @@ public class PayloadPlainSwipe {
    */
   private List<LineEntry> refreshPlain(final AtomicBoolean cancel) {
     int maxByLine = UIHelper.getMaxByLine(mActivity, mUserConfigLandscape, mUserConfigPortrait);
-    final List<Byte> payload = new ArrayList<>();
-    for (LineEntry le : mActivity.getPayloadHex().getAdapter().getEntries().getItems())
+
+    RawBuffer payload = new RawBuffer(4096);
+    for (LineEntry le : mActivity.getPayloadHex().getAdapter().getEntries().getItems()) {
       payload.addAll(le.getRaw());
+    }
     final StringBuilder sb = new StringBuilder();
     int nbPerLine = 0;
     final List<LineEntry> list = new ArrayList<>();
     for (int i = 0; i < payload.size() && (cancel == null || !cancel.get()); i++) {
-      sb.append((char) payload.get(i).byteValue());
+      sb.append((char) payload.get(i));
       if (nbPerLine != 0 && (nbPerLine % maxByLine) == 0) {
         list.add(new LineEntry(sb.toString(), null));
         nbPerLine = 0;
