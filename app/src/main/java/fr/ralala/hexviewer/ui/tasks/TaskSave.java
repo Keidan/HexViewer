@@ -36,6 +36,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
   private final SaveResultListener mListener;
   private final ContentResolver mContentResolver;
   private final Context mContext;
+  private final int mMaxByLine;
 
   public static class Result {
     private Runnable runnable;
@@ -65,6 +66,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     mContentResolver = activity.getContentResolver();
     mContext = activity;
     mListener = listener;
+    mMaxByLine = ((ApplicationCtx)mContext.getApplicationContext()).getNbBytesPerLine();
   }
 
   /**
@@ -122,6 +124,13 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
   }
 
+  private static long getTotalSize(List<LineEntry> entries, long maxByLine) {
+    if(entries.isEmpty())
+      return 0L;
+    else
+      return (entries.size() * maxByLine) + entries.get(entries.size() - 1).getRaw().length;
+  }
+
   /**
    * Performs a computation on a background thread.
    *
@@ -146,6 +155,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
 
     // Initialize progress
     publishProgress(0L);
+    mTotalSize = getTotalSize(request.mEntries, mMaxByLine);
     try {
       // Open the file channel in write-only mode
       mRandomAccessFileChannel = RandomAccessFileChannel.openForWriteOnly(contentResolver, result.fd.getUri(), !result.fd.isSequential());
