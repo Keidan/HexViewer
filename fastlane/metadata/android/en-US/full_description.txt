@@ -12,6 +12,8 @@ Caution: Opening files that are too large seriously degrades application perform
 
 **WARNING:** This application cannot open files larger than ~20 MB on recent smartphones and less for older smartphones.
 
+**WARNING:** Searching within the plain text view may become excessively slow when handling large files.
+
 A special thanks to @OmlineEditor for her patience and help, without her this application would not be at this level.
 
 This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.

@@ -29,7 +29,7 @@ public class LineEntries {
   }
 
   public void setFilteredList(List<Integer> filteredList) {
-    mFilteredList = filteredList;
+    mFilteredList = filteredList == null ? new ArrayList<>() : filteredList;
   }
 
   /**
@@ -51,7 +51,7 @@ public class LineEntries {
   }
 
   /**
-   * Reloads all indexes located after the start inde
+   * Reloads all indexes located after the start index
    *
    * @param start Start index.
    */

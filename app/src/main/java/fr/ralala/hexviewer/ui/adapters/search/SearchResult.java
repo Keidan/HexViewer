@@ -1,6 +1,6 @@
 package fr.ralala.hexviewer.ui.adapters.search;
 
-import java.util.Set;
+import java.util.BitSet;
 
 /**
  * ******************************************************************************
@@ -15,18 +15,25 @@ import java.util.Set;
  * ******************************************************************************
  */
 public class SearchResult {
-  private final int mLength;
-  private final Set<Integer> mIndexes;
-  private final boolean mHexPart;
-  private final boolean mWithSpaces;
-  private final boolean mNotFromHexView;
+  private int mLength = 0;
+  private BitSet mIndexes = null;
+  private boolean mHexPart = false;
+  private boolean mWithSpaces = false;
+  private boolean mNotFromHexView = false;
 
-  protected SearchResult(int length, Set<Integer> indexes, boolean hexPart, boolean withSpaces, boolean notFromHexView) {
+  protected SearchResult() {
+  }
+
+  public void setAll(int length, BitSet indexes, boolean hexPart, boolean withSpaces, boolean notFromHexView) {
     mLength = length;
     mIndexes = indexes;
     mHexPart = hexPart;
     mWithSpaces = withSpaces;
     mNotFromHexView = notFromHexView;
+  }
+
+  public void clear() {
+    setAll(0, null, false, false, true);
   }
 
   /**
@@ -41,9 +48,9 @@ public class SearchResult {
   /**
    * Returns the indexes.
    *
-   * @return Set<Integer>
+   * @return BitSet
    */
-  public Set<Integer> getIndexes() {
+  public BitSet getIndexes() {
     return mIndexes;
   }
 

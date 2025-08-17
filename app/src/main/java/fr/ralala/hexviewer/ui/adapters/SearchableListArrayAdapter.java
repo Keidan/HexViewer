@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -228,11 +229,13 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigLandscape.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigLandscape.getRowHeight();
       tv.setLayoutParams(lp);
+      mEntryFilter.reloadLineWidth();
     } else if (mUserConfigPortrait != null) {
       tv.setTextSize(mUserConfigPortrait.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigPortrait.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigPortrait.getRowHeight();
       tv.setLayoutParams(lp);
+      mEntryFilter.reloadLineWidth();
     }
   }
 
@@ -254,11 +257,9 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    * @param constraint The constraint.
    */
   public void manualFilterUpdate(CharSequence constraint) {
-    final Set<Integer> tempList = new HashSet<>();
+    final BitSet tempList = new BitSet();
     mEntryFilter.apply(constraint, tempList);
-    List<Integer> li = new ArrayList<>(tempList);
-    Collections.sort(li);
-    mLineEntries.setFilteredList(li);
+    mLineEntries.setFilteredList(mEntryFilter.toSet(tempList));
   }
 }
 

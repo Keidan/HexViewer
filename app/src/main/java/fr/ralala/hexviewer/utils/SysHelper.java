@@ -265,12 +265,12 @@ public class SysHelper {
     while (len > 0) {
       if (cancel != null && cancel.get())
         break;
-      final byte c = buffer[bufferIndex++];
-      formatHex((char) c, currentLine);
+      final byte b = buffer[bufferIndex++];
+      formatHex(b, currentLine);
       currentLine.append(" ");
-      currentLineRaw.add(c);
+      currentLineRaw.add(b);
       /* only the visible char */
-      currentEndLine.append((c >= 0x20 && c <= 0x7e) ? (char) c : (char) 0x2e); /* 0x2e = . */
+      currentEndLine.append((b >= 0x20 && b <= 0x7e) ? (char) b : (char) 0x2e); /* 0x2e = . */
       /* Prepare the new index. If the index is equal to MAX_BY_ROW - 1, currentLine and currentEndLine will be added to the list and then deleted. */
       currentIndex = formatBufferPrepareLineComplete(lines, currentIndex, currentLine, currentEndLine, currentLineRaw, maxByRow);
 
@@ -307,10 +307,10 @@ public class SysHelper {
    * Formats a character into a hexadecimal string (2 digits).
    * Note: Using String.format("%02X") is ~50x slower.
    *
-   * @param b         The character.
+   * @param b  The character.
    * @param sb StringBuilder (out)
    */
-  private static void formatHex(char b, StringBuilder sb) {
+  private static void formatHex(byte b, StringBuilder sb) {
     sb.append(HEX_LOWERCASE.charAt((b >>> 4) & 0x0F));
     sb.append(HEX_LOWERCASE.charAt(b & 0x0F));
   }
@@ -433,5 +433,24 @@ public class SysHelper {
     for (char c : ref.toCharArray())
       sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
     return sb.toString();
+  }
+
+  public static LineEntry formatBufferFast(byte[] buffer, int length) {
+    StringBuilder hexPart = new StringBuilder(length * 3);
+    StringBuilder textPart = new StringBuilder(length);
+    List<Byte> rawBytes = new ArrayList<>(length);
+    for (int i = 0; i < length; i++) {
+      final byte b = buffer[i];
+      rawBytes.add(b);
+      // hex
+      formatHex(b, hexPart);
+      hexPart.append(' ');
+
+      // text
+      char c = (b >= 32 && b <= 126) ? (char) b : '.';
+      textPart.append(c);
+    }
+    hexPart.append(textPart);
+    return new LineEntry(hexPart.toString(), rawBytes);
   }
 }

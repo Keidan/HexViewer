@@ -6,11 +6,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.models.LineEntry;
@@ -32,6 +32,7 @@ public class EntryFilter extends Filter {
   private final SearchableFilterFactory mFilterFactory;
   private final ArrayAdapter<LineEntry> mAdapter;
   private final LineEntries mLineEntries;
+  private final AtomicBoolean abortFlag = new AtomicBoolean(false);
 
   public EntryFilter(final Context context,
                      ArrayAdapter<LineEntry> adapter,
@@ -44,32 +45,59 @@ public class EntryFilter extends Filter {
     mFilterFactory = new SearchableFilterFactory(context, searchFrom, userConfigPortrait, userConfigLandscape);
   }
 
-  public void apply(CharSequence constraint, final Set<Integer> tempList) {
-    boolean clear = TextUtils.isEmpty(constraint);
-    String query = "";
-    final Locale loc = Locale.getDefault();
-    if (!clear)
-      query = constraint.toString().toLowerCase(loc);
+  public void reloadLineWidth() {
+    mFilterFactory.reloadLineWidth();
+  }
+
+  public void apply(CharSequence constraint, final BitSet tempList) {
     List<LineEntry> items = mLineEntries.getItems();
     final int length = items.size();
-    for (int i = 0; i < length; i++) {
-      LineEntry lineEntry = items.get(i);
-      if (clear)
-        tempList.add(i);
-      else {
-        mFilterFactory.multilineSearch(lineEntry, items, i, query, loc, tempList);
-      }
+
+    if (TextUtils.isEmpty(constraint)) {
+      tempList.set(0, length);
+      return;
+    }
+    // reset abort flag at the start
+    abortFlag.set(false);
+
+    final Locale loc = Locale.getDefault();
+    char[] cQuery = constraint.toString().toLowerCase(loc).toCharArray();
+    int lineIndex = 0;
+    while (lineIndex < length) {
+      // check abort
+      if (abortFlag.get()) return;
+
+      // Determine max block size for current position
+      int blockSize = Math.min(mFilterFactory.estimateBlockSize(cQuery.length), length - lineIndex);
+
+      // Search in the block: current line + following lines as needed
+      mFilterFactory.multilineSearchBlock(items, lineIndex, lineIndex + blockSize, cQuery, tempList);
+
+      // Move to next line not yet marked, to handle queries starting at any offset
+      lineIndex = tempList.nextClearBit(lineIndex + 1);
     }
   }
 
   @Override
   protected FilterResults performFiltering(CharSequence constraint) {
+    // abort previous search if any
+    abortFlag.set(true);
+
     final FilterResults filterResults = new FilterResults();
-    final Set<Integer> tempList = new HashSet<>();
+    final BitSet tempList = new BitSet();
     apply(constraint, tempList);
-    filterResults.count = tempList.size();
-    filterResults.values = tempList;
+
+    List<Integer> resultSet = toSet(tempList);
+    filterResults.count = resultSet.size();
+    filterResults.values = resultSet;
     return filterResults;
+  }
+
+  public List<Integer> toSet(BitSet bs) {
+    List<Integer> li = new ArrayList<>();
+    for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) li.add(i);
+    Collections.sort(li);
+    return li;
   }
 
   /**
@@ -81,9 +109,8 @@ public class EntryFilter extends Filter {
   @SuppressWarnings("unchecked")
   @Override
   protected void publishResults(CharSequence constraint, FilterResults results) {
-    List<Integer> li = new ArrayList<>((Set<Integer>) results.values);
-    Collections.sort(li);
-    mLineEntries.setFilteredList(li);
-    mAdapter.notifyDataSetChanged();
+    mLineEntries.setFilteredList((List<Integer>) results.values);
+    if (mAdapter != null)
+      mAdapter.notifyDataSetChanged();
   }
 }
