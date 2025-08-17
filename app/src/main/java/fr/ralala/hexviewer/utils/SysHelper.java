@@ -69,21 +69,6 @@ public class SysHelper {
   }
 
   /**
-   * Returns the byte array.
-   *
-   * @param bytes  The source list.
-   * @param cancel Used to cancel this method.
-   * @return byte[]
-   */
-  public static byte[] toByteArray(final List<Byte> bytes, final AtomicBoolean cancel) {
-    final byte[] b = new byte[bytes.size()];
-    for (int i = 0; i < bytes.size() && (cancel == null || !cancel.get()); ++i) {
-      b[i] = bytes.get(i);
-    }
-    return b;
-  }
-
-  /**
    * Converts hex string to byte array.
    *
    * @param s The hex string.
