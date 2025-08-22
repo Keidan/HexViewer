@@ -61,8 +61,9 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
    *
    * @return boolean
    */
-  public boolean isSearchNotFromHexView() {
-    return false;
+  @Override
+  public boolean isSearchFromHexView() {
+    return true;
   }
 
   /**

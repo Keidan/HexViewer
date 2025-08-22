@@ -14,9 +14,9 @@ package fr.ralala.hexviewer.ui.adapters.search;
  */
 public interface ISearchFrom {
   /**
-   * Test if we aren't from the hex view or the plain view.
+   * Test if we are from the hex view or the plain view.
    *
    * @return boolean
    */
-  boolean isSearchNotFromHexView();
+  boolean isSearchFromHexView();
 }

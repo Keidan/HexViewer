@@ -50,7 +50,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
     mLineEntries = new LineEntries(objects);
     mUserConfigPortrait = userConfigPortrait;
     mUserConfigLandscape = userConfigLandscape;
-    mEntryFilter = new EntryFilter(context, this, this, mLineEntries, userConfigPortrait, userConfigLandscape);
+    mEntryFilter = new EntryFilter(context, this, this, mLineEntries);
     mSelectedItemsIds = new HashSet<>();
   }
 
@@ -229,13 +229,13 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigLandscape.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigLandscape.getRowHeight();
       tv.setLayoutParams(lp);
-      mEntryFilter.reloadLineWidth();
+      mEntryFilter.reloadContext();
     } else if (mUserConfigPortrait != null) {
       tv.setTextSize(mUserConfigPortrait.getFontSize());
       ViewGroup.LayoutParams lp = tv.getLayoutParams();
       lp.height = mUserConfigPortrait.isRowHeightAuto() ? ViewGroup.LayoutParams.WRAP_CONTENT : mUserConfigPortrait.getRowHeight();
       tv.setLayoutParams(lp);
-      mEntryFilter.reloadLineWidth();
+      mEntryFilter.reloadContext();
     }
   }
 

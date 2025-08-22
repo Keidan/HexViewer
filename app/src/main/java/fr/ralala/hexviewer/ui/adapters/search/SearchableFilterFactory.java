@@ -2,20 +2,22 @@ package fr.ralala.hexviewer.ui.adapters.search;
 
 import android.content.Context;
 
-import java.io.ByteArrayOutputStream;
 import java.util.BitSet;
 import java.util.List;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
-import fr.ralala.hexviewer.ui.utils.UIHelper;
+import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
- * Filter used with SearchableListArrayAdapter
+ * Factory for performing searches over a list of lines in either hex or plain text view.
+ * <p>
+ * Supports multi-line searches with overlap handling. Uses a contiguous byte buffer
+ * to perform efficient matching and maps matches back to line indices.
+ * </p>
  * </p>
  *
  * @author Keidan
@@ -25,53 +27,63 @@ import fr.ralala.hexviewer.utils.SysHelper;
  * ******************************************************************************
  */
 public class SearchableFilterFactory {
-  private final Context mContext;
-  private final UserConfig mUserConfigPortrait;
-  private final UserConfig mUserConfigLandscape;
   private final ISearchFrom mSearchFromHewView;
   private final ApplicationCtx mApp;
-  private final ByteArrayOutputStream mByteArrayStream = new ByteArrayOutputStream(1024);
+  private final RawBuffer mRawBuffer = new RawBuffer(1024);
+  private boolean mIsSearchFromHexView;
   private int mLineWidth;
 
-  private static class Integers {
-    int nbPerLines;
-    int index;
+  /**
+   * Holds the state of a search within a byte block.
+   * Tracks the current position in the query, the byte block,
+   * and the nibble position for hex view.
+   */
+  private static class SearchContext {
+    /** Current index in the query array */
+    int indexInQuery = 0;
+    /** Current index in the byte block */
+    int indexInBlock = 0;
+    /** Nibble position for hex view: 0 = high nibble, 1 = low nibble */
+    int nibblePos = 0;
+    /** Actual start index of the match in the block */
+    int startIndex = -1;
   }
 
-  private static class MatchContext {
-    BitSet indexes = new BitSet();
-    char c;
-    char[] query;
-    int queryLen = 0;
-    int matchHexSpaces = 0;     // for hex with spaces
-    int matchHexNoSpaces = 0;   // for hex without spaces
-    int matchText = 0;          // for plain text
-    int posHexNoSpaces = 0;     // position counter for hex without spaces
-    int length;
-    boolean withSpaces = true;
-    boolean hexPart = true;
+  /**
+   * Represents the different types of matches that can occur when searching
+   * within a byte block, either in hex view or plain text.
+   */
+  private enum MatchType {
+    /** No match found. */
+    NONE,
+    /** Match found in the hex representation. */
+    HEX,
+    /** Space character ignored in hex search. */
+    HEX_SPACE,
+    /** Match found in plain text while searching from hex view. */
+    PLAIN_FROM_HEX,
+    /** Match found in plain text view. */
+    PLAIN
   }
 
   public SearchableFilterFactory(final Context context,
-                                 ISearchFrom searchFromHewView,
-                                 UserConfig userConfigPortrait,
-                                 UserConfig userConfigLandscape) {
-    mContext = context;
+                                 ISearchFrom searchFromHewView) {
     mApp = (ApplicationCtx) context.getApplicationContext();
     mSearchFromHewView = searchFromHewView;
-    mUserConfigLandscape = userConfigLandscape;
-    mUserConfigPortrait = userConfigPortrait;
 
-    reloadLineWidth();
+    reloadContext();
+  }
+  /**
+   * Reloads the current search context (hex/plain) and line width.
+   */
+  public void reloadContext() {
+    mIsSearchFromHexView = mSearchFromHewView.isSearchFromHexView();
+    mLineWidth = mApp.getNbBytesPerLine();
   }
 
-  public void reloadLineWidth() {
-    /* The word fits on 2 or more lines */
-    mLineWidth = mSearchFromHewView.isSearchNotFromHexView()
-      ? UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1
-      : mApp.getNbBytesPerLine();
-  }
-
+  /**
+   * Estimates how many lines are needed to hold the query in a fixed-width block.
+   */
   protected int estimateBlockSize(int queryLength) {
     int count = queryLength / mLineWidth;
     if (queryLength % mLineWidth != 0) count++;
@@ -79,107 +91,116 @@ public class SearchableFilterFactory {
   }
 
   /**
-   * Performs a search.
+   * Determines the type of match for a given character against a target character.
    *
-   * @param line      The current line.
-   * @param query     The query.
-   * @param hexLength The length of the hex part.
-   * @param sr        The SearchResult to fill
+   * @param ch  the character extracted from the byte (hex nibble or plain)
+   * @param c   the character from the query to match
+   * @param hex true if this comparison is for a hex nibble, false for plain text
+   * @return the corresponding {@link MatchType} for this comparison
    */
-  private void performsSearch(final LineEntry line, char[] query, int hexLength, SearchResult sr) {
-    final char[] plainChars = line.toString().toCharArray();
-    final int plainLength = plainChars.length;
-
-
-    int textStart = hexLength + 2;
-    int textLength = plainLength - textStart;
-    MatchContext ctx = new MatchContext();
-    ctx.query = query;
-    ctx.queryLen = query.length;
-    ctx.length = hexLength;
-    // Single main loop scanning the entire line
-    boolean found = false;
-    for (int i = 0; i < plainLength; i++) {
-      ctx.c = plainChars[i];
-      if (i < hexLength) {
-        // ---- Case 1: hex with spaces ----
-        // ---- Case 2: hex without spaces ----
-        if (matchHexWithSpace(ctx, i) || matchHexWithoutSpace(ctx))
-          found = true;
-      }
-      // ---- Case 3: plain text ----
-      else if (i >= textStart && matchPlainText(ctx, i, textStart, textLength)) {
-        found = true;
-      }
-      if (found)
-        break;
+  private MatchType getMatchType( char ch, char c, boolean hex) {
+    if(ch == c) {
+      if(hex)
+        return MatchType.HEX;
+      return mIsSearchFromHexView ? MatchType.PLAIN_FROM_HEX : MatchType.PLAIN;
     }
-
-    // Save final result
-    sr.setAll(ctx.length, ctx.indexes.isEmpty() ? null : ctx.indexes,
-      ctx.hexPart, ctx.withSpaces, mSearchFromHewView.isSearchNotFromHexView());
+    return MatchType.NONE;
   }
 
-  private static boolean matchHexWithSpace(MatchContext ctx, int index) {
-    if (ctx.c == ctx.query[ctx.matchHexSpaces]) {
-      ctx.matchHexSpaces++;
-      if (ctx.matchHexSpaces == ctx.queryLen) {
-        // Found a match in hex with spaces
-        ctx.indexes.set(index - ctx.queryLen + 1);
-        ctx.matchHexSpaces = 0; // reset to allow overlapping matches
-        return true;
+  /**
+   * Checks whether a given byte matches a query character according to the current
+   * search mode (hex or plain). Advances the search context indices as appropriate.
+   *
+   * @param sc the search context tracking indices in the query and block
+   * @param b  the byte to test
+   * @param c  the query character to match
+   * @return the {@link MatchType} indicating the result of the match
+   */
+  private MatchType isMatch(SearchContext sc, byte b, char c) {
+    MatchType matched = MatchType.NONE;
+    if (mIsSearchFromHexView) {
+      // ignore space only for hex search
+      if(c == ' ')
+        return MatchType.HEX_SPACE;
+      // pick current nibble
+      char ch = (sc.nibblePos == 0)
+        ? SysHelper.HEX_LOWERCASE[(b >>> 4) & 0x0F]
+        : SysHelper.HEX_LOWERCASE[b & 0x0F];
+      matched = getMatchType(ch, c, true);
+      sc.nibblePos++;
+      if (sc.nibblePos == 2) { // after low nibble, move to next byte
+        sc.nibblePos = 0;
+        sc.indexInBlock++;
       }
-    } else {
-      // Reset progress if mismatch, restart if current char matches query[0]
-      ctx.matchHexSpaces = (ctx.c == ctx.query[0]) ? 1 : 0;
     }
-    return false;
+    // Attempt to match as plain text if no match has been found yet
+    if(matched == MatchType.NONE) {
+      // plain text, map non-printable to '.'
+      char ch = (b == 0x09 || b == 0x0A || (b >= 0x20 && b < 0x7F)) ? Character.toLowerCase((char) b) : '.';
+      matched = getMatchType(ch, c, false);
+      sc.indexInBlock++; // always advance one byte in plain view
+    }
+    return matched;
   }
 
-  private static boolean matchHexWithoutSpace(MatchContext ctx) {
-    if (ctx.c != ' ') {
-      if (ctx.c == ctx.query[ctx.matchHexNoSpaces]) {
-        ctx.matchHexNoSpaces++;
-        if (ctx.matchHexNoSpaces == ctx.queryLen) {
-          // Found a match in hex without spaces
-          ctx.indexes.set(ctx.posHexNoSpaces - ctx.queryLen + 1);
-          ctx.withSpaces = false;
-          ctx.length = ctx.posHexNoSpaces + 1;
-          ctx.matchHexNoSpaces = 0;
-          return true;
+  /**
+   * Updates the indices in the search context based on the result of a match.
+   *
+   * @param sc    the search context to update
+   * @param match the type of match returned by {@link #isMatch}
+   */
+  private void updateIndexes(SearchContext sc, MatchType match) {
+    boolean matched = match == MatchType.HEX || match == MatchType.PLAIN || match == MatchType.PLAIN_FROM_HEX;
+    // set startIndex at first non-space
+    if (sc.startIndex == -1 && matched)
+      sc.startIndex = sc.indexInBlock;
+
+    // advance query index only if space or matched
+    if (match == MatchType.HEX_SPACE || matched)
+      sc.indexInQuery++;
+  }
+
+  /**
+   * Performs a search for a query within a contiguous byte block.
+   *
+   * @param block       the byte array to search
+   * @param blockLength the number of valid bytes in the block
+   * @param query       the query characters to search for
+   * @return the index of the first byte of the match in the block, or -1 if no match
+   */
+  private int performsSearch(byte[] block, int blockLength, char[] query) {
+    SearchContext sc = new SearchContext();
+    for (int i = 0; i < blockLength; i++) {
+      sc.indexInQuery = 0;
+      sc.indexInBlock = i;
+      sc.nibblePos = 0;// 0 = high nibble, 1 = low nibble, used only in hex view
+      sc.startIndex = -1;
+
+      while (sc.indexInQuery < query.length && sc.indexInBlock < blockLength) {
+        char qc = query[sc.indexInQuery];
+
+        MatchType match = isMatch(sc, block[sc.indexInBlock], qc);
+
+        updateIndexes(sc, match);
+
+        // advance block index only if matched in plain/hex view
+        if (match == MatchType.NONE) {
+          // mismatch → stop scanning this start position
+          break;
         }
-      } else {
-        // Reset progress
-        ctx.matchHexNoSpaces = (ctx.c == ctx.query[0]) ? 1 : 0;
       }
-      ctx.posHexNoSpaces++;
-    }
-    return false;
-  }
 
-  private static boolean matchPlainText(MatchContext ctx, int index, int textStart, int textLength) {
-    char lower = Character.toLowerCase(ctx.c); // normalize to lowercase
-    if (lower == ctx.query[ctx.matchText]) {
-      ctx.matchText++;
-      if (ctx.matchText == ctx.queryLen) {
-        // Found a match in plain text
-        ctx.indexes.set(index - textStart - ctx.queryLen + 1);
-        ctx.hexPart = false;
-        ctx.length = textLength;
-        ctx.matchText = 0;
-        return true;
+      if (sc.indexInQuery == query.length) {
+        return sc.startIndex; // exact start of match
       }
-    } else {
-      // Reset progress
-      ctx.matchText = (lower == ctx.query[0]) ? 1 : 0;
     }
-    return false;
+    return -1;
   }
 
   /**
    * Adds the current line to a byte stream.
    *
-   * @param s LineEntry
+   * @param s LineEntry to insert
    */
   private void insertByteList(LineEntry s) {
     byte[] bytes;
@@ -190,103 +211,174 @@ public class SearchableFilterFactory {
       bytes = new byte[chars.length];
       for (int i = 0; i < bytes.length; i++) bytes[i] = (byte) chars[i];
     }
-    mByteArrayStream.write(bytes, 0, bytes.length);
+    mRawBuffer.addAll(bytes);
   }
 
   /**
-   * Performs a search for the query across a block of consecutive lines.
+   * Computes the end index of a block of lines to search based on query length
+   * and current search mode (hex or plaintext).
    *
-   * @param items      list of LineEntry items
-   * @param startIndex index of the first line in the block
-   * @param endIndex   index after the last line in the block
-   * @param query      the query to search for
-   * @param tempList   BitSet to mark matching lines
+   * @param items       list of LineEntry items
+   * @param startIndex  index of the first line in the block
+   * @param queryLength length of the query
+   * @return exclusive end index for the block
    */
-  public void multilineSearchBlock(List<LineEntry> items, int startIndex, int endIndex,
-                                   final char[] query, final BitSet tempList) {
-    // Create a contiguous byte buffer for the block
-    mByteArrayStream.reset();
-    int shiftOffset = 0;
-    for (int i = startIndex; i < endIndex; i++) {
-      LineEntry le = items.get(i);
-      insertByteList(le);
-      if (shiftOffset == 0 && le.getShiftOffset() != 0) {
-        shiftOffset = le.getShiftOffset();
+  public int getEndIndex(List<LineEntry> items, int startIndex, int queryLength) {
+    int endIndex = startIndex;
+
+    if (mIsSearchFromHexView) {
+      // Hex mode → estimate block size based on fixed-width lines
+      endIndex = Math.min(startIndex + estimateBlockSize(queryLength), items.size());
+    } else {
+      // Plaintext mode → accumulate lines until we cover queryLength bytes
+      int remaining = queryLength;
+      while (endIndex < items.size() && remaining > 0) {
+        remaining -= items.get(endIndex).getPlain().length();
+        endIndex++;
       }
     }
 
-    byte[] block = mByteArrayStream.toByteArray();
-    if (block.length == 0) return;
-
-    // Format block once
-    LineEntry leBlock = SysHelper.formatBufferFast(block, block.length);
-    int hexLengthBlock = block.length * 3 - 1;
-    // Perform search in the formatted block
-    SearchResult sr = new SearchResult();
-    sr.clear();
-    performsSearch(leBlock, query, hexLengthBlock, sr);
-    // Evaluate results and set matching lines
-    evaluateResult(shiftOffset, startIndex, sr, query, tempList);
+    return endIndex;
   }
 
   /**
-   * Evaluates the result of the research.
+   * Searches for the query across a block of consecutive lines and marks matches.
    *
-   * @param shiftOffset LineEntry shiftOffset
-   * @param i           Current index.
-   * @param sr          SearchResult
-   * @param query       The query.
-   * @param tempList    The output BitSet.
+   * @param items      list of LineEntry items
+   * @param startIndex index of the first line in the block
+   * @param query      query to search for
+   * @param tempList   BitSet to mark matching lines
    */
-  private void evaluateResult(final int shiftOffset, int i, SearchResult sr,
-                              final char[] query, final BitSet tempList) {
-    BitSet indexes = sr.getIndexes();
-    if (indexes == null || (sr.isHexPart() && sr.isNotFromHexView())) return;
-    Integers integers = new Integers();
-    for (int idx = indexes.nextSetBit(0); idx >= 0; idx = indexes.nextSetBit(idx + 1)) {
-      integers.nbPerLines = 0;
-      integers.index = idx;
-      if (sr.isHexPart())
-        prepareEvaluateResultHexPart(shiftOffset, sr, integers);
-      else
-        prepareEvaluateResultTextPart(shiftOffset, sr, integers);
+  public void multiLinesSearchBlock(List<LineEntry> items, int startIndex,
+                                    final char[] query, final BitSet tempList) {
+    // Create a contiguous byte buffer for the block
+    mRawBuffer.clear();
 
-      finalizeEvaluateResult(i, integers, query, tempList);
-    }
-  }
+    int endIndex = getEndIndex(items, startIndex, query.length);
 
-  private void prepareEvaluateResultHexPart(final int shiftOffset, final SearchResult sr, final Integers integers) {
-    final int cfgNbPerLine = mApp.getNbBytesPerLine();
-    if (sr.isWithSpaces()) {
-      integers.nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BYTES_ROW_16 : SysHelper.MAX_BYTES_ROW_8;
-      integers.index += shiftOffset * 3;
-    } else {
-      integers.nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 * 2 : SysHelper.MAX_BY_ROW_8 * 2;
-      integers.index += shiftOffset * 2;
-    }
-  }
+    if (startIndex == endIndex)
+      insertByteList(items.get(startIndex));
+    else
+      for (int i = startIndex; i < endIndex; i++) {
+        insertByteList(items.get(i));
+      }
 
-  private void prepareEvaluateResultTextPart(final int shiftOffset, final SearchResult sr, final Integers integers) {
-    if (sr.isNotFromHexView())
-      integers.nbPerLines = UIHelper.getMaxByLine(mContext, mUserConfigLandscape, mUserConfigPortrait) + 1;
-    else {
-      final int cfgNbPerLine = mApp.getNbBytesPerLine();
-      integers.nbPerLines = cfgNbPerLine == SysHelper.MAX_BY_ROW_16 ? SysHelper.MAX_BY_ROW_16 : SysHelper.MAX_BY_ROW_8;
-      integers.index += shiftOffset;
-    }
-  }
+    byte[] block = mRawBuffer.getBytes();
+    if (block == null || mRawBuffer.size() == 0) return;
 
-  private void finalizeEvaluateResult(final int i, final Integers integers,
-                                      final char[] query, final BitSet tempList) {
-    final int full = integers.index + query.length;
-    int start = i + (integers.index / integers.nbPerLines);
-    int end = i + (full / integers.nbPerLines);
-    if (full % integers.nbPerLines == 0) end--;
-    if (start == end) {
-      tempList.set((integers.index < integers.nbPerLines) ? i : start);
-    } else {
-      for (int j = start; j <= end; j++)
+    // Perform search in the formatted block
+    int startOffset = performsSearch(block, mRawBuffer.size(), query);
+    if (startOffset >= 0) {
+      // Evaluate results and set matching lines
+      int[] lines;
+      if (mIsSearchFromHexView) {
+        lines = resolveLinesFixed(mLineWidth, startIndex, startOffset, query.length);
+      } else {
+        lines = resolveLinesDynamic(items, startIndex, startOffset, query.length);
+      }
+      for (int j = lines[0]; j <= lines[1]; j++)
         tempList.set(j);
     }
+  }
+
+  /**
+   * Resolves the start and end line numbers of a match in a fixed-size block structure.
+   * <p>
+   * Assumes that all lines have the same fixed size except the last one,
+   * which may be shorter. The method converts the match start (given by
+   * line index and offset within that line) and the match length into
+   * absolute positions, then computes the corresponding line indices.
+   * </p>
+   * <p>
+   * Example:
+   * <pre>
+   *   lineSize = 16
+   *   startLine = 2
+   *   startOffset = 14
+   *   matchLength = 6
+   *
+   *   globalStart = 2*16 + 14 = 46
+   *   globalEnd   = 46 + 6 - 1 = 51
+   *
+   *   firstLine = 2
+   *   lastLine  = 51 / 16 = 3
+   *
+   *   Result: {2, 3}
+   * </pre>
+   *
+   * @param lineSize    the fixed size of each line (except the last line)
+   * @param startLine   the index of the line where the match starts (0-based)
+   * @param startOffset the offset within {@code startLine} where the match starts
+   * @param matchLength the length of the match in bytes
+   * @return an array of two integers: { firstLine, lastLine }
+   * where {@code firstLine} is the starting line index and
+   * {@code lastLine} is the ending line index of the match
+   */
+  public static int[] resolveLinesFixed(
+    int lineSize,
+    int startLine,
+    int startOffset,
+    int matchLength) {
+
+    // Convert the start position into a global offset
+    int globalStart = startLine * lineSize + startOffset;
+
+    // Compute the global end offset of the match
+    int globalEnd = globalStart + matchLength - 1;
+
+    // The last line is obtained by integer division
+    int lastLine = globalEnd / lineSize;
+
+    // Return both line indices
+    return new int[]{startLine, lastLine};
+  }
+
+  /**
+   * Resolves the start and end line indices of a match in a list of lines
+   * with variable lengths (plaintext mode).
+   * <p>
+   * This method computes which lines contain the matched sequence by
+   * accumulating the lengths of each line until the match start and end
+   * positions in the concatenated block are located.
+   * </p>
+   *
+   * @param items       the list of LineEntry items
+   * @param startLine   the index of the first line in the block (0-based)
+   * @param startOffset the offset in bytes where the match starts relative to the block
+   * @param matchLength the length of the match in bytes
+   * @return an array of two integers: {firstLineIndex, lastLineIndex}
+   *         where firstLineIndex is the line containing the start of the match,
+   *         and lastLineIndex is the line containing the end of the match
+   */
+  public static int[] resolveLinesDynamic(List<LineEntry> items, int startLine, int startOffset, int matchLength) {
+    int accumulated = 0;
+    int firstLine = startLine;
+    int lastLine = startLine;
+
+    // Find the line where the match actually starts
+    for (int i = startLine; i < items.size(); i++) {
+      int lineLength = items.get(i).getPlain().length();
+      if (accumulated + lineLength > startOffset) {
+        firstLine = i;
+        break;
+      }
+      accumulated += lineLength;
+    }
+
+    // Compute the absolute end offset of the match
+    int globalEnd = startOffset + matchLength - 1;
+
+    // Find the line where the match ends
+    accumulated = 0;
+    for (int i = startLine; i < items.size(); i++) {
+      int lineLength = items.get(i).getPlain().length();
+      accumulated += lineLength;
+      if (accumulated > globalEnd) {
+        lastLine = i;
+        break;
+      }
+    }
+
+    return new int[]{firstLine, lastLine};
   }
 }

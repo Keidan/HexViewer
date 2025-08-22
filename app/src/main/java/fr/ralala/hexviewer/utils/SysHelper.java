@@ -31,8 +31,8 @@ import fr.ralala.hexviewer.models.RawBuffer;
  * ******************************************************************************
  */
 public class SysHelper {
-  @SuppressWarnings("SpellCheckingInspection")
-  private static final String HEX_LOWERCASE = "0123456789abcdef";
+  @SuppressWarnings({"SpellCheckingInspection", "squid:S2386"})
+  public static final char[] HEX_LOWERCASE = "0123456789abcdef".toCharArray();
   public static final float SIZE_1KB = 0x400;
   public static final float SIZE_1MB = 0x100000;
   public static final float SIZE_1GB = 0x40000000;
@@ -297,8 +297,8 @@ public class SysHelper {
    * @param sb StringBuilder (out)
    */
   private static void formatHex(byte b, StringBuilder sb) {
-    sb.append(HEX_LOWERCASE.charAt((b >>> 4) & 0x0F));
-    sb.append(HEX_LOWERCASE.charAt(b & 0x0F));
+    sb.append(HEX_LOWERCASE[(b >>> 4) & 0x0F]);
+    sb.append(HEX_LOWERCASE[b & 0x0F]);
   }
 
   /**
@@ -419,24 +419,5 @@ public class SysHelper {
     for (char c : ref.toCharArray())
       sb.append((c == 0x09 || c == 0x0A || (c >= 0x20 && c < 0x7F)) ? c : '.');
     return sb.toString();
-  }
-
-  public static LineEntry formatBufferFast(byte[] buffer, int length) {
-    StringBuilder hexPart = new StringBuilder(length * 3);
-    StringBuilder textPart = new StringBuilder(length);
-    RawBuffer raw = new RawBuffer(length);
-    for (int i = 0; i < length; i++) {
-      final byte b = buffer[i];
-      raw.add(b);
-      // hex
-      formatHex(b, hexPart);
-      hexPart.append(' ');
-
-      // text
-      char c = (b >= 32 && b <= 126) ? (char) b : '.';
-      textPart.append(c);
-    }
-    hexPart.append(textPart);
-    return new LineEntry(hexPart.toString(), raw);
   }
 }

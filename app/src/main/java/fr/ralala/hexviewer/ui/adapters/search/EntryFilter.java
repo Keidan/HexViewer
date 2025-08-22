@@ -14,12 +14,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.models.LineEntries;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 
 /**
  * ******************************************************************************
  * <p><b>Project HexViewer</b><br/>
- * Custom filter
+ * Filter implementation that performs searches on a list of {@link LineEntry} items.
+ * <p>
+ * Supports searching in both hex view and plain text view, using a {@link SearchableFilterFactory}
+ * to handle multi-line and multi-format queries efficiently. Results are tracked in a {@link BitSet}
+ * and mapped to line indices for the adapter.
+ * </p>
  * </p>
  *
  * @author Keidan
@@ -34,50 +38,76 @@ public class EntryFilter extends Filter {
   private final LineEntries mLineEntries;
   private final AtomicBoolean abortFlag = new AtomicBoolean(false);
 
+  /**
+   * Constructs an EntryFilter.
+   *
+   * @param context     the context
+   * @param adapter     the adapter to notify when the filtered results change
+   * @param searchFrom  object indicating whether the search is from hex view or plain text
+   * @param lineEntries the source of LineEntry items to search
+   */
   public EntryFilter(final Context context,
                      ArrayAdapter<LineEntry> adapter,
                      ISearchFrom searchFrom,
-                     LineEntries lineEntries,
-                     UserConfig userConfigPortrait,
-                     UserConfig userConfigLandscape) {
+                     LineEntries lineEntries) {
     mAdapter = adapter;
     mLineEntries = lineEntries;
-    mFilterFactory = new SearchableFilterFactory(context, searchFrom, userConfigPortrait, userConfigLandscape);
+    mFilterFactory = new SearchableFilterFactory(context, searchFrom);
   }
 
-  public void reloadLineWidth() {
-    mFilterFactory.reloadLineWidth();
+  /**
+   * Reloads the search context (hex/plain) and line width for the underlying filter factory.
+   */
+  public void reloadContext() {
+    mFilterFactory.reloadContext();
   }
 
+  /**
+   * Applies a search query to all lines and marks matching lines in the provided BitSet.
+   * <p>
+   * Supports multi-line matches. If the query is empty, all lines are marked as matching.
+   * </p>
+   *
+   * @param constraint the search query
+   * @param tempList   BitSet to mark the indices of matching lines
+   */
   public void apply(CharSequence constraint, final BitSet tempList) {
     List<LineEntry> items = mLineEntries.getItems();
     final int length = items.size();
 
+    // If query is empty, mark all lines as matching
     if (TextUtils.isEmpty(constraint)) {
       tempList.set(0, length);
       return;
     }
-    // reset abort flag at the start
+    // Reset abort flag at the start of the search
     abortFlag.set(false);
 
+    // Prepare query as lowercase char array for comparison
     final Locale loc = Locale.getDefault();
     char[] cQuery = constraint.toString().toLowerCase(loc).toCharArray();
     int lineIndex = 0;
     while (lineIndex < length) {
-      // check abort
+      // Check for external abort request
       if (abortFlag.get()) return;
 
-      // Determine max block size for current position
-      int blockSize = Math.min(mFilterFactory.estimateBlockSize(cQuery.length), length - lineIndex);
-
-      // Search in the block: current line + following lines as needed
-      mFilterFactory.multilineSearchBlock(items, lineIndex, lineIndex + blockSize, cQuery, tempList);
-
-      // Move to next line not yet marked, to handle queries starting at any offset
+      // Perform a search starting from the current line, potentially covering multiple lines
+      mFilterFactory.multiLinesSearchBlock(items, lineIndex, cQuery, tempList);
+      // Move to the next unmarked line, to handle queries starting at any position
       lineIndex = tempList.nextClearBit(lineIndex + 1);
     }
   }
 
+  /**
+   * Performs the filtering operation for the given query.
+   * <p>
+   * This method is called by the framework when a filter request is submitted.
+   * It computes the set of matching line indices.
+   * </p>
+   *
+   * @param constraint the search query
+   * @return a {@link FilterResults} object containing the count and the list of matching indices
+   */
   @Override
   protected FilterResults performFiltering(CharSequence constraint) {
     // abort previous search if any
@@ -93,6 +123,12 @@ public class EntryFilter extends Filter {
     return filterResults;
   }
 
+  /**
+   * Converts a {@link BitSet} to a sorted {@link List} of integers.
+   *
+   * @param bs the BitSet to convert
+   * @return a sorted List of indices corresponding to set bits in the BitSet
+   */
   public List<Integer> toSet(BitSet bs) {
     List<Integer> li = new ArrayList<>();
     for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) li.add(i);
@@ -101,10 +137,10 @@ public class EntryFilter extends Filter {
   }
 
   /**
-   * Notify about filtered list to ui
+   * Publishes the filtered results to the adapter and updates the UI.
    *
-   * @param constraint text
-   * @param results    filtered result
+   * @param constraint the query that produced these results
+   * @param results    the filtered results, typically a List<Integer> of matching line indices
    */
   @SuppressWarnings("unchecked")
   @Override
