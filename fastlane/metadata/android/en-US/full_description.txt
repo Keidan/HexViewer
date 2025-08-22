@@ -22,6 +22,7 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
 Translations:
 * Arabic: @sec.xyx, @amro
 * Chinese: @sr093906, @alchemillatruth, @hamburger1024, @inworless
+* Czech: @hajdam
 * Dutch: @AudeBelgraver
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
@@ -44,6 +45,7 @@ Translations:
 
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
 * ar: Arabic
+* cs: Czech
 * de-DE: German
 * en-US: English
 * es-ES: Spanish

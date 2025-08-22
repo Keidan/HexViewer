@@ -17,6 +17,7 @@
 
     <string-array name="languages_values" translatable="false">
         <item>ar</item>
+        <item>cs</item>
         <item>de-DE</item>
         <item>en-US</item>
         <item>es-ES</item>
@@ -41,6 +42,7 @@
 
     <string-array name="languages_entries" translatable="false">
         <item>العربية</item>
+        <item>Čeština</item>
         <item>Deutsch</item>
         <item>English</item>
         <item>Español</item>
