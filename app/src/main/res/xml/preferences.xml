@@ -10,19 +10,19 @@
     android:title="@string/settings_category_general">
     <androidx.preference.ListPreference
       app:iconSpaceReserved="false"
+      android:entries="@array/languages_entries"
+      android:entryValues="@array/languages_values"
+      android:key="language"
+      android:title="@string/settings_pref_title_language"
+      android:summary="@string/settings_pref_summary_language" />
+    <androidx.preference.ListPreference
+      app:iconSpaceReserved="false"
       android:entries="@array/theme_entries"
       android:entryValues="@array/theme_values"
       android:key="theme"
       android:title="@string/settings_pref_title_theme"
       android:summary="@string/settings_pref_summary_theme"
       android:defaultValue="@string/default_theme_system" />
-    <androidx.preference.ListPreference
-      app:iconSpaceReserved="false"
-      android:entries="@array/languages_entries"
-      android:entryValues="@array/languages_values"
-      android:key="language"
-      android:title="@string/settings_pref_title_language"
-      android:summary="@string/settings_pref_summary_language" />
     <androidx.preference.ListPreference
       app:iconSpaceReserved="false"
       android:entries="@array/memory_thresholds"
