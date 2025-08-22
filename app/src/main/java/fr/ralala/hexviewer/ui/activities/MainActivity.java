@@ -435,7 +435,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
   public boolean onOptionsItemSelected(final MenuItem item) {
     final int id = item.getItemId();
     if (id == R.id.action_more) {
-      mPopup.show(findViewById(R.id.action_more));
+      mPopup.show(this, findViewById(R.id.action_more));
     } else if (id == R.id.action_edit_empty) {
       mLauncherLineUpdate.startActivity(new ByteArrayOutputStream().toByteArray(), 0, 0,
         mFileData.getShiftOffset(), 0);

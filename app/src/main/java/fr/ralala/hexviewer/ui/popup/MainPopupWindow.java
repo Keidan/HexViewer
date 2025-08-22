@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.popup;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
 
 /**
@@ -105,8 +107,9 @@ public class MainPopupWindow {
    *
    * @param more Button "more"
    */
-  public void show(View more) {
+  public void show(Activity activity, View more) {
     if (mPopup != null) {
+      UIHelper.hideKeyboard(activity);
       mPopup.showAtLocation(more, Gravity.TOP | (SysHelper.isRTL(more) ? Gravity.START : Gravity.END), 12, 120);
     }
   }
