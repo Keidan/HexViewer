@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleUnitTest {
+public class FormatBufferUnitTest {
   @Test
   public void testFormatBuffer01() {
     assertFormat(1,
