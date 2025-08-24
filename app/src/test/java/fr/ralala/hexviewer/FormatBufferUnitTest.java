@@ -1,20 +1,34 @@
 package fr.ralala.hexviewer;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.List;
 
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.utils.SysHelper;
 
-import static org.junit.Assert.assertEquals;
-
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * Unit tests for {@link SysHelper#formatBuffer(byte[], Object, int, int)}.
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * <p>These tests verify that a byte array is correctly formatted into lines
+ * of hex and ASCII representations, with:
+ * <ul>
+ *     <li>Correct number of lines for given row lengths</li>
+ *     <li>Correct ASCII representation (dots for non-printable characters)</li>
+ *     <li>Correct handling of line offsets (shifted output)</li>
+ *     <li>Correct handling of large buffers (100k+, 250k bytes)</li>
+ * </ul>
  */
+@RunWith(JUnit4.class)
 public class FormatBufferUnitTest {
+
+  // ===========================
+  // ======== TEST CASES =======
+  // ===========================
   @Test
   public void testFormatBuffer01() {
     assertFormat(1,
@@ -235,7 +249,7 @@ public class FormatBufferUnitTest {
 
   @Test
   public void testFormatBufferShift() {
-    String [][] array = new String[][] {
+    String[][] array = new String[][]{
       {"00 01 02 03 04 05 06 07  ........", "08                       ."},
       {"   00 01 02 03 04 05 06   .......", "07 08                    .."},
       {"      00 01 02 03 04 05    ......", "06 07 08                 ..."},
@@ -245,7 +259,7 @@ public class FormatBufferUnitTest {
       {"                  00 01        ..", "02 03 04 05 06 07 08     ......."},
       {"                     00         .", "01 02 03 04 05 06 07 08  ........"}
     };
-    for(int i = 0; i < array.length; i++) {
+    for (int i = 0; i < array.length; i++) {
       assertFormat(9,
         SysHelper.MAX_BY_ROW_8,
         i,
@@ -255,34 +269,63 @@ public class FormatBufferUnitTest {
 
   @Test
   public void testFormatBuffer100k() {
+    // Test very large buffer (100,000 bytes)
     testXk(100000);
   }
+
   @Test
   public void testFormatBuffer250k() {
+    // Test very large buffer (250,000 bytes)
     testXk(250000);
   }
 
-  /* Static functions */
+  // ===========================
+  // ======== HELPERS ==========
+  // ===========================
+  /**
+   * Helper to assert that formatting a buffer of {@code maxBytes} bytes
+   * with given row length and shift offset matches expected strings.
+   *
+   * @param maxBytes number of bytes in the buffer
+   * @param maxByRow maximum bytes per row
+   * @param shiftOffset offset to shift the line output
+   * @param expected expected lines (plain string representation)
+   */
   private void assertFormat(int maxBytes, int maxByRow, int shiftOffset, String... expected) {
     byte[] bytes = new byte[maxBytes];
     for (int i = 0; i < maxBytes; i++)
       bytes[i] = (byte) i;
+
     List<LineEntry> list = SysHelper.formatBuffer(bytes, null, maxByRow, shiftOffset);
+
+    // Check number of lines
     assertEquals(expected.length, list.size());
+
+    // Check each line content
     for (int i = 0; i < expected.length; i++) {
       assertEquals(expected[i], list.get(i).getPlain());
     }
   }
 
+  /**
+   * Helper to test formatting of very large buffers.
+   *
+   * @param maxBytes total number of bytes
+   */
   private void testXk(int maxBytes) {
     byte[] bytes = new byte[maxBytes];
     for (int i = 0; i < maxBytes; i++)
       bytes[i] = (byte) i;
+
+    // Calculate expected number of lines based on MAX_BY_ROW_16
     int maxLines = maxBytes / SysHelper.MAX_BY_ROW_16;
     int remain = maxBytes % SysHelper.MAX_BY_ROW_16;
-    if(remain != 0)
+    if (remain != 0)
       maxLines++;
+
     List<LineEntry> list = SysHelper.formatBuffer(bytes, null, SysHelper.MAX_BY_ROW_16);
+
+    // Assert the number of lines is correct
     assertEquals(maxLines, list.size());
   }
 }
