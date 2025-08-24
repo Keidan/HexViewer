@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
       - uses: ./.github/actions/setup-gradle
       - name: Build the app
-        run: ./gradlew build
+        run: ./gradlew assemble
       - name: Build the tests
         run: ./gradlew test
       - uses: ./.github/actions/analyze-with-sonar
