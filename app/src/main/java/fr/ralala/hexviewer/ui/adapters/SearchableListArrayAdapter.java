@@ -259,7 +259,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   public void manualFilterUpdate(CharSequence constraint) {
     final BitSet tempList = new BitSet();
     mEntryFilter.apply(constraint, tempList);
-    mLineEntries.setFilteredList(mEntryFilter.toSet(tempList));
+    mLineEntries.setFilteredList(EntryFilter.toSet(tempList));
   }
 }
 
