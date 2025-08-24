@@ -20,7 +20,7 @@ import fr.ralala.hexviewer.models.LineEntry;
  * <p><b>Project HexViewer</b><br/>
  * Filter implementation that performs searches on a list of {@link LineEntry} items.
  * <p>
- * Supports searching in both hex view and plain text view, using a {@link SearchableFilterFactory}
+ * Supports searching in both hex view and plain text view, using a {@link SearchEngine}
  * to handle multi-line and multi-format queries efficiently. Results are tracked in a {@link BitSet}
  * and mapped to line indices for the adapter.
  * </p>
@@ -33,7 +33,7 @@ import fr.ralala.hexviewer.models.LineEntry;
  * ******************************************************************************
  */
 public class EntryFilter extends Filter {
-  private final SearchableFilterFactory mFilterFactory;
+  private final SearchEngine mFilterFactory;
   private final ArrayAdapter<LineEntry> mAdapter;
   private final LineEntries mLineEntries;
   private final AtomicBoolean abortFlag = new AtomicBoolean(false);
@@ -52,7 +52,7 @@ public class EntryFilter extends Filter {
                      LineEntries lineEntries) {
     mAdapter = adapter;
     mLineEntries = lineEntries;
-    mFilterFactory = new SearchableFilterFactory(context, searchFrom);
+    mFilterFactory = new SearchEngine(context, searchFrom);
   }
 
   /**
@@ -129,7 +129,7 @@ public class EntryFilter extends Filter {
    * @param bs the BitSet to convert
    * @return a sorted List of indices corresponding to set bits in the BitSet
    */
-  public List<Integer> toSet(BitSet bs) {
+  public static List<Integer> toSet(BitSet bs) {
     List<Integer> li = new ArrayList<>();
     for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) li.add(i);
     Collections.sort(li);
