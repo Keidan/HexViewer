@@ -200,7 +200,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   private boolean validateTheme(Preference preference, Object newValue) {
     if (((SettingsActivity) mActivity).isNotChanged()) {
       String value = "" + newValue;
-      mApp.setApplicationTheme(value);
+      mApp.setApplicationTheme(value, true);
       if(value.equals(getString(R.string.default_theme_system))) {
         UIHelper.showErrorDialog(mActivity, preference.getTitle(),
           mActivity.getString(R.string.settings_pref_notice_theme), v -> requireActivity().finish());

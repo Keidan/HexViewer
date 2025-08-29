@@ -10,6 +10,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
+import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,7 +19,6 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -60,6 +61,28 @@ public class UIHelper {
   }
 
   /**
+   * Checks if the system is currently using dark (night) mode.
+   * On Android 10 (API 29) and above, this reflects the system-wide dark theme.
+   * On older versions, it may always return false or undefined.
+   *
+   * @param context the context used to access resources and configuration
+   * @return true if dark mode is active, false otherwise
+   */
+  public static boolean isSystemInDarkMode(Context context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      // API 29 +
+      int nightModeFlags =
+        context.getResources().getConfiguration().uiMode
+          & Configuration.UI_MODE_NIGHT_MASK;
+      return (nightModeFlags == Configuration.UI_MODE_NIGHT_YES);
+    } else {
+      // API 23–28
+      PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+      return pm != null && pm.isPowerSaveMode();
+    }
+  }
+
+  /**
    * Starts refresh animation.
    *
    * @param c Android Context
@@ -96,8 +119,7 @@ public class UIHelper {
    */
   public static AlertDialog createCircularProgressDialog(Context context, DialogInterface.OnCancelListener cancel) {
     LayoutInflater layoutInflater = LayoutInflater.from(context);
-    final ViewGroup nullParent = null;
-    View view = layoutInflater.inflate(R.layout.circular_progress, nullParent);
+    View view = layoutInflater.inflate(R.layout.circular_progress, null);
     AlertDialog progress = new AlertDialog.Builder(context, R.style.AppTheme_DialogTheme).create();
     if (cancel != null) {
       progress.setOnCancelListener(cancel);

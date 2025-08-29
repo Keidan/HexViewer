@@ -26,6 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.models.RecentlyOpened;
 import fr.ralala.hexviewer.models.SettingsKeys;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
  * ******************************************************************************
@@ -69,6 +70,7 @@ public class ApplicationCtx extends Application {
   private String mDefaultThemeLight;
   private String mDefaultThemeDark;
   private String mDefaultThemeSystem;
+  private String mCurrentTheme = null;
   private String mPreviousTheme = null;
 
   @Override
@@ -167,7 +169,7 @@ public class ApplicationCtx extends Application {
   }
 
   public boolean applyThemeFromSettings() {
-    String theme = getPref(this).getString(SettingsKeys.CFG_THEME, mDefaultThemeSystem);
+    String theme = getCurrentTheme();
     if (mPreviousTheme == null || !mPreviousTheme.equals(theme)) {
       mPreviousTheme = theme;
       if (theme.equals(mDefaultThemeLight))
@@ -614,11 +616,24 @@ public class ApplicationCtx extends Application {
    *
    * @param theme The new theme.
    */
-  public void setApplicationTheme(final String theme) {
-    SharedPreferences sp = getPref(this);
-    SharedPreferences.Editor e = sp.edit();
-    e.putString(SettingsKeys.CFG_THEME, theme);
-    e.apply();
+  public void setApplicationTheme(final String theme, boolean save) {
+    if(save) {
+      SharedPreferences sp = getPref(this);
+      SharedPreferences.Editor e = sp.edit();
+      e.putString(SettingsKeys.CFG_THEME, theme);
+      e.apply();
+    }
+    mCurrentTheme = theme;
+    if(mCurrentTheme.equals(mDefaultThemeSystem))
+      mCurrentTheme = UIHelper.isSystemInDarkMode(this) ? mDefaultThemeDark : mDefaultThemeLight;
+  }
+
+  private String getCurrentTheme() {
+    if(mCurrentTheme == null)
+      mCurrentTheme = getApplicationTheme(this);
+    if(mCurrentTheme.equals(mDefaultThemeSystem))
+      mCurrentTheme = UIHelper.isSystemInDarkMode(this) ? mDefaultThemeDark : mDefaultThemeLight;
+    return mCurrentTheme;
   }
 
   /**

@@ -67,8 +67,8 @@ public class BaseActivity extends AppCompatActivity {
     mApp.setConfiguration(newConfig);
     int mask = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
     if(mask == Configuration.UI_MODE_NIGHT_YES)
-      mApp.setApplicationTheme(getString(R.string.default_theme_dark));
+      mApp.setApplicationTheme(getString(R.string.default_theme_dark), false);
     else if(mask == Configuration.UI_MODE_NIGHT_NO)
-      mApp.setApplicationTheme(getString(R.string.default_theme_light));
+      mApp.setApplicationTheme(getString(R.string.default_theme_light), false);
   }
 }
