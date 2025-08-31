@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
  * ******************************************************************************
@@ -26,6 +27,7 @@ import fr.ralala.hexviewer.R;
  */
 public class BaseActivity extends AppCompatActivity {
   private ApplicationCtx mApp;
+  private String mDefaultThemeLight;
 
   /**
    * Called when the activity is created.
@@ -40,6 +42,8 @@ public class BaseActivity extends AppCompatActivity {
     setContentView(R.layout.activity_base);
     Toolbar toolbar = findViewById(R.id.base_toolbar);
     setSupportActionBar(toolbar);
+    mDefaultThemeLight = getString(R.string.default_theme_light);
+    UIHelper.setStatusBarTextDark(this, mApp.getCurrentTheme().equals(mDefaultThemeLight));
   }
 
   public void setLayout(final @LayoutRes int layoutId) {
@@ -51,8 +55,10 @@ public class BaseActivity extends AppCompatActivity {
    */
   @Override
   protected void onResume() {
-    if(mApp.applyThemeFromSettings())
+    if(mApp.applyThemeFromSettings()) {
+      UIHelper.setStatusBarTextDark(this, mApp.getCurrentTheme().equals(mDefaultThemeLight));
       recreate();
+    }
     super.onResume();
   }
 

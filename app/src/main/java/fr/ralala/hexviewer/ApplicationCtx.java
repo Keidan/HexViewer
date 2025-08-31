@@ -628,7 +628,7 @@ public class ApplicationCtx extends Application {
       mCurrentTheme = UIHelper.isSystemInDarkMode(this) ? mDefaultThemeDark : mDefaultThemeLight;
   }
 
-  private String getCurrentTheme() {
+  public String getCurrentTheme() {
     if(mCurrentTheme == null)
       mCurrentTheme = getApplicationTheme(this);
     if(mCurrentTheme.equals(mDefaultThemeSystem))
