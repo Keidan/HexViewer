@@ -1,0 +1,10 @@
+* Updated Hungarian translation (thanks to @SziaTomi).
+* Added Persian translation (thanks to @qaria185-blip).
+* Added Czech translation (thanks to @hajdam).
+* Fixed crash when selecting/deselecting all rows after opening a large file.
+* Fixed crash when deleting a large number of rows.
+* Added support for Light/Dark themes.
+* Updated app version numbering system.
+* Improved "Language" menu translations.
+* Fixed desynchronization of selection in lists between Portrait & Landscape modes when the number of rows differs between the two orientations.
+* Performance improvements for large file processing.
