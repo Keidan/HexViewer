@@ -1,7 +1,10 @@
 plugins {
+  //noinspection GradleDependency
   id "org.sonarqube" version "3.3"
   id 'com.android.application'
 }
+
+final COMPILE_WITH_DEPRECATION_LINT = false
 
 final SONAR_PROJECT_VERSION = '1.58'
 
@@ -16,6 +19,7 @@ android {
   defaultConfig {
     applicationId "fr.ralala.hexviewer"
     minSdk 23
+    //noinspection OldTargetApi
     targetSdk 34
     // F-Droid seems not to appreciate the use of variables
     versionCode 158
@@ -102,6 +106,11 @@ dependencies {
   implementation "com.android.support:support-emoji-bundled:28.0.0"
   implementation "com.google.android.material:material:1.12.0"
   testImplementation "junit:junit:4.13.2"
+}
+if(COMPILE_WITH_DEPRECATION_LINT) {
+  tasks.withType(JavaCompile) {
+    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+  }
 }
 
 /* Tasks */
