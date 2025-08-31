@@ -2,7 +2,8 @@
 <resources>
   <color name="colorPrimary">#FFFFFFFF</color>
   <color name="colorPrimaryDark">#FFF5F5F5</color>
-  <color name="navigationBarColor">#FF000000</color>
+  <color name="navigationBarColor">#FFEEEEEE</color>
+  <color name="navigationBarColor23">#FF000000</color>
   <color name="colorAccent">#FFFFAB00</color>
   <color name="textColorPrimary">#FF212121</color>
   <color name="textColorSecondary">#FF616161</color>

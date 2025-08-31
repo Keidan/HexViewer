@@ -20,7 +20,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowInsetsController;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.CycleInterpolator;
@@ -59,27 +58,6 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  */
 public class UIHelper {
   private UIHelper() {
-  }
-
-  @SuppressWarnings("squid:S1874")
-  public static void setStatusBarTextDark(Activity activity, boolean dark) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      WindowInsetsController controller = activity.getWindow().getInsetsController();
-      if (controller != null) {
-        int appearance = dark ?
-          WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS : 0;
-        controller.setSystemBarsAppearance(appearance, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
-      }
-    } else {
-      View decor = activity.getWindow().getDecorView();
-      int flags = decor.getSystemUiVisibility();
-      if (dark) {
-        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-      } else {
-        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-      }
-      decor.setSystemUiVisibility(flags);
-    }
   }
 
   /**
