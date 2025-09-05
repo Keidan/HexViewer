@@ -21,7 +21,7 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
   
 Translations:
 * Arabic: @sec.xyx, @amro
-* Chinese: @sr093906, @alchemillatruth, @hamburger1024, @inworless
+* Chinese: @sr093906, @alchemillatruth, @hamburger1024, @inworless, @hamburger2048
 * Czech: @hajdam
 * Dutch: @AudeBelgraver
 * English: @Keidan, @comradekingu

@@ -90,7 +90,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | ta-IN | Tamil | [@TamilNeram](https://github.com/TamilNeram) |
 | tr-TR | Turkish | [@ersen0](https://github.com/ersen0) |
 | vi-VN | Vietnamese | [@unbiaseduser](https://github.com/unbiaseduser) |
-| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/), [@inworless](https://github.com/inworless) |
+| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/), [@inworless](https://github.com/inworless), [@hamburger2048](https://hosted.weblate.org/user/hamburger2048/) |
 
 The current status of the translations is as follows:
 
