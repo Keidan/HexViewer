@@ -73,24 +73,24 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | cs | Czech | [@hajdam](https://github.com/hajdam) |
 | de-DE | German | [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL) |
 | en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
-| es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), [@gallegonovato](https://hosted.weblate.org/user/gallegonovato/), (+DeepL) |
+| es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), @gallegonovato (from weblate), (+DeepL) |
 | fa | Persian | [@qaria185-blip](https://github.com/qaria185-blip) |
 | fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/) |
-| hi | Hindi | [@Shopimisrel](https://github.com/Scrambled777) |
+| hi | Hindi | @Shopimisrel (from github) |
 | hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |
-| in-ID | Indonesian | [@Velorixen](https://github.com/Velorixen) |
+| in-ID | Indonesian | @Velorixen (from github) |
 | it-IT | Italian | [@eUgEntOptIc44](https://github.com/eUgEntOptIc44) |
-| iw | Hebrew | [@Shopimisrel](https://github.com/Shopimisrel) |
+| iw | Hebrew | @Shopimisrel (from github) |
 | ja-JP | Japanese | [@gnuhead-chieb](https://github.com/gnuhead-chieb) |
 | nb-NO | Norwegian Bokmål | [@comradekingu](https://github.com/comradekingu) |
 | nl-NL | Dutch (Nederlands) | [@AudeBelgraver](https://hosted.weblate.org/user/AudeBelgraver/) |
-| pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), [@pedrolinharesmoreira](https://github.com/pedrolinharesmoreira) |
+| pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), @pedrolinharesmoreira (from github) |
 | pt-PT | Portuguese | [@SantosSi](https://github.com/SantosSi) |
 | ru-RU | Russian | [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123) |
 | ta-IN | Tamil | [@TamilNeram](https://github.com/TamilNeram) |
-| tr-TR | Turkish | [@ersen0](https://github.com/ersen0) |
+| tr-TR | Turkish | @ersen0 (from github) |
 | vi-VN | Vietnamese | [@unbiaseduser](https://github.com/unbiaseduser) |
-| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), [@alchemillatruth](https://hosted.weblate.org/user/alchemillatruth/), [@hamburger1024](https://hosted.weblate.org/user/hamburger1024/), [@inworless](https://github.com/inworless), [@hamburger2048](https://hosted.weblate.org/user/hamburger2048/) |
+| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), @alchemillatruth (from weblate), @hamburger1024 (from weblate), [@inworless](https://github.com/inworless), [@hamburger2048](https://hosted.weblate.org/user/hamburger2048/) |
 
 The current status of the translations is as follows:
 
