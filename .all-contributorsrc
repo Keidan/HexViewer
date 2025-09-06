@@ -1,0 +1,297 @@
+{
+  "projectName": "HexViewer",
+  "projectOwner": "Keidan",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "CONTRIBUTORS.md"
+  ],
+  "imageSize": 48,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "Keidan",
+      "name": "Kevin Billonneau",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3134348?v=4",
+      "profile": "https://github.com/Keidan",
+      "contributions": [
+        "code", "doc", "design", "example", "infra", "maintenance", "question", "review", "test", "tool", "translation", "bug", "content"
+      ]
+    },{
+      "login": "OmlineEditor",
+      "name": "Anastasia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13348933?v=4",
+      "profile": "https://github.com/OmlineEditor",
+      "contributions": [
+        "ideas",
+        "bug",
+        "translation"
+      ]
+    },
+    {
+      "login": "iNtEgraIR2021",
+      "name": "Petra Mirelli",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80395360?v=4",
+      "profile": "https://gitlab.com/iNtEgraIR2021",
+      "contributions": [
+        "translation",
+        "ideas"
+      ]
+    },
+    {
+      "login": "comradekingu",
+      "name": "Allan Nordhøy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13802408?v=4",
+      "profile": "https://liberapay.com/kingu/",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "SziaTomi",
+      "name": "SziaTomi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/107822077?v=4",
+      "profile": "https://github.com/SziaTomi",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Bardock88",
+      "name": "Lendary Sayajin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/102046116?v=4",
+      "profile": "https://github.com/Bardock88",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "sr093906",
+      "name": "sr093906",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8369201?v=4",
+      "profile": "https://github.com/sr093906",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "eUgEntOptIc44",
+      "name": "Jean-Luc Tibaux",
+      "avatar_url": "https://avatars.githubusercontent.com/u/90517741?v=4",
+      "profile": "https://eugentoptic44.codeberg.page/",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "gnuhead-chieb",
+      "name": "gnuhead-chieb",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41156994?v=4",
+      "profile": "https://github.com/gnuhead-chieb",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "sguinetti",
+      "name": "Diego",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5572928?v=4",
+      "profile": "https://github.com/sguinetti",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "SantosSi",
+      "name": "Silvério Santos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31543615?v=4",
+      "profile": "https://github.com/SantosSi",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "AHOHNMYC",
+      "name": "AHOHNMYC",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24810600?v=4",
+      "profile": "https://github.com/AHOHNMYC",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "racingrebel",
+      "name": "Sergei Grishin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35243059?v=4",
+      "profile": "https://racingrebel.com/",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Usland123",
+      "name": "Usland123",
+      "avatar_url": "https://avatars.githubusercontent.com/u/72984028?v=4",
+      "profile": "https://github.com/Usland123",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "TamilNeram",
+      "name": "தமிழ் நேரம்",
+      "avatar_url": "https://avatars.githubusercontent.com/u/67970539?v=4",
+      "profile": "https://tamilneram.github.io/",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "unbiaseduser",
+      "name": "Quang Trung",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95969852?v=4",
+      "profile": "https://github.com/unbiaseduser",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "inworless",
+      "name": "inworless",
+      "avatar_url": "https://avatars.githubusercontent.com/u/122019501?v=4",
+      "profile": "https://github.com/inworless",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "hajdam",
+      "name": "Miroslav Hajda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7817364?v=4",
+      "profile": "https://github.com/hajdam",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "qaria185-blip",
+      "name": "qaria185-blip",
+      "avatar_url": "https://avatars.githubusercontent.com/u/225087259?v=4",
+      "profile": "https://github.com/qaria185-blip",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "sec.xyx",
+      "name": "Xyx S",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/sec.xyx.png",
+      "profile": "https://hosted.weblate.org/user/sec.xyx",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "amro",
+      "name": "Amr Walryh",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/amro.png",
+      "profile": "https://hosted.weblate.org/user/amro",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Edanas",
+      "name": "J. Lavoie",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/Edanas.png",
+      "profile": "https://hosted.weblate.org/user/Edanas",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "AudeBelgraver",
+      "name": "Aude Belgraver",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/AudeBelgraver.png",
+      "profile": "https://hosted.weblate.org/user/AudeBelgraver",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "hamburger2048",
+      "name": "大王叫我来巡山",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/hamburger2048.png",
+      "profile": "https://hosted.weblate.org/user/hamburger2048",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Shopimisrel",
+      "name": "Shopimisrel",
+      "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+      "profile": "",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Velorixen",
+      "name": "Velorixen",
+      "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+      "profile": "",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "pedrolinharesmoreira",
+      "name": "pedrolinharesmoreira",
+      "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+      "profile": "",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "ersen0",
+      "name": "ersen0",
+      "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+      "profile": "",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "gallegonovato",
+      "name": "gallegonovato",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "profile": "https://hosted.weblate.org/",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "alchemillatruth",
+      "name": "alchemillatruth",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "profile": "https://hosted.weblate.org/",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "hamburger1024",
+      "name": "hamburger1024",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "profile": "https://hosted.weblate.org/",
+      "contributions": [
+        "translation"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": true
+}

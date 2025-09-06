@@ -96,6 +96,12 @@ The current status of the translations is as follows:
 
 [![Weblate](https://hosted.weblate.org/widgets/hexviewer/-/strings/multi-auto.svg)][weblate]
 
+## Contributors
+
+Thanks to all the people who make this project possible :purple_heart:
+
+[See the full list][contributors]
+
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="270px" height="600px" alt="Home screen menu"></p>
@@ -113,3 +119,4 @@ The current status of the translations is as follows:
 [license]: https://github.com/Keidan/HexViewer/blob/master/license.txt
 [weblate]: https://hosted.weblate.org/engage/hexviewer/
 [sonarcloud]: https://sonarcloud.io/summary/new_code?id=Keidan_HexViewer
+[contributors]: https://github.com/Keidan/HexViewer/blob/master/CONTRIBUTORS.md
