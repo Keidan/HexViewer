@@ -16,7 +16,19 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/3134348?v=4",
       "profile": "https://github.com/Keidan",
       "contributions": [
-        "code", "doc", "design", "example", "infra", "maintenance", "question", "review", "test", "tool", "translation", "bug", "content"
+        "code",
+		"doc",
+		"design",
+		"example",
+		"infra",
+		"maintenance",
+		"question",
+		"review",
+		"test",
+		"tool",
+		"translation",
+		"bug",
+		"content"
       ]
     },{
       "login": "OmlineEditor",
@@ -24,7 +36,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/13348933?v=4",
       "profile": "https://github.com/OmlineEditor",
       "contributions": [
+		"design",
         "ideas",
+		"question",
         "bug",
         "translation"
       ]
