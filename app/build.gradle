@@ -6,7 +6,7 @@ plugins {
 
 final COMPILE_WITH_DEPRECATION_LINT = false
 
-final SONAR_PROJECT_VERSION = '1.59.0'
+final SONAR_PROJECT_VERSION = '1.59.1'
 
 // Load signing config only if needed
 def signingEnabled = gradle.startParameter.taskNames.any { it.toLowerCase().contains("signedrelease") }
@@ -22,8 +22,8 @@ android {
     //noinspection OldTargetApi
     targetSdk 34
     // F-Droid seems not to appreciate the use of variables
-    versionCode 15900
-    versionName '1.59.0'
+    versionCode 15901
+    versionName '1.59.1'
     vectorDrawables {
       useSupportLibrary true
     }
