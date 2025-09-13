@@ -5,6 +5,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.WindowInsetsController;
 
+import androidx.annotation.ColorRes;
 import androidx.core.content.ContextCompat;
 
 import fr.ralala.hexviewer.R;
@@ -84,19 +85,20 @@ public class SystemBarUtils {
         int appearance = lightMode ? WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS : 0;
         controller.setSystemBarsAppearance(appearance, WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS);
       }
-      activity.getWindow().setNavigationBarColor(
-        ContextCompat.getColor(activity, R.color.navigationBarColor)
-      );
+      setNavigationBarColor(activity, R.color.navigationBarColor);
     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      activity.getWindow().setNavigationBarColor(
-        ContextCompat.getColor(activity, R.color.navigationBarColor)
-      );
+      setNavigationBarColor(activity, R.color.navigationBarColor);
       setLightNavigationBarForO(activity, lightMode);
     } else {
-      activity.getWindow().setNavigationBarColor(
-        ContextCompat.getColor(activity, R.color.navigationBarColor23)
-      );
+      setNavigationBarColor(activity, R.color.navigationBarColor23);
     }
+  }
+
+  @SuppressWarnings("squid:S1874")
+  private static void setNavigationBarColor(Activity activity, @ColorRes int id) {
+    activity.getWindow().setNavigationBarColor(
+      ContextCompat.getColor(activity, id)
+    );
   }
 
   /**
