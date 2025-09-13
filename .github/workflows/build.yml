@@ -3,12 +3,17 @@ name: Build
 # Trigger conditions
 on:
   push:
-    branches: [ master ] # Trigger on push to the master branch
+    branches:
+      - '**' # Trigger on push to all branchs
     tags:
       - 'v*.*'           # match v1.2, v12.34, v1.2.3...
       - 'v*.*.*'         # match v1.2.3, v0.10.12, etc.
   pull_request:
-    types: [opened, synchronize, reopened] # Trigger when PR is created or updated
+    types: 
+      # Trigger when PR is created or updated
+      - opened
+      - synchronize
+      - reopened
   workflow_dispatch: # Manual trigger from the GitHub UI
   
 jobs:
