@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Project: HexViewer
+Author: Keidan
+License: GPLv3
+-->
 <resources>
   <!-- Application theme extensions -->
   <style name="AppTheme.PreferenceTheme" parent="@style/PreferenceThemeOverlay">

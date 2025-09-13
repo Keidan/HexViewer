@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Project: HexViewer
+Author: Keidan
+License: GPLv3
+-->
 <resources>
   <!-- activity_main.xml -->
   <dimen name="activity_main_please_open_file_textSize">18sp</dimen>
