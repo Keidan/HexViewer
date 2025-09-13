@@ -39,10 +39,14 @@ public class PayloadPlainSwipe {
   private ICommonUI mCommonUI;
   private ListView mPayloadPlain = null;
   private PlainTextListArrayAdapter mAdapterPlain = null;
+  // I don't understand why this warning appears even though the variable is used in several methods.
+  @SuppressWarnings("squid:S1450")
   private SwipeRefreshLayout mPayloadPlainSwipeRefreshLayout;
   private final AtomicBoolean mCancelPayloadPlainSwipeRefresh = new AtomicBoolean(false);
   private UserConfigPortrait mUserConfigPortrait;
   private UserConfigLandscape mUserConfigLandscape;
+  // I don't understand why this warning appears even though the variable is used in several methods.
+  @SuppressWarnings("squid:S1450")
   private PlainMultiChoiceCallback mPlainMultiChoiceCallback;
 
   /**
