@@ -6,11 +6,12 @@ import android.net.Uri;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.activities.RecentlyOpenActivity;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
@@ -29,13 +30,15 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  * ******************************************************************************
  */
 public class LauncherRecentlyOpen {
-  private final MainActivity mActivity;
+  private final AppCompatActivity mActivity;
+  private final ICommonUI mCommonUI;
   private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherRecentlyOpen;
 
-  public LauncherRecentlyOpen(MainActivity activity) {
-    mApp = (ApplicationCtx) activity.getApplicationContext();
+  public LauncherRecentlyOpen(AppCompatActivity activity, ICommonUI commonUI) {
     mActivity = activity;
+    mCommonUI = commonUI;
+    mApp = mCommonUI.getApplicationCtx();
     register();
   }
 
@@ -70,11 +73,11 @@ public class LauncherRecentlyOpen {
       final Runnable r = () -> {
         if (fd.getEndOffset() > fd.getRealSize())
           mApp.setSequential(true);
-        mActivity.getLauncherOpen().processFileOpen(fd, oldToString, true);
+        mCommonUI.getLauncherOpen().processFileOpen(fd, oldToString, true);
       };
-      if (mActivity.getUnDoRedo().isChanged()) {// a save operation is pending?
-        UIHelper.confirmFileChanged(mActivity, mActivity.getFileData(), r, () -> new TaskSave(mActivity, mActivity).execute(
-          new TaskSave.Request(mActivity.getFileData(), mActivity.getPayloadHex().getAdapter().getEntries().getItems(), r)));
+      if (mCommonUI.getUnDoRedo().isChanged()) {// a save operation is pending?
+        UIHelper.confirmFileChanged(mActivity, mCommonUI.getFileData(), r, () -> new TaskSave(mActivity, mCommonUI).execute(
+          new TaskSave.Request(mCommonUI.getFileData(), mCommonUI.getPayloadHex().getAdapter().getEntries().getItems(), r)));
       } else
         r.run();
     } else {
@@ -91,12 +94,12 @@ public class LauncherRecentlyOpen {
       new ActivityResultContracts.StartActivityForResult(),
       result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
-          mActivity.setOrphanDialog(null);
+          mCommonUI.setOrphanDialog(null);
           Intent data = result.getData();
           if (data != null && data.getData() != null) {
             processIntentData(data);
           } else if (mApp.getRecentlyOpened().list().isEmpty())
-            mActivity.getMenuRecentlyOpen().setEnabled(false);
+            mCommonUI.getMenuRecentlyOpen().setEnabled(false);
         }
       });
   }

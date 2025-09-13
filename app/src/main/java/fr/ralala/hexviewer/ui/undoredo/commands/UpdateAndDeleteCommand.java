@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 
@@ -27,12 +27,12 @@ public class UpdateAndDeleteCommand implements ICommand {
   private final UpdateCommand mUpdate;
 
 
-  public UpdateAndDeleteCommand(final UnDoRedo undoRedo, final MainActivity activity,
+  public UpdateAndDeleteCommand(final UnDoRedo undoRedo, final ICommonUI commonUI,
                                 final int firstPosition,
                                 List<LineEntry> entriesUpdated,
                                 final Map<Integer, LineEntry> entriesDeleted) {
-    mUpdate = new UpdateCommand(undoRedo, activity, firstPosition, entriesUpdated.size(), entriesUpdated);
-    mDelete = new DeleteCommand(activity, entriesDeleted);
+    mUpdate = new UpdateCommand(undoRedo, commonUI, firstPosition, entriesUpdated.size(), entriesUpdated);
+    mDelete = new DeleteCommand(commonUI, entriesDeleted);
   }
 
   /**

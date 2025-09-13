@@ -1,5 +1,6 @@
 package fr.ralala.hexviewer.ui.undoredo;
 
+import android.content.Context;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateAndDeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
@@ -34,14 +35,16 @@ import fr.ralala.hexviewer.ui.undoredo.commands.UpdateCommand;
 public class UnDoRedo {
   private static final int CONTROL_UNDO = 0;
   private static final int CONTROL_REDO = 1;
-  private final MainActivity mActivity;
+  private final Context mContext;
+  private final ICommonUI mCommonUI;
   private final Control[] mControls;
   private final Deque<ICommand> mUndo;
   private final Deque<ICommand> mRedo;
   private int mReferenceIndex;
 
-  public UnDoRedo(MainActivity activity) {
-    mActivity = activity;
+  public UnDoRedo(Context context, ICommonUI commonUI) {
+    mContext = context;
+    mCommonUI = commonUI;
     mControls = new Control[2];
     mUndo = new ArrayDeque<>();
     mRedo = new ArrayDeque<>();
@@ -87,61 +90,57 @@ public class UnDoRedo {
   /**
    * Updates command.
    *
-   * @param activity      MainActivity.
    * @param firstPosition The first position index.
    * @param refNbLines    The reference number of lines.
    * @param entries       The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForUpdate(final MainActivity activity, final int firstPosition, final int refNbLines, List<LineEntry> entries) {
-    ICommand cmd = new UpdateCommand(this, activity, firstPosition, refNbLines, entries);
+  public ICommand insertInUnDoRedoForUpdate(final int firstPosition, final int refNbLines, List<LineEntry> entries) {
+    ICommand cmd = new UpdateCommand(this, mCommonUI, firstPosition, refNbLines, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
 
-    mActivity.refreshTitle();
+    mCommonUI.refreshTitle();
     return cmd;
   }
 
   /**
    * Updates and delete command.
    *
-   * @param activity       MainActivity.
    * @param firstPosition  The first position index.
    * @param entriesUpdated Entries to be updated.
    * @param entriesDeleted Entries to be deleted.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForUpdateAndDelete(final MainActivity activity,
-                                                     final int firstPosition,
+  public ICommand insertInUnDoRedoForUpdateAndDelete(final int firstPosition,
                                                      List<LineEntry> entriesUpdated,
                                                      final Map<Integer, LineEntry> entriesDeleted) {
-    ICommand cmd = new UpdateAndDeleteCommand(this, activity, firstPosition, entriesUpdated, entriesDeleted);
+    ICommand cmd = new UpdateAndDeleteCommand(this, mCommonUI, firstPosition, entriesUpdated, entriesDeleted);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
 
-    mActivity.refreshTitle();
+    mCommonUI.refreshTitle();
     return cmd;
   }
 
   /**
    * Inserts delete command.
    *
-   * @param activity MainActivity.
-   * @param entries  The entries.
+   * @param entries The entries.
    * @return The command.
    */
-  public ICommand insertInUnDoRedoForDelete(final MainActivity activity, final Map<Integer, LineEntry> entries) {
-    ICommand cmd = new DeleteCommand(activity, entries);
+  public ICommand insertInUnDoRedoForDelete(final Map<Integer, LineEntry> entries) {
+    ICommand cmd = new DeleteCommand(mCommonUI, entries);
     mUndo.push(cmd);
     manageControl(mControls[CONTROL_UNDO], true);
     manageControl(mControls[CONTROL_REDO], false);
     mRedo.clear();
 
-    mActivity.refreshTitle();
+    mCommonUI.refreshTitle();
     return cmd;
   }
 
@@ -155,10 +154,10 @@ public class UnDoRedo {
       command.unExecute();
       manageControl(mControls[CONTROL_REDO], true);
     }
-    mActivity.refreshTitle();
+    mCommonUI.refreshTitle();
     manageControl(mControls[CONTROL_UNDO], !mUndo.isEmpty());
     if (!isChanged())
-      mActivity.getPayloadHex().resetUpdateStatus();
+      mCommonUI.getPayloadHex().resetUpdateStatus();
   }
 
   /**
@@ -171,10 +170,10 @@ public class UnDoRedo {
       command.execute();
       manageControl(mControls[CONTROL_UNDO], true);
     }
-    mActivity.refreshTitle();
+    mCommonUI.refreshTitle();
     manageControl(mControls[CONTROL_REDO], !mRedo.isEmpty());
     if (!isChanged())
-      mActivity.getPayloadHex().resetUpdateStatus();
+      mCommonUI.getPayloadHex().resetUpdateStatus();
   }
 
   /**
@@ -186,7 +185,7 @@ public class UnDoRedo {
     mUndo.clear();
     mRedo.clear();
     mReferenceIndex = 0;
-    mActivity.refreshTitle();
+    mCommonUI.refreshTitle();
   }
 
   /**
@@ -199,7 +198,7 @@ public class UnDoRedo {
     if (control != null && control.img != null) {
       if (control.container != null)
         control.container.setEnabled(enabled);
-      control.img.setImageDrawable(ContextCompat.getDrawable(mActivity, enabled ? control.enable : control.disable));
+      control.img.setImageDrawable(ContextCompat.getDrawable(mContext, enabled ? control.enable : control.disable));
       control.img.setEnabled(enabled);
     }
   }

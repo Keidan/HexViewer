@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.util.Locale;
@@ -14,7 +15,7 @@ import java.util.Locale;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.dialog.SaveDialog;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
@@ -33,12 +34,14 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  * ******************************************************************************
  */
 public class LauncherSave {
-  private final MainActivity mActivity;
+  private final AppCompatActivity mActivity;
+  private final ICommonUI mCommonUI;
   private ActivityResultLauncher<Intent> activityResultLauncherSave;
   private final SaveDialog mSaveDialog;
 
-  public LauncherSave(MainActivity activity) {
+  public LauncherSave(AppCompatActivity activity, ICommonUI commonUI) {
     mActivity = activity;
+    mCommonUI = commonUI;
     mSaveDialog = new SaveDialog(activity,
       activity.getString(R.string.action_save_title));
     register();
@@ -61,7 +64,7 @@ public class LauncherSave {
         if (result.getResultCode() == Activity.RESULT_OK) {
           Intent data = result.getData();
           if (data != null) {
-            if (!mActivity.getFileData().isOpenFromAppIntent())
+            if (!mCommonUI.getFileData().isOpenFromAppIntent())
               FileHelper.takeUriPermissions(mActivity, data.getData(), true);
             processFileSaveWithDialog(data.getData());
           } else {
@@ -79,8 +82,8 @@ public class LauncherSave {
    * @param uri Uri data.
    */
   private void processFileSaveWithDialog(final Uri uri) {
-    mActivity.setOrphanDialog(mSaveDialog.show(mActivity.getFileData().getName(), (dialog, content, layout) -> {
-      mActivity.setOrphanDialog(null);
+    mCommonUI.setOrphanDialog(mSaveDialog.show(mCommonUI.getFileData().getName(), (dialog, content, layout) -> {
+      mCommonUI.setOrphanDialog(null);
       final String sFile = content.getText().toString();
       if (sFile.trim().isEmpty()) {
         layout.setError(mActivity.getString(R.string.error_filename));
@@ -121,9 +124,9 @@ public class LauncherSave {
         mActivity.getString(R.string.confirm_overwrite),
         view -> {
           FileData fd = new FileData(mActivity, f.getUri(), false);
-          new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(fd,
-            mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
-          mActivity.refreshTitle();
+          new TaskSave(mActivity, mCommonUI).execute(new TaskSave.Request(fd,
+            mCommonUI.getPayloadHex().getAdapter().getEntries().getItems(), null));
+          mCommonUI.refreshTitle();
         });
     } else {
       DocumentFile dFile = sourceDir.createFile("application/octet-stream", filename);
@@ -133,12 +136,12 @@ public class LauncherSave {
         Log.e(getClass().getSimpleName(), "2 - Uri exception: '" + uri + "', filename: '" + filename + "'");
       } else {
         FileData fd = new FileData(mActivity, dFile.getUri(), false);
-        mActivity.setFileData(fd);
+        mCommonUI.setFileData(fd);
         ApplicationCtx.addLog(mActivity, "Save",
-          String.format(Locale.US, "Save file: '%s'", mActivity.getFileData()));
-        new TaskSave(mActivity, mActivity).execute(new TaskSave.Request(mActivity.getFileData(),
-          mActivity.getPayloadHex().getAdapter().getEntries().getItems(), null));
-        mActivity.refreshTitle();
+          String.format(Locale.US, "Save file: '%s'", mCommonUI.getFileData()));
+        new TaskSave(mActivity, mCommonUI).execute(new TaskSave.Request(mCommonUI.getFileData(),
+          mCommonUI.getPayloadHex().getAdapter().getEntries().getItems(), null));
+        mCommonUI.refreshTitle();
       }
     }
   }

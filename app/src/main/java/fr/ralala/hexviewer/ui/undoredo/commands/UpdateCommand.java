@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
@@ -25,18 +25,18 @@ import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
  */
 public class UpdateCommand implements ICommand {
   private final List<LineEntry> mList;
-  private final MainActivity mActivity;
+  private final ICommonUI mCommonUI;
   private final int mFirstPosition;
   private final int mRefNbLines;
   private final List<LineEntry> mPrevLines;
   private final UnDoRedo mUnDoRedo;
 
 
-  public UpdateCommand(final UnDoRedo undoRedo, final MainActivity activity, final int firstPosition, final int refNbLines, List<LineEntry> entries) {
+  public UpdateCommand(final UnDoRedo undoRedo, final ICommonUI commonUI, final int firstPosition, final int refNbLines, List<LineEntry> entries) {
     mUnDoRedo = undoRedo;
     mList = entries;
-    mActivity = activity;
-    mFirstPosition = activity.getPayloadHex().getAdapter().getEntries().getItemIndex(firstPosition);
+    mCommonUI = commonUI;
+    mFirstPosition = commonUI.getPayloadHex().getAdapter().getEntries().getItemIndex(firstPosition);
     mRefNbLines = refNbLines;
     mPrevLines = new ArrayList<>();
   }
@@ -45,8 +45,8 @@ public class UpdateCommand implements ICommand {
    * Execute the command.
    */
   public void execute() {
-    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-    String query = mActivity.getSearchQuery();
+    HexTextArrayAdapter adapter = mCommonUI.getPayloadHex().getAdapter();
+    String query = mCommonUI.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
 
@@ -117,8 +117,8 @@ public class UpdateCommand implements ICommand {
    * Un-Execute the command.
    */
   public void unExecute() {
-    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-    String query = mActivity.getSearchQuery();
+    HexTextArrayAdapter adapter = mCommonUI.getPayloadHex().getAdapter();
+    String query = mCommonUI.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
 

@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Set;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -42,7 +43,8 @@ import fr.ralala.hexviewer.utils.SysHelper;
  */
 public abstract class GenericMultiChoiceCallback implements ActionMode.Callback {
   protected final SearchableListArrayAdapter mAdapter;
-  protected final MainActivity mActivity;
+  protected final AppCompatActivity mActivity;
+  protected final ICommonUI mCommonUI;
   private final ClipboardManager mClipboard;
   private int mFirstSelection = -1;
   private final AlertDialog mProgress;
@@ -66,8 +68,9 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
   }
 
   @SuppressLint("InflateParams")
-  protected GenericMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final SearchableListArrayAdapter adapter) {
-    mActivity = mainActivity;
+  protected GenericMultiChoiceCallback(AppCompatActivity activity, ICommonUI commonUI, final ListView listView, final SearchableListArrayAdapter adapter) {
+    mActivity = activity;
+    mCommonUI = commonUI;
     mAdapter = adapter;
     mClipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
     mProgress = UIHelper.createCircularProgressDialog(mActivity, null);
@@ -81,7 +84,7 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
         final boolean currentlySelected = mAdapter.getSelectedItemsIds().contains(pos);
         onItemCheckedStateChanged(mActionMode, position, !currentlySelected);
       } else {
-        mActivity.onLineItemClick(position);
+        mCommonUI.onLineItemClick(position);
       }
     });
     listView.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -146,8 +149,8 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
     int id = item.getItemId();
     if (id == R.id.action_clear) {
-      if (mActivity.getFileData().isSequential()) {
-        UIHelper.showErrorDialog(mActivity, mActivity.getFileData().getName(),
+      if (mCommonUI.getFileData().isSequential()) {
+        UIHelper.showErrorDialog(mActivity, mCommonUI.getFileData().getName(),
           mActivity.getString(R.string.error_open_sequential_add_or_delete_data));
         return false;
       }

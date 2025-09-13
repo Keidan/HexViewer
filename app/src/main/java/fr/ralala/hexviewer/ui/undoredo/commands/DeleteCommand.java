@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
 
@@ -27,11 +27,11 @@ import fr.ralala.hexviewer.ui.undoredo.ICommand;
 @SuppressWarnings("squid:S7091")
 public class DeleteCommand implements ICommand {
   private final Map<Integer, LineEntry> mList;
-  private final MainActivity mActivity;
+  private final ICommonUI mCommonUI;
 
-  public DeleteCommand(final MainActivity activity, final Map<Integer, LineEntry> entries) {
+  public DeleteCommand(final ICommonUI commonUI, final Map<Integer, LineEntry> entries) {
     mList = entries;
-    mActivity = activity;
+    mCommonUI = commonUI;
   }
 
   /**
@@ -39,8 +39,8 @@ public class DeleteCommand implements ICommand {
    */
   public void execute() {
     Log.i(getClass().getName(), "execute");
-    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-    String query = mActivity.getSearchQuery();
+    HexTextArrayAdapter adapter = mCommonUI.getPayloadHex().getAdapter();
+    String query = mCommonUI.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
     List<Integer> list = new ArrayList<>(mList.keySet());
@@ -57,8 +57,8 @@ public class DeleteCommand implements ICommand {
    */
   public void unExecute() {
     Log.i(getClass().getName(), "unExecute");
-    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
-    String query = mActivity.getSearchQuery();
+    HexTextArrayAdapter adapter = mCommonUI.getPayloadHex().getAdapter();
+    String query = mCommonUI.getSearchQuery();
     if (!query.isEmpty())
       adapter.manualFilterUpdate(""); /* reset filter */
 
