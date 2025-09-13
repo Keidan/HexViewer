@@ -27,6 +27,8 @@ import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
  * </p>
  * ******************************************************************************
  */
+// The purpose of this interface is indeed to cross packages...
+@SuppressWarnings("squid:S7091")
 public interface ICommonUI extends TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
   /**
    * Returns the PayloadHexHelper
