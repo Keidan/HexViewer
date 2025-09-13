@@ -201,12 +201,14 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
      */
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-      final int position = viewHolder.getAdapterPosition();
-      UriData ud = mItems.get(position);
-      mItems.remove(position);
-      notifyItemRemoved(position);
-      if (mListener != null)
-        mListener.onDelete(ud);
+      final int position = viewHolder.getBindingAdapterPosition();
+      if (position != RecyclerView.NO_POSITION) {
+        UriData ud = mItems.get(position);
+        mItems.remove(position);
+        notifyItemRemoved(position);
+        if (mListener != null)
+          mListener.onDelete(ud);
+      }
     }
   }
 
