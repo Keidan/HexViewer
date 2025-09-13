@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer;
+package fr.ralala.hexviewer.application;
 
 import android.app.Activity;
 import android.app.Application;
@@ -23,6 +23,7 @@ import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.models.RecentlyOpened;
 import fr.ralala.hexviewer.models.SettingsKeys;

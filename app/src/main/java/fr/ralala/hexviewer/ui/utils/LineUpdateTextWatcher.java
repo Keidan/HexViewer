@@ -18,11 +18,11 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.LineUpdateHexArrayAdapter;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * ******************************************************************************

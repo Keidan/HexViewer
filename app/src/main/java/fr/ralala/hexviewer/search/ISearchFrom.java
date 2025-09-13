@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.ui.adapters.search;
+package fr.ralala.hexviewer.search;
 
 /**
  * ******************************************************************************

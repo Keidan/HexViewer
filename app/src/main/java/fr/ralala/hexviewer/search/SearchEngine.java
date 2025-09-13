@@ -1,14 +1,14 @@
-package fr.ralala.hexviewer.ui.adapters.search;
+package fr.ralala.hexviewer.search;
 
 import android.content.Context;
 
 import java.util.BitSet;
 import java.util.List;
 
-import fr.ralala.hexviewer.ApplicationCtx;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.application.ApplicationCtx;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.models.RawBuffer;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * ******************************************************************************

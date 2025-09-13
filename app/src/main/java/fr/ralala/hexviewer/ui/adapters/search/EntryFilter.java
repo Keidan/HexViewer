@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fr.ralala.hexviewer.models.LineEntries;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntries;
+import fr.ralala.hexviewer.models.lines.LineEntry;
+import fr.ralala.hexviewer.search.ISearchFrom;
+import fr.ralala.hexviewer.search.SearchEngine;
 
 /**
  * ******************************************************************************

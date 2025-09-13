@@ -2,7 +2,7 @@ package fr.ralala.hexviewer.ui.adapters.config;
 
 import android.content.Context;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 
 /**
  * ******************************************************************************

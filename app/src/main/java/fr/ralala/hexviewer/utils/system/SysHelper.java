@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.utils;
+package fr.ralala.hexviewer.utils.system;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.models.RawBuffer;
 
 /**

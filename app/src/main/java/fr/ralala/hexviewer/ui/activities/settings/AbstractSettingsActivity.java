@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.activities.BaseActivity;
 import fr.ralala.hexviewer.ui.fragments.AbstractSettingsFragment;

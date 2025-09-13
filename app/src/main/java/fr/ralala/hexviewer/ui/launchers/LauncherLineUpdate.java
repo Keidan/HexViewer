@@ -16,12 +16,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import fr.ralala.hexviewer.ApplicationCtx;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.application.ApplicationCtx;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * ******************************************************************************

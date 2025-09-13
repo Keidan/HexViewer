@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import fr.ralala.hexviewer.ApplicationCtx;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.application.ApplicationCtx;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * ******************************************************************************

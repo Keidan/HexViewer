@@ -8,8 +8,8 @@ import org.junit.runners.JUnit4;
 
 import java.util.List;
 
-import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.models.lines.LineEntry;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * Unit tests for {@link SysHelper#formatBuffer(byte[], Object, int, int)}.

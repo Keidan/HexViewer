@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;

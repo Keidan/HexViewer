@@ -19,7 +19,7 @@ import java.util.Locale;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.UriData;
 import fr.ralala.hexviewer.ui.adapters.holders.HolderRecently;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * ******************************************************************************

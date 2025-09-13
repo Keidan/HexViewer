@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.ui.adapters.search.EntryFilter;
-import fr.ralala.hexviewer.ui.adapters.search.ISearchFrom;
-import fr.ralala.hexviewer.ui.adapters.search.SearchEngine;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.search.ISearchFrom;
+import fr.ralala.hexviewer.search.SearchEngine;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 import static org.junit.Assert.assertEquals;
 
