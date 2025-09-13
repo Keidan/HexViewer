@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Project: HexViewer
+Author: Keidan
+License: GPLv3
+-->
 <resources>
   <color name="colorPrimary">#FFFFFFFF</color>
   <color name="colorPrimaryDark">#FFF5F5F5</color>
