@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.List;
 import java.util.Map;
 
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.undoredo.ICommand;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;

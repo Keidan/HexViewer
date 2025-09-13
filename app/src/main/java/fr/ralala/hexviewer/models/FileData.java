@@ -9,7 +9,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import java.util.Locale;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.utils.io.FileHelper;
 
 /**

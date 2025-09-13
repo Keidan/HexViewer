@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.undoredo.commands.DeleteCommand;
 import fr.ralala.hexviewer.ui.undoredo.commands.UpdateAndDeleteCommand;

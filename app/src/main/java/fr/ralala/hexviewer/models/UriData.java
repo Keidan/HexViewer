@@ -3,7 +3,7 @@ package fr.ralala.hexviewer.models;
 import android.content.Context;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.utils.SysHelper;
+import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
  * ******************************************************************************

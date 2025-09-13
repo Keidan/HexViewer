@@ -1,4 +1,4 @@
-package fr.ralala.hexviewer.models;
+package fr.ralala.hexviewer.models.lines;
 
 import androidx.annotation.NonNull;
 

@@ -1,6 +1,8 @@
-package fr.ralala.hexviewer.models;
+package fr.ralala.hexviewer.models.lines;
 
 import androidx.annotation.Nullable;
+
+import fr.ralala.hexviewer.models.RawBuffer;
 
 /**
  * ******************************************************************************

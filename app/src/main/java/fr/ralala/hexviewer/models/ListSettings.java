@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.StringRes;
 
-import fr.ralala.hexviewer.ApplicationCtx;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 
 /**
  * ******************************************************************************

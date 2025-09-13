@@ -18,12 +18,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import fr.ralala.hexviewer.ApplicationCtx;
-import fr.ralala.hexviewer.models.LineEntries;
-import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.application.ApplicationCtx;
+import fr.ralala.hexviewer.models.lines.LineEntries;
+import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 import fr.ralala.hexviewer.ui.adapters.search.EntryFilter;
-import fr.ralala.hexviewer.ui.adapters.search.ISearchFrom;
+import fr.ralala.hexviewer.search.ISearchFrom;
 
 /**
  * ******************************************************************************
