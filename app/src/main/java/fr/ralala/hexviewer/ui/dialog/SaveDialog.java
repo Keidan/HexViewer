@@ -1,6 +1,7 @@
 package fr.ralala.hexviewer.ui.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.textfield.TextInputLayout;
 
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 
 /**
@@ -27,14 +27,14 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public class SaveDialog {
-  private final MainActivity mActivity;
+  private final Activity mActivity;
   private final String mTitle;
 
   public interface DialogPositiveClick {
     void onClick(AlertDialog dialog, EditText editText, TextInputLayout editTextLayout);
   }
 
-  public SaveDialog(MainActivity activity, String title) {
+  public SaveDialog(Activity activity, String title) {
     mActivity = activity;
     mTitle = title;
   }

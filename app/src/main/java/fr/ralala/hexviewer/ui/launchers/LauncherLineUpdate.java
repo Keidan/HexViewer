@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +18,8 @@ import java.util.TreeMap;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.LineEntry;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.activities.LineUpdateActivity;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.utils.SysHelper;
 
@@ -37,12 +38,14 @@ import fr.ralala.hexviewer.utils.SysHelper;
 // For now, I don't have the courage to change everything.
 @SuppressWarnings("squid:S7091")
 public class LauncherLineUpdate {
-  private final MainActivity mActivity;
+  private final AppCompatActivity mActivity;
+  private final ICommonUI mCommonUI;
   private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherLineUpdate;
 
-  public LauncherLineUpdate(MainActivity activity) {
+  public LauncherLineUpdate(AppCompatActivity activity, ICommonUI commonUI) {
     mActivity = activity;
+    mCommonUI = commonUI;
     mApp = (ApplicationCtx) mActivity.getApplicationContext();
     register();
   }
@@ -58,9 +61,9 @@ public class LauncherLineUpdate {
     intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_TEXTS, texts);
     intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_POSITION, position);
     intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_NB_LINES, nbLines);
-    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_FILENAME, mActivity.getFileData().getName());
-    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_CHANGE, mActivity.getUnDoRedo().isChanged());
-    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_SEQUENTIAL, mActivity.getFileData().isSequential());
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_FILENAME, mCommonUI.getFileData().getName());
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_CHANGE, mCommonUI.getUnDoRedo().isChanged());
+    intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_SEQUENTIAL, mCommonUI.getFileData().isSequential());
     intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_SHIFT_OFFSET, shiftOffset);
     intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_START_OFFSET, startRow);
     activityResultLauncherLineUpdate.launch(intent);
@@ -84,10 +87,10 @@ public class LauncherLineUpdate {
 
     final List<LineEntry> li = new ArrayList<>();
     int nbBytesPerLine = mApp.getNbBytesPerLine();
-    if (position == 0 && mActivity.getFileData().getShiftOffset() != 0) {
-      byte[] b = new byte[Math.min(buf.length, nbBytesPerLine - mActivity.getFileData().getShiftOffset())];
+    if (position == 0 && mCommonUI.getFileData().getShiftOffset() != 0) {
+      byte[] b = new byte[Math.min(buf.length, nbBytesPerLine - mCommonUI.getFileData().getShiftOffset())];
       System.arraycopy(buf, 0, b, 0, b.length);
-      SysHelper.formatBuffer(li, b, b.length, null, nbBytesPerLine, mActivity.getFileData().getShiftOffset());
+      SysHelper.formatBuffer(li, b, b.length, null, nbBytesPerLine, mCommonUI.getFileData().getShiftOffset());
       byte[] buff2 = new byte[buf.length - b.length];
       System.arraycopy(buf, b.length, buff2, 0, buff2.length);
       buf = buff2;
@@ -98,21 +101,21 @@ public class LauncherLineUpdate {
   private void processUndoRedo(final List<LineEntry> li, final byte[] buf,
                                final int nbBytesPerLine, final int position, final int nbLines) {
     SysHelper.formatBuffer(li, buf, buf.length, null, nbBytesPerLine);
-    HexTextArrayAdapter adapter = mActivity.getPayloadHex().getAdapter();
+    HexTextArrayAdapter adapter = mCommonUI.getPayloadHex().getAdapter();
     if (li.isEmpty()) {
       Map<Integer, LineEntry> map = new TreeMap<>();
       for (int i = position; i < position + nbLines; i++) {
         map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
       }
-      mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
+      mCommonUI.getUnDoRedo().insertInUnDoRedoForDelete(map).execute();
     } else if (li.size() >= nbLines) {
-      mActivity.getUnDoRedo().insertInUnDoRedoForUpdate(mActivity, position, nbLines, li).execute();
+      mCommonUI.getUnDoRedo().insertInUnDoRedoForUpdate(position, nbLines, li).execute();
     } else {
       Map<Integer, LineEntry> map = new TreeMap<>();
       for (int i = position + li.size(); i < position + nbLines; i++) {
         map.put(adapter.getEntries().getItemIndex(i), adapter.getItem(i));
       }
-      mActivity.getUnDoRedo().insertInUnDoRedoForUpdateAndDelete(mActivity, position, li, map).execute();
+      mCommonUI.getUnDoRedo().insertInUnDoRedoForUpdateAndDelete(position, li, map).execute();
     }
   }
 

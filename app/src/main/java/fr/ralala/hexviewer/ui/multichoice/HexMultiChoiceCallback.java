@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 
 import java.io.ByteArrayOutputStream;
@@ -15,7 +16,7 @@ import java.util.TreeMap;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 
 /**
@@ -34,8 +35,8 @@ import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 @SuppressWarnings("squid:S7091")
 public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
 
-  public HexMultiChoiceCallback(MainActivity mainActivity, final ListView listView, final HexTextArrayAdapter adapter) {
-    super(mainActivity, listView, adapter);
+  public HexMultiChoiceCallback(AppCompatActivity activity, ICommonUI commonUI, final ListView listView, final HexTextArrayAdapter adapter) {
+    super(activity, commonUI, listView, adapter);
   }
 
   /**
@@ -84,8 +85,8 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
             handler.postDelayed(this, 1);
           } else {
             // Once all batches processed, execute deletion and UI update
-            mActivity.getUnDoRedo().insertInUnDoRedoForDelete(mActivity, map).execute();
-            mActivity.refreshTitle();
+            mCommonUI.getUnDoRedo().insertInUnDoRedoForDelete(map).execute();
+            mCommonUI.refreshTitle();
             closeActionMode(mode, false);
             done.run();
           }
@@ -104,7 +105,7 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
    */
   @Override
   protected boolean actionEdit(ActionMode mode) {
-    if (!mActivity.getSearchQuery().trim().isEmpty()) {
+    if (!mCommonUI.getSearchQuery().trim().isEmpty()) {
       displayError(R.string.error_edition_search_in_progress);
       return false;
     }
@@ -126,9 +127,9 @@ public class HexMultiChoiceCallback extends GenericMultiChoiceCallback {
         for (Byte b : ld.getRaw())
           byteArrayOutputStream.write(b);
     }
-    mActivity.getLauncherLineUpdate().startActivity(byteArrayOutputStream.toByteArray(),
+    mCommonUI.getLauncherLineUpdate().startActivity(byteArrayOutputStream.toByteArray(),
       selected.get(0), selected.size(),
-      mActivity.getFileData().getShiftOffset(), ((HexTextArrayAdapter) mAdapter).getCurrentLine(selected.get(0)));
+      mCommonUI.getFileData().getShiftOffset(), ((HexTextArrayAdapter) mAdapter).getCurrentLine(selected.get(0)));
     closeActionMode(mode, true);
     return true;
   }

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntries;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.SearchableListArrayAdapter;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.SysHelper;
@@ -51,7 +52,8 @@ public class GoToDialog implements View.OnClickListener {
   private AlertDialog mDialog;
   private EditText mEt;
   private TextInputLayout mLayout;
-  private final MainActivity mActivity;
+  private final AppCompatActivity mActivity;
+  private final ICommonUI mCommonUI;
   private int mPosition = 0;
   private Mode mMode;
   private String mTitle;
@@ -63,9 +65,10 @@ public class GoToDialog implements View.OnClickListener {
     LINE_PLAIN
   }
 
-  public GoToDialog(MainActivity activity) {
+  public GoToDialog(AppCompatActivity activity, ICommonUI commonUI) {
     mActivity = activity;
-    mApp = (ApplicationCtx) activity.getApplicationContext();
+    mCommonUI = commonUI;
+    mApp = mCommonUI.getApplicationCtx();
   }
 
   /**
@@ -130,7 +133,7 @@ public class GoToDialog implements View.OnClickListener {
 
   private boolean processPosition(final String text) {
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
-      mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+      mCommonUI.getPayloadHex().getListView() : mCommonUI.getPayloadPlain().getListView();
     SearchableListArrayAdapter adapter = ((SearchableListArrayAdapter) lv.getAdapter());
     int position;
     if (mMode == Mode.ADDRESS) {
@@ -177,7 +180,7 @@ public class GoToDialog implements View.OnClickListener {
     else
       mPreviousGoToValueAddress = text;
     mDialog.dismiss();
-    mActivity.setOrphanDialog(null);
+    mCommonUI.setOrphanDialog(null);
   }
 
   /**
@@ -305,7 +308,7 @@ public class GoToDialog implements View.OnClickListener {
    */
   private void blinkBackground(int position) {
     ListView lv = (mMode == Mode.ADDRESS || mMode == Mode.LINE_HEX) ?
-      mActivity.getPayloadHex().getListView() : mActivity.getPayloadPlain().getListView();
+      mCommonUI.getPayloadHex().getListView() : mCommonUI.getPayloadPlain().getListView();
     View v = UIHelper.getViewByPosition(position, lv);
     lv.setOnScrollListener(null);
     int windowBackground = ContextCompat.getColor(mActivity, R.color.windowBackground);

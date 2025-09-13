@@ -7,13 +7,14 @@ import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
 import fr.ralala.hexviewer.utils.io.FileHelper;
@@ -31,14 +32,16 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  * ******************************************************************************
  */
 public class LauncherOpen {
-  private final MainActivity mActivity;
+  private final AppCompatActivity mActivity;
+  private final ICommonUI mCommonUI;
   private final LinearLayout mMainLayout;
   private final ApplicationCtx mApp;
   private ActivityResultLauncher<Intent> activityResultLauncherOpen;
 
-  public LauncherOpen(MainActivity activity, LinearLayout mainLayout) {
+  public LauncherOpen(AppCompatActivity activity, ICommonUI commonUI, LinearLayout mainLayout) {
     mActivity = activity;
-    mApp = (ApplicationCtx) activity.getApplicationContext();
+    mCommonUI = commonUI;
+    mApp = mCommonUI.getApplicationCtx();
     mMainLayout = mainLayout;
     register();
   }
@@ -88,16 +91,16 @@ public class LauncherOpen {
    */
   public void processFileOpen(final FileData fd, final String oldToString, final boolean addRecent) {
     if (fd != null && fd.getUri() != null && fd.getUri().getPath() != null) {
-      final FileData previous = mActivity.getFileData();
-      mActivity.setFileData(fd);
+      final FileData previous = mCommonUI.getFileData();
+      mCommonUI.setFileData(fd);
       Runnable r = () -> {
-        mActivity.getUnDoRedo().clear();
+        mCommonUI.getUnDoRedo().clear();
         ApplicationCtx.addLog(mActivity, "Open",
-          String.format(Locale.US, "Open file: '%s'", mActivity.getFileData()));
-        new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, oldToString, addRecent).execute(mActivity.getFileData());
+          String.format(Locale.US, "Open file: '%s'", mCommonUI.getFileData()));
+        new TaskOpen(mActivity, mCommonUI.getPayloadHex().getAdapter(), mCommonUI, oldToString, addRecent).execute(mCommonUI.getFileData());
       };
       if (mApp.isSequential())
-        mActivity.getLauncherPartialOpen().startActivity(previous, oldToString, addRecent);
+        mCommonUI.getLauncherPartialOpen().startActivity(previous, oldToString, addRecent);
       else
         r.run();
     } else {

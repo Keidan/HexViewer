@@ -7,10 +7,11 @@ import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.models.FileData;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.activities.PartialOpenActivity;
 import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 
@@ -27,16 +28,20 @@ import fr.ralala.hexviewer.ui.tasks.TaskOpen;
  * ******************************************************************************
  */
 public class LauncherPartialOpen {
-  private final MainActivity mActivity;
+  private final AppCompatActivity mActivity;
+  private final ICommonUI mCommonUI;
   private FileData mPrevious;
+  @SuppressWarnings("squid:S1450")
   private boolean mAddRecent;
+  @SuppressWarnings("squid:S1450")
   private String mOldToString;
   private ActivityResultLauncher<Intent> activityResultLauncherOpen;
   private final ApplicationCtx mApp;
 
-  public LauncherPartialOpen(MainActivity activity) {
+  public LauncherPartialOpen(AppCompatActivity activity, ICommonUI commonUI) {
     mActivity = activity;
-    mApp = (ApplicationCtx) activity.getApplicationContext();
+    mCommonUI = commonUI;
+    mApp = mCommonUI.getApplicationCtx();
     register();
   }
 
@@ -47,7 +52,7 @@ public class LauncherPartialOpen {
     mPrevious = previous;
     mAddRecent = addRecent;
     mOldToString = oldToString;
-    PartialOpenActivity.startActivity(mActivity, activityResultLauncherOpen, mActivity.getFileData());
+    PartialOpenActivity.startActivity(mActivity, activityResultLauncherOpen, mCommonUI.getFileData());
   }
 
   /**
@@ -57,10 +62,10 @@ public class LauncherPartialOpen {
     Runnable cancel = () -> {
       mApp.setSequential(false);
       if (mPrevious == null) {
-        mActivity.onOpenResult(false, false);
+        mCommonUI.onOpenResult(false, false);
       } else {
-        mActivity.setFileData(mPrevious);
-        mActivity.refreshTitle();
+        mCommonUI.setFileData(mPrevious);
+        mCommonUI.refreshTitle();
       }
     };
     activityResultLauncherOpen = mActivity.registerForActivityResult(
@@ -73,9 +78,9 @@ public class LauncherPartialOpen {
             Bundle bundle = data.getExtras();
             final long startOffset = bundle.getLong(PartialOpenActivity.RESULT_START_OFFSET);
             final long endOffset = bundle.getLong(PartialOpenActivity.RESULT_END_OFFSET);
-            mActivity.getFileData().setOffsets(startOffset, endOffset, endOffset != 0L);
-            mActivity.getUnDoRedo().clear();
-            new TaskOpen(mActivity, mActivity.getPayloadHex().getAdapter(), mActivity, mOldToString, mAddRecent).execute(mActivity.getFileData());
+            mCommonUI.getFileData().setOffsets(startOffset, endOffset, endOffset != 0L);
+            mCommonUI.getUnDoRedo().clear();
+            new TaskOpen(mActivity, mCommonUI.getPayloadHex().getAdapter(), mCommonUI, mOldToString, mAddRecent).execute(mCommonUI.getFileData());
           } else {
             Log.e(getClass().getSimpleName(), "LauncherPartialOpen -> Invalid data object!!!");
             ApplicationCtx.addLog(mActivity, "PartialOpen", "Null intent data!");

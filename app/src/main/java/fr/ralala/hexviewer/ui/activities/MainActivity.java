@@ -43,7 +43,6 @@ import fr.ralala.hexviewer.ui.payload.PayloadHexHelper;
 import fr.ralala.hexviewer.ui.payload.PayloadPlainSwipe;
 import fr.ralala.hexviewer.ui.popup.MainPopupWindow;
 import fr.ralala.hexviewer.ui.popup.PopupCheckboxHelper;
-import fr.ralala.hexviewer.ui.tasks.TaskOpen;
 import fr.ralala.hexviewer.ui.tasks.TaskSave;
 import fr.ralala.hexviewer.ui.undoredo.UnDoRedo;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
@@ -64,7 +63,7 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
  */
 // For now, I don't have the courage to change everything.
 @SuppressWarnings("squid:S7091")
-public class MainActivity extends BaseActivity implements TaskOpen.OpenResultListener, TaskSave.SaveResultListener {
+public class MainActivity extends BaseActivity implements ICommonUI {
   private FileData mFileData = null;
   private ConstraintLayout mIdleView = null;
   private MenuItem mSearchMenu = null;
@@ -133,7 +132,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
       ((ApplicationCtx) getApplicationContext()).getApplicationLanguage(this) + "'");
 
     mApp.setConfiguration(getResources().getConfiguration());
-    mUnDoRedo = new UnDoRedo(this);
+    mUnDoRedo = new UnDoRedo(this, this);
 
     mPopup = new MainPopupWindow(this, mUnDoRedo, this::onPopupItemClick);
 
@@ -149,18 +148,18 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
       onPopupItemClick(R.id.action_recently_open));
     findViewById(R.id.buttonRecentlyOpen).setEnabled(!mApp.getRecentlyOpened().list().isEmpty());
     mPayloadHexHelper = new PayloadHexHelper();
-    mPayloadHexHelper.onCreate(this);
+    mPayloadHexHelper.onCreate(this, this);
 
     mPayloadPlainSwipe = new PayloadPlainSwipe();
-    mPayloadPlainSwipe.onCreate(this);
+    mPayloadPlainSwipe.onCreate(this, this);
 
-    mLauncherOpen = new LauncherOpen(this, mainLayout);
-    mLauncherSave = new LauncherSave(this);
-    mLauncherLineUpdate = new LauncherLineUpdate(this);
-    mLauncherRecentlyOpen = new LauncherRecentlyOpen(this);
-    mLauncherPartialOpen = new LauncherPartialOpen(this);
+    mLauncherOpen = new LauncherOpen(this, this, mainLayout);
+    mLauncherSave = new LauncherSave(this, this);
+    mLauncherLineUpdate = new LauncherLineUpdate(this, this);
+    mLauncherRecentlyOpen = new LauncherRecentlyOpen(this, this);
+    mLauncherPartialOpen = new LauncherPartialOpen(this, this);
 
-    mGoToDialog = new GoToDialog(this);
+    mGoToDialog = new GoToDialog(this, this);
 
     if (savedInstanceState == null)
       handleIntent(getIntent());
@@ -357,6 +356,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
   /**
    * Refreshes the activity title.
    */
+  @Override
   public void refreshTitle() {
     UIHelper.setTitle(this, FileData.isEmpty(mFileData) ? null : mFileData.getName(), mUnDoRedo.isChanged());
     if ((!FileData.isEmpty(mFileData) && !mFileData.isOpenFromAppIntent()))
@@ -446,6 +446,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
   /**
    * Method to be invoked when a line has been clicked.
    */
+  @Override
   public void onLineItemClick(int position) {
     LineEntry e = mPayloadHexHelper.getAdapter().getItem(position);
     if (e == null)
@@ -479,10 +480,21 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
   /* ------------ EXPORTED METHODS ------------ */
 
   /**
+   * Returns the current application context.
+   *
+   * @return ApplicationCtx
+   */
+  @Override
+  public ApplicationCtx getApplicationCtx() {
+    return mApp;
+  }
+
+  /**
    * Returns the launcher used with the partial open
    *
    * @return LauncherPartialOpen
    */
+  @Override
   public LauncherPartialOpen getLauncherPartialOpen() {
     return mLauncherPartialOpen;
   }
@@ -492,6 +504,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return MenuItem
    */
+  @Override
   public TextView getMenuRecentlyOpen() {
     return mPopup == null ? null : mPopup.getMenuRecentlyOpen();
   }
@@ -501,6 +514,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return FileData
    */
+  @Override
   public FileData getFileData() {
     return mFileData;
   }
@@ -510,6 +524,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @param fd FileData
    */
+  @Override
   public void setFileData(FileData fd) {
     mFileData = fd;
   }
@@ -519,6 +534,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return String
    */
+  @Override
   public String getSearchQuery() {
     return mSearchQuery;
   }
@@ -528,6 +544,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return PayloadHexHelper
    */
+  @Override
   public PayloadHexHelper getPayloadHex() {
     return mPayloadHexHelper;
   }
@@ -537,6 +554,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return PayloadPlainSwipe
    */
+  @Override
   public PayloadPlainSwipe getPayloadPlain() {
     return mPayloadPlainSwipe;
   }
@@ -546,6 +564,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return LauncherOpen
    */
+  @Override
   public LauncherOpen getLauncherOpen() {
     return mLauncherOpen;
   }
@@ -555,6 +574,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return LauncherLineUpdate
    */
+  @Override
   public LauncherLineUpdate getLauncherLineUpdate() {
     return mLauncherLineUpdate;
   }
@@ -564,6 +584,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @return UnDoRedo
    */
+  @Override
   public UnDoRedo getUnDoRedo() {
     return mUnDoRedo;
   }
@@ -744,6 +765,7 @@ public class MainActivity extends BaseActivity implements TaskOpen.OpenResultLis
    *
    * @param orphan The dialog.
    */
+  @Override
   public void setOrphanDialog(AlertDialog orphan) {
     if (mOrphanDialog != null && mOrphanDialog.isShowing()) {
       mOrphanDialog.dismiss();

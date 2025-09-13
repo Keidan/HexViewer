@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.LineEntry;
 import fr.ralala.hexviewer.models.RawBuffer;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.PlainTextListArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
@@ -34,7 +35,8 @@ import fr.ralala.hexviewer.ui.utils.UIHelper;
  * ******************************************************************************
  */
 public class PayloadPlainSwipe {
-  private MainActivity mActivity;
+  private AppCompatActivity mActivity;
+  private ICommonUI mCommonUI;
   private ListView mPayloadPlain = null;
   private PlainTextListArrayAdapter mAdapterPlain = null;
   private SwipeRefreshLayout mPayloadPlainSwipeRefreshLayout;
@@ -48,8 +50,9 @@ public class PayloadPlainSwipe {
    *
    * @param activity The owner activity
    */
-  public void onCreate(final MainActivity activity) {
+  public void onCreate(final AppCompatActivity activity, ICommonUI commonUI) {
     mActivity = activity;
+    mCommonUI = commonUI;
     mPayloadPlain = activity.findViewById(R.id.payloadPlain);
     mPayloadPlainSwipeRefreshLayout = activity.findViewById(R.id.payloadPlainSwipeRefreshLayout);
     // Configure SwipeRefreshLayout
@@ -68,7 +71,7 @@ public class PayloadPlainSwipe {
       mUserConfigPortrait,
       mUserConfigLandscape);
     mPayloadPlain.setAdapter(mAdapterPlain);
-    mPlainMultiChoiceCallback = new PlainMultiChoiceCallback(activity, mPayloadPlain, mAdapterPlain);
+    mPlainMultiChoiceCallback = new PlainMultiChoiceCallback(activity, mCommonUI, mPayloadPlain, mAdapterPlain);
   }
 
   /**
@@ -126,8 +129,8 @@ public class PayloadPlainSwipe {
           mAdapterPlain.setLockRefresh(fromOrientation && mPlainMultiChoiceCallback.isActionMode());
           mAdapterPlain.clear();
           mAdapterPlain.addAll(list);
-          if (!mActivity.getSearchQuery().isEmpty())
-            mAdapterPlain.manualFilterUpdate(mActivity.getSearchQuery());
+          if (!mCommonUI.getSearchQuery().isEmpty())
+            mAdapterPlain.manualFilterUpdate(mCommonUI.getSearchQuery());
         });
       }
       mPayloadPlainSwipeRefreshLayout.setRefreshing(false);
@@ -147,7 +150,7 @@ public class PayloadPlainSwipe {
     int maxByLine = UIHelper.getMaxByLine(mActivity, mUserConfigLandscape, mUserConfigPortrait);
 
     RawBuffer payload = new RawBuffer(4096);
-    for (LineEntry le : mActivity.getPayloadHex().getAdapter().getEntries().getItems()) {
+    for (LineEntry le : mCommonUI.getPayloadHex().getAdapter().getEntries().getItems()) {
       payload.addAll(le.getRaw());
     }
     final StringBuilder sb = new StringBuilder();

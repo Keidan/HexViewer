@@ -6,11 +6,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
 import fr.ralala.hexviewer.ApplicationCtx;
 import fr.ralala.hexviewer.R;
-import fr.ralala.hexviewer.ui.activities.MainActivity;
+import fr.ralala.hexviewer.ui.activities.ICommonUI;
 import fr.ralala.hexviewer.ui.adapters.HexTextArrayAdapter;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigLandscape;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfigPortrait;
@@ -32,7 +34,7 @@ import fr.ralala.hexviewer.ui.multichoice.HexMultiChoiceCallback;
 // For now, I don't have the courage to change everything.
 @SuppressWarnings("squid:S7091")
 public class PayloadHexHelper {
-  private MainActivity mActivity;
+  private ICommonUI mCommonUI;
   private ListView mPayloadHex = null;
   private HexTextArrayAdapter mAdapterHex = null;
   private RelativeLayout mPayloadViewContainer = null;
@@ -47,9 +49,9 @@ public class PayloadHexHelper {
    *
    * @param activity The owner activity
    */
-  public void onCreate(final MainActivity activity) {
-    mActivity = activity;
-    mApp = (ApplicationCtx) activity.getApplicationContext();
+  public void onCreate(final AppCompatActivity activity, ICommonUI commonUI) {
+    mCommonUI = commonUI;
+    mApp = mCommonUI.getApplicationCtx();
     mPayloadViewContainer = activity.findViewById(R.id.payloadViewContainer);
     mTitle = activity.findViewById(R.id.title);
     mTitleLineNumbers = activity.findViewById(R.id.titleLineNumbers);
@@ -72,14 +74,14 @@ public class PayloadHexHelper {
       new UserConfigPortrait(activity, true),
       new UserConfigLandscape(activity, true));
     mPayloadHex.setAdapter(mAdapterHex);
-    mHexMultiChoiceCallback = new HexMultiChoiceCallback(activity, mPayloadHex, mAdapterHex);
+    mHexMultiChoiceCallback = new HexMultiChoiceCallback(activity, mCommonUI, mPayloadHex, mAdapterHex);
   }
 
   /**
    * Resets the update status.
    */
   public void resetUpdateStatus() {
-    String query = mActivity.getSearchQuery();
+    String query = mCommonUI.getSearchQuery();
     if (!query.isEmpty())
       mAdapterHex.manualFilterUpdate(""); /* reset filter */
     mAdapterHex.getEntries().clearFilteredUpdated();
