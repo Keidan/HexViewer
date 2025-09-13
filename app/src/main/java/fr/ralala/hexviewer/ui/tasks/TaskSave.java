@@ -2,7 +2,6 @@ package fr.ralala.hexviewer.ui.tasks;
 
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.util.Log;
 
@@ -14,10 +13,9 @@ import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.FileData;
 import fr.ralala.hexviewer.models.lines.LineEntry;
-import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
-import fr.ralala.hexviewer.utils.system.SysHelper;
-import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
+import fr.ralala.hexviewer.utils.io.file.FileSaveProcessor;
+import fr.ralala.hexviewer.utils.io.file.IFileProgress;
 
 /**
  * ******************************************************************************
@@ -31,13 +29,11 @@ import fr.ralala.hexviewer.utils.io.RandomAccessFileChannel;
  * </p>
  * ******************************************************************************
  */
-public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, TaskSave.Result> {
-  private static final int MAX_LENGTH = SysHelper.MAX_BY_ROW_16 * 10000;
-  private RandomAccessFileChannel mRandomAccessFileChannel = null;
+public class TaskSave extends ProgressTask<FileSaveProcessor, TaskSave.Request, TaskSave.Result> implements IFileProgress {
   private final SaveResultListener mListener;
-  private final ContentResolver mContentResolver;
   private final Context mContext;
   private final int mMaxByLine;
+  private final FileSaveProcessor mFileSaveProcessor;
 
   public static class Result {
     private Runnable runnable;
@@ -64,10 +60,25 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
 
   public TaskSave(final Activity activity, final SaveResultListener listener) {
     super(activity, false);
-    mContentResolver = activity.getContentResolver();
     mContext = activity;
     mListener = listener;
     mMaxByLine = ((ApplicationCtx)mContext.getApplicationContext()).getNbBytesPerLine();
+    mFileSaveProcessor = new FileSaveProcessor(activity.getContentResolver(), mCancel, this);
+  }
+
+  /**
+   * Notifies the progress of a file operation.
+   * <p>
+   * This method is called to report the number of bytes processed
+   * during a file read or write operation. Implementations can use
+   * this information to update progress indicators, logs, or other
+   * feedback mechanisms.
+   *
+   * @param bytes The number of bytes processed in the most recent batch.
+   */
+  @Override
+  public void onFileProgress(long bytes) {
+    publishProgress(bytes);
   }
 
   /**
@@ -76,9 +87,9 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
    * @return The Config.
    */
   @Override
-  public ContentResolver onPreExecute() {
+  public FileSaveProcessor onPreExecute() {
     super.onPreExecute();
-    return mContentResolver;
+    return mFileSaveProcessor;
   }
 
   /**
@@ -92,7 +103,7 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     if (isCancelled()) {
       if (result.fd != null) {
         final DocumentFile docFile = DocumentFile.fromSingleUri(mContext, result.fd.getUri());
-        if (docFile != null && docFile.exists() && !docFile.delete()) {
+        if (docFile.exists() && !docFile.delete()) {
           Log.e(this.getClass().getSimpleName(), "File delete error");
         }
       }
@@ -106,22 +117,12 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
   }
 
   /**
-   * Closes the stream.
-   */
-  private void close() {
-    if (mRandomAccessFileChannel != null) {
-      mRandomAccessFileChannel.close();
-      mRandomAccessFileChannel = null;
-    }
-  }
-
-  /**
    * Called when the async task is cancelled.
    */
   @Override
   public void onCancelled() {
     super.onCancelled();
-    close();
+    mFileSaveProcessor.close();
     UIHelper.toast(mContext, mContext.getString(R.string.operation_canceled));
   }
 
@@ -135,13 +136,13 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
   /**
    * Performs a computation on a background thread.
    *
-   * @param contentResolver ContentResolver.
+   * @param fileSaveProcessor FileSaveProcessor.
    * @param request         Request.
    * @return The result.
    */
   @SuppressWarnings("squid:S2093")
   @Override
-  public Result doInBackground(final ContentResolver contentResolver, final Request request) {
+  public Result doInBackground(final FileSaveProcessor fileSaveProcessor, final Request request) {
     // Create a result object to store the outcome of the task
     final Result result = new Result();
 
@@ -156,60 +157,15 @@ public class TaskSave extends ProgressTask<ContentResolver, TaskSave.Request, Ta
     result.runnable = request.mRunnable;
 
     // Initialize progress
-    publishProgress(0L);
     mTotalSize = getTotalSize(request.mEntries, mMaxByLine);
     try {
-      // Open the file channel in write-only mode
-      mRandomAccessFileChannel = RandomAccessFileChannel.openForWriteOnly(contentResolver, result.fd.getUri(), !result.fd.isSequential());
-
-      // Set the maximum batch size
-      int maxLength = MAX_LENGTH;
-
-      // Set initial file position for writing
-      mRandomAccessFileChannel.setPosition(result.fd.getStartOffset());
-
-      // Adjust maxLength for sequential files if file size is smaller
-      if (result.fd.isSequential()) {
-        maxLength = (int) Math.min(result.fd.getSize(), MAX_LENGTH);
-      }
-
-      // Temporary storage for a batch of bytes
-      RawBuffer batch = new RawBuffer(2048);
-
-      // Iterate over all line entries
-      for (LineEntry entry : request.mEntries) {
-        // Add the raw bytes of the current entry to the batch
-        batch.addAll(entry.getRaw());
-
-        // If batch reaches maxLength, write it to the file
-        if (batch.size() >= maxLength) {
-          byte[] data = batch.array();
-          mRandomAccessFileChannel.write(data, 0, data.length);
-
-          // Update progress on UI thread
-          publishProgress((long) data.length);
-
-          // Clear batch for next iteration
-          batch.clear();
-
-          // Stop if the task was cancelled
-          if (isCancelled()) break;
-        }
-      }
-
-      // Write any remaining bytes in the last batch
-      if (!isCancelled() && batch.size() != 0) {
-        byte[] data = batch.array();
-        mRandomAccessFileChannel.write(data, 0, data.length);
-        // Update progress on UI thread
-        publishProgress((long) data.length);
-      }
+      fileSaveProcessor.writeFile(request.mFd, request.mEntries);
     } catch (final Exception e) {
       // Capture any exception in the result
       result.exception = e.getMessage();
     } finally {
       // Ensure the file channel is closed at the end
-      close();
+      fileSaveProcessor.close();
     }
     // Return the final result object
     return result;
