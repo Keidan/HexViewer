@@ -12,7 +12,7 @@ import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
- * Unit tests for {@link SysHelper#formatBuffer(byte[], Object, int, int)}.
+ * Unit tests for SysHelper.formatBuffer.
  *
  * <p>These tests verify that a byte array is correctly formatted into lines
  * of hex and ASCII representations, with:
