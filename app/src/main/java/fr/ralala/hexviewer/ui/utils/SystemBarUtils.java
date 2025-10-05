@@ -94,7 +94,7 @@ public class SystemBarUtils {
     }
   }
 
-  @SuppressWarnings("squid:S1874")
+  @SuppressWarnings({"deprecation", "RedundantSuppression", "squid:S1874"})
   private static void setNavigationBarColor(Activity activity, @ColorRes int id) {
     activity.getWindow().setNavigationBarColor(
       ContextCompat.getColor(activity, id)
