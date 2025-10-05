@@ -347,8 +347,10 @@ public class FileHelper {
    */
   public static Uri getParentUri(final Context ctx, final Uri uri) {
     final String filename = getFileName(ctx, uri);
-    final String encoded = uri.getEncodedPath();
-    final int encoded_length = encoded == null ? 0 : encoded.length();
+    String encoded = uri.getEncodedPath();
+    if(encoded == null)
+      encoded = "";
+    final int encoded_length = encoded.length();
     final int filenameLen = (filename == null ? 0 : filename.length());
     final int length = encoded_length - filenameLen;
     ApplicationCtx.addLog(ctx, FILE_HELPER_TAG,
