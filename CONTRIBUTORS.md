@@ -51,6 +51,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://hosted.weblate.org/"><img src="https://avatars.githubusercontent.com/u/1607653?v=4?s=48" width="48px;" alt="gallegonovato"/><br /><sub><b>gallegonovato</b></sub></a><br /><a href="#translation-gallegonovato" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://hosted.weblate.org/"><img src="https://avatars.githubusercontent.com/u/1607653?v=4?s=48" width="48px;" alt="alchemillatruth"/><br /><sub><b>alchemillatruth</b></sub></a><br /><a href="#translation-alchemillatruth" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://hosted.weblate.org/"><img src="https://avatars.githubusercontent.com/u/1607653?v=4?s=48" width="48px;" alt="hamburger1024"/><br /><sub><b>hamburger1024</b></sub></a><br /><a href="#translation-hamburger1024" title="Translation">🌍</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/VisionR1"><img src="https://avatars.githubusercontent.com/u/25982450?v=4?s=48" width="48px;" alt="Usland123"/><br /><sub><b>VisionR1</b></sub></a><br /><a href="#translation-VisionR1" title="Translation">🌍</a></td>
     </tr>
   </tbody>
   <tfoot>

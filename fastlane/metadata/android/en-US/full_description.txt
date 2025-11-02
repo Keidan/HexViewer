@@ -27,6 +27,7 @@ Translations:
 * English: @Keidan, @comradekingu
 * French: @Keidan, @Edanas
 * German: @iNtEgraIR2021, @eUgEntOptIc44, (+DeepL)
+* Greek: @VisionR1
 * Indonesian: @Velorixen
 * Italian: @eUgEntOptIc44
 * Hebrew: @Shopimisrel
@@ -48,6 +49,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * cs: Czech
 * de-DE: German
 * en-US: English
+* el: Greek
 * es-ES: Spanish
 * fa: Persian
 * fr-FR: French
