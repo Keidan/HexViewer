@@ -1,0 +1,3 @@
+* Added Greek translation (thanks to @VisionR1).
+* Code improvements.
+* Support for Android 35.
