@@ -28,7 +28,7 @@
     <string name="arrays_theme_system">Нека системата реши</string>
     <string name="action_save_as_title">Запазване като…</string>
     <string name="settings_pref_summary_nb_bytes">Позволява показване на 8 или 16 на ред. Показването на 8 байта значително увеличава консумацията на памет.</string>
-    <string name="error_file_permission">Не е предоставено разрешение за файла %1$s</string>
+    <string name="error_file_permission">Не е предоставено разрешение за файл %1$s</string>
     <string name="error_too_many_text_copied">Не е възможно да се копира толкова много текст</string>
     <string name="settings_pref_title_lists_landscape">Височина, размер на шрифта…</string>
     <string name="error_edition_search_in_progress">Редактирането на редове не е възможно, докато се извършва търсене.</string>
