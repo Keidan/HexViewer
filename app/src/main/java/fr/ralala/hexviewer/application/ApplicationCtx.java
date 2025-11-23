@@ -586,7 +586,7 @@ public class ApplicationCtx extends Application {
     if (cfg.equals("in")) cfg = "in_ID";
     String cfgLang = cfg.replace('-', '_');
     Locale locale = Locale.getDefault();
-    if (!locale.toString().equals(cfgLang))
+    if (!fixCodeForAPI35(locale.toString()).equals(cfgLang))
       activity.recreate();
   }
 
