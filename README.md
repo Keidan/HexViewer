@@ -86,6 +86,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | ja-JP | Japanese | [@gnuhead-chieb](https://github.com/gnuhead-chieb) |
 | nb-NO | Norwegian Bokmål | [@comradekingu](https://github.com/comradekingu) |
 | nl-NL | Dutch (Nederlands) | [@AudeBelgraver](https://hosted.weblate.org/user/AudeBelgraver/) |
+| ota | Turkish (Ottoman) | [@bgo-eiu](https://github.com/bgo-eiu) |
 | pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), @pedrolinharesmoreira (from github) |
 | pt-PT | Portuguese | [@SantosSi](https://github.com/SantosSi) |
 | ru-RU | Russian | [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123) |

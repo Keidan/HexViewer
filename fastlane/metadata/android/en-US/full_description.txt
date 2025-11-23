@@ -43,6 +43,7 @@ Translations:
 * Spanish: @sguinetti (github), @gallegonovato (weblate), (+DeepL)
 * Tamil: @TamilNeram (github)
 * Turkish: @ersen0 (github)
+* Turkish (Ottoman): @bgo-eiu (github)
 * Vietnamese: @unbiaseduser (github)
 
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
@@ -63,6 +64,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 * ja-JP: Japanese
 * nb-NO: Norwegian Bokmål
 * nl-NL: Nederlands
+* ota: Turkish (Ottoman)
 * pt-BR: Portuguese (Brazil)
 * pt-PT: Portuguese
 * ru-RU: Russian

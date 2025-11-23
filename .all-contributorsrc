@@ -322,6 +322,15 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "bgo-eiu",
+      "name": "bgo-eiu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100172442?v=4",
+      "profile": "https://github.com/bgo-eiu",
+      "contributions": [
+        "translation"
+      ]
     }
   ],
   "contributorsPerLine": 7,

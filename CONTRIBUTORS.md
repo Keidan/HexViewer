@@ -1,6 +1,6 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-33-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-34-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ## Contributors ✨
 
@@ -53,6 +53,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://hosted.weblate.org/"><img src="https://avatars.githubusercontent.com/u/1607653?v=4?s=48" width="48px;" alt="hamburger1024"/><br /><sub><b>hamburger1024</b></sub></a><br /><a href="#translation-hamburger1024" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/VisionR1"><img src="https://avatars.githubusercontent.com/u/25982450?v=4?s=48" width="48px;" alt="VisionR1"/><br /><sub><b>VisionR1</b></sub></a><br /><a href="#translation-VisionR1" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://hosted.weblate.org/user/Trunars"><img src="https://hosted.weblate.org/avatar/128/trunars.png?s=48" width="48px;" alt="Trunars"/><br /><sub><b>Trunars</b></sub></a><br /><a href="#translation-Trunars" title="Translation">🌍</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bgo-eiu"><img src="https://avatars.githubusercontent.com/u/100172442?v=4?s=48" width="48px;" alt="bgo-eiu"/><br /><sub><b>bgo-eiu</b></sub></a><br /><a href="#translation-bgo-eiu" title="Translation">🌍</a></td>
     </tr>
   </tbody>
   <tfoot>
