@@ -104,7 +104,7 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
 
     setLayout(R.layout.activity_line_update);
     mApp = (ApplicationCtx) getApplicationContext();
-    mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
+    mMemoryMonitor = new MemoryMonitor(mApp, mApp.getMemoryThreshold(), 2000);
     ListView lvSource = findViewById(R.id.lvSource);
     ListView lvResult = findViewById(R.id.lvResult);
     mLlSource = findViewById(R.id.llSource);

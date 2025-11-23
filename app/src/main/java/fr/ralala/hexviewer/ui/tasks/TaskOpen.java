@@ -58,7 +58,7 @@ public class TaskOpen extends ProgressTask<FileOpenProcessor, FileData, TaskOpen
                   final OpenResultListener listener, final String oldToString, final boolean addRecent) {
     super(activity, true);
     mApp = (ApplicationCtx) activity.getApplicationContext();
-    mMemoryMonitor = new MemoryMonitor(mApp.getMemoryThreshold(), 2000);
+    mMemoryMonitor = new MemoryMonitor(mApp, mApp.getMemoryThreshold(), 2000);
     mContext = activity;
     mAdapter = adapter;
     mListener = listener;

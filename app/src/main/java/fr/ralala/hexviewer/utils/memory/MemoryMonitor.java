@@ -1,5 +1,7 @@
 package fr.ralala.hexviewer.utils.memory;
 
+import android.app.Application;
+import android.content.ComponentCallbacks2;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -22,8 +24,9 @@ public class MemoryMonitor implements Runnable {
   private boolean mAutoStop = false;
   private MemoryListener mMemoryListener;
   private final MemoryInfo mMemoryInfo;
-
-  public MemoryMonitor(final float threshold, final int checkFrequencyMs) {
+  private final Application mApp;
+  public MemoryMonitor(Application app, final float threshold, final int checkFrequencyMs) {
+    mApp = app;
     mThreshold = threshold;
     mCheckFrequencyMs = checkFrequencyMs;
     mMemoryInfo = new MemoryInfo();
@@ -34,7 +37,7 @@ public class MemoryMonitor implements Runnable {
    */
   private void loadMemoryInfo() {
     Runtime r = Runtime.getRuntime();
-    mMemoryInfo.setTotalMemory(r.maxMemory());
+    mMemoryInfo.setTotalMemory(r.totalMemory());
     mMemoryInfo.setUsedMemory(r.totalMemory() - r.freeMemory());
     mMemoryInfo.setTotalFreeMemory(mMemoryInfo.getTotalMemory() - mMemoryInfo.getUsedMemory());
     mMemoryInfo.setPercentUsed(mMemoryInfo.getUsedMemory() * 100.f / mMemoryInfo.getTotalMemory());
@@ -50,6 +53,15 @@ public class MemoryMonitor implements Runnable {
   }
 
   /**
+   * Force memory cleanup.
+   */
+  @SuppressWarnings("squid:S1215")
+  private void forceCleanup() {
+    mApp.onTrimMemory(ComponentCallbacks2.TRIM_MEMORY_BACKGROUND);
+    System.gc();
+    Runtime.getRuntime().gc();
+  }
+  /**
    * Starts the memory monitor.
    *
    * @param memoryListener Lister called on low memory.
@@ -59,6 +71,7 @@ public class MemoryMonitor implements Runnable {
     stop();
     mMemoryListener = memoryListener;
     mAutoStop = autoStop;
+    forceCleanup();
     loadMemoryInfo();
     if (mMemoryListener != null) {
       if (mThreshold == -1) {
