@@ -22,6 +22,7 @@ License: GPLv3
 
     <string-array name="languages_values" translatable="false">
         <item>ar</item>
+        <item>bg</item>
         <item>cs</item>
         <item>de-DE</item>
         <item>en-US</item>
@@ -48,6 +49,7 @@ License: GPLv3
 
     <string-array name="languages_entries" translatable="false">
         <item>العربية</item>
+        <item>Български</item>
         <item>Čeština</item>
         <item>Deutsch</item>
         <item>English</item>

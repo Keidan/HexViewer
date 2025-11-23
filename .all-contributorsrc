@@ -313,6 +313,15 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "Trunars",
+      "name": "Trunars",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/trunars.png",
+      "profile": "https://hosted.weblate.org/user/Trunars",
+      "contributions": [
+        "translation"
+      ]
     }
   ],
   "contributorsPerLine": 7,

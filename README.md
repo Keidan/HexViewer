@@ -70,6 +70,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | Code | Language | Contributors |
 | ---- | -------- | ------------ |
 | ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/), [@amro](https://hosted.weblate.org/user/amro/) |
+| bg | Bulgarian | [@Trunars](https://hosted.weblate.org/user/Trunars) |
 | cs | Czech | [@hajdam](https://github.com/hajdam) |
 | de-DE | German | [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL) |
 | en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
