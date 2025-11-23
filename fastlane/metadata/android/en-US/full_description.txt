@@ -20,30 +20,30 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
 
   
 Translations:
-* Arabic: @sec.xyx, @amro
-* Bulgarian: @trunars
-* Chinese: @sr093906, @alchemillatruth, @hamburger1024, @inworless, @hamburger2048
-* Czech: @hajdam
-* Dutch: @AudeBelgraver
-* English: @Keidan, @comradekingu
-* French: @Keidan, @Edanas
-* German: @iNtEgraIR2021, @eUgEntOptIc44, (+DeepL)
-* Greek: @VisionR1
-* Indonesian: @Velorixen
-* Italian: @eUgEntOptIc44
-* Hebrew: @Shopimisrel
-* Hindi: @Scrambled777
-* Hungarian: @SziaTomi
-* Japanese: @gnuhead-chieb
-* Norwegian Bokmål: @comradekingu
-* Persian: @qaria185-blip
-* Portuguese (Brazil): @Bardock88, @pedrolinharesmoreira
-* Portuguese: @SantosSi
-* Russian: @OmlineEditor, @AHOHNMYC, @racingrebel, @Usland123
-* Spanish: @sguinetti, @gallegonovato, (+DeepL)
-* Tamil: @TamilNeram
-* Turkish: @ersen0
-* Vietnamese: @unbiaseduser
+* Arabic: @sec.xyx (weblate), @amro (weblate)
+* Bulgarian: @trunars (weblate)
+* Chinese: @sr093906 (github), @alchemillatruth (weblate), @hamburger1024 (weblate), @inworless (github), @hamburger2048 (weblate)
+* Czech: @hajdam (github)
+* Dutch: @AudeBelgraver (weblate)
+* English: @Keidan (github), @comradekingu (github)
+* French: @Keidan (github), @Edanas (weblate)
+* German: @iNtEgraIR2021 (github), @eUgEntOptIc44 (github), (+DeepL)
+* Greek: @VisionR1 (github)
+* Indonesian: @Velorixen (github)
+* Italian: @eUgEntOptIc44 (github)
+* Hebrew: @Shopimisrel (github)
+* Hindi: @Scrambled777 (github)
+* Hungarian: @SziaTomi (github)
+* Japanese: @gnuhead-chieb (github)
+* Norwegian Bokmål: @comradekingu (github)
+* Persian: @qaria185-blip (github)
+* Portuguese (Brazil): @Bardock88 (github), @pedrolinharesmoreira (github)
+* Portuguese: @SantosSi (github)
+* Russian: @OmlineEditor (github), @AHOHNMYC (github), @racingrebel (github), @Usland123 (github)
+* Spanish: @sguinetti (github), @gallegonovato (weblate), (+DeepL)
+* Tamil: @TamilNeram (github)
+* Turkish: @ersen0 (github)
+* Vietnamese: @unbiaseduser (github)
 
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
 * ar: Arabic
