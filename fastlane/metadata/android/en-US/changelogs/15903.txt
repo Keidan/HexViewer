@@ -1,0 +1,4 @@
+* Added Bulgarian translation (thanks to @Trunars-weblate).
+* Added Turkish (Ottoman) translation (thanks to @bgo-eiu).
+* Fixed an issue where the app would enter a reload loop on Android 35+ when using legacy locale codes ("he" -> "iw", "yi" -> "ji", "id" -> "in").
+* Fixed an issue where the app kept showing low-memory warnings after opening a large file.
