@@ -6,8 +6,6 @@ plugins {
 
 final COMPILE_WITH_DEPRECATION_LINT = false
 
-final SONAR_PROJECT_VERSION = '1.59.2'
-
 // Load signing config only if needed
 def signingEnabled = gradle.startParameter.taskNames.any { it.toLowerCase().contains("signedrelease") }
 def props = loadSigningConfig(signingEnabled)
@@ -22,8 +20,8 @@ android {
     //noinspection OldTargetApi
     targetSdk 35
     // F-Droid seems not to appreciate the use of variables
-    versionCode 15902
-    versionName '1.59.2'
+    versionCode 15903
+    versionName '1.59.3'
     vectorDrawables {
       useSupportLibrary true
     }
@@ -84,7 +82,7 @@ android {
       property "sonar.organization", "keidan"
       property "sonar.host.url", "https://sonarcloud.io"
       property 'sonar.projectName', 'HexViewer'
-      property 'sonar.projectVersion', SONAR_PROJECT_VERSION
+      property 'sonar.projectVersion', android.defaultConfig.versionName
       property 'sonar.coverage.exclusions', "**/**"
       // Exclude rules
       property "sonar.issue.ignore.multicriteria", "e1,e2,e3,e4"
@@ -159,17 +157,11 @@ tasks.withType(Test).configureEach { testTask ->
  */
 tasks.register('checkVersion') {
   int versionCode = android.defaultConfig.versionCode
-  String versionName = android.defaultConfig.versionName
   int correctVersionCode = generateVersionCode(android.defaultConfig.versionName)
   if (versionCode != correctVersionCode)
     throw new GradleException(
       "versionCode and versionName don't match: " +
         "versionCode should be $correctVersionCode. Is $versionCode."
-    )
-  if (versionName != SONAR_PROJECT_VERSION)
-    throw new GradleException(
-      "versionName and sonar.projectVersion don't match: " +
-        "sonar.projectVersion should be $versionName. Is $SONAR_PROJECT_VERSION."
     )
 }
 assemble.dependsOn checkVersion
