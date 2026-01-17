@@ -11,7 +11,7 @@ License: GPLv3
 
   <ListView
     android:id="@+id/logs"
-    android:typeface="monospace"
+    android:fontFamily="@font/jetbrains_mono"
     android:textSize="12sp"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"/>

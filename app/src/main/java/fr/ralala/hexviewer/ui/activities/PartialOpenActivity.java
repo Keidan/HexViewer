@@ -23,6 +23,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -83,6 +84,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
   private long mRealSize = 0L;
   private InputFilter[] mDefaultStartInputFiler = new InputFilter[0];
   private InputFilter[] mDefaultEndInputFiler = new InputFilter[0];
+  private Typeface mTypefaceMonospace;
   /* https://stackoverflow.com/questions/10648449/how-do-i-set-a-edittext-to-the-input-of-only-hexadecimal-numbers/17355026 */
   private final InputFilter mInputFilterTextHex = (source, start, end, dest, dstart, dend) -> {
     Pattern pattern = Pattern.compile("^\\p{XDigit}+$");
@@ -144,7 +146,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
     super.onCreate(savedInstanceState);
 
     setLayout(R.layout.activity_partial_open);
-
+    mTypefaceMonospace = ResourcesCompat.getFont(this, R.font.jetbrains_mono);
     mTextSizePart = findViewById(R.id.textSizePart);
     mSpUnit = findViewById(R.id.spUnit);
     mSpInputType = findViewById(R.id.spInputType);
@@ -529,8 +531,8 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
       mTietEnd.setFilters(new InputFilter[]{mInputFilterTextHex});
       mTietEnd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
-    mTietStart.setTypeface(Typeface.MONOSPACE);
-    mTietEnd.setTypeface(Typeface.MONOSPACE);
+    mTietStart.setTypeface(mTypefaceMonospace);
+    mTietEnd.setTypeface(mTypefaceMonospace);
     if (SysHelper.isRTL(this)) {
       mTietStart.setTextDirection(View.TEXT_DIRECTION_RTL);
       mTietEnd.setTextDirection(View.TEXT_DIRECTION_RTL);

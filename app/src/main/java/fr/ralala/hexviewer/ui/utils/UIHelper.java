@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -183,7 +184,7 @@ public class UIHelper {
    * @return The width.
    */
   public static int getTextWidth(final Context context, final UserConfig landscape, final UserConfig portrait) {
-    final Typeface monospace = Typeface.MONOSPACE;
+    final Typeface monospace = ResourcesCompat.getFont(context, R.font.jetbrains_mono);
     final String text = "a";
     float fontSize = 12.0f;
     /* Solution 1: We get the width of the text. */

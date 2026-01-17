@@ -96,7 +96,7 @@ License: GPLv3
         android:layout_height="wrap_content"
         android:text="@null"
         android:textSize="@dimen/listview_hex_row_textSize"
-        android:typeface="monospace"
+        android:fontFamily="@font/jetbrains_mono"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
       <TextView
@@ -106,7 +106,7 @@ License: GPLv3
         android:layout_height="wrap_content"
         android:text="@null"
         android:textSize="@dimen/listview_hex_row_textSize"
-        android:typeface="monospace" />
+        android:fontFamily="@font/jetbrains_mono" />
 
     </LinearLayout>
 
@@ -121,7 +121,7 @@ License: GPLv3
       android:fastScrollEnabled="true"
       android:scrollbarStyle="outsideOverlay"
       android:scrollbarSize="@dimen/activity_main_payload_view_scrollbarSize"
-      android:typeface="monospace" />
+      android:fontFamily="@font/jetbrains_mono" />
   </RelativeLayout>
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -138,6 +138,6 @@ License: GPLv3
       android:fastScrollEnabled="true"
       android:scrollbarStyle="outsideOverlay"
       android:scrollbarSize="@dimen/activity_main_payload_view_scrollbarSize"
-      android:typeface="monospace"/>
+      android:fontFamily="@font/jetbrains_mono"/>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

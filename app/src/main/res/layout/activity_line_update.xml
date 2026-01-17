@@ -55,7 +55,7 @@ License: GPLv3
         android:layout_height="wrap_content"
         android:text="@null"
         android:textSize="@dimen/activity_line_update_lv_textSize"
-        android:typeface="monospace"
+        android:fontFamily="@font/jetbrains_mono"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
       <TextView
@@ -66,7 +66,7 @@ License: GPLv3
         android:layout_height="wrap_content"
         android:text="@string/title_content8"
         android:textSize="@dimen/activity_line_update_lv_textSize"
-        android:typeface="monospace" />
+        android:fontFamily="@font/jetbrains_mono" />
     </LinearLayout>
 
     <ListView
@@ -117,7 +117,7 @@ License: GPLv3
         android:layout_height="wrap_content"
         android:text="@null"
         android:textSize="@dimen/activity_line_update_lv_textSize"
-        android:typeface="monospace"
+        android:fontFamily="@font/jetbrains_mono"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
       <TextView
@@ -128,7 +128,7 @@ License: GPLv3
         android:layout_height="wrap_content"
         android:text="@string/title_content8"
         android:textSize="@dimen/activity_line_update_lv_textSize"
-        android:typeface="monospace" />
+        android:fontFamily="@font/jetbrains_mono" />
     </LinearLayout>
 
     <ListView
@@ -202,7 +202,7 @@ License: GPLv3
         android:textSize="@dimen/activity_line_update_lv_textSize"
         android:importantForAutofill="no"
         android:inputType="textVisiblePassword|textMultiLine"
-        android:typeface="monospace"
+        android:fontFamily="@font/jetbrains_mono"
         android:gravity="top"
         android:scrollbars="vertical"
         android:textDirection="ltr"/>

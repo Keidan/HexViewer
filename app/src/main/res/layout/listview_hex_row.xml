@@ -17,7 +17,7 @@ License: GPLv3
     android:layout_height="wrap_content"
     android:text="@null"
     android:textSize="@dimen/listview_hex_row_textSize"
-    android:typeface="monospace"
+    android:fontFamily="@font/jetbrains_mono"
     android:paddingEnd="5dp"
     android:paddingStart="1dp"/>
   <TextView
@@ -27,6 +27,6 @@ License: GPLv3
     android:layout_height="wrap_content"
     android:text="@null"
     android:textSize="@dimen/listview_hex_row_textSize"
-    android:typeface="monospace" />
+    android:fontFamily="@font/jetbrains_mono" />
 
 </LinearLayout> 
