@@ -171,6 +171,7 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
    * Refreshes this adapter.
    */
   public void refresh() {
+    ApplicationCtx.addLog(getContext(), "SearchableList", "Refresh nb items: " + mLineEntries.getCount());
     notifyDataSetChanged();
   }
 

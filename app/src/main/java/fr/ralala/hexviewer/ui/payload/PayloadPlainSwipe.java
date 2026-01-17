@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.models.RawBuffer;
 import fr.ralala.hexviewer.ui.activities.ICommonUI;
@@ -153,6 +154,7 @@ public class PayloadPlainSwipe {
   private List<LineEntry> refreshPlain(final AtomicBoolean cancel) {
     int maxByLine = UIHelper.getMaxByLine(mActivity, mUserConfigLandscape, mUserConfigPortrait);
 
+    ApplicationCtx.addLog(mActivity, "Plain", "Refresh maxByLine: " + maxByLine);
     RawBuffer payload = new RawBuffer(4096);
     for (LineEntry le : mCommonUI.getPayloadHex().getAdapter().getEntries().getItems()) {
       payload.addAll(le.getRaw());
@@ -173,6 +175,7 @@ public class PayloadPlainSwipe {
     if ((cancel == null || !cancel.get()) && nbPerLine != 0) {
       list.add(new LineEntry(sb.toString(), null));
     }
+    ApplicationCtx.addLog(mActivity, "Plain", "Refresh nb items: " + list.size());
     return list;
   }
 
