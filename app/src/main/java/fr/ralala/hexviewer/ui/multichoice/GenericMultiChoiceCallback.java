@@ -42,6 +42,7 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
  * ******************************************************************************
  */
 public abstract class GenericMultiChoiceCallback implements ActionMode.Callback {
+  private static final String TAG = "Multichoice";
   protected final SearchableListArrayAdapter mAdapter;
   protected final AppCompatActivity mActivity;
   protected final ICommonUI mCommonUI;
@@ -306,7 +307,7 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
 
     // Get the total number of items in the adapter
     final int totalCount = mAdapter.getCount();
-    ApplicationCtx.addLog(mActivity, "Multichoice", "Refresh nb items: " + totalCount);
+    ApplicationCtx.addLog(mActivity, TAG, "Refresh nb items: " + totalCount);
     if (mPreviousCount == totalCount)
       return;
     mPreviousCount = totalCount;
@@ -327,7 +328,7 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
 
     // Dynamically adjust batch size based on totalCount to improve performance
     final int dynamicBatchSize = evaluateBatch(totalCount);
-    ApplicationCtx.addLog(mActivity, "Multichoice", "Dynamic batch size: " + dynamicBatchSize);
+    ApplicationCtx.addLog(mActivity, TAG, "Dynamic batch size: " + dynamicBatchSize);
 
     // Handler to run tasks on the main thread
     Handler handler = new Handler(Looper.getMainLooper());
@@ -356,7 +357,7 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
           // Update the ActionMode title with the final count
           int checkedCount = mAdapter.getSelectedCount();
           mActionMode.setTitle(String.format(mActivity.getString(R.string.items_selected), checkedCount));
-          ApplicationCtx.addLog(mActivity, "Multichoice", "Checked count: " + checkedCount);
+          ApplicationCtx.addLog(mActivity, TAG, "Checked count: " + checkedCount);
 
           // Update the "Select All" menu item state
           boolean allSelected = (checkedCount == totalCount) && (totalCount > 0);
