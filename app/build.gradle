@@ -1,5 +1,5 @@
 plugins {
-  //noinspection GradleDependency
+  //noinspection NewerVersionAvailable,GradleDependency
   id "org.sonarqube" version "3.3"
   id 'com.android.application'
 }
@@ -12,7 +12,7 @@ def props = loadSigningConfig(signingEnabled)
 
 android {
   namespace 'fr.ralala.hexviewer'
-  compileSdk 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId "fr.ralala.hexviewer"
@@ -59,7 +59,7 @@ android {
     debug {
       // to debug ProGuard rules
       minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
     signedRelease {
       initWith release
@@ -73,9 +73,6 @@ android {
     compose true
   }
   // This is important, it will run lint checks but won't abort build
-  lintOptions {
-    abortOnError false
-  }
   sonarqube {
     properties {
       property "sonar.projectKey", "Keidan_HexViewer"
@@ -97,10 +94,13 @@ android {
       property "sonar.issue.ignore.multicriteria.e4.resourceKey", "**/AndroidManifest.xml"
     }
   }
+  lint {
+    abortOnError false
+  }
 }
 
 dependencies {
-  implementation 'org.apache.commons:commons-collections4:4.0'
+  implementation 'org.apache.commons:commons-collections4:4.5.0'
   implementation "androidx.appcompat:appcompat:1.7.1"
   implementation "androidx.preference:preference:1.2.1"
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
