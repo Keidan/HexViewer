@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -197,9 +197,9 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
   /**
    * Applies the user config.
    *
-   * @param tv TextView
+   * @param tv AppCompatTextView
    */
-  private void applyUserConfig(final TextView tv) {
+  private void applyUserConfig(final AppCompatTextView tv) {
     Configuration cfg = mApp.getConfiguration();
     ListSettings landscape = mApp.getListSettingsLineEditLandscape();
     ListSettings portrait = mApp.getListSettingsLineEditPortrait();

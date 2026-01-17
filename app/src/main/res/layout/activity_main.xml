@@ -19,7 +19,7 @@ License: GPLv3
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/pleaseOpenFile"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -89,7 +89,7 @@ License: GPLv3
       android:layout_alignParentTop="true"
       android:orientation="horizontal">
 
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleLineNumbers"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
@@ -99,7 +99,7 @@ License: GPLv3
         android:fontFamily="@font/jetbrains_mono"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleContent"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"

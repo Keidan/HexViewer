@@ -6,9 +6,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -103,9 +103,9 @@ public class RecentlyOpenRecyclerAdapter extends RecyclerView.Adapter<HolderRece
     final UriData ud = mItems.get(idx);
     if (ud != null) {
       // Set item views based on the views and data model
-      TextView name = viewHolder.getName();
-      TextView index = viewHolder.getIndex();
-      TextView detail = viewHolder.getDetail();
+      AppCompatTextView name = viewHolder.getName();
+      AppCompatTextView index = viewHolder.getIndex();
+      AppCompatTextView detail = viewHolder.getDetail();
       if (mListener != null) {
         final View.OnClickListener l = v -> {
           if (ud.isClickable())

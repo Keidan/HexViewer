@@ -7,10 +7,10 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -92,10 +92,10 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   /**
    * Applies the necessary changes if the "updated" field is true.
    *
-   * @param tv TextView
+   * @param tv AppCompatTextView
    * @param fd FilterData
    */
-  private void applyUpdated(final TextView tv, final LineEntry fd) {
+  private void applyUpdated(final AppCompatTextView tv, final LineEntry fd) {
     if (fd != null) {
       String str = getTextAccordingToUserConfig(fd.getPlain());
       if (fd.isUpdated()) {

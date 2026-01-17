@@ -17,12 +17,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -71,7 +71,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
   private static final int IDX_G_BYTES = 3;
   private static final int ERROR_START = 1;
   private static final int ERROR_END = 2;
-  private TextView mTextSizePart;
+  private AppCompatTextView mTextSizePart;
   private AppCompatSpinner mSpUnit;
   private AppCompatSpinner mSpInputType;
   private TextInputLayout mTilStart;
@@ -85,6 +85,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
   private InputFilter[] mDefaultStartInputFiler = new InputFilter[0];
   private InputFilter[] mDefaultEndInputFiler = new InputFilter[0];
   private Typeface mTypefaceMonospace;
+
   /* https://stackoverflow.com/questions/10648449/how-do-i-set-a-edittext-to-the-input-of-only-hexadecimal-numbers/17355026 */
   private final InputFilter mInputFilterTextHex = (source, start, end, dest, dstart, dend) -> {
     Pattern pattern = Pattern.compile("^\\p{XDigit}+$");
@@ -146,6 +147,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
     super.onCreate(savedInstanceState);
 
     setLayout(R.layout.activity_partial_open);
+
     mTypefaceMonospace = ResourcesCompat.getFont(this, R.font.jetbrains_mono);
     mTextSizePart = findViewById(R.id.textSizePart);
     mSpUnit = findViewById(R.id.spUnit);
@@ -178,7 +180,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
   }
 
   private void apply(boolean isSequential, long startOffset, long endOffset, long size) {
-    TextView textFileSize = findViewById(R.id.textSize);
+    AppCompatTextView textFileSize = findViewById(R.id.textSize);
     TextInputEditText tietStart = findViewById(R.id.tietStart);
     TextInputEditText tietEnd = findViewById(R.id.tietEnd);
     long max;
@@ -531,6 +533,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
       mTietEnd.setFilters(new InputFilter[]{mInputFilterTextHex});
       mTietEnd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
+
     mTietStart.setTypeface(mTypefaceMonospace);
     mTietEnd.setTypeface(mTypefaceMonospace);
     if (SysHelper.isRTL(this)) {

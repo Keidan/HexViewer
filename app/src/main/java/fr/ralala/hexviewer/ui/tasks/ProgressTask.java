@@ -2,9 +2,9 @@ package fr.ralala.hexviewer.ui.tasks;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.utils.system.SysHelper;
@@ -23,7 +23,7 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
  */
 public abstract class ProgressTask<C, P, T> extends TaskRunner<C, P, Long, T> {
   private final AlertDialog mDialog;
-  protected final TextView mTextView;
+  protected final AppCompatTextView mTextView;
   protected long mTotalSize = 0L;
   protected long mCurrentSize = 0L;
   private final String progressText;

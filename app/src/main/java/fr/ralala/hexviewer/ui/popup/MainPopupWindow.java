@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
@@ -32,11 +33,11 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
  */
 public class MainPopupWindow {
   private final PopupWindow mPopup;
-  private final TextView mGoTo;
-  private final TextView mSaveMenu;
-  private final TextView mSaveAsMenu;
-  private final TextView mCloseMenu;
-  private final TextView mRecentlyOpen;
+  private final AppCompatTextView mGoTo;
+  private final AppCompatTextView mSaveMenu;
+  private final AppCompatTextView mSaveAsMenu;
+  private final AppCompatTextView mCloseMenu;
+  private final AppCompatTextView mRecentlyOpen;
   private final PopupCheckboxHelper mPlainText;
   private final PopupCheckboxHelper mLineNumbers;
   private final ApplicationCtx mApp;
@@ -127,7 +128,7 @@ public class MainPopupWindow {
    *
    * @return MenuItem
    */
-  public TextView getMenuRecentlyOpen() {
+  public AppCompatTextView getMenuRecentlyOpen() {
     return mRecentlyOpen;
   }
 
@@ -176,7 +177,7 @@ public class MainPopupWindow {
    * @param menu    MenuItem
    * @param enabled If true then the item will be invokable; if false it is won't be invokable.
    */
-  private void setMenuEnabled(final TextView menu, final boolean enabled) {
+  private void setMenuEnabled(final AppCompatTextView menu, final boolean enabled) {
     if (menu != null)
       menu.setEnabled(enabled);
   }

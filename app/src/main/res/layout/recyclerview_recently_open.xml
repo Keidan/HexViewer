@@ -13,7 +13,7 @@ License: GPLv3
   android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
   android:paddingStart="?android:attr/listPreferredItemPaddingStart"
   android:textAppearance="?android:attr/textAppearanceListItemSmall">
-  <TextView
+  <androidx.appcompat.widget.AppCompatTextView
     android:id="@+id/index"
     android:gravity="start"
     android:textAlignment="gravity"
@@ -23,7 +23,7 @@ License: GPLv3
     android:layout_height="wrap_content"
     android:textSize="@dimen/recently_open_textSize"
     android:layout_marginEnd="5dp"/>
-  <TextView
+  <androidx.appcompat.widget.AppCompatTextView
     android:id="@+id/name"
     android:gravity="start"
     android:textAlignment="gravity"
@@ -32,7 +32,7 @@ License: GPLv3
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="@dimen/recently_open_textSize"/>
-  <TextView
+  <androidx.appcompat.widget.AppCompatTextView
     android:id="@+id/detail"
     android:gravity="start"
     android:textAlignment="gravity"

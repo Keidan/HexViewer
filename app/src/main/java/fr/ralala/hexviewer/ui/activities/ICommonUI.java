@@ -1,8 +1,7 @@
 package fr.ralala.hexviewer.ui.activities;
 
-import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.models.FileData;
@@ -118,7 +117,7 @@ public interface ICommonUI extends TaskOpen.OpenResultListener, TaskSave.SaveRes
    *
    * @return MenuItem
    */
-  TextView getMenuRecentlyOpen();
+  AppCompatTextView getMenuRecentlyOpen();
 
   /**
    * Method to be invoked when a line has been clicked.

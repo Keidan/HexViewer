@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -220,9 +220,9 @@ public abstract class SearchableListArrayAdapter extends ArrayAdapter<LineEntry>
   /**
    * Applies the user config.
    *
-   * @param tv TextView
+   * @param tv AppCompatTextView
    */
-  protected void applyUserConfig(final TextView tv) {
+  protected void applyUserConfig(final AppCompatTextView tv) {
     Configuration cfg = ((ApplicationCtx) getContext().getApplicationContext()).getConfiguration();
     if (mUserConfigLandscape != null && cfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       tv.setTextSize(mUserConfigLandscape.getFontSize());

@@ -15,11 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -505,7 +505,7 @@ public class MainActivity extends BaseActivity implements ICommonUI {
    * @return MenuItem
    */
   @Override
-  public TextView getMenuRecentlyOpen() {
+  public AppCompatTextView getMenuRecentlyOpen() {
     return mPopup == null ? null : mPopup.getMenuRecentlyOpen();
   }
 

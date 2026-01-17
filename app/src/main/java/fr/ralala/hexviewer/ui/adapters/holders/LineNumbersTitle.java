@@ -1,6 +1,6 @@
 package fr.ralala.hexviewer.ui.adapters.holders;
 
-import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * ******************************************************************************
@@ -15,22 +15,22 @@ import android.widget.TextView;
  * ******************************************************************************
  */
 public class LineNumbersTitle {
-  private TextView mTitleLineNumbers;
-  private TextView mTitleContent;
+  private AppCompatTextView mTitleLineNumbers;
+  private AppCompatTextView mTitleContent;
 
-  public TextView getTitleLineNumbers() {
+  public AppCompatTextView getTitleLineNumbers() {
     return mTitleLineNumbers;
   }
 
-  public void setTitleLineNumbers(TextView mTitleLineNumbers) {
+  public void setTitleLineNumbers(AppCompatTextView mTitleLineNumbers) {
     this.mTitleLineNumbers = mTitleLineNumbers;
   }
 
-  public TextView getTitleContent() {
+  public AppCompatTextView getTitleContent() {
     return mTitleContent;
   }
 
-  public void setTitleContent(TextView mTitleContent) {
+  public void setTitleContent(AppCompatTextView mTitleContent) {
     this.mTitleContent = mTitleContent;
   }
 }

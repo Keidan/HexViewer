@@ -10,7 +10,7 @@ License: GPLv3
   android:orientation="horizontal"
   android:layoutDirection="ltr">
 
-  <TextView
+  <androidx.appcompat.widget.AppCompatTextView
     android:id="@+id/label1"
     android:gravity="center_vertical"
     android:layout_width="match_parent"

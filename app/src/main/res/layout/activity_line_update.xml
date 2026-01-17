@@ -16,7 +16,7 @@ License: GPLv3
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/tvLabelSource"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -48,7 +48,7 @@ License: GPLv3
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleLineNumbersSource"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
@@ -58,7 +58,7 @@ License: GPLv3
         android:fontFamily="@font/jetbrains_mono"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleContentSource"
         android:textColor="@color/colorNumbers"
         android:gravity="center_vertical"
@@ -78,7 +78,7 @@ License: GPLv3
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/tvLabelResult"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -110,7 +110,7 @@ License: GPLv3
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleLineNumbersResult"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
@@ -120,7 +120,7 @@ License: GPLv3
         android:fontFamily="@font/jetbrains_mono"
         android:paddingEnd="5dp"
         android:paddingStart="2dp"/>
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleContentResult"
         android:textColor="@color/colorNumbers"
         android:gravity="center_vertical"
@@ -172,7 +172,7 @@ License: GPLv3
       android:layout_height="wrap_content"
       android:text="@string/overwrite"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/tvLabel"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

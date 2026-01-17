@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
@@ -111,8 +111,8 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
     mLlResult = findViewById(R.id.llResult);
     mIvVisibilitySource = findViewById(R.id.ivVisibilitySource);
     mIvVisibilityResult = findViewById(R.id.ivVisibilityResult);
-    TextView tvLabelSource = findViewById(R.id.tvLabelSource);
-    TextView tvLabelResult = findViewById(R.id.tvLabelResult);
+    AppCompatTextView tvLabelSource = findViewById(R.id.tvLabelSource);
+    AppCompatTextView tvLabelResult = findViewById(R.id.tvLabelResult);
 
     LineNumbersTitle titleSource = new LineNumbersTitle();
     titleSource.setTitleContent(findViewById(R.id.titleContentSource));

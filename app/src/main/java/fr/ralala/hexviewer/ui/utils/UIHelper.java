@@ -28,11 +28,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -188,7 +188,7 @@ public class UIHelper {
     final String text = "a";
     float fontSize = 12.0f;
     /* Solution 1: We get the width of the text. */
-    TextView tv = new TextView(context);
+    AppCompatTextView tv = new AppCompatTextView(context);
     tv.setText(text);
     tv.setTypeface(monospace);
     ApplicationCtx app = (ApplicationCtx) context.getApplicationContext();

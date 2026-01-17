@@ -28,7 +28,7 @@ License: GPLv3
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.95" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/labelSize"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -39,7 +39,7 @@ License: GPLv3
       android:layout_marginTop="10dp"
       style="@style/AppTheme.InputLabel"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/textSize"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -50,7 +50,7 @@ License: GPLv3
       android:layout_marginTop="10dp"
       style="@style/AppTheme.InputLabel"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/labelSizePart"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -61,7 +61,7 @@ License: GPLv3
       android:layout_marginTop="10dp"
       style="@style/AppTheme.InputLabel"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/textSizePart"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -72,7 +72,7 @@ License: GPLv3
       android:layout_marginTop="10dp"
       style="@style/AppTheme.InputLabel"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/labelUnit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -91,7 +91,7 @@ License: GPLv3
       app:layout_constraintTop_toBottomOf="@id/textSizePart"
       app:layout_constraintStart_toEndOf="@id/labelUnit" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/labelInputType"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -110,7 +110,7 @@ License: GPLv3
       app:layout_constraintTop_toBottomOf="@id/labelUnit"
       app:layout_constraintStart_toEndOf="@id/labelInputType" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/labelDescription"
       android:layout_width="0dp"
       android:layout_height="wrap_content"

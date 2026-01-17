@@ -1,8 +1,8 @@
 package fr.ralala.hexviewer.ui.adapters.holders;
 
 import android.view.View;
-import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fr.ralala.hexviewer.R;
@@ -20,9 +20,9 @@ import fr.ralala.hexviewer.R;
  * ******************************************************************************
  */
 public class HolderRecently extends RecyclerView.ViewHolder {
-  private TextView mIndex;
-  private final TextView mDetail;
-  private TextView mName;
+  private AppCompatTextView mIndex;
+  private final AppCompatTextView mDetail;
+  private AppCompatTextView mName;
 
   public HolderRecently(View view) {
     super(view);
@@ -31,23 +31,23 @@ public class HolderRecently extends RecyclerView.ViewHolder {
     mName = view.findViewById(R.id.name);
   }
 
-  public TextView getIndex() {
+  public AppCompatTextView getIndex() {
     return mIndex;
   }
 
-  public void setIndex(TextView mIndex) {
+  public void setIndex(AppCompatTextView mIndex) {
     this.mIndex = mIndex;
   }
 
-  public TextView getDetail() {
+  public AppCompatTextView getDetail() {
     return mDetail;
   }
 
-  public TextView getName() {
+  public AppCompatTextView getName() {
     return mName;
   }
 
-  public void setName(TextView mName) {
+  public void setName(AppCompatTextView mName) {
     this.mName = mName;
   }
 }

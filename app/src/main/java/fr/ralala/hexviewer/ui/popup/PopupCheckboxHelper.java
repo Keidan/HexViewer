@@ -3,7 +3,8 @@ package fr.ralala.hexviewer.ui.popup;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public class PopupCheckboxHelper {
   private final LinearLayout mContainer;
-  private final TextView mTextView;
+  private final AppCompatTextView mTextView;
   private final CheckBox mCheckbox;
   private final List<Integer> mIds;
 

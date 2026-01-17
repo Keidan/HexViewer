@@ -3,9 +3,9 @@ package fr.ralala.hexviewer.ui.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
         v = inflater.inflate(ID, null);
-        final TextView label1 = v.findViewById(R.id.label1);
+        final AppCompatTextView label1 = v.findViewById(R.id.label1);
         v.setTag(label1);
       }
     }
@@ -84,7 +84,7 @@ public class PlainTextListArrayAdapter extends SearchableListArrayAdapter {
   @Override
   protected void fillView(final @NonNull View v, final int position) {
     if (v.getTag() != null) {
-      final TextView holder = (TextView) v.getTag();
+      final AppCompatTextView holder = (AppCompatTextView) v.getTag();
       LineEntry le = getItem(position);
       if (le != null) {
         holder.setText(SysHelper.ignoreNonDisplayedChar(le.getPlain()));

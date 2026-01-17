@@ -4,9 +4,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.ArrayList;
 
@@ -39,8 +39,8 @@ public class PayloadHexHelper {
   private HexTextArrayAdapter mAdapterHex = null;
   private RelativeLayout mPayloadViewContainer = null;
   private LinearLayout mTitle = null;
-  private TextView mTitleLineNumbers = null;
-  private TextView mTitleContent = null;
+  private AppCompatTextView mTitleLineNumbers = null;
+  private AppCompatTextView mTitleContent = null;
   private ApplicationCtx mApp = null;
   private HexMultiChoiceCallback mHexMultiChoiceCallback;
 

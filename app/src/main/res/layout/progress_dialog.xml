@@ -24,7 +24,7 @@ License: GPLv3
     android:indeterminateTint="@color/textColorPrimary"
     android:max="100" />
 
-  <TextView
+  <androidx.appcompat.widget.AppCompatTextView
     android:id="@+id/text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

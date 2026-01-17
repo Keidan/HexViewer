@@ -1,6 +1,6 @@
 package fr.ralala.hexviewer.ui.adapters.holders;
 
-import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * ******************************************************************************
@@ -15,22 +15,22 @@ import android.widget.TextView;
  * ******************************************************************************
  */
 public class HolderHex {
-  private TextView mLineNumbers;
-  private TextView mContent;
+  private AppCompatTextView mLineNumbers;
+  private AppCompatTextView mContent;
 
-  public void setLineNumbers(TextView tv) {
+  public void setLineNumbers(AppCompatTextView tv) {
     mLineNumbers = tv;
   }
 
-  public void setContent(TextView tv) {
+  public void setContent(AppCompatTextView tv) {
     mContent = tv;
   }
 
-  public TextView getLineNumbers() {
+  public AppCompatTextView getLineNumbers() {
     return mLineNumbers;
   }
 
-  public TextView getContent() {
+  public AppCompatTextView getContent() {
     return mContent;
   }
 }
