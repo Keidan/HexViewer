@@ -29,6 +29,7 @@ import fr.ralala.hexviewer.ui.utils.SystemBarUtils;
  */
 public class BaseActivity extends AppCompatActivity {
   private static final String TAG = "Base";
+  private Configuration mLastConfig;
   private ApplicationCtx mApp;
 
   /**
@@ -41,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     mApp = ((ApplicationCtx) getApplication());
     mApp.applyThemeFromSettings();
     super.onCreate(savedInstanceState);
+    mLastConfig = new Configuration(getResources().getConfiguration());
     setContentView(R.layout.activity_base);
     Toolbar toolbar = findViewById(R.id.base_toolbar);
     setSupportActionBar(toolbar);
@@ -63,9 +65,8 @@ public class BaseActivity extends AppCompatActivity {
     super.onResume();
   }
 
-  private String getConfigurationChangedTrigger(@NonNull Configuration newConfig)
+  private String getConfigurationChangedTrigger(@NonNull Configuration oldConfig, @NonNull Configuration newConfig)
   {
-    Configuration oldConfig = getResources().getConfiguration();
     Vector<String> vec = new Vector<>();
     if (oldConfig.orientation != newConfig.orientation)
       vec.add("Orientation");
@@ -90,7 +91,9 @@ public class BaseActivity extends AppCompatActivity {
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    ApplicationCtx.addLog(this, TAG, "Application configuration changed: " + getConfigurationChangedTrigger(newConfig));
+    String triggers = getConfigurationChangedTrigger(mLastConfig, newConfig);
+    ApplicationCtx.addLog(this, TAG, "Application configuration changed: " + triggers);
+    mLastConfig = new Configuration(newConfig);
     mApp.setConfiguration(newConfig);
     int mask = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
     if (mask == Configuration.UI_MODE_NIGHT_YES)
