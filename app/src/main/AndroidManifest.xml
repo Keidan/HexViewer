@@ -32,7 +32,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.MainActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:exported="true"
       android:icon="@mipmap/ic_launcher_round"
       android:launchMode="singleTask">
@@ -61,7 +61,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.LineUpdateActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -71,7 +71,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.RecentlyOpenActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -81,7 +81,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.PartialOpenActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -91,7 +91,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.settings.SettingsActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -101,7 +101,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.settings.SettingsListsPortraitActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -111,7 +111,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.settings.SettingsListsLandscapeActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
 
       <meta-data
@@ -121,7 +121,7 @@ License: GPLv3
 
     <activity
       android:name=".ui.activities.LogsActivity"
-      android:configChanges="locale|orientation|screenSize|uiMode"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
