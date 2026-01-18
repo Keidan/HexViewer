@@ -105,6 +105,13 @@ Thanks to all the people who make this project possible :purple_heart:
 
 [See the full list][contributors]
 
+## Fonts
+
+This application includes the JetBrains Mono font (© JetBrains),  
+licensed under the [SIL Open Font License, Version 1.1][font_ofl].
+
+See [`rest/font/AUTHORS.txt`][font_authors] for the list of authors.
+
 ## Screenshots
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="270px" height="600px" alt="Home screen"></p>
 <p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="270px" height="600px" alt="Home screen menu"></p>
@@ -123,3 +130,5 @@ Thanks to all the people who make this project possible :purple_heart:
 [weblate]: https://hosted.weblate.org/engage/hexviewer/
 [sonarcloud]: https://sonarcloud.io/summary/new_code?id=Keidan_HexViewer
 [contributors]: https://github.com/Keidan/HexViewer/blob/master/CONTRIBUTORS.md
+[font_ofl]: https://github.com/Keidan/HexViewer/blob/master/app/src/main/res/font/OFL.txt
+[font_authors]: https://github.com/Keidan/HexViewer/blob/master/app/src/main/res/font/AUTHORS.txt
