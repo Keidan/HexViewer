@@ -75,4 +75,5 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 
 Fonts:
 This application includes the JetBrains Mono font (© JetBrains), licensed under the SIL Open Font License, Version 1.1.
-See AUTHORS.txt in the app's font folder for a full list of authors.
+See `AUTHORS.txt` in the licences/JetBrainsMono-2.304 folder for a full list of authors.
+
