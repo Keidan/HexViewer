@@ -64,6 +64,7 @@ import fr.ralala.hexviewer.utils.io.FileHelper;
 // For now, I don't have the courage to change everything.
 @SuppressWarnings("squid:S7091")
 public class MainActivity extends BaseActivity implements ICommonUI {
+  private static final String TAG = "Main";
   private FileData mFileData = null;
   private ConstraintLayout mIdleView = null;
   private MenuItem mSearchMenu = null;
@@ -128,7 +129,7 @@ public class MainActivity extends BaseActivity implements ICommonUI {
     mApp = (ApplicationCtx) getApplicationContext();
     llInit();
     setLayout(R.layout.activity_main);
-    ApplicationCtx.addLog(this, "Main", "Application started with language: '" +
+    ApplicationCtx.addLog(this, TAG, "Application started with language: '" +
       ((ApplicationCtx) getApplicationContext()).getApplicationLanguage(this) + "'");
 
     mApp.setConfiguration(getResources().getConfiguration());
@@ -177,12 +178,19 @@ public class MainActivity extends BaseActivity implements ICommonUI {
     super.attachBaseContext(((ApplicationCtx) base.getApplicationContext()).onAttach(base));
   }
 
+  @Override
+  protected void onDestroy() {
+    ApplicationCtx.addLog(this, TAG, "Application destroyed");
+    super.onDestroy();
+  }
+
   /**
    * Called when the activity is resumed.
    */
   @Override
   public void onResume() {
     super.onResume();
+    ApplicationCtx.addLog(this, TAG, "Application resumed");
     setRequestedOrientation(mApp.getScreenOrientation(null));
     if (mPopup != null)
       mPopup.dismiss();

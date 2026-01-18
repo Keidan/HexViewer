@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Vector;
+
 import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.ui.utils.SystemBarUtils;
@@ -26,6 +28,7 @@ import fr.ralala.hexviewer.ui.utils.SystemBarUtils;
  * ******************************************************************************
  */
 public class BaseActivity extends AppCompatActivity {
+  private static final String TAG = "Base";
   private ApplicationCtx mApp;
 
   /**
@@ -60,6 +63,25 @@ public class BaseActivity extends AppCompatActivity {
     super.onResume();
   }
 
+  private String getConfigurationChangedTrigger(@NonNull Configuration newConfig)
+  {
+    Configuration oldConfig = getResources().getConfiguration();
+    Vector<String> vec = new Vector<>();
+    if (oldConfig.orientation != newConfig.orientation)
+      vec.add("Orientation");
+    if (oldConfig.screenLayout != newConfig.screenLayout)
+      vec.add("ScreenLayout");
+    if (oldConfig.smallestScreenWidthDp != newConfig.smallestScreenWidthDp)
+      vec.add("SmallestScreenWidthDp");
+    if (oldConfig.densityDpi != newConfig.densityDpi)
+      vec.add("Density");
+    if (oldConfig.fontScale != newConfig.fontScale)
+      vec.add("FontScale");
+    if (oldConfig.uiMode != newConfig.uiMode)
+      vec.add("UiMode");
+    return vec.isEmpty() ? "Unknown!!!" : String.join(", ", vec);
+  }
+
   /**
    * Called by the system when the device configuration changes while your activity is running.
    *
@@ -68,6 +90,7 @@ public class BaseActivity extends AppCompatActivity {
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
+    ApplicationCtx.addLog(this, TAG, "Application configuration changed: " + getConfigurationChangedTrigger(newConfig));
     mApp.setConfiguration(newConfig);
     int mask = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
     if (mask == Configuration.UI_MODE_NIGHT_YES)
