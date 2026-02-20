@@ -331,6 +331,15 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "croomfolk",
+      "name": "croomfolk",
+      "avatar_url": "https://hosted.weblate.org/avatar/128/croomfolk.png",
+      "profile": "https://hosted.weblate.org/user/croomfolk",
+      "contributions": [
+        "translation"
+      ]
     }
   ],
   "contributorsPerLine": 7,

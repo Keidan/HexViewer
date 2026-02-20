@@ -69,7 +69,7 @@ Translations can be provided via [Weblate][weblate].
 Note: In the settings, the list of languages is sorted as follows (according to the alphabetical order of their codes):
 | Code | Language | Contributors |
 | ---- | -------- | ------------ |
-| ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx/), [@amro](https://hosted.weblate.org/user/amro/) |
+| ar | Arabic | [@sec.xyx](https://hosted.weblate.org/user/sec.xyx), [@amro](https://hosted.weblate.org/user/amro) |
 | bg | Bulgarian | [@Trunars](https://hosted.weblate.org/user/Trunars) |
 | cs | Czech | [@hajdam](https://github.com/hajdam) |
 | de-DE | German | [@iNtEgraIR2021](https://github.com/iNtEgraIR2021), [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), (+DeepL) |
@@ -77,7 +77,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | el | Greek | [@VisionR1](https://github.com/VisionR1) |
 | es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), @gallegonovato (from weblate), (+DeepL) |
 | fa | Persian | [@qaria185-blip](https://github.com/qaria185-blip) |
-| fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas/) |
+| fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas) |
 | hi | Hindi | @Shopimisrel (from github) |
 | hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |
 | in-ID | Indonesian | @Velorixen (from github) |
@@ -85,15 +85,15 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | iw | Hebrew | @Shopimisrel (from github) |
 | ja-JP | Japanese | [@gnuhead-chieb](https://github.com/gnuhead-chieb) |
 | nb-NO | Norwegian Bokmål | [@comradekingu](https://github.com/comradekingu) |
-| nl-NL | Dutch (Nederlands) | [@AudeBelgraver](https://hosted.weblate.org/user/AudeBelgraver/) |
+| nl-NL | Dutch (Nederlands) | [@AudeBelgraver](https://hosted.weblate.org/user/AudeBelgraver) |
 | ota | Turkish (Ottoman) | [@bgo-eiu](https://github.com/bgo-eiu) |
-| pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), @pedrolinharesmoreira (from github) |
+| pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), @pedrolinharesmoreira (from github), [@croomfolk](https://hosted.weblate.org/user/croomfolk)  |
 | pt-PT | Portuguese | [@SantosSi](https://github.com/SantosSi) |
 | ru-RU | Russian | [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123) |
 | ta-IN | Tamil | [@TamilNeram](https://github.com/TamilNeram) |
 | tr-TR | Turkish | @ersen0 (from github) |
 | vi-VN | Vietnamese | [@unbiaseduser](https://github.com/unbiaseduser) |
-| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), @alchemillatruth (from weblate), @hamburger1024 (from weblate), [@inworless](https://github.com/inworless), [@hamburger2048](https://hosted.weblate.org/user/hamburger2048/) |
+| zh-CN | Chinese | [@sr093906](https://github.com/sr093906), @alchemillatruth (from weblate), @hamburger1024 (from weblate), [@inworless](https://github.com/inworless), [@hamburger2048](https://hosted.weblate.org/user/hamburger2048) |
 
 The current status of the translations is as follows:
 
