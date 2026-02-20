@@ -5,8 +5,14 @@ title: "chore(contributors): add @username"
 labels: contributors
 ---
 
-## GitHub Username
-@username
+## Username
+username
+
+## Platform
+_Select one_
+
+- [ ] GitHub
+- [ ] Weblate
 
 ## Contribution Type
 _Select all that apply_
