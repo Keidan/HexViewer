@@ -88,7 +88,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | nl-NL | Dutch (Nederlands) | [@AudeBelgraver](https://hosted.weblate.org/user/AudeBelgraver) |
 | ota | Turkish (Ottoman) | [@bgo-eiu](https://github.com/bgo-eiu) |
 | pt-BR | Portuguese (Brazil) | [@Bardock88](https://github.com/Bardock88), @pedrolinharesmoreira (from github), [@croomfolk](https://hosted.weblate.org/user/croomfolk)  |
-| pt-PT | Portuguese | [@SantosSi](https://github.com/SantosSi) |
+| pt-PT | Portuguese (Portugal) | [@SantosSi](https://github.com/SantosSi), [@AntonioOliveira2](https://github.com/AntonioOliveira2) |
 | ru-RU | Russian | [@OmlineEditor](https://github.com/OmlineEditor), [@AHOHNMYC](https://github.com/AHOHNMYC), [@racingrebel](https://github.com/racingrebel), [@Usland123](https://github.com/Usland123) |
 | ta-IN | Tamil | [@TamilNeram](https://github.com/TamilNeram) |
 | tr-TR | Turkish | @ersen0 (from github) |

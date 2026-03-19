@@ -38,7 +38,7 @@ Translations:
 * Norwegian Bokmål: @comradekingu (github)
 * Persian: @qaria185-blip (github)
 * Portuguese (Brazil): @Bardock88 (github), @pedrolinharesmoreira (github), @croomfolk (weblate)
-* Portuguese: @SantosSi (github)
+* Portuguese (Portugal): @SantosSi (github), @AntonioOliveira2 (github)
 * Russian: @OmlineEditor (github), @AHOHNMYC (github), @racingrebel (github), @Usland123 (github)
 * Spanish: @sguinetti (github), @gallegonovato (weblate), (+DeepL)
 * Tamil: @TamilNeram (github)
