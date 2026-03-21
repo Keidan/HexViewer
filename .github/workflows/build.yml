@@ -15,6 +15,9 @@ on:
       - synchronize
       - reopened
   workflow_dispatch: # Manual trigger from the GitHub UI
+
+permissions:
+  contents: read
   
 jobs:
   # Compile job: Build and test the app
