@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-gradle
@@ -65,7 +65,7 @@ jobs:
     if: needs.check-tag.outputs.valid == 'true'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: ./.github/actions/setup-gradle
       - name: Inject keystore.properties
         run: |
@@ -97,7 +97,7 @@ jobs:
             exit 1
           fi
       - name: Upload Signed APK artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: HexViewer-release-signed-${{ github.ref_name }}
           path: ./HexViewer-release-signed-${{ github.ref_name }}.apk
@@ -112,14 +112,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Extract tag name
         run: echo "TAG_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Make dir
         run: |
           mkdir -p artifacts
       - name: Download release artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: HexViewer-release-signed-${{ env.TAG_NAME }}
           path: artifacts/
