@@ -20,8 +20,8 @@ android {
     //noinspection OldTargetApi
     targetSdk 35
     // F-Droid seems not to appreciate the use of variables
-    versionCode 15906
-    versionName '1.59.6'
+    versionCode 15907
+    versionName '1.59.7'
     vectorDrawables {
       useSupportLibrary true
     }
