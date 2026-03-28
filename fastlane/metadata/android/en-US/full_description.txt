@@ -30,7 +30,7 @@ Translations:
 * German: @iNtEgraIR2021 (github), @eUgEntOptIc44 (github), (+DeepL)
 * Greek: @VisionR1 (github)
 * Indonesian: @Velorixen (github)
-* Italian: @eUgEntOptIc44 (github)
+* Italian: @eUgEntOptIc44 (github), @tfrtint (weblate)
 * Hebrew: @Shopimisrel (github)
 * Hindi: @Scrambled777 (github)
 * Hungarian: @SziaTomi (github)

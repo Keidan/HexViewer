@@ -1,6 +1,6 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-36-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-37-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ## Contributors ✨
 
@@ -58,6 +58,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AntonioOliveira2"><img src="https://avatars.githubusercontent.com/u/60226693?v=4?s=48" width="48px;" alt="AntonioOliveira2"/><br /><sub><b>AntonioOliveira2</b></sub></a><br /><a href="#translation-AntonioOliveira2" title="Translation">🌍</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://hosted.weblate.org/user/tfrtint/"><img src="https://hosted.weblate.org/avatar/128/tfrtint.png?s=48" width="48px;" alt="tfrtint"/><br /><sub><b>tfrtint</b></sub></a><br /><a href="#translation-tfrtint" title="Translation">🌍</a></td>
     </tr>
   </tbody>
   <tfoot>

@@ -81,7 +81,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | hi | Hindi | @Shopimisrel (from github) |
 | hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |
 | in-ID | Indonesian | @Velorixen (from github) |
-| it-IT | Italian | [@eUgEntOptIc44](https://github.com/eUgEntOptIc44) |
+| it-IT | Italian | [@eUgEntOptIc44](https://github.com/eUgEntOptIc44), [@tfrtint](https://hosted.weblate.org/user/tfrtint) |
 | iw | Hebrew | @Shopimisrel (from github) |
 | ja-JP | Japanese | [@gnuhead-chieb](https://github.com/gnuhead-chieb) |
 | nb-NO | Norwegian Bokmål | [@comradekingu](https://github.com/comradekingu) |
