@@ -28,7 +28,7 @@
     <string name="save_success">Guardado completado.</string>
     <string name="operation_canceled">Operación cancelada</string>
     <string name="exception">Excepción</string>
-    <string name="confirm_overwrite">El archivo ya existe, ¿deseas sobreescribirlo\?</string>
+    <string name="confirm_overwrite">¿Deseas sobrescribir el archivo?</string>
     <string name="open_a_file_before">¡Primero abre un archivo!</string>
     <string name="file_manager_keyword">Administrador de archivos</string>
     <string name="select_file_to_open">Seleccione un archivo para abrir.</string>
