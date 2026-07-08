@@ -34,7 +34,7 @@
     <string name="save_success">שמור.</string>
     <string name="operation_canceled">הפעולה בוטלה</string>
     <string name="exception">יוצא מן הכלל</string>
-    <string name="confirm_overwrite">להחליף קובץ קיים\?</string>
+    <string name="confirm_overwrite">להחליף קובץ קיים?</string>
     <string name="file_manager_keyword">מנהל קבצים</string>
     <string name="select_file_to_open">בחר קובץ לפתיחה.</string>
     <string name="error_no_file_manager">אנא התקן תחילה מנהל קבצים.</string>
@@ -80,7 +80,7 @@
     <string name="error_file_not_found">לא ניתן היה למצוא קובץ %1$s</string>
     <string name="error_file_permission">לא ניתנה הרשאה לקובץ %1$s</string>
     <string name="items_selected">%1$d נבחר</string>
-    <string name="confirm_save">האם לשמור את הקובץ %1$s\?</string>
+    <string name="confirm_save">האם לשמור את הקובץ %1$s?</string>
     <string name="control_save_change">אנא שמור את עבודתך תחילה.</string>
     <string name="overwrite">מצב הוספה</string>
     <string name="size">גודל</string>
@@ -116,8 +116,8 @@
     <string name="error_not_available">לא זמין</string>
     <string name="settings_pref_title_restore_default">שחזר ערכי ברירת מחדל</string>
     <string name="dialog_restore_title">שחזור</string>
-    <string name="dialog_restore_question">האם אתה באמת רוצה לשחזר את ערכי ברירת המחדל\?</string>
-    <string name="dialog_restore_recent">למחוק את רשימת הקבצים האחרונים\?</string>
+    <string name="dialog_restore_question">האם אתה באמת רוצה לשחזר את ערכי ברירת המחדל?</string>
+    <string name="dialog_restore_recent">למחוק את רשימת הקבצים האחרונים?</string>
     <string name="memory_thresholds_disable">Disable</string>
     <string name="text_copied">%1$s copied.</string>
     <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
