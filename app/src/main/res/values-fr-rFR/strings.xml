@@ -24,11 +24,11 @@
     <string name="on_double_back_exit_text">Appuyez une fois de plus pour sortir.</string>
     <string name="update_hint_hex">Texte</string>
     <string name="error_not_supported_in_plain_text">Ceci n\'est pas pris en charge lors de l\'affichage en texte brut</string>
-    <string name="error_filename">Nom de fichier invalide !</string>
+    <string name="error_filename">Nom de fichier invalide !</string>
     <string name="save_success">Sauvegardé.</string>
     <string name="operation_canceled">Opération annulée</string>
     <string name="exception">Erreur</string>
-    <string name="confirm_overwrite">Écraser le fichier existant \?</string>
+    <string name="confirm_overwrite">Écraser le fichier existant ?</string>
     <string name="open_a_file_before">Ouvrez un fichier avant !</string>
     <string name="file_manager_keyword">Gestionnaire de fichiers</string>
     <string name="select_file_to_open">Sélectionnez un fichier à ouvrir.</string>
