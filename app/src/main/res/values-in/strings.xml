@@ -48,7 +48,7 @@
     <string name="action_close_title">Tutup</string>
     <string name="settings_pref_summary_lists_landscape">Klik untuk mengedit</string>
     <string name="action_settings_title">Setelan</string>
-    <string name="confirm_overwrite">Menimpa file yang ada\?</string>
+    <string name="confirm_overwrite">Menimpa file yang ada?</string>
     <string name="smart_input">Input teks biasa</string>
     <string name="action_open_title_button">Buka</string>
     <string name="settings_pref_summary_screen_orientation">Mengatur orientasi layar default (hanya layar utama).</string>
@@ -73,7 +73,7 @@
     <string name="settings_category_general">Umum</string>
     <string name="unit_mbyte">MB</string>
     <string name="cancel">Batal</string>
-    <string name="confirm_save">Simpan file %1$s\?</string>
+    <string name="confirm_save">Simpan file %1$s?</string>
     <string name="action_plain_text_title">Teks biasa</string>
     <string name="error_less_than">Nilainya tidak boleh di bawah</string>
     <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Buka file secara sebagian</string>
@@ -108,14 +108,14 @@
     <string name="not_enough_memory">Tidak bisa menjalankan perintah karena tidak ada cukup memori untuk aplikasi ini.</string>
     <string name="error_edition_continuous_selection">Penyuntingan baris hanya dapat dilakukan dengan pemilihan yang berkesinambungan.</string>
     <string name="error_file_open">Tutup semua file untuk mengganti mode.</string>
-    <string name="dialog_restore_question">Apakah anda benar-benar ingin memulihkan nilai default\?</string>
+    <string name="dialog_restore_question">Apakah anda benar-benar ingin memulihkan nilai default?</string>
     <string name="install">Instal</string>
     <string name="dialog_restore_title">Pulihkan</string>
     <string name="save_success">Disimpan.</string>
     <string name="settings_pref_summary_lists_portrait">Klik untuk mengedit</string>
     <string name="source">Sumber:</string>
     <string name="unit_byte">B</string>
-    <string name="dialog_restore_recent">Hapus daftar file terbaru\?</string>
+    <string name="dialog_restore_recent">Hapus daftar file terbaru?</string>
     <string name="action_line_numbers_title">Baris nomor</string>
     <string name="error_no_file">File hilang (dihapus atau dipindah)</string>
     <string name="memory_thresholds_disable">Disable</string>
