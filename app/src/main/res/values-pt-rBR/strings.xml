@@ -34,7 +34,7 @@
     <string name="error_filename">Nome de arquivo inválido!</string>
     <string name="operation_canceled">Operação cancelada</string>
     <string name="exception">Exceção</string>
-    <string name="confirm_overwrite">Sobrescrever o arquivo existente\?</string>
+    <string name="confirm_overwrite">Sobrescrever o arquivo existente?</string>
     <string name="open_a_file_before">Abra um arquivo antes!</string>
     <string name="file_manager_keyword">Gerenciador de arquivos</string>
     <string name="select_file_to_open">Selecione um arquivo para abrir.</string>
@@ -84,7 +84,7 @@
     <string name="error_title">Erro</string>
     <string name="error_file_permission">Nenhuma permissão foi concedida para o arquivo %1$s</string>
     <string name="items_selected">%1$d selecionado</string>
-    <string name="confirm_save">Salvar arquivo %1$s\?</string>
+    <string name="confirm_save">Salvar arquivo %1$s?</string>
     <string name="control_save_change">Por favor, salve o seu trabalho primeiro.</string>
     <string name="overwrite">Modo de inserção</string>
     <string name="size">Tamanho</string>
@@ -116,8 +116,8 @@
     <string name="memory_threshold_description">Quantidade de memória permitida, antes que seja interrompido um arquivo ao abri-lo.</string>
     <string name="error_not_available">Não disponível</string>
     <string name="dialog_restore_title">Restaurar</string>
-    <string name="dialog_restore_question">Deseja realmente restaurar os valores ao padrão\?</string>
-    <string name="dialog_restore_recent">Excluir a lista de arquivos recentes\?</string>
+    <string name="dialog_restore_question">Deseja realmente restaurar os valores ao padrão?</string>
+    <string name="dialog_restore_recent">Excluir a lista de arquivos recentes?</string>
     <string name="memory_thresholds_disable">Desativar</string>
     <string name="text_copied">%1$s copiado.</string>
     <string name="error_too_many_text_copied">Não é possível copiar tanto texto</string>
