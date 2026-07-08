@@ -86,7 +86,7 @@
     <string name="error_file_not_found">Finner ikke %1$s-filen</string>
     <string name="error_file_permission">Ingen tilgang innvilget for %1$s-filen</string>
     <string name="items_selected">%1$d valgt</string>
-    <string name="confirm_save">Lagre filen %1$s\?</string>
+    <string name="confirm_save">Lagre filen %1$s?</string>
     <string name="control_save_change">Lagre arbeidet ditt først.</string>
     <string name="overwrite">Inntastingsmodus</string>
     <string name="unit_bytes_full_lc">byte</string>
