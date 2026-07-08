@@ -30,7 +30,7 @@
     <string name="save_success">Mentve.</string>
     <string name="operation_canceled">Művelet megszakítva</string>
     <string name="exception">Kivétel</string>
-    <string name="confirm_overwrite">Felülírja a meglévő fájlt\?</string>
+    <string name="confirm_overwrite">Felülírja a meglévő fájlt?</string>
     <string name="open_a_file_before">Nyisson meg egy fájlt!</string>
     <string name="file_manager_keyword">Fájlkezelő</string>
     <string name="select_file_to_open">Válasszon ki egy fájlt a megnyitáshoz.</string>
@@ -82,7 +82,7 @@
     <string name="error_file_not_found">%1$s fájl nem taláható</string>
     <string name="error_file_permission">%1$s fájlhoz nincs megadva az engedély</string>
     <string name="items_selected">%1$d kiválasztva</string>
-    <string name="confirm_save">A(z) %1$s fájlt menti\?</string>
+    <string name="confirm_save">A(z) %1$s fájlt menti?</string>
     <string name="control_save_change">Először mentse el a munkáját.</string>
     <string name="overwrite">Beillesztési mód</string>
     <string name="size">Méret</string>
@@ -112,12 +112,12 @@
     <string name="partial_file_opening_description">Adja meg a megnyitni kívánt terület kezdetét és végét.</string>
     <string name="not_enough_memory">Nem lehet végrehajtani a parancsot, mert nincs elég memória az alkalmazáshoz.</string>
     <string name="memory_threshold_title">Memóriaküszöb</string>
-    <string name="memory_threshold_description">A megadott \%% értékkel az engedélyezett memóriamennyiség elérése előtt, a fájl megnyitása megszakad.</string>
+    <string name="memory_threshold_description">A megadott % értékkel az engedélyezett memóriamennyiség elérése előtt, a fájl megnyitása megszakad.</string>
     <string name="error_not_available">Nem elérhető</string>
     <string name="settings_pref_title_restore_default">Az alapértelmezett értékek visszaállítása</string>
     <string name="dialog_restore_title">Visszaállítás</string>
-    <string name="dialog_restore_question">Valóban visszaállítja az alapértelmezett értékeket\?</string>
-    <string name="dialog_restore_recent">Törli a legutóbb megnyitott fájlok listáját\?</string>
+    <string name="dialog_restore_question">Valóban visszaállítja az alapértelmezett értékeket?</string>
+    <string name="dialog_restore_recent">Törli a legutóbb megnyitott fájlok listáját?</string>
     <string name="memory_thresholds_disable">Tiltás</string>
     <string name="text_copied">%1$s másolva.</string>
     <string name="error_too_many_text_copied">Ilyen sok szöveget nem lehet másolni</string>
