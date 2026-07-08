@@ -28,7 +28,7 @@
     <string name="save_success">保存に成功しました。</string>
     <string name="operation_canceled">操作はキャンセルされました</string>
     <string name="exception">例外</string>
-    <string name="confirm_overwrite">既存のファイルを上書きしても宜しいですか\?</string>
+    <string name="confirm_overwrite">既存のファイルを上書きしても宜しいですか?</string>
     <string name="open_a_file_before">まずファイルを開いてください!</string>
     <string name="file_manager_keyword">ファイルマネージャ</string>
     <string name="select_file_to_open">開くファイルを選択してください。</string>
@@ -116,8 +116,8 @@
     <string name="memory_threshold_description">ファイルのオープンが中断されるまでのメモリ制限のしきい値。</string>
     <string name="error_not_available">利用できません</string>
     <string name="dialog_restore_title">Restore</string>
-    <string name="dialog_restore_question">Do you really want to restore the default values\?</string>
-    <string name="dialog_restore_recent">Delete the list of recent files\?</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files?</string>
     <string name="memory_thresholds_disable">Disable</string>
     <string name="text_copied">%1$s copied.</string>
     <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
