@@ -28,7 +28,7 @@
     <string name="save_success">Erfolgreich gespeichert.</string>
     <string name="operation_canceled">Vorgang abgebrochen</string>
     <string name="exception">Fehler</string>
-    <string name="confirm_overwrite">Die Datei existiert bereits, sind Sie sicher, dass Sie sie überschreiben wollen\?</string>
+    <string name="confirm_overwrite">Die Datei existiert bereits, sind Sie sicher, dass Sie sie überschreiben wollen?</string>
     <string name="open_a_file_before">Bitte vorher eine Datei öffnen!</string>
     <string name="file_manager_keyword">Dateimanager</string>
     <string name="select_file_to_open">Bitte wählen Sie eine Datei zum Öffnen aus.</string>
