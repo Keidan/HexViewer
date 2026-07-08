@@ -46,7 +46,7 @@
     <string name="action_go_to_address">Adrese git…</string>
     <string name="loading">Yükleniyor…</string>
     <string name="saving">Kaydediliyor…</string>
-    <string name="confirm_overwrite">Dosya var, üzerine yazmak istediğinizden emin misiniz\?</string>
+    <string name="confirm_overwrite">Dosya var, üzerine yazmak istediğinizden emin misiniz?</string>
     <string name="file_manager_keyword">Dosya yöneticisi</string>
     <string name="select_file_to_open">Açmak için bir dosya seçin.</string>
     <string name="error_filename">Geçersiz dosya adı!</string>
@@ -80,7 +80,7 @@
     <string name="file_size">Dosya boyutu</string>
     <string name="settings_pref_summary_screen_orientation">Öntanımlı ekran yönlendirmesini yapılandırır (yalnızca ana ekran).</string>
     <string name="items_selected">%1$d Seçildi</string>
-    <string name="confirm_save">%1$s dosyası kaydedilsin mi\?</string>
+    <string name="confirm_save">%1$s dosyası kaydedilsin mi?</string>
     <string name="overwrite">Ekleme modu</string>
     <string name="unit_mbyte">MB</string>
     <string name="error_title">Hata</string>
@@ -116,8 +116,8 @@
     <string name="memory_threshold_description">Bir dosyanın açılması iptal edilmeden önceki bellek sınırı için eşik değeri.</string>
     <string name="partial_file_opening_description">Açmak istediğiniz alanın başlangıcını ve bitişini girin.</string>
     <string name="dialog_restore_title">Geri yükle</string>
-    <string name="dialog_restore_question">Öntanımlı değerleri gerçekten geri yüklemek istiyor musunuz\?</string>
-    <string name="dialog_restore_recent">Son kullanılan dosyaların listesi silinsin mi\?</string>
+    <string name="dialog_restore_question">Öntanımlı değerleri gerçekten geri yüklemek istiyor musunuz?</string>
+    <string name="dialog_restore_recent">Son kullanılan dosyaların listesi silinsin mi?</string>
     <string name="memory_thresholds_disable">Disable</string>
     <string name="text_copied">%1$s copied.</string>
     <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
