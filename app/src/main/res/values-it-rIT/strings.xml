@@ -28,7 +28,7 @@
     <string name="save_success">Salvato.</string>
     <string name="operation_canceled">Operazione annullata</string>
     <string name="exception">Eccezione</string>
-    <string name="confirm_overwrite">Sovrascrivere il file esistente\?</string>
+    <string name="confirm_overwrite">Sovrascrivere il file esistente?</string>
     <string name="open_a_file_before">Per favore apri un file prima di procedere!</string>
     <string name="file_manager_keyword">Applicazione di gestione file</string>
     <string name="select_file_to_open">Seleziona un file da aprire.</string>
