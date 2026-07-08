@@ -32,7 +32,7 @@
     <string name="save_success">Lagret.</string>
     <string name="operation_canceled">Operasjon avbrutt</string>
     <string name="exception">Unntak</string>
-    <string name="confirm_overwrite">Overskriv filen\?</string>
+    <string name="confirm_overwrite">Overskriv filen?</string>
     <string name="open_a_file_before">Åpne en fil først!</string>
     <string name="file_manager_keyword">Filbehandler</string>
     <string name="settings_pref_title_font_size">Skriftstørrelse</string>
@@ -116,8 +116,8 @@
     <string name="memory_threshold_description">Terskelverdi for minnegrense før åpning av en fil avbrytes.</string>
     <string name="error_not_available">Ikke tilgjengelig</string>
     <string name="dialog_restore_title">Restore</string>
-    <string name="dialog_restore_question">Do you really want to restore the default values\?</string>
-    <string name="dialog_restore_recent">Delete the list of recent files\?</string>
+    <string name="dialog_restore_question">Do you really want to restore the default values?</string>
+    <string name="dialog_restore_recent">Delete the list of recent files?</string>
     <string name="memory_thresholds_disable">Disable</string>
     <string name="text_copied">%1$s copied.</string>
     <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
