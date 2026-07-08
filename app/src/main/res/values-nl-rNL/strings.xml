@@ -48,7 +48,7 @@
     <string name="action_close_title">Sluiten</string>
     <string name="settings_pref_summary_lists_landscape">Klik om aan te passen</string>
     <string name="action_settings_title">Instellingen</string>
-    <string name="confirm_overwrite">Bestaand bestand overschrijven\?</string>
+    <string name="confirm_overwrite">Bestaand bestand overschrijven?</string>
     <string name="smart_input">Platte tekst invoer</string>
     <string name="action_open_title_button">Openen</string>
     <string name="settings_pref_summary_screen_orientation">Stelt de standaard schermoriëntatie in (alleen hoofdscherm).</string>
@@ -73,7 +73,7 @@
     <string name="settings_category_general">Algemeen</string>
     <string name="unit_mbyte">MB</string>
     <string name="cancel">Annuleren</string>
-    <string name="confirm_save">Sla bestand %1$s op\?</string>
+    <string name="confirm_save">Sla bestand %1$s op?</string>
     <string name="action_plain_text_title">Platte tekst</string>
     <string name="error_less_than">De waarde kan niet lager zijn dan</string>
     <string name="settings_pref_title_partial_open_but_whole_file_is_opened">Gedeeltelijke bestandsopening</string>
@@ -109,14 +109,14 @@
     <string name="not_enough_memory">Niet in staat om het commando uit te voeren omdat er niet genoeg geheugen is voor deze app.</string>
     <string name="error_edition_continuous_selection">Lijn aanpassing is alleen mogelijk bij een doorlopende selectie.</string>
     <string name="error_file_open">Sluit alle bestanden om de modus te veranderen.</string>
-    <string name="dialog_restore_question">Weet je zeker dat je de standaardwaarden wilt herstellen\?</string>
+    <string name="dialog_restore_question">Weet je zeker dat je de standaardwaarden wilt herstellen?</string>
     <string name="install">Installeren</string>
     <string name="dialog_restore_title">Herstellen</string>
     <string name="save_success">Opgeslagen.</string>
     <string name="settings_pref_summary_lists_portrait">Klik om aan te passen</string>
     <string name="source">Bron:</string>
     <string name="unit_byte">B</string>
-    <string name="dialog_restore_recent">De lijst met recentelijk geopende bestanden verwijderen\?</string>
+    <string name="dialog_restore_recent">De lijst met recentelijk geopende bestanden verwijderen?</string>
     <string name="action_line_numbers_title">Lijnnummers</string>
     <string name="error_no_file">Bestand mist (verwijderd of verplaatst)</string>
     <string name="text_copied">%1$s copied.</string>
