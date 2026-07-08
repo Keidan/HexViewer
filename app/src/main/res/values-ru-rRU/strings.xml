@@ -116,8 +116,8 @@
     <string name="memory_threshold_description">Максимальное значение потреблённой памяти до прерывания открытия файла.</string>
     <string name="error_not_available">Не доступно</string>
     <string name="dialog_restore_title">Сброс</string>
-    <string name="dialog_restore_question">Вы действительно хотите сбросить до значений по умолчанию\?</string>
-    <string name="dialog_restore_recent">Удалить список недавного файлов\?</string>
+    <string name="dialog_restore_question">Вы действительно хотите сбросить до значений по умолчанию?</string>
+    <string name="dialog_restore_recent">Удалить список недавного файлов?</string>
     <string name="memory_thresholds_disable">Disable</string>
     <string name="text_copied">%1$s copied.</string>
     <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
