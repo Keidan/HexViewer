@@ -34,7 +34,7 @@
     <string name="save_success">Đã lưu.</string>
     <string name="operation_canceled">Đã huỷ thao tác</string>
     <string name="exception">Lỗi</string>
-    <string name="confirm_overwrite">Ghi đè lên tệp đã có\?</string>
+    <string name="confirm_overwrite">Ghi đè lên tệp đã có?</string>
     <string name="open_a_file_before">Hãy mở một tệp trước đã!</string>
     <string name="file_manager_keyword">Trình quản lý tệp</string>
     <string name="select_file_to_open">Chọn một tệp để mở.</string>
@@ -81,7 +81,7 @@
     <string name="error_file_not_found">Không thể tìm tệp %1$s</string>
     <string name="error_file_permission">Không có quyền nào được cấp cho tệp %1$s</string>
     <string name="items_selected">Đã chọn %1$d</string>
-    <string name="confirm_save">Lưu tệp %1$s\?</string>
+    <string name="confirm_save">Lưu tệp %1$s?</string>
     <string name="control_save_change">Trước hết, vui lòng lưu công việc của bạn.</string>
     <string name="overwrite">Chế độ chèn</string>
     <string name="size">Kích cỡ</string>
@@ -116,8 +116,8 @@
     <string name="memory_threshold_title">Ngưỡng bộ nhớ</string>
     <string name="memory_threshold_description">Lượng bộ nhớ được cho phép trước khi việc mở tệp bị huỷ.</string>
     <string name="dialog_restore_title">Khôi phục</string>
-    <string name="dialog_restore_question">Bạn có thực sự muốn khôi phục giá trị mặc định không\?</string>
-    <string name="dialog_restore_recent">Xoá danh sách tệp gần đây\?</string>
+    <string name="dialog_restore_question">Bạn có thực sự muốn khôi phục giá trị mặc định không?</string>
+    <string name="dialog_restore_recent">Xoá danh sách tệp gần đây?</string>
     <string name="memory_thresholds_disable">Disable</string>
     <string name="text_copied">%1$s copied.</string>
     <string name="error_too_many_text_copied">It\'s not possible to copy so much text</string>
