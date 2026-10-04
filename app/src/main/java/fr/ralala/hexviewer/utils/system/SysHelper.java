@@ -33,9 +33,9 @@ import fr.ralala.hexviewer.models.RawBuffer;
 public class SysHelper {
   @SuppressWarnings({"SpellCheckingInspection", "squid:S2386"})
   public static final char[] HEX_LOWERCASE = "0123456789abcdef".toCharArray();
-  public static final float SIZE_1KB = 0x400;
-  public static final float SIZE_1MB = 0x100000;
-  public static final float SIZE_1GB = 0x40000000;
+  public static final float SIZE_1KB = (float)0x400;
+  public static final float SIZE_1MB = (float)0x100000;
+  public static final float SIZE_1GB = (float)0x40000000;
   public static final int MAX_BY_ROW_16 = 16;
   public static final int MAX_BY_ROW_8 = 8;
   public static final int MAX_BYTES_ROW_16 = 48;

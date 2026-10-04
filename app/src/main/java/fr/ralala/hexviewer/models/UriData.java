@@ -55,12 +55,12 @@ public class UriData {
           mSizeChanged = true;
           return;
         } else {
-          detail = labelStart + SysHelper.sizeToHuman(ctx, fd.getStartOffset(), true, true) + ", ";
-          detail += labelEnd + SysHelper.sizeToHuman(ctx, fd.getEndOffset(), true, true) + ", ";
-          detail += labelSize + SysHelper.sizeToHuman(ctx, Math.abs(fd.getEndOffset() - fd.getStartOffset()));
+          detail = labelStart + SysHelper.sizeToHuman(ctx, (float)fd.getStartOffset(), true, true) + ", ";
+          detail += labelEnd + SysHelper.sizeToHuman(ctx, (float)fd.getEndOffset(), true, true) + ", ";
+          detail += labelSize + SysHelper.sizeToHuman(ctx, (float)Math.abs(fd.getEndOffset() - fd.getStartOffset()));
         }
       } else
-        detail = labelSize + SysHelper.sizeToHuman(ctx, size);
+        detail = labelSize + SysHelper.sizeToHuman(ctx, (float)size);
       mDetail = detail;
       mError = false;
       mClickable = true;

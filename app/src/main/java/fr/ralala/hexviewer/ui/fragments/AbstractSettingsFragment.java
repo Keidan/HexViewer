@@ -65,7 +65,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
    */
   @SuppressLint("InflateParams")
   protected void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated<Integer> iv) {
-    displayDialog(title, defaultValue, minValue, maxValue, v -> iv.onValidated(v.intValue()), false);
+    displayDialog(title, (float)defaultValue, (float)minValue, (float)maxValue, v -> iv.onValidated(v.intValue()), false);
   }
 
   /**

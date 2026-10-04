@@ -215,8 +215,8 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
     mBinding.tietEnd.addTextChangedListener(this);
     mDefaultEndInputFiler = mBinding.tietEnd.getFilters();
 
-    mBinding.textSize.setText(SysHelper.sizeToHuman(this, real));
-    mBinding.textSizePart.setText(SysHelper.sizeToHuman(this, max));
+    mBinding.textSize.setText(SysHelper.sizeToHuman(this, (float)real));
+    mBinding.textSizePart.setText(SysHelper.sizeToHuman(this, (float)max));
     evaluateSize();
   }
 
@@ -274,7 +274,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
     long start = getValue(sStart, mBinding.tietStart);
     long end = getValue(sEnd, mBinding.tietEnd);
     long size = Math.abs(end - start);
-    String sSize = SysHelper.sizeToHuman(this, size);
+    String sSize = SysHelper.sizeToHuman(this, (float)size);
     sSize += "\n(" + Long.toHexString(size).toUpperCase() + ")";
     mBinding.textSizePart.setText(sSize);
   }
@@ -628,7 +628,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
 
   private void setErrorMessage(TextInputLayout til, @StringRes int textId, long size) {
     setErrorMessage(til, getString(textId) + " " +
-      SysHelper.sizeToHuman(this, size) + " (" + Long.toHexString(size).toUpperCase() + ")");
+      SysHelper.sizeToHuman(this, (float)size) + " (" + Long.toHexString(size).toUpperCase() + ")");
   }
 
   private void setErrorMessage(TextInputLayout til, String message) {

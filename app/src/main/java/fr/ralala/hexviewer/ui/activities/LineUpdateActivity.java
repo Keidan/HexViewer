@@ -94,7 +94,7 @@ public class LineUpdateActivity extends BaseActivity implements View.OnClickList
     setLayout(R.layout.activity_line_update);
     mBinding = ActivityLineUpdateBinding.bind(findViewById(R.id.main_layout));
     mApp = (ApplicationCtx) getApplicationContext();
-    mMemoryMonitor = new MemoryMonitor(mApp, mApp.getMemoryThreshold(), 2000);
+    mMemoryMonitor = new MemoryMonitor(mApp, (float)mApp.getMemoryThreshold(), 2000);
 
     LineNumbersTitle titleSource = new LineNumbersTitle();
     titleSource.setTitleContent(mBinding.titleContentSource);

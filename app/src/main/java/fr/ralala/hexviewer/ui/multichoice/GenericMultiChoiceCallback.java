@@ -561,7 +561,7 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
       return false;
     }
     UIHelper.toast(mActivity, String.format(mActivity.getString(R.string.text_copied),
-      SysHelper.sizeToHuman(mActivity, sb.length(), true, true, false)));
+      SysHelper.sizeToHuman(mActivity, (float)sb.length(), true, true, false)));
     closeActionMode(mode, true);
     return true;
   }
