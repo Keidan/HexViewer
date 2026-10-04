@@ -285,8 +285,8 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
    * @return False on error.
    */
   private boolean checkValues() {
-    String sStart = mBinding.tietStart.getText() == null ? "" : mBinding.tietStart.getText().toString();
-    String sEnd = mBinding.tietEnd.getText() == null ? "" : mBinding.tietEnd.getText().toString();
+    String sStart = mBinding == null || mBinding.tietStart.getText() == null ? "" : mBinding.tietStart.getText().toString();
+    String sEnd = mBinding == null || mBinding.tietEnd.getText() == null ? "" : mBinding.tietEnd.getText().toString();
     boolean valid = checkEmpty(sStart, sEnd);
     if (valid) {
       long start = getValue(sStart, null);
@@ -561,7 +561,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
    * This method is called to notify you that, somewhere within s, the text has been changed.
    * It is legitimate to make further changes to s from this callback, but be careful not to get
    * yourself into an infinite loop, because any changes you make will cause this method to be
-   * called again recursively. (You are not told where the change took place because other
+   * called again recursively. You are not told where the change took place because other
    * afterTextChanged() methods may already have made other changes and invalidated the offsets.
    * But if you need to know here, you can use Spannable#setSpan in
    * onTextChanged(CharSequence, int, int, int) to mark your place and then look

@@ -118,7 +118,8 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
     setMultiSelectMode(true);
     mPreviousCount = mAdapter.getCount();
     mActionMode = mode;
-    mode.getMenuInflater().inflate(getMenuId(), menu);
+    if(null != mode)
+      mode.getMenuInflater().inflate(getMenuId(), menu);
     mMenuItemSelectAll = menu.findItem(R.id.action_select_all);
     return true;
   }
@@ -199,7 +200,8 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
       mAdapter.toggleSelection(position, checked, true);
       updateTitle(mode);
       if (mAdapter.getSelectedCount() == 0) {
-        mode.finish();
+        if(null != mode)
+          mode.finish();
         return;
       }
 
@@ -475,10 +477,12 @@ public abstract class GenericMultiChoiceCallback implements ActionMode.Callback 
    * @param delayed Delayed ?
    */
   protected void closeActionMode(ActionMode mode, boolean delayed) {
-    if (delayed)
-      new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 100);
-    else
-      mode.finish();
+    if(null != mode) {
+      if (delayed)
+        new Handler(Looper.getMainLooper()).postDelayed(mode::finish, 100);
+      else
+        mode.finish();
+    }
   }
 
   /**

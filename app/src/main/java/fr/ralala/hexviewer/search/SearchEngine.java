@@ -145,9 +145,8 @@ public class SearchEngine {
           byte b = block[blockIndex];
 
           // Get expected character for current nibble of the byte
-          char expectedNibble = (nibblePos == 0)
-            ? SysHelper.HEX_LOWERCASE[(b >>> 4) & 0x0F]
-            : SysHelper.HEX_LOWERCASE[b & 0x0F];
+          char expectedNibble =
+                  SysHelper.HEX_LOWERCASE[(nibblePos == 0) ? ((b >>> 4) & 0x0F) : (b & 0x0F)];
 
           // Compare query character to expected hex character (case-insensitive)
           if (qc == expectedNibble) {

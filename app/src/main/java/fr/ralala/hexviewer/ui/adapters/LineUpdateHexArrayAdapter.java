@@ -182,8 +182,7 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
         v = inflater.inflate(ID, null);
-        HolderHex holder = new HolderHex();
-        holder.setContent(v.findViewById(R.id.content));
+        HolderHex holder = new HolderHex(v.findViewById(R.id.content));
         holder.setLineNumbers(v.findViewById(R.id.line_numbers));
         holder.getContent().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_text_size));
         holder.getLineNumbers().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_text_size));

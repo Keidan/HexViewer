@@ -79,8 +79,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       if (inflater != null) {
         v = inflater.inflate(ID, null);
-        HolderHex holder = new HolderHex();
-        holder.setContent(v.findViewById(R.id.content));
+        HolderHex holder = new HolderHex(v.findViewById(R.id.content));
         holder.setLineNumbers(v.findViewById(R.id.line_numbers));
         v.setTag(holder);
       }

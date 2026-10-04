@@ -31,6 +31,9 @@ public class MemoryMonitor implements Runnable {
     mCheckFrequencyMs = checkFrequencyMs;
     mMemoryInfo = new MemoryInfo();
   }
+  public MemoryMonitor(Application app, final int threshold, final int checkFrequencyMs) {
+    this(app, (float)threshold, checkFrequencyMs); // Clear conversion
+  }
 
   /**
    * Loads memory information.

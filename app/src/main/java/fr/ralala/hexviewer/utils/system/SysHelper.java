@@ -114,11 +114,11 @@ public class SysHelper {
    * Converts a size into a humanly understandable string.
    *
    * @param ctx Android context.
-   * @param f   The size.
+   * @param s   The size.
    * @return The String.
    */
-  public static String sizeToHuman(Context ctx, float f) {
-    return sizeToHuman(ctx, f, false, true, false);
+  public static String sizeToHuman(Context ctx, long s) {
+    return sizeToHuman(ctx, (float)s, false, true, false); // Clear conversion
   }
 
   /**
@@ -136,6 +136,17 @@ public class SysHelper {
    * Converts a size into a humanly understandable string.
    *
    * @param ctx Android context.
+   * @param s   The size.
+   * @return The String.
+   */
+  public static String sizeToHuman(Context ctx, int s, boolean fullByteName, boolean addUnit, boolean addHex) {
+    return sizeToHuman(ctx, (float)s, fullByteName, addUnit, addHex); // Clear conversion
+  }
+
+  /**
+   * Converts a size into a humanly understandable string.
+   *
+   * @param ctx Android context.
    * @param f   The size.
    * @return The String.
    */
@@ -146,7 +157,7 @@ public class SysHelper {
     String sf;
     String hex = (addHex ? "(0x" + Long.toHexString((long) f).toUpperCase(Locale.US) + ") " : "");
     if (f < 1000) {
-      String unit = fullByteName ? ctx.getString(R.string.unit_bytes_full_lc) : ctx.getString(R.string.unit_byte);
+      String unit = ctx.getString(fullByteName ? R.string.unit_bytes_full_lc : R.string.unit_byte);
       sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, !addUnit ? "" : unit);
     } else if (f < 1000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1KB)),
@@ -327,7 +338,8 @@ public class SysHelper {
       lines.add(new LineEntry(sb.toString(), raw));
       currentEndLine.setLength(0);
       currentLine.setLength(0);
-      raw.clear();
+      if(null != raw)
+        raw.clear();
       return 0;
     }
     return currentIndex + 1;
