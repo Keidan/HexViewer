@@ -76,7 +76,7 @@ Note: In the settings, the list of languages is sorted as follows (according to 
 | en-US | English | [@Keidan](https://github.com/Keidan), [@comradekingu](https://github.com/comradekingu) |
 | el | Greek | [@VisionR1](https://github.com/VisionR1) |
 | es-ES | Spanish | [@sguinetti](https://github.com/sguinetti), @gallegonovato (from weblate), [Libertad](https://hosted.weblate.org/user/Libertad) |
-| fa | Persian | [@qaria185-blip](https://github.com/qaria185-blip) |
+| fa | Persian | [@qaria185-blip](https://github.com/qaria185-blip),[@Mehrshad0101](https://github.com/Mehrshad0101) |
 | fr-FR | French | [@Keidan](https://github.com/Keidan), [@Edanas](https://hosted.weblate.org/user/Edanas) |
 | hi | Hindi | @Shopimisrel (from github) |
 | hu-HU | Hungarian | [@SziaTomi](https://github.com/SziaTomi) |

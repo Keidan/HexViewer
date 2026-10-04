@@ -36,7 +36,7 @@ Translations:
 * Hungarian: @SziaTomi (github)
 * Japanese: @gnuhead-chieb (github)
 * Norwegian Bokmål: @comradekingu (github)
-* Persian: @qaria185-blip (github)
+* Persian: @qaria185-blip (github), @Mehrshad0101 (github)
 * Portuguese (Brazil): @Bardock88 (github), @pedrolinharesmoreira (github), @croomfolk (weblate)
 * Portuguese (Portugal): @SantosSi (github), @AntonioOliveira2 (github)
 * Russian: @OmlineEditor (github), @AHOHNMYC (github), @racingrebel (github), @Usland123 (github)
