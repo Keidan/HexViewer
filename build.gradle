@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
   id 'com.android.application' version '9.2.1' apply false
-  id "org.sonarqube" version "7.3.1.8318"
+  id "org.sonarqube" version "7.5.0.8588"
 }
 
 // This is important, it will run lint checks but won't abort build
@@ -16,7 +16,7 @@ sonar {
     // Exclude binary resources from analysis (fixes UTF-8 encoding errors on PNGs)
     property 'sonar.exclusions', "**/res/mipmap-*/**,**/res/drawable-*/**,**/res/font/**,**/*.png,**/*.jpg,**/*.jpeg,**/*.webp,**/*.gif,**/*.ico,**/*.ttf,**/*.otf"
     // Exclude rules
-    property "sonar.issue.ignore.multicriteria", "e1,e2,e3,e4"
+    property "sonar.issue.ignore.multicriteria", "e1,e2,e3,e4,e5"
     /* S110 */
     property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S110"
     property "sonar.issue.ignore.multicriteria.e1.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsActivity.java"
@@ -24,7 +24,9 @@ sonar {
     property "sonar.issue.ignore.multicriteria.e2.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsListsLandscapeActivity.java"
     property "sonar.issue.ignore.multicriteria.e3.ruleKey", "java:S110"
     property "sonar.issue.ignore.multicriteria.e3.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsListsPortraitActivity.java"
-    property "sonar.issue.ignore.multicriteria.e4.ruleKey", "xml:S5604"
-    property "sonar.issue.ignore.multicriteria.e4.resourceKey", "**/AndroidManifest.xml"
+    property "sonar.issue.ignore.multicriteria.e4.ruleKey", "java:S110"
+    property "sonar.issue.ignore.multicriteria.e4.resourceKey", "**/fr/ralala/hexviewer/ui/activities/settings/SettingsListsEntropyActivity.java"
+    property "sonar.issue.ignore.multicriteria.e5.ruleKey", "xml:S5604"
+    property "sonar.issue.ignore.multicriteria.e5.resourceKey", "**/AndroidManifest.xml"
   }
 }
