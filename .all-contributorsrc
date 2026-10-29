@@ -376,6 +376,15 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "CamsShaft",
+      "name": "Cam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/141678661?v=4",
+      "profile": "https://github.com/CamsShaft",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
