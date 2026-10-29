@@ -64,6 +64,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
    * @param iv           Callback which will be called if the entry is valid.
    */
   @SuppressLint("InflateParams")
+  @SuppressWarnings({"squid:S9395"})
   protected void displayDialog(CharSequence title, int defaultValue, int minValue, int maxValue, InputValidated<Integer> iv) {
     displayDialog(title, defaultValue, minValue, maxValue, v -> iv.onValidated(v.intValue()), false);
   }
@@ -133,11 +134,11 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
     boolean result = false;
     if (nb < minValue) {
       UIHelper.shakeError(et, mActivity.getString(R.string.error_less_than) + ": " + minValue);
-      et.setText(String.valueOf(!decimal ? (int) minValue : minValue));
+      et.setText(String.valueOf(decimal ? minValue : (int) minValue));
       et.selectAll();
     } else if (nb > maxValue) {
       UIHelper.shakeError(et, mActivity.getString(R.string.error_greater_than) + ": " + maxValue);
-      et.setText(String.valueOf(!decimal ? (int) maxValue : maxValue));
+      et.setText(String.valueOf(decimal ? maxValue : (int) maxValue));
       et.selectAll();
     } else {
       result = true;
@@ -169,7 +170,7 @@ public abstract class AbstractSettingsFragment extends PreferenceFragmentCompat 
       result = validateInputValue(et, iv, nb, minValue, maxValue, decimal);
     } catch (Exception ex) {
       UIHelper.shakeError(et, ex.getMessage());
-      et.setText(String.valueOf(!decimal ? (int) defaultValue : defaultValue));
+      et.setText(String.valueOf(decimal ? defaultValue : (int) defaultValue));
       et.selectAll();
     }
     return result;

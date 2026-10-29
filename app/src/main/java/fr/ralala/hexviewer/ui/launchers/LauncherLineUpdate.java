@@ -56,6 +56,7 @@ public class LauncherLineUpdate {
    * @param texts    The hex texts.
    * @param position The position in the list view.
    */
+  @SuppressWarnings({"squid:S9395"})
   public void startActivity(final byte[] texts, final int position, final int nbLines, final int shiftOffset, final long startRow) {
     Intent intent = new Intent(mActivity, LineUpdateActivity.class);
     intent.putExtra(LineUpdateActivity.ACTIVITY_EXTRA_TEXTS, texts);

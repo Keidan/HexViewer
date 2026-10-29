@@ -17,6 +17,7 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
  * </p>
  * ******************************************************************************
  */
+@SuppressWarnings({"squid:S9395"})
 public class UriData {
   private final Context mCtx;
   private final FileData mFd;

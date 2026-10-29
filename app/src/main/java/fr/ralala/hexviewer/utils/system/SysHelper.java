@@ -30,12 +30,13 @@ import fr.ralala.hexviewer.models.RawBuffer;
  * <p>
  * ******************************************************************************
  */
+@SuppressWarnings({"squid:S1905"})
 public class SysHelper {
   @SuppressWarnings({"SpellCheckingInspection", "squid:S2386"})
   public static final char[] HEX_LOWERCASE = "0123456789abcdef".toCharArray();
-  public static final float SIZE_1KB = 0x400;
-  public static final float SIZE_1MB = 0x100000;
-  public static final float SIZE_1GB = 0x40000000;
+  public static final float SIZE_1KB = (float)0x400; // Explicit cast shows intent
+  public static final float SIZE_1MB = (float)0x100000; // Explicit cast shows intent
+  public static final float SIZE_1GB = (float)0x40000000; // Explicit cast shows intent
   public static final int MAX_BY_ROW_16 = 16;
   public static final int MAX_BY_ROW_8 = 8;
   public static final int MAX_BYTES_ROW_16 = 48;
@@ -158,7 +159,7 @@ public class SysHelper {
     String hex = (addHex ? "(0x" + Long.toHexString((long) f).toUpperCase(Locale.US) + ") " : "");
     if (f < 1000) {
       String unit = ctx.getString(fullByteName ? R.string.unit_bytes_full_lc : R.string.unit_byte);
-      sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, !addUnit ? "" : unit);
+      sf = String.format(Locale.US, FORMAT_INT, (int) f, hex, addUnit ? unit : "");
     } else if (f < 1000000) {
       sf = String.format(Locale.US, FORMAT_STR, df.format((f / SIZE_1KB)),
         hex, addUnit ? ctx.getString(R.string.unit_kbyte) : "");

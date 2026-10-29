@@ -456,7 +456,7 @@ public class LineUpdateTextWatcher implements TextWatcher {
     if (nbChars > notChangedEnd.length())
       mNewString = notChangedStart + newChange;
     else
-      mNewString = notChangedStart + newChange + (!notChangedEnd.isEmpty() ? notChangedEnd.substring(nbChars) : "");
+      mNewString = notChangedStart + newChange + (notChangedEnd.isEmpty() ? "" : notChangedEnd.substring(nbChars));
   }
 
   /**

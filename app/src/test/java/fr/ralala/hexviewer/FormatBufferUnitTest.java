@@ -249,7 +249,7 @@ public class FormatBufferUnitTest {
 
   @Test
   public void testFormatBufferShift() {
-    String[][] array = new String[][]{
+    String[][] array = {
       {"00 01 02 03 04 05 06 07  ........", "08                       ."},
       {"   00 01 02 03 04 05 06   .......", "07 08                    .."},
       {"      00 01 02 03 04 05    ......", "06 07 08                 ..."},

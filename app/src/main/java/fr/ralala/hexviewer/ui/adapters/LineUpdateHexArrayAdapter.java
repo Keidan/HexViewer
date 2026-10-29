@@ -157,10 +157,12 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
 
       final @ColorInt int color = ContextCompat.getColor(getContext(),
         R.color.colorNumbers);
-      holder.getLineNumbers().setText(s);
-      holder.getLineNumbers().setTextColor(color);
-      holder.getLineNumbers().setVisibility(View.VISIBLE);
 
+      if(holder.getLineNumbers() != null) {
+        holder.getLineNumbers().setText(s);
+        holder.getLineNumbers().setTextColor(color);
+        holder.getLineNumbers().setVisibility(View.VISIBLE);
+      }
       holder.getContent().setText(string);
       applyUserConfig(mTitle.getTitleContent());
       applyUserConfig(mTitle.getTitleLineNumbers());
@@ -185,7 +187,8 @@ public class LineUpdateHexArrayAdapter extends ArrayAdapter<String> {
         HolderHex holder = new HolderHex(v.findViewById(R.id.content));
         holder.setLineNumbers(v.findViewById(R.id.line_numbers));
         holder.getContent().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_text_size));
-        holder.getLineNumbers().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_text_size));
+        if(holder.getLineNumbers() != null)
+          holder.getLineNumbers().setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.activity_line_update_lv_text_size));
         v.setTag(holder);
       }
     }

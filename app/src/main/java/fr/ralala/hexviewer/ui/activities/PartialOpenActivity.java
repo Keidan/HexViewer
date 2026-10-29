@@ -284,6 +284,7 @@ public class PartialOpenActivity extends BaseActivity implements AdapterView.OnI
    *
    * @return False on error.
    */
+  @SuppressWarnings({"squid:S2259"}) // false positive
   private boolean checkValues() {
     String sStart = mBinding == null || mBinding.tietStart.getText() == null ? "" : mBinding.tietStart.getText().toString();
     String sEnd = mBinding == null || mBinding.tietEnd.getText() == null ? "" : mBinding.tietEnd.getText().toString();
