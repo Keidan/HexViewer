@@ -18,6 +18,7 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * <p><b>Project HexViewer</b><br/>
  * Unit tests for the {@link SearchEngine} class, covering both
  * hexadecimal and plain-text searches.
  *
@@ -30,6 +31,10 @@ import static org.junit.Assert.assertEquals;
  *
  * <p>The tests use a buffer of bytes 0..254 formatted into {@link LineEntry} objects,
  * either in plain-text mode or hexadecimal representation.
+ * @author Keidan
+ * <p>
+ * License: GPLv3
+ * </p>
  */
 @SuppressWarnings("SpellCheckingInspection")
 @RunWith(JUnit4.class)

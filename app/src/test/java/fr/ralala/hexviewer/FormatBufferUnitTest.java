@@ -12,6 +12,7 @@ import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.utils.system.SysHelper;
 
 /**
+ * <p><b>Project HexViewer</b><br/>
  * Unit tests for SysHelper.formatBuffer.
  *
  * <p>These tests verify that a byte array is correctly formatted into lines
@@ -22,6 +23,10 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
  *     <li>Correct handling of line offsets (shifted output)</li>
  *     <li>Correct handling of large buffers (100k+, 250k bytes)</li>
  * </ul>
+ * @author Keidan
+ * <p>
+ * License: GPLv3
+ * </p>
  */
 @RunWith(JUnit4.class)
 public class FormatBufferUnitTest {
@@ -30,7 +35,7 @@ public class FormatBufferUnitTest {
   // ======== TEST CASES =======
   // ===========================
   @Test
-  public void testFormatBuffer01() {
+  public void testMaxBytes1row16() {
     assertFormat(1,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -38,7 +43,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer02() {
+  public void testMaxBytes2row16() {
     assertFormat(2,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -46,7 +51,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer03() {
+  public void testMaxBytes3row16() {
     assertFormat(3,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -54,7 +59,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer04() {
+  public void testMaxBytes4row16() {
     assertFormat(4,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -62,7 +67,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer05() {
+  public void testMaxBytes5row16() {
     assertFormat(5,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -70,7 +75,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer06() {
+  public void testMaxBytes6row16() {
     assertFormat(6,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -78,7 +83,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer07() {
+  public void testMaxBytes7row16() {
     assertFormat(7,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -86,7 +91,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer08() {
+  public void testMaxBytes8row16() {
     assertFormat(8,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -94,7 +99,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer09() {
+  public void testMaxBytes9row16() {
     assertFormat(9,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -102,7 +107,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer10() {
+  public void testMaxBytes10row16() {
     assertFormat(10,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -110,7 +115,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer11() {
+  public void testMaxBytes11row16() {
     assertFormat(11,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -118,7 +123,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer12() {
+  public void testMaxBytes12row16() {
     assertFormat(12,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -126,7 +131,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer13() {
+  public void testMaxBytes13row16() {
     assertFormat(13,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -134,7 +139,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer14() {
+  public void testMaxBytes14row16() {
     assertFormat(14,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -142,7 +147,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer15() {
+  public void testMaxBytes15row16() {
     assertFormat(15,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -150,7 +155,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer16() {
+  public void testMaxBytes16row16() {
     assertFormat(16,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -158,7 +163,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer17() {
+  public void testMaxBytes17row16() {
     assertFormat(17,
       SysHelper.MAX_BY_ROW_16,
       0,
@@ -167,7 +172,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer18() {
+  public void testMaxBytes1row8() {
     assertFormat(1,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -175,7 +180,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer19() {
+  public void testMaxBytes2row8() {
     assertFormat(2,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -183,7 +188,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer20() {
+  public void testMaxBytes3row8() {
     assertFormat(3,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -191,7 +196,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer21() {
+  public void testMaxBytes4row8() {
     assertFormat(4,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -199,7 +204,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer22() {
+  public void testMaxBytes5row8() {
     assertFormat(5,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -207,7 +212,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer23() {
+  public void testMaxBytes6row8() {
     assertFormat(6,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -215,7 +220,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer24() {
+  public void testMaxBytes7row8() {
     assertFormat(7,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -223,7 +228,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer25() {
+  public void testMaxBytes8row8() {
     assertFormat(8,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -231,7 +236,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer26() {
+  public void testMaxBytes9row8() {
     assertFormat(9,
       SysHelper.MAX_BY_ROW_8,
       0,
@@ -240,7 +245,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBuffer37() {
+  public void testMaxBytes4row8shift1() {
     assertFormat(4,
       SysHelper.MAX_BY_ROW_8,
       1,
@@ -248,7 +253,7 @@ public class FormatBufferUnitTest {
   }
 
   @Test
-  public void testFormatBufferShift() {
+  public void testMaxBytes9row8shiftN() {
     String[][] array = {
       {"00 01 02 03 04 05 06 07  ........", "08                       ."},
       {"   00 01 02 03 04 05 06   .......", "07 08                    .."},
