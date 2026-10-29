@@ -131,4 +131,19 @@
   <string name="settings_pref_title_theme">Thème</string>
   <string name="settings_pref_summary_theme">Modifier le thème de l\'application.</string>
   <string name="settings_pref_notice_theme">Si vous modifiez le thème au niveau du système, l\'application devra être redémarrée pour que le nouveau thème prenne effet.</string>
+  <string name="settings_pref_title_lists_entropy">Entropie</string>
+  <string name="settings_pref_summary_lists_entropy">Détection par entropie (clés, hachages, données chiffrées ou compressées)</string>
+  <string name="settings_pref_title_entropy_highlighting">Mise en évidence</string>
+  <string name="settings_pref_summary_entropy_highlighting">Colore les lignes à forte entropie</string>
+  <string name="settings_pref_title_entropy_sensitivity">Sensibilité de l\'entropie</string>
+  <string name="settings_pref_summary_entropy_sensitivity">Une sensibilité faible ne met en évidence que les données nettement aléatoires, une sensibilité élevée détecte aussi des données plus denses</string>
+  <string name="entropy_sensitivity_strict">Stricte</string>
+  <string name="entropy_sensitivity_normal">Normale</string>
+  <string name="entropy_sensitivity_high">Élevée</string>
+  <string name="entropy_off">Désactivé</string>
+  <string name="entropy_red">Rouge</string>
+  <string name="entropy_orange">Orange</string>
+  <string name="entropy_green">Vert</string>
+  <string name="entropy_blue">Bleu</string>
+  <string name="entropy_magenta">Magenta</string>
 </resources>

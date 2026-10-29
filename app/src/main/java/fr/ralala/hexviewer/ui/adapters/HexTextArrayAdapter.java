@@ -12,11 +12,14 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 
 import java.util.List;
 
-import fr.ralala.hexviewer.application.ApplicationCtx;
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.application.ApplicationCtx;
+import fr.ralala.hexviewer.entropy.EntropyHeat;
+import fr.ralala.hexviewer.entropy.EntropySensitivity;
 import fr.ralala.hexviewer.models.lines.LineEntry;
 import fr.ralala.hexviewer.ui.adapters.config.UserConfig;
 import fr.ralala.hexviewer.ui.adapters.holders.HolderHex;
@@ -38,9 +41,14 @@ import fr.ralala.hexviewer.utils.system.SysHelper;
  */
 public class HexTextArrayAdapter extends SearchableListArrayAdapter {
   private static final int ID = R.layout.listview_hex_row;
+  private static final float HEAT_MAX_ALPHA = 0.6f;
   private final ApplicationCtx mApp;
   private final LineNumbersTitle mTitle;
   private long mStartOffset;
+  private final EntropyHeat mEntropy;
+  private int mHeatColor = 0;
+  private int mHeatThreshold = 0;
+  private int mHeatFull = 0;
 
   public HexTextArrayAdapter(final Context activity, final List<LineEntry> objects,
                              LineNumbersTitle title,
@@ -50,6 +58,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
     mStartOffset = 0;
     mTitle = title;
     mApp = (ApplicationCtx) activity.getApplicationContext();
+    mEntropy = new EntropyHeat(this::notifyDataSetChanged);
   }
 
   public void setStartOffset(final long startOffset) {
@@ -144,7 +153,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       applyUpdated(holder.getContent(), fd);
       holder.getContent().setTextColor(ContextCompat.getColor(getContext(), getContentTextColor(fd, position)));
       applyUserConfig(holder.getContent());
-      v.setBackgroundColor(ContextCompat.getColor(getContext(), getContentBackgroundColor(position)));
+      v.setBackgroundColor(getBackgroundColorWithHeat(fd, position));
     }
   }
 
@@ -171,7 +180,7 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       String fmt = "%0" + maxLength + "X";
       final String s = String.format(fmt, getCurrentLine(fd.getIndex()));
       final @ColorInt int colorLine = ContextCompat.getColor(getContext(),
-        isSelected(position) ? R.color.colorSelectedNumbers : R.color.colorNumbers);
+          isSelected(position) ? R.color.colorSelectedNumbers : R.color.colorNumbers);
       holder.getLineNumbers().setText(s);
       holder.getLineNumbers().setTextColor(colorLine);
       applyUserConfig(holder.getLineNumbers());
@@ -198,11 +207,78 @@ public class HexTextArrayAdapter extends SearchableListArrayAdapter {
       final String fmt = "%" + maxLength + "s";
       mTitle.getTitleLineNumbers().setText(String.format(fmt, " "));
       mTitle.getTitleContent().setText(getContext().getString(mApp.getNbBytesPerLine() == SysHelper.MAX_BY_ROW_16 ?
-        R.string.title_content : R.string.title_content8));
+          R.string.title_content : R.string.title_content8));
       mTitle.getTitleContent().setTextColor(colorTitle);
       applyUserConfig(mTitle.getTitleContent());
       applyUserConfig(mTitle.getTitleLineNumbers());
     }
+  }
+
+  @Override
+  public void refresh() {
+    super.refresh();
+    final int res = mApp.getEntropyColorRes();
+    if (res == 0) {
+      mHeatColor = 0;
+      mEntropy.clear();
+      return;
+    }
+    final EntropySensitivity s = mApp.getEntropySensitivity();
+    mHeatColor = ContextCompat.getColor(getContext(), res);
+    mHeatThreshold = s.getThreshold();
+    mHeatFull = s.getFull();
+    mEntropy.schedule(getEntries().getItems());
+  }
+
+  /**
+   * Computes the background color of a line, tinted according to its entropy heat level.
+   *
+   * <p>
+   * The base color is the regular content background color of the given position. When the
+   * entropy level of the line reaches {@code HEAT_THRESHOLD}, the base color is blended with
+   * the {@code R.color.entropyHot} color. The more entropic the line, the stronger the blend:
+   * </p>
+   * <ul>
+   *   <li>a level below {@code HEAT_THRESHOLD} leaves the base color untouched;</li>
+   *   <li>a level equal to {@code HEAT_THRESHOLD} yields a blend ratio of {@code 0}
+   *   (base color);</li>
+   *   <li>the maximum level ({@code 255}) yields a blend ratio of {@code HEAT_MAX_ALPHA},
+   *   which caps the intensity of the heat tint so that the base color always remains
+   *   visible.</li>
+   * </ul>
+   *
+   * <p>
+   * The base color is returned unchanged, without any heat tint, when:
+   * </p>
+   * <ul>
+   *   <li>{@code fd} is {@code null};</li>
+   *   <li>the line at {@code position} is selected, so that the selection color remains
+   *   readable;</li>
+   *   <li>the entropy level of the line is below {@code HEAT_THRESHOLD} (or no heat map is
+   *   available, in which case the level is {@code 0}).</li>
+   * </ul>
+   *
+   * @param fd       the line entry to colorize; its {@link LineEntry#getIndex() index} is used to
+   *                 look up the heat level. May be {@code null}
+   * @param position the adapter position of the line, used to determine the base background
+   *                 color and the selection state
+   * @return the resulting background color as an ARGB color int: either the base color, or the
+   * base color blended with {@code R.color.entropyHot}
+   * @see EntropyHeat#levelOf(int)
+   * @see ColorUtils#blendARGB(int, int, float)
+   */
+  private int getBackgroundColorWithHeat(final LineEntry fd, final int position) {
+    final int base = ContextCompat.getColor(getContext(), getContentBackgroundColor(position));
+    if (fd == null || isSelected(position))
+      return base;  // A selected line retains its color
+
+    final int level = mEntropy.levelOf(fd.getIndex());
+    if (level < mHeatThreshold)
+      return base;
+    int div = (mHeatFull - mHeatThreshold);
+    if(div == 0) div = 1;
+    final float ratio = Math.min(1f, (float) (level - mHeatThreshold) / div);
+    return ColorUtils.blendARGB(base, mHeatColor, ratio * HEAT_MAX_ALPHA);
   }
 }
 

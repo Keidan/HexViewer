@@ -100,6 +100,16 @@ License: GPLv3
     </activity>
 
     <activity
+        android:name=".ui.activities.settings.SettingsListsEntropyActivity"
+        android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
+        android:launchMode="singleTask">
+
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".ui.activities.settings.SettingsActivity" />
+    </activity>
+
+    <activity
       android:name=".ui.activities.settings.SettingsListsPortraitActivity"
       android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|fontScale|uiMode"
       android:launchMode="singleTask">

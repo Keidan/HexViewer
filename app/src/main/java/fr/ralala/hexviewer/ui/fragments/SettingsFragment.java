@@ -20,6 +20,7 @@ import fr.ralala.hexviewer.R;
 import fr.ralala.hexviewer.models.SettingsKeys;
 import fr.ralala.hexviewer.ui.activities.LogsActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsActivity;
+import fr.ralala.hexviewer.ui.activities.settings.SettingsListsEntropyActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsLandscapeActivity;
 import fr.ralala.hexviewer.ui.activities.settings.SettingsListsPortraitActivity;
 import fr.ralala.hexviewer.ui.utils.UIHelper;
@@ -43,6 +44,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   private static final String GITHUB_LIC_URL = GITHUB_URL + "/blob/master/license.txt";
   protected Preference mSettingsListsPortrait;
   protected Preference mSettingsListsLandscape;
+  protected Preference mSettingsListsEntropy;
   protected Preference mLicense;
   protected Preference mVersion;
   private Preference mRestoreDefault;
@@ -72,6 +74,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
 
     mSettingsListsPortrait = findPreference(SettingsKeys.CFG_LISTS_PORTRAIT);
     mSettingsListsLandscape = findPreference(SettingsKeys.CFG_LISTS_LANDSCAPE);
+    mSettingsListsEntropy = findPreference(SettingsKeys.CFG_LISTS_ENTROPY);
     mLicense = findPreference(SettingsKeys.CFG_LICENSE);
     mVersion = findPreference(SettingsKeys.CFG_VERSION);
     mLanguage = findPreference(SettingsKeys.CFG_LANGUAGE);
@@ -83,6 +86,7 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
 
     mSettingsListsPortrait.setOnPreferenceClickListener(this);
     mSettingsListsLandscape.setOnPreferenceClickListener(this);
+    mSettingsListsEntropy.setOnPreferenceClickListener(this);
     mLicense.setOnPreferenceClickListener(this);
     mVersion.setOnPreferenceClickListener(this);
     mLanguage.setOnPreferenceChangeListener(this);
@@ -160,6 +164,8 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
       }
     } else if (preference.equals(mLogs)) {
       LogsActivity.startActivity(mActivity);
+    } else if (preference.equals(mSettingsListsEntropy)) {
+      SettingsListsEntropyActivity.startActivity(mActivity);
     }
     return false;
   }
@@ -201,11 +207,10 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
     if (((SettingsActivity) mActivity).isNotChanged()) {
       String value = "" + newValue;
       mApp.setApplicationTheme(value, true);
-      if(value.equals(getString(R.string.default_theme_system))) {
+      if (value.equals(getString(R.string.default_theme_system))) {
         UIHelper.showErrorDialog(mActivity, preference.getTitle(),
-          mActivity.getString(R.string.settings_pref_notice_theme), v -> requireActivity().finish());
-      }
-      else {
+            mActivity.getString(R.string.settings_pref_notice_theme), v -> requireActivity().finish());
+      } else {
         mActivity.finish();
         return true;
       }
@@ -219,10 +224,10 @@ public class SettingsFragment extends AbstractSettingsFragment implements Prefer
   private void restoreDefaultDialog() {
     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppTheme_DialogTheme);
     builder.setCancelable(false)
-      .setTitle(R.string.dialog_restore_title)
-      .setPositiveButton(android.R.string.ok, null)
-      .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
-      });
+        .setTitle(R.string.dialog_restore_title)
+        .setPositiveButton(android.R.string.ok, null)
+        .setNegativeButton(android.R.string.cancel, (dialog, whichButton) -> {
+        });
     LayoutInflater factory = LayoutInflater.from(mActivity);
     builder.setView(factory.inflate(R.layout.content_dialog_restore, null));
     final AlertDialog dialog = builder.create();

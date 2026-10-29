@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+Project: HexViewer
+Author: Keidan
+License: GPLv3
+-->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="prefScreen"
+    android:clearTaskOnLaunch="true"
+    android:launchMode="singleTask">
+    <androidx.preference.ListPreference
+        android:key="entropyColor"
+        app:iconSpaceReserved="false"
+        android:entries="@array/entropy_color_entries"
+        android:entryValues="@array/entropy_color_values"
+        android:defaultValue="@string/default_entropy_color"
+        android:title="@string/settings_pref_title_entropy_highlighting"
+        android:summary="@string/settings_pref_summary_entropy_highlighting" />
+    <androidx.preference.ListPreference
+        android:key="entropySensitivity"
+        app:iconSpaceReserved="false"
+        android:entries="@array/entropy_sensitivity_entries"
+        android:entryValues="@array/entropy_sensitivity_values"
+        android:defaultValue="@string/default_entropy_sensitivity"
+        android:title="@string/settings_pref_title_entropy_sensitivity"
+        android:summary="@string/settings_pref_summary_entropy_sensitivity" />
+</androidx.preference.PreferenceScreen>

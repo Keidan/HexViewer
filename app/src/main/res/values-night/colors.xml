@@ -28,4 +28,10 @@ License: GPLv3
   <color name="colorSelectedLine">#FFFFC107</color>
   <color name="colorNumbers">#FFFFC107</color>
   <color name="colorSelectedNumbers">#FF816205</color>
+  <!-- Entropy -->
+  <color name="entropyBlue">#42A5F5</color>
+  <color name="entropyGreen">#66BB6A</color>
+  <color name="entropyOrange">#FFA726</color>
+  <color name="entropyMagenta">#CE93D8</color>
+  <color name="entropyRed">#EF5350</color>*
 </resources>

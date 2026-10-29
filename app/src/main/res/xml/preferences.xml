@@ -51,6 +51,11 @@ License: GPLv3
       android:entryValues="@array/nb_bytes_per_Line"
       android:title="@string/settings_pref_title_nb_bytes"
       android:summary="@string/settings_pref_summary_nb_bytes" />
+    <androidx.preference.Preference
+      android:key="listsEntropy"
+      app:iconSpaceReserved="false"
+      android:title="@string/settings_pref_title_lists_entropy"
+      android:summary="@string/settings_pref_summary_lists_entropy" />
     <androidx.preference.CheckBoxPreference
       app:iconSpaceReserved="false"
       android:key="partialOpenButWholeFileIsOpened"

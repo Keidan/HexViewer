@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 
+import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.emoji2.bundled.BundledEmojiCompatConfig;
 import androidx.emoji2.text.EmojiCompat;
@@ -25,6 +26,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import fr.ralala.hexviewer.R;
+import fr.ralala.hexviewer.entropy.EntropyColors;
+import fr.ralala.hexviewer.entropy.EntropySensitivity;
 import fr.ralala.hexviewer.models.ListSettings;
 import fr.ralala.hexviewer.models.RecentlyOpened;
 import fr.ralala.hexviewer.models.SettingsKeys;
@@ -63,6 +66,8 @@ public class ApplicationCtx extends Application {
   private ListSettings mListSettingsLineEditLandscape;
   private String mDefaultScreenOrientation;
   private String mDefaultNbBytesPerLine;
+  private String mDefaultEntropyColor;
+  private String mDefaultEntropySensitivity;
   private RecentlyOpened mRecentlyOpened;
   private boolean mSequential = false;
   private String mDefaultMemoryThreshold;
@@ -91,6 +96,8 @@ public class ApplicationCtx extends Application {
     mDefaultNbBytesPerLine = getString(R.string.default_nb_bytes_per_line);
     mDefaultMemoryThreshold = getString(R.string.default_memory_threshold);
     mDefaultPartialOpenButWholeFileIsOpened = Boolean.parseBoolean(getString(R.string.default_partial_open_but_whole_file_is_opened));
+    mDefaultEntropyColor = getString(R.string.default_entropy_color);
+    mDefaultEntropySensitivity = getString(R.string.default_entropy_sensitivity);
 
     mListSettingsHexPortrait = new ListSettings(this,
       SettingsKeys.CFG_PORTRAIT_HEX_DISPLAY_DATA,
@@ -391,6 +398,28 @@ public class ApplicationCtx extends Application {
       return Integer.parseInt(getPref(this).getString(SettingsKeys.CFG_NB_BYTES_PER_LINE, mDefaultNbBytesPerLine));
     } catch (Exception ignore) {
       return Integer.parseInt(mDefaultNbBytesPerLine);
+    }
+  }
+
+  /**
+   * Returns the entropy color.
+   *
+   * @return ColorRes
+   */
+  public @ColorRes int getEntropyColorRes() {
+    try {
+      return EntropyColors.resolve(getPref(this).getString(SettingsKeys.CFG_ENTROPY_COLOR, mDefaultEntropyColor));
+    } catch (Exception ignore) {
+      return 0;
+    }
+  }
+
+  public EntropySensitivity getEntropySensitivity() {
+    try {
+      return EntropySensitivity.fromKey(
+          getPref(this).getString(SettingsKeys.CFG_ENTROPY_SENSITIVITY, mDefaultEntropySensitivity));
+    } catch (Exception ignore) {
+      return EntropySensitivity.NORMAL;
     }
   }
 

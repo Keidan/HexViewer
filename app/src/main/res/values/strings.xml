@@ -176,4 +176,24 @@
   <string name="settings_pref_title_theme">Theme</string>
   <string name="settings_pref_summary_theme">Change the theme of the application.</string>
   <string name="settings_pref_notice_theme">If you change the theme at the system level, the application will need to be restarted for the new theme to take effect.</string>
+
+  <!-- Entropy part -->
+  <string name="default_entropy_color" translatable="false">off</string>
+  <string name="default_entropy_sensitivity" translatable="false">normal</string>
+  <string name="settings_pref_title_lists_entropy">Entropy</string>
+  <string name="settings_pref_summary_lists_entropy">Entropy detection (keys, hashes, encrypted or compressed data)</string>
+  <string name="settings_pref_title_entropy_highlighting">Highlighting</string>
+  <string name="settings_pref_summary_entropy_highlighting">Colors lines with high entropy</string>
+  <string name="settings_pref_title_entropy_sensitivity">Entropy sensitivity</string>
+  <string name="settings_pref_summary_entropy_sensitivity">Lower sensitivity highlights only clearly random data, higher also highlights denser data</string>
+  <string name="entropy_sensitivity_strict">Strict</string>
+  <string name="entropy_sensitivity_normal">Normal</string>
+  <string name="entropy_sensitivity_high">Sensitive</string>
+  <string name="entropy_off">Disabled</string>
+  <string name="entropy_red">Red</string>
+  <string name="entropy_orange">Orange</string>
+  <string name="entropy_green">Green</string>
+  <string name="entropy_blue">Blue</string>
+  <string name="entropy_magenta">Magenta</string>
+  <!-- End entropy part -->
 </resources>

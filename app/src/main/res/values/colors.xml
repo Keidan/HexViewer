@@ -30,4 +30,10 @@ License: GPLv3
   <color name="colorSelectedNumbers">#FFFDFDA0</color>
   <!-- Custom -->
   <bool name="isLightTheme">true</bool>
+  <!-- Entropy -->
+  <color name="entropyBlue">#1E88E5</color>
+  <color name="entropyGreen">#43A047</color>
+  <color name="entropyOrange">#FB8C00</color>
+  <color name="entropyMagenta">#AB47BC</color>
+  <color name="entropyRed">#E53935</color>
 </resources>

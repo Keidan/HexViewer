@@ -99,4 +99,31 @@ License: GPLv3
         <item>@string/arrays_screen_orientation_entries_portrait</item>
         <item>@string/arrays_screen_orientation_entries_landscape</item>
     </string-array>
+
+    <string-array name="entropy_color_entries">
+        <item>@string/entropy_off</item>
+        <item>@string/entropy_red</item>
+        <item>@string/entropy_orange</item>
+        <item>@string/entropy_green</item>
+        <item>@string/entropy_blue</item>
+        <item>@string/entropy_magenta</item>
+    </string-array>
+    <string-array name="entropy_color_values" translatable="false">
+        <item>off</item>
+        <item>red</item>
+        <item>orange</item>
+        <item>green</item>
+        <item>blue</item>
+        <item>magenta</item>
+    </string-array>
+    <string-array name="entropy_sensitivity_entries">
+        <item>@string/entropy_sensitivity_strict</item>
+        <item>@string/entropy_sensitivity_normal</item>
+        <item>@string/entropy_sensitivity_high</item>
+    </string-array>
+    <string-array name="entropy_sensitivity_values" translatable="false">
+        <item>strict</item>
+        <item>normal</item>
+        <item>high</item>
+    </string-array>
 </resources>

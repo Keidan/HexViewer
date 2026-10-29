@@ -27,10 +27,14 @@ This application offers the following features:
 *   Display of the file in hexadecimal (or plain text) with the possibility to modify the content (in hexadecimal only).
 *   Saving the file on the smartphone/tablet (2).
 *   Search option in the open file (hexadecimal and plain text modes).
+*   Optional entropy highlighting in the hexadecimal view to spot random-looking data (3).
 
 (1) At first, the file can only be saved via "save as" and due to Android permissions reasons, the only way to make it appear in the list of recent files is to reopen it.
 
 (2) Due to file permissions, after a "save as", the list of recent files cannot be updated with the new file location.
+
+(3) Lines are colored according to the Shannon entropy computed over fixed 256-byte blocks of the whole file (random-looking data such as keys, hashes, encrypted or compressed content scores high). 
+The color and the sensitivity can be changed in the settings, the feature is disabled by default.
 
 _Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices._
 
@@ -38,6 +42,8 @@ _Caution: Opening files that are too large seriously degrades application perfor
 
 **WARNING:** Searching within the plain text view may become excessively slow when handling large files.
 
+**NOTE:** As the entropy is computed per 256-byte block, the highlighting detects regions of random-looking data, not short isolated values such as a 32-byte key. 
+It cannot tell encrypted data from compressed data either. It is only available in the hexadecimal view.
 
 :star2: A special thanks to [@OmlineEditor](https://github.com/OmlineEditor) for her patience and help :pray:, without her this application would not be at this level :blush:.
 

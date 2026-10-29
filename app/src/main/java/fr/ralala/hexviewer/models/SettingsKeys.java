@@ -59,7 +59,9 @@ public final class SettingsKeys {
   public static final String CFG_LINE_EDIT_RST_EXPAND = "lineEditRstExpanded";
   public static final String CFG_MEMORY_THRESHOLD = "memoryThreshold";
   public static final String CFG_PARTIAL_OPEN_BUT_WHOLE_FILE_IS_OPENED = "partialOpenButWholeFileIsOpened";
-
+  public static final String CFG_LISTS_ENTROPY = "listsEntropy";
+  public static final String CFG_ENTROPY_COLOR = "entropyColor";
+  public static final String CFG_ENTROPY_SENSITIVITY = "entropySensitivity";
   private SettingsKeys() {
   }
 }
