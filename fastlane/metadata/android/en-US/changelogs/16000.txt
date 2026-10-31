@@ -1,0 +1,6 @@
+* Entropy heat map in the hex view: lines that belong to high-entropy regions (random-looking data such as encryption keys, hashes, encrypted or compressed content) are highlighted with a color gradient.
+  * New setting "Highlighting": choose the color (red, orange, green, blue, magenta) or disable the feature (default: disabled).
+  * New setting "Entropy sensitivity": strict, normal or sensitive.
+  * The detection is based on the Shannon entropy computed over fixed 256-byte blocks. It highlights regions of random-looking data, not short isolated values such as a 32-byte key.
+  * The plain text view is not concerned by this feature.
+* Updated Chinese translation (thanks to @hamburger2048).
