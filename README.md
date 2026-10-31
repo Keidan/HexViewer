@@ -14,27 +14,23 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Keidan_HexViewer&metric=ncloc)][sonarcloud]
 
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-    alt="Get it on F-Droid"
-    height="75">](https://f-droid.org/packages/fr.ralala.hexviewer)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="75">](https://f-droid.org/packages/fr.ralala.hexviewer)
 
 (GPL) Android Hex Viewer is a FREE software.
 
 This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
 
 This application offers the following features:
-*   Opening all files without a corresponding Android application (1).
+*   Opening all files without a corresponding Android application.
+   *   At first, the file can only be saved via "save as" and due to Android permissions reasons, the only way to make it appear in the list of recent files is to reopen it.
 *   Display of the file in hexadecimal (or plain text) with the possibility to modify the content (in hexadecimal only).
-*   Saving the file on the smartphone/tablet (2).
+*   Saving the file on the smartphone/tablet.
+   *   Due to file permissions, after a "save as", the list of recent files cannot be updated with the new file location.
 *   Search option in the open file (hexadecimal and plain text modes).
-*   Optional entropy highlighting in the hexadecimal view to spot random-looking data (3).
+*   Optional entropy highlighting in the hexadecimal view to spot random-looking data.
+    *   Lines are colored according to the Shannon entropy computed over fixed 256-byte blocks of the whole file (random-looking data such as keys, hashes, encrypted or compressed content scores high). 
+    *   The color and the sensitivity can be changed in the settings, the feature is disabled by default.*
 
-(1) At first, the file can only be saved via "save as" and due to Android permissions reasons, the only way to make it appear in the list of recent files is to reopen it.
-
-(2) Due to file permissions, after a "save as", the list of recent files cannot be updated with the new file location.
-
-(3) Lines are colored according to the Shannon entropy computed over fixed 256-byte blocks of the whole file (random-looking data such as keys, hashes, encrypted or compressed content scores high). 
-The color and the sensitivity can be changed in the settings, the feature is disabled by default.
 
 _Caution: Opening files that are too large seriously degrades application performance and can suddenly stop the application on low-resource devices._
 
@@ -42,8 +38,7 @@ _Caution: Opening files that are too large seriously degrades application perfor
 
 **WARNING:** Searching within the plain text view may become excessively slow when handling large files.
 
-**NOTE:** As the entropy is computed per 256-byte block, the highlighting detects regions of random-looking data, not short isolated values such as a 32-byte key. 
-It cannot tell encrypted data from compressed data either. It is only available in the hexadecimal view.
+**NOTE:** As the entropy is computed per 256-byte block, the highlighting detects regions of random-looking data, not short isolated values such as a 32-byte key. It cannot tell encrypted data from compressed data either. It is only available in the hexadecimal view.
 
 :star2: A special thanks to [@OmlineEditor](https://github.com/OmlineEditor) for her patience and help :pray:, without her this application would not be at this level :blush:.
 
