@@ -1,0 +1,2 @@
+* Updated Bulgarian translation (thanks to @Trunars-weblate).
+* Updated Hungarian translation (thanks to @SziaTomi).
